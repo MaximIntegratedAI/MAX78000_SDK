@@ -43,6 +43,7 @@
 #include "pb.h"
 #include "mxc_sys.h"
 #include "lpgcr_regs.h"
+#include "simo_regs.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t * ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
@@ -120,6 +121,8 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
+
+    MXC_SIMO->vrego_c = 0x43; // Set CNN voltage
 #endif // __riscv
 
     return E_NO_ERROR;
