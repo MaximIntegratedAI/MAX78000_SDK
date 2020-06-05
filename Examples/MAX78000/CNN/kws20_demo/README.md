@@ -77,7 +77,7 @@ Following words can be detected:
 
  The MAX78000 EVKIT firmware recognizes keywords and reports result and confidence level.
 
-The microphone (U15) is located between JH4 and JH5 connecters.
+The microphone (U15) is located between JH4 and JH5 headers.
 
 
 
