@@ -41,16 +41,24 @@
 #include "spi.h"
 #include "gpio.h"
 
-
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH			320
 #define DISPLAY_HEIGHT			240
 
-#define TFT_SPI                 (MXC_SPI1)
+#define TFT_SPI                 (MXC_SPI0)
+#define TFT_SSEL_IDX			1
+#define TFT_SSEL				ss1
+
+#ifdef 	TFT_CONTROL_RESET
 #define TFT_RESET_GPIO_PIN      (MXC_GPIO_PIN_17)
 #define TFT_RESET_GPIO_PORT     (MXC_GPIO1)
+#endif
+#ifdef	TFT_CONTROL_BACKLIGHT
 #define TFT_BLEN_GPIO_PIN       (MXC_GPIO_PIN_16)
 #define TFT_BLEN_GPIO_PORT      (MXC_GPIO1)
+#endif
+
+#define TFT_SPI0_PINS 	MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9 | MXC_GPIO_PIN_11
 
 //
 #define PALETTE_OFFSET(x) 	concat(images_start_addr + images_header.offset2info_palatte  + 1 /* nb_palette */ + (x)*sizeof(unsigned int), 4)
@@ -150,7 +158,7 @@ static void spi_transmit(void *datain, unsigned int count)
 {
 	mxc_spi_req_t request = {
 		TFT_SPI,	// spi
-		0,		// ssIdx
+		TFT_SSEL_IDX,		// ssIdx
 		1,		// ssDeassert
 		(uint8_t*)datain, // txData
 		NULL,		// rxData
@@ -172,7 +180,7 @@ static void spi_transmit(void *datain, unsigned int count)
     TFT_SPI->ctrl0 &= ~ (MXC_F_SPI_CTRL0_EN);
 
     // Setup the slave select
-    MXC_SETFIELD (TFT_SPI->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE, ( (1<<0) << MXC_F_SPI_CTRL0_SS_ACTIVE_POS));
+    MXC_SETFIELD (TFT_SPI->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE, ( (1<<TFT_SSEL_IDX) << MXC_F_SPI_CTRL0_SS_ACTIVE_POS));
 
 	// number of RX Char is 0xffff
     TFT_SPI->ctrl1 &= ~ (MXC_F_SPI_CTRL1_RX_NUM_CHAR);
@@ -391,22 +399,24 @@ static void tft_spi_init( void )
 	int ssPol = 0;
 	unsigned int tft_hz = 12*1000*1000;
 
-	MXC_SPI_Init(TFT_SPI, master, quadMode, numSlaves, ssPol, tft_hz);
+	mxc_spi_pins_t tft_pins;
 
-	// Enable SPI1_SS0 pin (on own port, so SPI_Init doesn't enable it)
-	mxc_gpio_cfg_t SPI1_SS0 = {
-		MXC_GPIO0,
-		MXC_GPIO_PIN_31,
-		MXC_GPIO_FUNC_ALT1,
-		MXC_GPIO_PAD_NONE,
-		MXC_GPIO_VSSEL_VDDIO
-	};
+	tft_pins.clock = true;
+    tft_pins.ss0 = false;       ///< Slave select pin 0
+    tft_pins.ss1 = false;       ///< Slave select pin 1
+    tft_pins.ss2 = false;       ///< Slave select pin 2
+    tft_pins.miso = true;      ///< miso pin
+    tft_pins.mosi = true;      ///< mosi pin
+    tft_pins.sdio2 = false;     ///< SDIO2 pin
+    tft_pins.sdio3 = false;     ///< SDIO3 pin
 
-	MXC_GPIO_Config(&SPI1_SS0);
+    tft_pins.TFT_SSEL = true;
 
-	// Set each spi pin to select VDDIOH (3.3V)
-	SPI1_SS0.port->vssel |= SPI1_SS0.mask;
-	gpio_cfg_spi1.port->vssel |= gpio_cfg_spi1.mask;
+	MXC_SPI_Init(TFT_SPI, master, quadMode, numSlaves, ssPol, tft_hz, tft_pins);
+
+    mxc_gpio_regs_t *gpio_cfg_spi = MXC_GPIO_GET_GPIO (MXC_GPIO_PORT_0);
+	// Set  SPI0 pins to VDDIOH (3.3V) to be compatible with TFT display
+    MXC_GPIO_SetVSSEL(gpio_cfg_spi, MXC_GPIO_VSSEL_VDDIOH, TFT_SPI0_PINS);
 
 	MXC_SPI_SetDataSize(TFT_SPI, 9);
 	MXC_SPI_SetWidth(TFT_SPI, SPI_WIDTH_STANDARD);
@@ -416,6 +426,7 @@ static void displayInit( void )
 {
 	int i;
 
+#ifdef 	TFT_CONTROL_RESET
 	// CLR Reset pin;
 	MXC_GPIO_OutClr(TFT_RESET_GPIO_PORT, TFT_RESET_GPIO_PIN);
 	for (i = 0; i < 50000; i++) {
@@ -427,6 +438,7 @@ static void displayInit( void )
 	for (i = 0; i < 150000; i++) {
 		halfClockDelay();
 	}
+#endif	
 
 	write_command(0x0000);
 	write_command(0x0028);    // VCOM OTP
@@ -662,7 +674,6 @@ static void printCursor(char *str)
 int MXC_TFT_Init( void )
 {
 	int result = E_NO_ERROR;
-	mxc_gpio_cfg_t config;
 
 	// set images start addr
 	if (images_start_addr == NULL) {
@@ -675,14 +686,23 @@ int MXC_TFT_Init( void )
 	/*
 	 *  	Configure GPIO Pins
 	 */
+
+#if defined(TFT_CONTROL_RESET) || defined(TFT_CONTROL_BACKLIGHT)
+	mxc_gpio_cfg_t config;
 	// Display backlight pin and reset pin
 	config.pad 	 = MXC_GPIO_PAD_NONE;
 	config.port  = TFT_BLEN_GPIO_PORT;
-	config.mask  = TFT_BLEN_GPIO_PIN | TFT_RESET_GPIO_PIN;
+	config.mask  = 0;
+#ifdef 	TFT_CONTROL_RESET
+	config.mask  |= TFTFT_RESET_GPIO_PIN;
+#endif
+#ifdef 	TFT_CONTROL_BACKLIGHT
+	config.mask  |= TFT_BLEN_GPIO_PIN;
+#endif
 	config.vssel = MXC_GPIO_VSSEL_VDDIOH;
 	config.func  = MXC_GPIO_FUNC_OUT;
-
 	MXC_GPIO_Config(&config);
+#endif
 
 	// Configure SPI Pins
 	tft_spi_init();
@@ -743,10 +763,12 @@ int MXC_TFT_SetPalette(int img_id)
 
 void MXC_TFT_Backlight(int on)
 {
+#ifdef TFT_CONTROL_BACKLIGHT	
 	if (on)
 	 	MXC_GPIO_OutSet(TFT_BLEN_GPIO_PORT, TFT_BLEN_GPIO_PIN);
 	else
 		MXC_GPIO_OutClr(TFT_BLEN_GPIO_PORT, TFT_BLEN_GPIO_PIN);
+#endif	
 }
 
 void MXC_TFT_ShowImage(int x0, int y0, int id)

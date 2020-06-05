@@ -60,7 +60,7 @@ endif
 ifeq "$(MAXIM_PATH)" ""
 LIBS_DIR=../../../../Libraries
 else
-LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Firmware/$(TARGET_UC)/Libraries)
+LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
 CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 
@@ -73,14 +73,17 @@ export CMSIS_ROOT
 SRCS  = main.c
 SRCS += softmax.c
 SRCS += cnn.c
+SRCS += TFT/all_imgs.c
 
 # Where to find source files for this test
 VPATH  = .
 VPATH += ../Common/
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
+VPATH += ./TFT
 # Where to find header files for this test
 IPATH  = .
 IPATH += ../Common/
+IPATH += TFT
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE

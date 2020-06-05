@@ -43,9 +43,11 @@
 
 /************************************ DEFINES ********************************/
 #define TS_SPI                  (MXC_SPI0)
-#define TS_INT_GPIO_PIN         (MXC_GPIO_PIN_0)
+#define TS_SSEL_IDX				2
+#define TS_SSEL					ss2
+#define TS_INT_GPIO_PIN         (MXC_GPIO_PIN_17)
 #define TS_INT_GPIO_PORT        (MXC_GPIO0)
-#define TS_BUSY_GPIO_PIN        (MXC_GPIO_PIN_1)
+#define TS_BUSY_GPIO_PIN        (MXC_GPIO_PIN_16)
 #define TS_BUSY_GPIO_PORT       (MXC_GPIO0)
 
 /******************************* TYPE DEFINITIONS ****************************/
@@ -78,7 +80,7 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short *data
 
 	mxc_spi_req_t request = {
 		TS_SPI,		// spi
-		0, 		// ssIdx
+		TS_SSEL_IDX, 		// ssIdx
 		0, 		// ssDeassert
 		&datain,	// txData
 		0, 		// rxData
@@ -186,10 +188,23 @@ static void ts_spi_Init( void )
 	int ssPol = 0;
 	unsigned int ts_hz = 200000;
 
-	MXC_SPI_Init(TS_SPI,  master, quadMode, numSlaves, ssPol, ts_hz);
+	mxc_spi_pins_t ts_pins;
+
+	ts_pins.clock = true;
+    ts_pins.ss0 = false;       ///< Slave select pin 0
+    ts_pins.ss1 = false;       ///< Slave select pin 1
+    ts_pins.ss2 = false;       ///< Slave select pin 2
+    ts_pins.miso = true;      ///< miso pin
+    ts_pins.mosi = true;      ///< mosi pin
+    ts_pins.sdio2 = false;     ///< SDIO2 pin
+    ts_pins.sdio3 = false;     ///< SDIO3 pin
+
+    ts_pins.TS_SSEL = true;
+
+	MXC_SPI_Init(TS_SPI,  master, quadMode, numSlaves, ssPol, ts_hz, ts_pins);
 
 	// Set each spi pin to select VDDIOH (3.3V)
-	gpio_cfg_spi0.port->vssel |= gpio_cfg_spi0.mask;
+	// TODO
 	
 	MXC_SPI_SetDataSize(TS_SPI, 8);
 	MXC_SPI_SetWidth(TS_SPI, SPI_WIDTH_STANDARD);

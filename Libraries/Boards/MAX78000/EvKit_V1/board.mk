@@ -40,6 +40,8 @@ SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
+SRCS += tft.c
+SRCS += touchscreen.c
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source

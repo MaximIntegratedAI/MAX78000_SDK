@@ -47,7 +47,7 @@ Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
 
 Connect PICO adapter to JH5 SWD header. 
 
-Load firmware image using Openocd:
+Load firmware image using Openocd. **Make sure to remove PICO adapter once firmware is loaded.**
 
 ```bash
 ./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
@@ -57,11 +57,37 @@ Load firmware image using Openocd:
 
 Make sure to install jumper at JP20-CLK (INT position) as shown bellow:
 
-![](/I2S_jumper.png)
+<img src="/I2S_jumper.png" style="zoom:25%;" />
 
 Note: On board external oscillator Y3 is used to generate I2S clock. The I2S sample rate is 16kHz to match speech samples of the dataset.
 
 ### Operations:
+
+After firmware is loaded the TFT display shows that it is ready. Press PB1 to start:
+
+<img src="/20200604_142849.jpg" style="zoom: 25%;" />
+
+
+
+Once RED LED2 turns on, the initialization is complete and it is ready to accept keywords. If PICO adapter is still connected to SWD, disconnect it and power cycle.
+
+Following words can be detected:
+
+ ['**up', 'down', 'left', 'right', 'stop', 'go', 'yes', 'no', 'on', 'off', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'zero**']
+
+ The MAX78000 EVKIT firmware recognizes keywords and reports result and confidence level.
+
+The microphone (U15) is located between JH4 and JH5 connecters.
+
+
+
+<img src="/20200604_142536_1.jpg" style="zoom:25%;" />
+
+
+
+### Using Debug Terminal
+
+Debug terminal shows more information on status and detected words. 
 
 The USB cable connected to CN1 (USB/PWR) provides power and serial communication to MAX78000 EVKIT.
 
@@ -71,21 +97,11 @@ To configure PC terminal program select correct COM port and settings as follow:
 
 After turning on power switch (SW1) or pressing reset button (SW5)  following message will appear in terminal window:
 
-
-
 ![](/Terminal1.png)
 
 
 
-Once red LED2 turns on, the initialization is complete and it is ready to accept keywords.
-
-The microphone (U15) is located between JH4 and JH5 connecters.
-
-The user can say keywords from the list:
-
- ['**up', 'down', 'left', 'right', 'stop', 'go', 'yes', 'no', 'on', 'off', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'zero**']
-
- The MAX78000 EVKIT firmware recognizes keywords and reports result and confidence level in PC terminal window.
+Terminal display after detecting words:
 
 ![](/Terminal3.png)
 
@@ -214,57 +230,7 @@ Effect of quantization is shown in confusion matrix below.
 
 ​    [   up       down     left     right    stop      go         yes     no       on       off         one       two     three    four     five       six     seven   eight    nine   zero  unknown]
 
-Confusion matrix (unquantized):
-
-```
-[ 1944     3    22     2    32     7     2     1    12   118     1     9     0     4    14     3     5     2     1     0    77]
-[   49  1782     4     2    22    67     7    69     6     4     9    10     8     2     4     5    16     2    14     4   104]
-[   50    13  1830    41     7     3    55    21     2     2     6     2     3     3     6     8     3     4    11     1    92]
-[   51     1    73  1834     1     5     4     3     2     0    20     2    12     4    62     4     1     7    37     1    75]
-[   75    30     4     1  2004    34     2     9     8    30     2     9     0    12     6     6    10     0     0     4    52]
-[   66    93     5     8    13  1756     7   105     5    13     4    40     7    32     2     3     9     3     4    13   104]
-[   51     8    93     1     3     4  2085    10     0     3     4     2     2     6     0    16     2     8     4     8    48]
-[   43    84    30     5     3   152    14  1831     3     1     5     8     2     1     6     1     1     1    34    27    61]
-[   69     8     2     4     2     7     0     1  1825    72    27     3    10    28    80     3     2     3     7     0    58]
-[  183     6     6     2    19    10     2     4   107  1711     2     3     1    51    15     1     3     1     2     0    49]
-[   51    10    12    42     5     4     4     7    42     2  1883     3     7    28    23     2     5     3    26     2    77]
-[   54    14     3     3     6    50     3     6     3     4     2  1964    50    13     1    14     9    15     1    34    55]
-[   39     1     3    14     3     5     0     3     8     0     3    91  1902     2     3    15     5    49     9     6    68]
-[   30     3     4     4     8    47     0     6    33    55    39    11     6  1758    12     1     4     5     0     2    69]
-[   76     5     5    74    18     2     0     0    87    17    30     0     8     3  2008     2     5    13    22     4    69]
-[   43     1    21     2    14     3    26     2     3     1     0    31    17     3     1  2023    10    44     0     3    35]
-[   41    21     7     2    45    21     2     0    12     2     2    21     8     6     5    23  2023     4     0     4   106]
-[   42     2     2    30     0     6     4     1     3     2     1    27    70     4     7    36     1  1903     1     1    38]
-[   62    16    13    72     4     2     2    56    20     1    26     2    18     1    37     0     1     1  1884     4    73]
-[   39    15    11     2     9    22    22    24     0     2     3    45     8     1     0    14     9     9     1  2090    68]
-[  521   358   324   157   170   329   143   242   147   149   208   140   973   582   234   103   240   113   313   315 10754]
-```
-
-Confusion matrix (quantized with scale=0.97):
-
-```
-[ 1929     1    18     0    38     7     2     2    11   135     2     5     1     6    15     2     3     3     0     0    79]
-[   34  1780     7     5    25    84     7    60    10     6    11    12     8     4     2     3    12     1    13     6   100]
-[   49     8  1819    42     6     2    69    24     1     3     7     1     2     7     3    14     2     5     8     4    87]
-[   43     2    73  1840     1     5     3     3     2     0    19     1    11     7    75     5     1    12    30     0    66]
-[   61    29     7     2  2013    24     1     6     8    46     2     6     0    16     5     7     9     2     0     4    50]
-[   54    96     5    15    15  1749     8   101    10    13     7    36    10    40     2     3     6     4     4     9   105]
-[   31     7    92     0     5     3  2095     9     1     3     4     1     1     5     2    22     1    10     4    13    49]
-[   45    78    37     5     8   183    17  1780     7     2     6    12     3     0     4     0     0     4    33    22    67]
-[   51     6     4     5     5     4     0     0  1852    89    24     3     8    28    65     2     1     7     5     1    51]
-[  186     8     6     2    18     7     0     3   123  1711     5     1     0    41     7     1     2     6     2     2    47]
-[   41    14    20    58     5     3     6    10    49     8  1866     2     4    38    25     1     1     1    24     4    58]
-[   52     8     6     4     6    56     3     6     4     6     1  1933    46    16     0    22     8    34     0    31    62]
-[   36     1     1    22     2     6     4     1    10     0     2    75  1884     4     3    25     9    68     9     5    62]
-[   32     3     4     3     6    43     0     4    45    63    35    10     7  1761    10     1     4     4     0     1    61]
-[   74     4     7    66    27     3     0     1   100    23    25     0    12     4  1995     2     3    17    15     2    68]
-[   32     2    22     3    13     2    20     1     0     0     1    26    15     5     3  2023    16    57     1     4    37]
-[   52    18     5     1    42    23     2     0    11     3     1    25     5     7     1    25  2004     8     1     3   118]
-[   21     0     3    28     1     5     3     2     2     4     1    18    55     3     8    40     1  1949     3     3    31]
-[   50    21    18    90     7     7     2    68    18     1    29     1    19     1    61     1     1     0  1821     2    77]
-[   34    16    10     1     7    22    27    32     0     2     3    53     5     7     1    18    10    10     3  2062    71]
-[  493   345   337   206   198   298   155   262   194   200   243   118   939   634   272   142   220   166   294   290 10509]
-```
+![](/image2020-6-2_13-44-21.png)
 
 
 
