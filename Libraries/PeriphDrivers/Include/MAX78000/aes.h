@@ -110,7 +110,7 @@ struct _mxc_aes_cipher_req_t {
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_Init ();
+int MXC_AES_Init (void);
 
 /**
  * @brief   Enable AES Interrupts
@@ -131,14 +131,14 @@ void MXC_AES_DisableInt (uint32_t interrupt);
  *
  * @return  Nonzero if Busy, zero if not busy.
  */
-int MXC_AES_IsBusy ();
+int MXC_AES_IsBusy (void);
 
 /**
  * @brief   Disable and reset portions of the AES
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_Shutdown ();
+int MXC_AES_Shutdown (void);
 
 /**
  * @brief   This function should be called from the DMA Handler
@@ -156,46 +156,46 @@ void MXC_AES_GenerateKey (void);
  * 
  * @param   key Key size, see \ref mxc_aes_keys_t for a list of keys
  */
-void MXC_AES_SetKeySize(mxc_aes_keys_t key);
+void MXC_AES_SetKeySize (mxc_aes_keys_t key);
 
 /**
  * @brief   Get the currently set key size
  * 
  * @return  mxc_aes_keys_t 
  */
-mxc_aes_keys_t MXC_AES_GetKeySize();
+mxc_aes_keys_t MXC_AES_GetKeySize (void);
 
 /**
  * @brief   Flush Input Data FIFO
  * 
  */
-void MXC_AES_FlushInputFIFO();
+void MXC_AES_FlushInputFIFO (void);
 
 /**
  * @brief   Flush Output Data FIFO
  * 
  */
-void MXC_AES_FlushOutputFIFO();
+void MXC_AES_FlushOutputFIFO (void);
 
 /**
  * @brief   Start AES Calculations
  * 
  */
-void MXC_AES_Start();
+void MXC_AES_Start (void);
 
 /**
  * @brief   Get Interrupt flags set
  * 
  * @return  return the flags set in intfl register
  */
-uint32_t MXC_AES_GetFlags();
+uint32_t MXC_AES_GetFlags (void);
 
 /**
  * @brief   Clear the interrupts
  * 
  * @param   flags flags to be cleared
  */
-void MXC_AES_ClearFlags(uint32_t flags);
+void MXC_AES_ClearFlags (uint32_t flags);
 
 /**
  * @brief 
@@ -205,7 +205,7 @@ void MXC_AES_ClearFlags(uint32_t flags);
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_Generic(mxc_aes_req_t* req);
+int MXC_AES_Generic (mxc_aes_req_t* req);
 
 /**
  * @brief   Perform an encryption
@@ -234,7 +234,7 @@ int MXC_AES_Decrypt (mxc_aes_req_t* req);
  * @param   len       number of words of data
  * @return  See \ref MXC_Error_Codes for a list of return codes. 
  */
-int MXC_AES_TXDMAConfig(void *src_addr, int len);
+int MXC_AES_TXDMAConfig (void *src_addr, int len);
 
 /**
  * @brief   Perform AES RX using DMA. Configures DMA request and receives data from AES FIFO.
@@ -243,7 +243,7 @@ int MXC_AES_TXDMAConfig(void *src_addr, int len);
  * @param   len       number of words of data
  * @return  See \ref MXC_Error_Codes for a list of return codes. 
  */
-int MXC_AES_RXDMAConfig(void *dest_addr, int len);
+int MXC_AES_RXDMAConfig (void *dest_addr, int len);
 
 /**
  * @brief   Perfor encryption or decryption using DMA 
@@ -253,7 +253,7 @@ int MXC_AES_RXDMAConfig(void *dest_addr, int len);
  * @param   enc 0 for encryption and 1 for decryption
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_AES_GenericAsync(mxc_aes_req_t* req, uint8_t enc);
+int MXC_AES_GenericAsync (mxc_aes_req_t* req, uint8_t enc);
 
 /**
  * @brief   Perform an encryption using Interrupt

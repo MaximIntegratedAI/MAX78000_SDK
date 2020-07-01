@@ -109,7 +109,7 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uar
     if (uart == MXC_UART3) {
         switch (clock) {
         case MXC_UART_APB_CLK:
-            uart->clkdiv = ((7372800) / baud);
+            uart->clkdiv = ((IBRO_FREQ) / baud);
             break;
             
         case MXC_UART_32K_CLK:
@@ -120,7 +120,7 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uar
                 uart->clkdiv = 7;
             }
             else {
-                uart->clkdiv = ((32768 * 2) / baud);
+                uart->clkdiv = ((ERTCO_FREQ * 2) / baud);
             }
             
             if (baud > 2400) {
@@ -143,7 +143,7 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uar
             break;
             
         case MXC_UART_8M_CLK:
-            uart->clkdiv = (7372800 / baud);
+            uart->clkdiv = (IBRO_FREQ / baud);
             uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
             break;
             
@@ -165,10 +165,10 @@ int MXC_UART_RevB_GetFrequency(mxc_uart_regs_t* uart)
     
     if (uart == MXC_UART3) {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-            periphClock = 32768 * 2;
+            periphClock = ERTCO_FREQ * 2;
         }
         else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
-            periphClock = 7372800;
+            periphClock = IBRO_FREQ;
         }
         else {
             return E_BAD_PARAM;
@@ -176,7 +176,7 @@ int MXC_UART_RevB_GetFrequency(mxc_uart_regs_t* uart)
     }
     else {
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-            periphClock = 7372800;
+            periphClock = IBRO_FREQ;
         }
         else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = PeripheralClock;
@@ -341,7 +341,7 @@ int MXC_UART_RevB_AbortTransmission(mxc_uart_regs_t* uart)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_ReadCharacter(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_ReadCharacterRaw(mxc_uart_regs_t* uart)
 {
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
@@ -354,7 +354,7 @@ int MXC_UART_RevB_ReadCharacter(mxc_uart_regs_t* uart)
     return uart->fifo;
 }
 
-int MXC_UART_RevB_WriteCharacter(mxc_uart_regs_t* uart, uint8_t character)
+int MXC_UART_RevB_WriteCharacterRaw(mxc_uart_regs_t* uart, uint8_t character)
 {
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;

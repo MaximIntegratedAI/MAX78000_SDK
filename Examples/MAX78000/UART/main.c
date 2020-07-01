@@ -195,7 +195,7 @@ int main(void)
     printf("\n");
     
     if (fail == 0) {
-        LED_On(0);
+        LED_On(LED1);
         printf("-->EXAMPLE SUCCEEDED\n");
     }
     else {

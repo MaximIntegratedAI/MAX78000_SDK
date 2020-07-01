@@ -68,16 +68,16 @@ static text_t screen_msg[] = {
     { (char*) "TEXT 2", 6},
     { (char*) "TEXT 3", 6},
     // pages 1
-	{(char *)"Cortex M4 @ 100MHz",18},
-	{(char *)"512KB Flash, 128KB SRAM",23},
-	{(char *)"32-bit RISC-V @ 60MHz",21},
+    {(char*)"Cortex M4 @ 100MHz", 18},
+    {(char*)"512KB Flash, 128KB SRAM", 23},
+    {(char*)"32-bit RISC-V @ 60MHz", 21},
     // pages 2
-	{(char *)"CNN accelerator",15},
+    {(char*)"CNN accelerator", 15},
     { (char*) "Hardware crypto blocks", 22},
-	{(char *)"Secure Bootloader",17},
+    {(char*)"Secure Bootloader", 17},
     // pages 3
-	{(char *)"CNN examples",12},
-	{(char *)"Camera support",14},
+    {(char*)"CNN examples", 12},
+    {(char*)"Camera support", 14},
     { (char*) "FreeRTOS OS", 11}
 };
 

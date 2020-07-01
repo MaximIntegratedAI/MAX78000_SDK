@@ -125,7 +125,7 @@ int main(void)
     spi_pins.ss0 = TRUE;
     spi_pins.ss1 = FALSE;
     spi_pins.ss2 = FALSE;
-
+    
 #ifdef MASTERSYNC
     printf("Performing blocking (synchronous) transactions...\n");
 #endif
@@ -169,6 +169,7 @@ int main(void)
         
         if (retVal != E_NO_ERROR) {
             printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
+            
             while (1) {}
         }
         
@@ -176,6 +177,7 @@ int main(void)
         
         if (retVal != E_NO_ERROR) {
             printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
+            
             while (1) {}
         }
         
@@ -234,6 +236,7 @@ int main(void)
         // Printf needs the Uart turned on since they share the same pins
         if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
             printf("\n-->%2d Bits Transaction Failed\n", i);
+            
             while (1) {}
         }
         else {
@@ -244,6 +247,7 @@ int main(void)
         
         if (retVal != E_NO_ERROR) {
             printf("\n-->SPI SHUTDOWN ERROR: %d\n", retVal);
+            
             while (1) {}
         }
     }

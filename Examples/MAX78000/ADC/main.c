@@ -94,9 +94,9 @@ int main(void)
     
     while (1) {
         /* Flash LED when starting ADC cycle */
-        LED_On(0);
+        LED_On(LED1);
         MXC_TMR_Delay(MXC_TMR0, MSEC(10));
-        LED_Off(0);
+        LED_Off(LED2);
         
         /* Convert channel 0 */
 #ifdef USE_INTERRUPTS
@@ -104,11 +104,15 @@ int main(void)
         MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
         
         while (!adc_done) {};
+        
 #else
         MXC_ADC_StartConversion(MXC_ADC_CH_0);
+        
 #endif
         static uint8_t overflow;
+        
         overflow = (MXC_ADC_GetData(&adc_val) == E_OVERFLOW ? 1 : 0);
+        
         /* Display results on OLED display, display asterisk if overflow */
         printf("0: 0x%04x%s\n\n", adc_val, overflow ? "*" : " ");
         

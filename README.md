@@ -4,6 +4,13 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+July 1, 2020
+* Added macros for referencing evaluation kit LEDs by their name on the board.
+* Improved support for the TFT display on the evaluation kit.
+* Added MXC_UART_ReadCharacterRaw and MXC_UART_WriteCharacterRaw functions.  The "Raw" functions are non-blocking and will return an error code if a character cannot be read or written.  The "non-raw" functions will block until the character can be processed.
+* Improved support for paralled camera interface.
+* Added these examples: CameraIF, cats_dogs-chw-fifo, faceid, faceid_demo, 
+
 June 16, 2020
 * Updated the CNN/kws20_demo example application.  The most significant update being the addition of TFT support.
 * Updated the wakeup timer (WUT) example to include deep sleep mode.

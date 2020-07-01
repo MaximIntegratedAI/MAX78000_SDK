@@ -39,12 +39,12 @@
 /******* Globals *******/
 
 /****** Functions ******/
-int MXC_PCIF_RevA_Init (void);
-void MXC_PCIF_RevA_SetDatawith (mxc_pcif_datawith_t  datawith);
-void MXC_PCIF_RevA_SetTimingSel (mxc_pcif_timingsel_t timingsel);
-void MXC_PCIF_RevA_SetTreshhold (int fifo_thrsh);
-void MXC_PCIF_RevA_EnableInt (uint32_t flags);
-void MXC_PCIF_RevA_DisableInt (uint32_t flags);
-void MXC_PCIF_RevA_Start (mxc_pcif_readmode_t  readmode);
-void MXC_PCIF_RevA_Stop (void);
-unsigned int MXC_PCIF_RevA_GetData (void);
+int MXC_PCIF_RevA_Init(void);
+void MXC_PCIF_RevA_SetDataWidth(mxc_pcif_datawidth_t  datawidth);
+void MXC_PCIF_RevA_SetTimingSel(mxc_pcif_timingsel_t timingsel);
+void MXC_PCIF_RevA_SetThreshhold(int fifo_thrsh);
+void MXC_PCIF_RevA_EnableInt(uint32_t flags);
+void MXC_PCIF_RevA_DisableInt(uint32_t flags);
+void MXC_PCIF_RevA_Start(mxc_pcif_readmode_t  readmode);
+void MXC_PCIF_RevA_Stop(void);
+unsigned int MXC_PCIF_RevA_GetData(void);

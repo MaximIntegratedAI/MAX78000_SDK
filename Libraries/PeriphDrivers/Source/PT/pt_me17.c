@@ -46,7 +46,6 @@ void MXC_PT_Init(mxc_clk_scale_t clk_scale)
     MXC_ASSERT(clk_scale <= 128);
     
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_PT);
-    
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_PT);
     
     //set clock scale

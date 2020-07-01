@@ -73,20 +73,26 @@ extern const unsigned int num_leds;
 int LED_Init(void);
 
 /**
- * @brief      Turn the specified LED on.
+ * @brief      Turn the specified LED on
  * @param      idx   LED index
+ *
+ * @note Some board files have defines for 'idx' that match the silk screen on the board (e.g., LED1, LED2, etc.).
  */
-void LED_On(unsigned int idx);;
+void LED_On(unsigned int idx);
 
 /**
  * @brief      Turn the specified LED off.
  * @param      idx   LED index
+ *
+ * @note Some board files have defines for 'idx' that match the silk screen on the board (e.g., LED1, LED2, etc.).
  */
 void LED_Off(unsigned int idx);
 
 /**
  * @brief      Toggle the state of the specified LED.
  * @param      idx   LED index
+ *
+ * @note Some board files have defines for 'idx' that match the silk screen on the board (e.g., LED1, LED2, etc.).
  */
 void LED_Toggle(unsigned int idx);
 

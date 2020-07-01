@@ -87,8 +87,9 @@ const mxc_gpio_cfg_t gpio_cfg_pt1;
 const mxc_gpio_cfg_t gpio_cfg_pt2;
 const mxc_gpio_cfg_t gpio_cfg_pt3;
 
-const mxc_gpio_cfg_t gpio_cfg_pcif_P0;
-const mxc_gpio_cfg_t gpio_cfg_pcif_P1;
+const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_0_7;
+const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_8_9;
+const mxc_gpio_cfg_t gpio_cfg_pcif_P1_BITS_10_11;
 const mxc_gpio_cfg_t gpio_cfg_pcif_hsync;
 const mxc_gpio_cfg_t gpio_cfg_pcif_vsync;
 const mxc_gpio_cfg_t gpio_cfg_pcif_xclk;

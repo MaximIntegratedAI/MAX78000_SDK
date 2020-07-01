@@ -33,18 +33,18 @@
 
 #include "aes.h"
 
-int MXC_AES_RevB_Init ();
+int MXC_AES_RevB_Init (void);
 void MXC_AES_RevB_EnableInt (uint32_t interrupt);
 void MXC_AES_RevB_DisableInt (uint32_t interrupt);
-int MXC_AES_RevB_IsBusy ();
-int MXC_AES_RevB_Shutdown ();
-void MXC_AES_RevB_GenerateKey();
+int MXC_AES_RevB_IsBusy (void);
+int MXC_AES_RevB_Shutdown (void);
+void MXC_AES_RevB_GenerateKey(void);
 void MXC_AES_RevB_SetKeySize(mxc_aes_keys_t key);
-mxc_aes_keys_t MXC_AES_RevB_GetKeySize();
-void MXC_AES_RevB_FlushInputFIFO();
-void MXC_AES_RevB_FlushOutputFIFO();
-void MXC_AES_RevB_Start();
-uint32_t MXC_AES_RevB_GetFlags();
+mxc_aes_keys_t MXC_AES_RevB_GetKeySize(void);
+void MXC_AES_RevB_FlushInputFIFO(void);
+void MXC_AES_RevB_FlushOutputFIFO(void);
+void MXC_AES_RevB_Start(void);
+uint32_t MXC_AES_RevB_GetFlags(void);
 void MXC_AES_RevB_ClearFlags(uint32_t flags);
 int MXC_AES_RevB_Generic(mxc_aes_req_t* req);
 int MXC_AES_RevB_Encrypt(mxc_aes_req_t* req);

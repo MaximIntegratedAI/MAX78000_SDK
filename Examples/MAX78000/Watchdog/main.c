@@ -66,26 +66,24 @@ static mxc_wdt_cfg_t cfg;
 volatile int sw1_pressed = 0;
 volatile int sw2_pressed = 0;
 volatile int interrupt_count = 0;
-    
+
 // refers to array, do not change constants
 #define SW1         0
-#define LED         0
+#define LED         LED1
 /***** Functions *****/
 
 // *****************************************************************************
 void watchdogHandler()
 {
     MXC_WDT_ClearIntFlag(MXC_WDT0);
-
-    if(interrupt_count == 0)
-    {
+    
+    if (interrupt_count == 0) {
         printf("\nWatchdog has tripped!\n");
         printf("This is the first time, so we'll go ahead and reset it\n");
         printf("once it is within the proper window.\n");
         interrupt_count++;
     }
-    else
-    {
+    else {
         printf("\nWatchdog has tripped!\n");
         printf("This is the not the first time.  What happens if we\n");
         printf("do not reset it?\n");
@@ -188,19 +186,19 @@ int main(void)
     //Push SW1 to start longer delay - shows Interrupt before the reset happens
     
     while (1) {
-        if(sw1_pressed) {
-            if(interrupt_count == 0)
-            {
-                while(interrupt_count == 0) {};
+        if (sw1_pressed) {
+            if (interrupt_count == 0) {
+                while (interrupt_count == 0) {};
+                
                 MXC_Delay(MXC_DELAY_MSEC(1500));
             }
-            else
-            {
-            while (1);
+            else {
+                while (1);
             }
             
         }
-        if(sw2_pressed) {
+        
+        if (sw2_pressed) {
             // Reset the WDT too early.
             MXC_Delay(MXC_DELAY_MSEC(200));
             MXC_WDT_ResetTimer(MXC_WDT0);

@@ -56,7 +56,7 @@ typedef struct {
 
 static mxc_aes_dma_req_t dma_state;
 
-int MXC_AES_RevB_Init()
+int MXC_AES_RevB_Init(void)
 {
     MXC_AES->ctrl = 0x00;
     
@@ -69,7 +69,7 @@ int MXC_AES_RevB_Init()
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_Shutdown()
+int MXC_AES_RevB_Shutdown(void)
 {
     MXC_AES_RevB_FlushInputFIFO();
     MXC_AES_RevB_FlushOutputFIFO();
@@ -81,7 +81,7 @@ int MXC_AES_RevB_Shutdown()
     return E_NO_ERROR;
 }
 
-int MXC_AES_RevB_IsBusy()
+int MXC_AES_RevB_IsBusy(void)
 {
     if (MXC_AES->status & MXC_F_AES_STATUS_BUSY) {
         return E_BUSY;
@@ -90,7 +90,7 @@ int MXC_AES_RevB_IsBusy()
     return E_NO_ERROR;
 }
 
-void MXC_AES_RevB_GenerateKey()
+void MXC_AES_RevB_GenerateKey(void)
 {
     //Generate AES Key
     MXC_TRNG->ctrl |= MXC_F_TRNG_CTRL_KEYGEN;
@@ -105,26 +105,26 @@ void MXC_AES_RevB_SetKeySize(mxc_aes_keys_t key)
     MXC_AES->ctrl |= key;
 }
 
-mxc_aes_keys_t MXC_AES_RevB_GetKeySize()
+mxc_aes_keys_t MXC_AES_RevB_GetKeySize(void)
 {
     return (MXC_AES->ctrl & MXC_F_AES_CTRL_KEY_SIZE);
 }
 
-void MXC_AES_RevB_FlushInputFIFO()
+void MXC_AES_RevB_FlushInputFIFO(void)
 {
     while (MXC_AES_IsBusy() != E_NO_ERROR);
     
     MXC_AES->ctrl |= MXC_F_AES_CTRL_INPUT_FLUSH;
 }
 
-void MXC_AES_RevB_FlushOutputFIFO()
+void MXC_AES_RevB_FlushOutputFIFO(void)
 {
     while (MXC_AES_IsBusy() != E_NO_ERROR);
     
     MXC_AES->ctrl |= MXC_F_AES_CTRL_OUTPUT_FLUSH;
 }
 
-void MXC_AES_RevB_Start()
+void MXC_AES_RevB_Start(void)
 {
     while (MXC_AES_IsBusy() != E_NO_ERROR);
     
@@ -140,10 +140,10 @@ void MXC_AES_RevB_EnableInt(uint32_t interrupt)
 void MXC_AES_RevB_DisableInt(uint32_t interrupt)
 {
     MXC_AES->inten &= ~(interrupt & (MXC_F_AES_INTEN_DONE | MXC_F_AES_INTEN_KEY_CHANGE | \
-                                    MXC_F_AES_INTEN_KEY_ZERO | MXC_F_AES_INTEN_OV));
+                                     MXC_F_AES_INTEN_KEY_ZERO | MXC_F_AES_INTEN_OV));
 }
 
-uint32_t MXC_AES_RevB_GetFlags()
+uint32_t MXC_AES_RevB_GetFlags(void)
 {
     return MXC_AES->intfl;
 }

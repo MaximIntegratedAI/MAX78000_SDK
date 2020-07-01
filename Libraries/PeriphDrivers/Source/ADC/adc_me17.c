@@ -47,17 +47,41 @@
 
 static void initGPIOForChannel(mxc_adc_chsel_t channel)
 {
-    switch(channel)
-    {
-        case MXC_ADC_CH_0: MXC_GPIO_Config(&gpio_cfg_adc_ain0); break;
-        case MXC_ADC_CH_1: MXC_GPIO_Config(&gpio_cfg_adc_ain1); break;
-        case MXC_ADC_CH_2: MXC_GPIO_Config(&gpio_cfg_adc_ain2); break;
-        case MXC_ADC_CH_3: MXC_GPIO_Config(&gpio_cfg_adc_ain3); break;
-        case MXC_ADC_CH_4: MXC_GPIO_Config(&gpio_cfg_adc_ain4); break;
-        case MXC_ADC_CH_5: MXC_GPIO_Config(&gpio_cfg_adc_ain5); break;
-        case MXC_ADC_CH_6: MXC_GPIO_Config(&gpio_cfg_adc_ain6); break;
-        case MXC_ADC_CH_7: MXC_GPIO_Config(&gpio_cfg_adc_ain7); break;
-        default: break;
+    switch (channel) {
+    case MXC_ADC_CH_0:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain0);
+        break;
+        
+    case MXC_ADC_CH_1:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain1);
+        break;
+        
+    case MXC_ADC_CH_2:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain2);
+        break;
+        
+    case MXC_ADC_CH_3:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain3);
+        break;
+        
+    case MXC_ADC_CH_4:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain4);
+        break;
+        
+    case MXC_ADC_CH_5:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain5);
+        break;
+        
+    case MXC_ADC_CH_6:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain6);
+        break;
+        
+    case MXC_ADC_CH_7:
+        MXC_GPIO_Config(&gpio_cfg_adc_ain7);
+        break;
+        
+    default:
+        break;
     }
 }
 
@@ -73,7 +97,7 @@ int MXC_ADC_Init(void)
 int MXC_ADC_Shutdown(void)
 {
     MXC_ADC_RevA_Shutdown();
- 
+    
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_ADC);
     
     return E_NO_ERROR;
@@ -171,7 +195,7 @@ int MXC_ADC_GetMonitorHighThreshold(mxc_adc_monitor_t monitor)
 
 void MXC_ADC_SetMonitorLowThreshold(mxc_adc_monitor_t monitor, uint32_t threshold)
 {
-    MXC_ADC_RevA_SetMonitorLowThreshold(monitor, threshold);   
+    MXC_ADC_RevA_SetMonitorLowThreshold(monitor, threshold);
 }
 
 int MXC_ADC_GetMonitorLowThreshold(mxc_adc_monitor_t monitor)
@@ -182,7 +206,7 @@ int MXC_ADC_GetMonitorLowThreshold(mxc_adc_monitor_t monitor)
 void MXC_ADC_SetMonitorChannel(mxc_adc_monitor_t monitor, mxc_adc_chsel_t channel)
 {
     initGPIOForChannel(channel);
-
+    
     MXC_ADC_RevA_SetMonitorChannel(monitor, channel);
 }
 
@@ -204,21 +228,21 @@ void MXC_ADC_DisableMonitorAsync(mxc_adc_monitor_t monitor)
 int MXC_ADC_StartConversion(mxc_adc_chsel_t channel)
 {
     initGPIOForChannel(channel);
-
+    
     return MXC_ADC_RevA_StartConversion(channel);
 }
 
 int MXC_ADC_StartConversionAsync(mxc_adc_chsel_t channel, mxc_adc_complete_cb_t callback)
 {
     initGPIOForChannel(channel);
-
+    
     return MXC_ADC_RevA_StartConversionAsync(channel, callback);
 }
 
 int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t* data, void (*callback)(int, int))
 {
     initGPIOForChannel(channel);
-
+    
     return MXC_ADC_RevA_StartConversionDMA(channel, data, callback);
 }
 
@@ -230,7 +254,7 @@ int MXC_ADC_Handler(void)
 int MXC_ADC_Convert(mxc_adc_conversion_req_t req)
 {
     initGPIOForChannel(req.channel);
-
+    
     return MXC_ADC_RevA_Convert(req);
 }
 

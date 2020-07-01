@@ -58,6 +58,17 @@ extern "C" {
 #define LED_ON          0       /// Active state of LEDs
 
 /**
+ *  A reference to LED1 of the board.
+ *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
+ */
+#define LED1            0
+/**
+ *  A reference to LED2 of the board.
+ *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
+ */
+#define LED2            1
+
+/**
  * \brief   Initialize the BSP and board interfaces.
  * \returns #E_NO_ERROR if everything is successful
  */

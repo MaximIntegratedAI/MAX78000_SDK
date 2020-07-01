@@ -49,8 +49,6 @@ int MXC_UART_RevB_GetActive (mxc_uart_regs_t* uart);
 int MXC_UART_RevB_AbortTransmission (mxc_uart_regs_t* uart);
 int MXC_UART_RevB_ReadCharacterRaw (mxc_uart_regs_t* uart);
 int MXC_UART_RevB_WriteCharacterRaw (mxc_uart_regs_t* uart, uint8_t character);
-int MXC_UART_RevB_ReadCharacter (mxc_uart_regs_t* uart);
-int MXC_UART_RevB_WriteCharacter (mxc_uart_regs_t* uart, uint8_t character);
 int MXC_UART_RevB_Read (mxc_uart_regs_t* uart, uint8_t* buffer, int* len);
 int MXC_UART_RevB_Write (mxc_uart_regs_t* uart, uint8_t* byte, int* len);
 unsigned int MXC_UART_RevB_ReadRXFIFO (mxc_uart_regs_t* uart, unsigned char* bytes,

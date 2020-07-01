@@ -50,50 +50,54 @@
 
 int main(void)
 {
-	int key;
-	unsigned int start_time;
-	State *state;
-
-	/* Touch screen controller interrupt signal */
+    int key;
+    unsigned int start_time;
+    State* state;
+    
+    /* Touch screen controller interrupt signal */
     mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-	/* Touch screen controller busy signal */
+    /* Touch screen controller busy signal */
     mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+    /* TFT reset signal */
+    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
     
     /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
-
+    
     /* Set system clock to 100 MHz */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
-
-	/* Initialize RTC */
+    
+    /* Initialize RTC */
     MXC_RTC_Init(0, 0);
     MXC_RTC_Start();
     
     /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+    MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
     
- 	/* Initialize Touch Screen controller */
+    /* Initialize Touch Screen controller */
     MXC_TS_Init(MXC_SPI0, 2, &int_pin, &busy_pin);
     MXC_TS_Start();
     
- 	/* Display Home page */
+    /* Display Home page */
     state_init();
     
-	/* Get current time */
+    /* Get current time */
     start_time = utils_get_time_ms();
     
     while (1) {
-		/* Get current screen state */
+        /* Get current screen state */
         state = state_get_current();
         
-		/* Check pressed touch screen key */
+        /* Check pressed touch screen key */
         key = MXC_TS_GetKey();
+        
         if (key > 0) {
             state->prcss_key(key);
             start_time = utils_get_time_ms();
         }
-		/* Check timer tick */
+        
+        /* Check timer tick */
         if (utils_get_time_ms() >= (start_time + state->timeout)) {
             if (state->tick) {
                 state->tick();

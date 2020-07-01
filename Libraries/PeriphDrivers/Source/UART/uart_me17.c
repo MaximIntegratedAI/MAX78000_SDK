@@ -119,8 +119,8 @@ int MXC_UART_Shutdown(mxc_uart_regs_t* uart)
         break;
         
     case 3:
-        MXC_LPGCR->rst |= MXC_F_LPGCR_RST_UART3;
-        MXC_LPGCR->pclkdis |= MXC_F_LPGCR_PCLKDIS_UART3;
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_UART3);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART3);
         break;
         
     default:

@@ -105,6 +105,7 @@ int main()
     
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         printf("\nError in I2S_Init: %d\n", err);
+        
         while (1);
     }
     
@@ -120,9 +121,10 @@ int main()
     buf_end = &i2s_rx_buffer[I2S_RX_BUFFER_SIZE - 1];
     buf_current = buf_start;
     
-    while(1) {
+    while (1) {
         /* Wait for I2S interrupt */
         while (i2s_flag == 0);
+        
         /* Clear flag */
         i2s_flag = 0;
         /* Read number of samples in I2S RX FIFO */

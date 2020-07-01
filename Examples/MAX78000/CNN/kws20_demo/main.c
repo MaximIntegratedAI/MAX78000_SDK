@@ -62,8 +62,9 @@
 #include "cnn.h"
 #include "bitmap.h"
 #include "tft.h"
+#include "mxc.h"
 
-#define VERSION   "1.0.1 (6/9/20)"
+#define VERSION   "1.0.3 (6/29/20)"
 /* **** Definitions **** */
 
 /* Enable/Disable Features */
@@ -87,6 +88,7 @@
 #define TRANSPOSE_WIDTH		128 	// width of 2d data model to be used for transpose
 #define NUM_OUTPUTS 		21		// number of classes
 #define I2S_RX_BUFFER_SIZE	64		// I2S buffer size
+#define TFT_BUFF_SIZE		50		// TFT buffer size
 /*-----------------------------*/
 
 /* Adjustables */
@@ -162,8 +164,6 @@ int16_t HPF(int16_t input);
 #ifdef ENABLE_TFT
 void TFT_Intro(void);
 void TFT_Print(char *str, int x, int y, int font);
-uint8_t TFT_ShowTop5(q15_t *ml_soft, int32_t *ml_data,
-		int16_t *out_class, double *out_prob);
 void TFT_End(uint16_t words);
 #endif
 
@@ -235,10 +235,14 @@ int main(void)
 	/* initialize I2S interface to Mic */
 	I2SInit();
 #endif
-	   
+
 #ifdef ENABLE_TFT
+
+	/* TFT reset signal */
+    mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+	MXC_Delay(500000);
 	printf("\n*** Init TFT ***\n");
- 	MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+    MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
 	MXC_TFT_ClearScreen();
 
 	MXC_TFT_ShowImage(0, 0, img_1_bmp);
@@ -458,27 +462,6 @@ int main(void)
 				printf("Detected word: %s (%0.1f%%)", keywords[out_class],
 						probability);
 
-#ifdef ENABLE_TFT
-
-				//TFT_ShowTop5(ml_softmax, ml_data);
-				/*
-				 char buff[50];
-				 MXC_TFT_ClearScreen();
-				 //sprintf(buff, "Detected word:                  ");
-				 //TFT_Print(buff,5,20,urw_gothic_12_white_bg_grey);
-
-				 sprintf(buff, "%s (%0.1f%%)                ",
-				 keywords[out_class],probability);
-				 TFT_Print(buff,70,10,urw_gothic_12_white_bg_grey);
-
-				 for (int i = 0; i < NUM_OUTPUTS; i+=2)
-				 {
-				 sprintf(buff,"%s:%d%%)   %s(%d%%)       ",
-				 keywords[i], 100*(uint32_t)(ml_softmax[i])>>15,keywords[i+1], 100*(uint32_t)(ml_softmax[i+1])>>15);
-				 TFT_Print(buff,5, 30+10*i,urw_gothic_12_white_bg_grey);
-				 }
-				 */
-#endif
 				printf("\n----------------------------------------- \n");
 
 				Max = 0;
@@ -498,7 +481,7 @@ int main(void)
     }
 
 	/* Turn off LED2 (Red) */
-	LED_Off(1);
+	LED_Off(LED2);
 	printf("Total Samples:%d, Total Words: %d \n", sampleCounter, wordCounter);
 
 #ifdef ENABLE_TFT
@@ -560,7 +543,7 @@ void I2SInit()
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data,
 		int16_t *out_class, double *out_prob) {
 
-    char buff[50];
+	char buff[TFT_BUFF_SIZE];
 	int32_t temp[NUM_OUTPUTS];
 	q15_t max = 0;    // soft_max output is 0->32767
 	int32_t max_ml = 1<<31;  // ml before going to soft_max
@@ -592,7 +575,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data,
 #else
 
 		    MXC_TFT_ClearScreen();
-
+		    memset(buff,32,TFT_BUFF_SIZE);
 		    sprintf(buff, "%s (%0.1f%%)                  ", keywords[max_index],
 					(double) 100.0 * max / 32768.0);
 			TFT_Print(buff, 20, 30, urw_gothic_13_white_bg_grey);
@@ -725,7 +708,7 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t * avg)
 		return 0;
 	}
 	/* Turn on LED2 (Red) */
-	LED_On(1);
+	LED_On(LED2);
 
 	/* absolute for averaging */
 	if (sample >= 0)
@@ -819,7 +802,7 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t * avg)
 			continue;
 
 		/* Turn on LED2 (Red) */
-		LED_On(1);
+		LED_On(LED2);
 
 		/* absolute for averaging */
 		if (sample >= 0)
@@ -903,8 +886,8 @@ int16_t HPF(int16_t input) {
 
 void TFT_Intro(void) {
 
-	char buff[50];
-
+	char buff[TFT_BUFF_SIZE];
+	memset(buff,32,TFT_BUFF_SIZE);
 	sprintf(buff, "MAXIM INTEGRATED             ");
 	TFT_Print(buff, 55, 10, urw_gothic_13_white_bg_grey);
 
@@ -930,8 +913,7 @@ void TFT_Intro(void) {
 	sprintf(buff, "PRESS PB1 TO START!          ");
 	TFT_Print(buff, 55, 210, urw_gothic_13_white_bg_grey);
 
-	while (!PB_Get(0))
-		;
+	while (!PB_Get(0));
 
 	MXC_TFT_ClearScreen();
 	sprintf(buff, "Wait for RED LED to turn on   ");
@@ -961,7 +943,8 @@ void TFT_Print(char *str, int x, int y, int font) {
 
 /* **************************************************************************** */
 void TFT_End(uint16_t words) {
-	char buff[50];
+	char buff[TFT_BUFF_SIZE];
+	memset(buff,32,TFT_BUFF_SIZE);
 	MXC_TFT_ClearScreen();
 	sprintf(buff, "Demo Stopped!                    ");
 	TFT_Print(buff, 70, 30, urw_gothic_13_white_bg_grey);

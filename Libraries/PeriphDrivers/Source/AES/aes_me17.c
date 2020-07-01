@@ -52,7 +52,7 @@
 
 /********************************************************/
 
-int MXC_AES_Init()
+int MXC_AES_Init(void)
 {
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_AES);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
@@ -72,12 +72,12 @@ void MXC_AES_DisableInt(uint32_t interrupt)
     MXC_AES_RevB_DisableInt(interrupt);
 }
 
-int MXC_AES_IsBusy()
+int MXC_AES_IsBusy(void)
 {
     return MXC_AES_RevB_IsBusy();
 }
 
-int MXC_AES_Shutdown()
+int MXC_AES_Shutdown(void)
 {
     int error = MXC_AES_RevB_Shutdown();
     
@@ -101,27 +101,27 @@ void MXC_AES_SetKeySize(mxc_aes_keys_t key)
     MXC_AES_RevB_SetKeySize(key);
 }
 
-mxc_aes_keys_t MXC_AES_GetKeySize()
+mxc_aes_keys_t MXC_AES_GetKeySize(void)
 {
     return MXC_AES_RevB_GetKeySize();
 }
 
-void MXC_AES_FlushInputFIFO()
+void MXC_AES_FlushInputFIFO(void)
 {
     MXC_AES_RevB_FlushInputFIFO();
 }
 
-void MXC_AES_FlushOutputFIFO()
+void MXC_AES_FlushOutputFIFO(void)
 {
     MXC_AES_RevB_FlushOutputFIFO();
 }
 
-void MXC_AES_Start()
+void MXC_AES_Start(void)
 {
     MXC_AES_RevB_Start();
 }
 
-uint32_t MXC_AES_GetFlags()
+uint32_t MXC_AES_GetFlags(void)
 {
     return MXC_AES_RevB_GetFlags();
 }

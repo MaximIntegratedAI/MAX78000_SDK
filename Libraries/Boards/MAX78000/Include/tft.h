@@ -97,6 +97,17 @@ void MXC_TFT_ClearScreen(void);
 void MXC_TFT_FillRect(area_t* area, int color);
 
 /**
+ * @brief      Write a Pixel on TFT display
+ *
+ * @param      pixelX           x location of image
+ * @param      pixelY           y location of image
+ * @param      width            width of pixel
+ * @param      height           height of pixel
+ * @param      color            RGB value of image
+ */
+void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t color);
+
+/**
  * @brief      Draw a bitmap
  *
  * @param      x0           x location of image

@@ -57,11 +57,67 @@ extern "C" {
  * @{
  */
 
+
 /* **** Definitions **** */
+
+/**
+ * @brief   The list of Camera Interface Datawidth options supported
+ *
+ */
+typedef enum {
+    MXC_PCIF_DATAWIDTH_8_BIT = 0,      ///<
+    MXC_PCIF_DATAWIDTH_10_BIT,         ///<
+    MXC_PCIF_DATAWIDTH_12_BIT,         ///<
+} mxc_pcif_datawidth_t;
+
+/**
+ * @brief   The list of Camera GPIO Datawidth options supported
+ *
+ */
+typedef enum {
+    MXC_PCIF_GPIO_DATAWIDTH_8_BIT = 0,      ///<
+    MXC_PCIF_GPIO_DATAWIDTH_10_BIT,         ///<
+    MXC_PCIF_GPIO_DATAWIDTH_12_BIT,         ///<
+} mxc_pcif_gpio_datawidth_t;
+
+/**
+ * @brief   The list of Camera Interface ReadMode options supported
+ *
+ */
+typedef enum {
+    MXC_PCIF_READMODE_SINGLE_MODE = 1,      ///<
+    MXC_PCIF_READMODE_CONTINUES_MODE,       ///<
+} mxc_pcif_readmode_t;
+
+/**
+ * @brief   The list of Camera Interface TimingSel options supported
+ *
+ */
+typedef enum {
+    MXC_PCIF_TIMINGSEL_HSYNC_and_VSYNC = 0,     ///<
+    MXC_PCIF_TIMINGSEL_SAV_and_EAV,             ///<
+} mxc_pcif_timingsel_t;
 
 
 /* **** Function Prototypes **** */
 
+int MXC_PCIF_Init(mxc_pcif_gpio_datawidth_t gpioDataWidth);
+
+void MXC_PCIF_SetDataWidth(mxc_pcif_datawidth_t  datawidth);
+
+void MXC_PCIF_SetTimingSel(mxc_pcif_timingsel_t timingsel);
+
+void MXC_PCIF_SetThreshhold(int fifo_thrsh);
+
+void MXC_PCIF_EnableInt(uint32_t flags);
+
+void MXC_PCIF_DisableInt(uint32_t flags);
+
+void MXC_PCIF_Start(mxc_pcif_readmode_t  readmode);
+
+void MXC_PCIF_Stop(void);
+
+unsigned int MXC_PCIF_GetData(void);
 
 /**@} end of group cameraif */
 

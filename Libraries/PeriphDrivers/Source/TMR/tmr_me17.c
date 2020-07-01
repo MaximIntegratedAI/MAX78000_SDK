@@ -99,9 +99,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
     switch (tmr_id) {
     case 0:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR0);
-        
-        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TMR0); //look into if this is needed and if so add to function above
-        
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR0);
         
         if (init_pins) {
@@ -117,9 +114,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         
     case 1:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR1);
-        
-        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TMR1);
-        
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR1);
         
         if (init_pins) {
@@ -135,9 +129,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         
     case 2:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
-        
-        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TMR2);
-        
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
         
         if (init_pins) {
@@ -153,9 +144,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         
     case 3:
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
-        
-        while (MXC_GCR->rst0 & MXC_F_GCR_RST0_TMR3);
-        
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR3);
         
         if (init_pins) {
@@ -172,18 +160,12 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
     case 4:
         MXC_GPIO_Config(&gpio_cfg_tmr4);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR4);
-        
-        while (MXC_LPGCR->rst & MXC_F_LPGCR_RST_TMR4);
-        
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR4);
         break;
         
     case 5:
         MXC_GPIO_Config(&gpio_cfg_tmr5);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
-        
-        while (MXC_LPGCR->rst & MXC_F_LPGCR_RST_TMR5);
-        
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
         break;
     }
@@ -216,11 +198,11 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)
     }
     
     if (tmr == MXC_TMR4) {
-        MXC_LPGCR->pclkdis |= MXC_F_LPGCR_PCLKDIS_TMR4;
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR4);
     }
     
     if (tmr == MXC_TMR5) {
-        MXC_LPGCR->pclkdis |= MXC_F_LPGCR_PCLKDIS_TMR5;
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR5);
     }
 }
 

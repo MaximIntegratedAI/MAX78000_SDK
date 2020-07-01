@@ -104,31 +104,12 @@ void MXC_TMR_RevA_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
         tmr->cn |= (MXC_S_TMR_CN_PRES_DIV128);
         break;
     }
-    
-    switch (cfg->mode) {
-    case TMR_MODE_ONESHOT:
-    
-    case TMR_MODE_CONTINUOUS:
-        tmr->cn |= cfg->mode << MXC_F_TMR_CN_TMODE_POS;
-        tmr->cn |= (cfg->pol) << MXC_F_TMR_CN_TPOL_POS;
-        //enable timer interrupt if needed
-        tmr->cnt = 0x1;
-        tmr->cmp = cfg->cmp_cnt;
-        break;
-        
-    case TMR_MODE_COUNTER:
-    case TMR_MODE_CAPTURE:
-    case TMR_MODE_COMPARE:
-    case TMR_MODE_GATED:
-    case TMR_MODE_CAPTURE_COMPARE:
-    case TMR_MODE_PWM:
-        tmr->cn |= cfg->mode << MXC_F_TMR_CN_TMODE_POS;
-        tmr->cn |= (cfg->pol) << MXC_F_TMR_CN_TPOL_POS;
-        //enable timer interrupt if needed
-        tmr->cnt = 0x1;
-        tmr->cmp = cfg->cmp_cnt;
-        break;
-    }
+    //set mode for tmr
+    tmr->cn |= cfg->mode << MXC_F_TMR_CN_TMODE_POS;
+    tmr->cn |= (cfg->pol) << MXC_F_TMR_CN_TPOL_POS;
+    //enable timer interrupt if needed
+    tmr->cnt = 0x1;
+    tmr->cmp = cfg->cmp_cnt;    
 }
 
 void MXC_TMR_RevA_Shutdown(mxc_tmr_regs_t* tmr)

@@ -51,6 +51,7 @@ var group__uart =
     [ "MXC_UART_Init", "group__uart.html#ga10bbe120db1810fd44558f7177b94fef", null ],
     [ "MXC_UART_Read", "group__uart.html#ga2d56d88b91d8407f611671b5fb94539b", null ],
     [ "MXC_UART_ReadCharacter", "group__uart.html#ga6ab7c853437b7e94c10b116affd99663", null ],
+    [ "MXC_UART_ReadCharacterRaw", "group__uart.html#ga5128672adc1a7880f77da128753ead73", null ],
     [ "MXC_UART_ReadRXFIFO", "group__uart.html#gac57d0eb1991b00440c96a7a23b043bec", null ],
     [ "MXC_UART_ReadRXFIFODMA", "group__uart.html#gae426b74298d37d7b61f4249ffa8e12eb", null ],
     [ "MXC_UART_ReadyForSleep", "group__uart.html#ga90b8d6f056ac83b357b3402bb22d2156", null ],
@@ -68,6 +69,7 @@ var group__uart =
     [ "MXC_UART_TransactionDMA", "group__uart.html#ga3630c344a93e1013c0b5a5b6bfc3e1cf", null ],
     [ "MXC_UART_Write", "group__uart.html#gaeba392c61e0bb738d66cd8b8027ce3d9", null ],
     [ "MXC_UART_WriteCharacter", "group__uart.html#gae87f1974fe9253684a4a22bf63f19f5d", null ],
+    [ "MXC_UART_WriteCharacterRaw", "group__uart.html#ga502dc967866e68ae8c27826fb170ffc1", null ],
     [ "MXC_UART_WriteTXFIFO", "group__uart.html#ga0c5dd769413d02c4bcd53e7fba7a7e2f", null ],
     [ "MXC_UART_WriteTXFIFODMA", "group__uart.html#gab71db6f739f2f8e0900587e99bcf0b56", null ]
 ];

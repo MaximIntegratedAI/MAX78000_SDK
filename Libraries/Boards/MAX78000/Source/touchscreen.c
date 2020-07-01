@@ -42,8 +42,8 @@
 #include "gpio.h"
 
 /************************************ DEFINES ********************************/
-#define TS_SPI0_PINS 			MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10
-#define TS_SPI_FREQ				1000000 // Hz
+#define TS_SPI0_PINS            MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10
+#define TS_SPI_FREQ             1000000 // Hz
 /******************************* TYPE DEFINITIONS ****************************/
 typedef struct _TS_Buttons_t {
     int x0;
@@ -75,35 +75,35 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short* data
 {
     int i;
     uint8_t rx[2] = {0, 0};
-	mxc_spi_req_t request;
-
+    mxc_spi_req_t request;
+    
     request.spi = t_spi;
     request.ssIdx = t_ssel;
     request.ssDeassert = 0;
-	request.txData = (uint8_t*)(&datain);
-	request.rxData = NULL;
-	request.txLen = 1;
-	request.rxLen = 0;
+    request.txData = (uint8_t*)(&datain);
+    request.rxData = NULL;
+    request.txLen = 1;
+    request.rxLen = 0;
     
-	MXC_SPI_SetFrequency (t_spi, TS_SPI_FREQ);
-	MXC_SPI_SetDataSize(t_spi, 8);
+    MXC_SPI_SetFrequency(t_spi, TS_SPI_FREQ);
+    MXC_SPI_SetDataSize(t_spi, 8);
     
     MXC_SPI_MasterTransaction(&request);
     
-	// Wait to clear TS busy signal
+    // Wait to clear TS busy signal
     for (i = 0; i < 100; i++) {
         __asm volatile("nop\n");
     }
     
     request.ssDeassert = 1;
-	request.txData = NULL;
+    request.txData = NULL;
     request.rxData = (uint8_t*)(rx);
     request.txLen = 0;
     request.rxLen = 2;
     
     MXC_SPI_MasterTransaction(&request);
     
-	if(dataout != NULL){
+    if (dataout != NULL) {
         *dataout = (rx[1] | (rx[0] << 8)) >> 4;
     }
 }
@@ -166,23 +166,23 @@ static void tsHandler(void)
 
 static void ts_gpio_init(void)
 {
-    
+
     // Touchscreen busy pin
     MXC_GPIO_Config(busy_gpio);
     
     // Touchscreen interrupt pin
     MXC_GPIO_Config(int_gpio);
     
-	MXC_GPIO_RegisterCallback(int_gpio, (mxc_gpio_callback_fn)tsHandler, NULL);
+    MXC_GPIO_RegisterCallback(int_gpio, (mxc_gpio_callback_fn)tsHandler, NULL);
 }
 
 static void ts_spi_Init(void)
 {
     int master = 1;
     int quadMode = 0;
-	int numSlaves = 2;
+    int numSlaves = 2;
     int ssPol = 0;
-	unsigned int ts_hz = TS_SPI_FREQ;
+    unsigned int ts_hz = TS_SPI_FREQ;
     mxc_spi_pins_t ts_pins;
     
     ts_pins.clock = true;
@@ -194,12 +194,12 @@ static void ts_spi_Init(void)
     ts_pins.sdio2 = false;     ///< SDIO2 pin
     ts_pins.sdio3 = false;     ///< SDIO3 pin
     
-	MXC_SPI_Init(t_spi,  master, quadMode, numSlaves, ssPol, ts_hz, ts_pins);
+    MXC_SPI_Init(t_spi,  master, quadMode, numSlaves, ssPol, ts_hz, ts_pins);
     
-	// Set  SPI0 pins to VDDIOH (3.3V) to be compatible with touch screen
-	MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, TS_SPI0_PINS);
-	MXC_SPI_SetDataSize(t_spi, 8);
-	MXC_SPI_SetWidth(t_spi, SPI_WIDTH_STANDARD);
+    // Set  SPI0 pins to VDDIOH (3.3V) to be compatible with touch screen
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, TS_SPI0_PINS);
+    MXC_SPI_SetDataSize(t_spi, 8);
+    MXC_SPI_SetWidth(t_spi, SPI_WIDTH_STANDARD);
 }
 
 /********************************* Public Functions **************************/
@@ -207,8 +207,8 @@ int MXC_TS_Init(mxc_spi_regs_t* ts_spi, int ss_idx,  mxc_gpio_cfg_t* int_pin, mx
 {
     int result = E_NO_ERROR;
     
-	t_spi = ts_spi;
-	t_ssel = ss_idx;
+    t_spi = ts_spi;
+    t_ssel = ss_idx;
     int_gpio = int_pin;
     busy_gpio = busy_pin;
     
@@ -294,4 +294,4 @@ int MXC_TS_GetKey(void)
     return key;
 }
 
-    
+

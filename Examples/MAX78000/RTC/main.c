@@ -54,8 +54,8 @@
 #include "mxc_delay.h"
 
 /***** Definitions *****/
-#define LED_ALARM           0
-#define LED_TODA            1
+#define LED_ALARM           LED1
+#define LED_TODA            LED2
 
 #define TIME_OF_DAY_SEC     10
 #define SUBSECOND_MSEC_0    250

@@ -45,16 +45,16 @@ static uint8_t initialized = 0;
 /* **** Functions **** */
 int MXC_GPIO_Common_Init(uint32_t portmask)
 {
-    if(!initialized)
-    {
+    if (!initialized) {
         int i, j;
-	    
+        
         for (i = 0; i < MXC_CFG_GPIO_INSTANCES; i++) {
             // Initialize call back arrays
             for (j = 0; j < MXC_CFG_GPIO_PINS_PORT; j++) {
                 callback[i][j] = NULL;
             }
         }
+        
         initialized = 1;
     }
     

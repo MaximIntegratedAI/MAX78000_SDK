@@ -97,36 +97,18 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t* i2c)
     // Configure GPIO for I2C
     if (i2c == MXC_I2C0) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C0);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_I2C0);
     }
     else if (i2c == MXC_I2C1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C1);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C1);
     }
     else if (i2c == MXC_I2C2) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2C2);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C2);
     }
     else {
         return E_NO_DEVICE;
-    }
-    
-    
-    int i2cNum = MXC_I2C_GET_IDX(i2c);
-    
-    // Reconcile this with MXC_SYS_I2C_Init when we figure out what to do abotu system level things
-    switch (i2cNum) {
-    case 0:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_I2C0);
-        break;
-        
-    case 1:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C1);
-        break;
-        
-    case 2:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C2);
-        break;
-        
-    default:
-        return E_BAD_PARAM;
     }
     
     return E_NO_ERROR;
@@ -134,7 +116,6 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t* i2c)
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t* i2c, unsigned int hz)
 {
-
     // ME17 doesn't support high speed more
     if (hz > MXC_I2C_FASTPLUS_SPEED) {
         return E_NOT_SUPPORTED;

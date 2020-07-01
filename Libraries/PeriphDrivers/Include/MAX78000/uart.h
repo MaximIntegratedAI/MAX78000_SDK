@@ -296,23 +296,46 @@ int MXC_UART_GetActive(mxc_uart_regs_t* uart);
 int MXC_UART_AbortTransmission(mxc_uart_regs_t* uart);
 
 /**
- * @brief   Reads the next available character
+ * @brief   Reads the next available character. This function will block until a character
+ *          is available or a UART error occurs.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  *
  * @return  The character read, otherwise see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_UART_ReadCharacter(mxc_uart_regs_t* uart);
+int MXC_UART_ReadCharacter (mxc_uart_regs_t* uart);
 
 /**
- * @brief   Writes a character on the UART
+ * @brief   Writes a character on the UART. This function will block until the character
+ *          has been placed in the TX FIFO or a UART error occurs.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
- * @param   character    The character to write 
+ * @param   character         The character to write
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_UART_WriteCharacter(mxc_uart_regs_t* uart, uint8_t character);
+int MXC_UART_WriteCharacter (mxc_uart_regs_t* uart, uint8_t character);
+
+/**
+ * @brief   Reads the next available character. If no character is available, this function
+ *          will return an error.
+ *
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  The character read, otherwise see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_UART_ReadCharacterRaw (mxc_uart_regs_t* uart);
+
+/**
+ * @brief   Writes a character on the UART. If the character cannot be written because the
+ *          transmit FIFO is currently full, this function returns an error.
+ *
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ * @param   character         The character to write
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_UART_WriteCharacterRaw (mxc_uart_regs_t* uart, uint8_t character);
 
 /**
  * @brief   Reads the next available character

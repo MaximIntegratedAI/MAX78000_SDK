@@ -63,7 +63,9 @@ Note: On board external oscillator Y3 is used to generate I2S clock. The I2S sam
 
 ### Operations:
 
-After firmware is loaded the TFT display shows that it is ready. Press PB1 to start:
+After power-cycle,  if the TFT display is blank, or not shown properly as below, please press RESET (SW5).
+
+The TFT display shows that it is ready. Press PB1 to start:
 
 <img src="/20200604_142849.jpg" style="zoom: 25%;" />
 

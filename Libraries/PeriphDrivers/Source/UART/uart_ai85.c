@@ -36,6 +36,7 @@
 #include "mxc_pins.h"
 #include "mxc_assert.h"
 #include "uart_revb.h"
+#include "uart_common.h"
 #include "lpgcr_regs.h"
 #include "dma.h"
 
@@ -119,8 +120,8 @@ int MXC_UART_Shutdown(mxc_uart_regs_t* uart)
         break;
         
     case 3:
-        MXC_LPGCR->rst |= MXC_F_LPGCR_RST_UART3;
-        MXC_LPGCR->pclkdis |= MXC_F_LPGCR_PCLKDIS_UART3;
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_UART3);
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART3);
         break;
         
     default:
@@ -196,14 +197,23 @@ int MXC_UART_AbortTransmission(mxc_uart_regs_t* uart)
     return MXC_UART_RevB_AbortTransmission(uart);
 }
 
+int MXC_UART_ReadCharacterRaw(mxc_uart_regs_t* uart)
+{
+    return MXC_UART_RevB_ReadCharacterRaw(uart);
+}
+
+int MXC_UART_WriteCharacterRaw(mxc_uart_regs_t* uart, uint8_t character)
+{
+    return MXC_UART_RevB_WriteCharacterRaw(uart, character);
+}
 int MXC_UART_ReadCharacter(mxc_uart_regs_t* uart)
 {
-    return MXC_UART_RevB_ReadCharacter(uart);
+    return MXC_UART_Common_ReadCharacter(uart);
 }
 
 int MXC_UART_WriteCharacter(mxc_uart_regs_t* uart, uint8_t character)
 {
-    return MXC_UART_RevB_WriteCharacter(uart, character);
+    return MXC_UART_Common_WriteCharacter(uart, character);
 }
 
 int MXC_UART_Read(mxc_uart_regs_t* uart, uint8_t* buffer, int* len)

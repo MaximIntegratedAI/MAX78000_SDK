@@ -37,6 +37,8 @@
 #include <stdio.h>
 
 #include "mxc_device.h"
+#include "mxc_delay.h"
+
 #include "tft.h"
 #include "spi.h"
 #include "gpio.h"
@@ -45,8 +47,8 @@
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH           320
 #define DISPLAY_HEIGHT          240
-#define TFT_SPI_FREQ	12000000 // Hz
-#define TFT_SPI0_PINS 	MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_11
+#define TFT_SPI_FREQ    12000000 // Hz
+#define TFT_SPI0_PINS   MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_11
 //
 #define PALETTE_OFFSET(x)   concat(images_start_addr + images_header.offset2info_palatte  + 1 /* nb_palette */ + (x)*sizeof(unsigned int), 4)
 #define FONT_OFFSET(x)      concat(images_start_addr + images_header.offset2info_font     + 1 /* nb_font    */ + (x)*sizeof(unsigned int), 4)
@@ -111,11 +113,6 @@ static mxc_gpio_cfg_t* reset_pin;
 static mxc_gpio_cfg_t* blen_pin;
 
 /********************************* Static Functions **************************/
-static void __attribute__((noinline)) halfClockDelay(void)
-{
-    __asm volatile("nop\n");
-}
-
 static int concat(unsigned char* var, int size)
 {
     int result = 0;
@@ -169,10 +166,10 @@ static void spi_transmit(void* datain, unsigned int count)
     volatile unsigned short* u16ptrin = (volatile unsigned short*) datain;
     unsigned int             start = 0;
     
-	MXC_SPI_SetFrequency (spi, TFT_SPI_FREQ);
-	MXC_SPI_SetDataSize(spi, 9);
-
-
+    MXC_SPI_SetFrequency(spi, TFT_SPI_FREQ);
+    MXC_SPI_SetDataSize(spi, 9);
+    
+    
     // HW requires disabling/renabling SPI block at end of each transaction (when SS is inactive).
     spi->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
     
@@ -416,9 +413,9 @@ static void tft_spi_init(void)
 {
     int master = 1;
     int quadMode = 0;
-	int numSlaves = 2;
+    int numSlaves = 2;
     int ssPol = 0;
-	unsigned int tft_hz = TFT_SPI_FREQ;
+    unsigned int tft_hz = TFT_SPI_FREQ;
     
     mxc_spi_pins_t tft_pins;
     
@@ -434,7 +431,7 @@ static void tft_spi_init(void)
     MXC_SPI_Init(spi, master, quadMode, numSlaves, ssPol, tft_hz, tft_pins);
     
     
-	// Set  SPI0 pins to VDDIOH (3.3V) to be compatible with TFT display
+    // Set  SPI0 pins to VDDIOH (3.3V) to be compatible with TFT display
     MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, TFT_SPI0_PINS);
     MXC_SPI_SetDataSize(spi, 9);
     MXC_SPI_SetWidth(spi, SPI_WIDTH_STANDARD);
@@ -442,25 +439,21 @@ static void tft_spi_init(void)
 
 static void displayInit(void)
 {
-    int i;
-    
+
     if (reset_pin) {
         // CLR Reset pin;
         MXC_GPIO_OutClr(reset_pin->port, reset_pin->mask);
         
-        for (i = 0; i < 50000; i++) {
-            halfClockDelay();
-        }
+        // at least 15usec low
+        MXC_Delay(20);
         
         // SET Reset pin;
         MXC_GPIO_OutSet(reset_pin->port, reset_pin->mask);
         
-        for (i = 0; i < 150000; i++) {
-            halfClockDelay();
-        }
+        // delay after reset
+        MXC_Delay(1000);
     }
     
-    write_command(0x0000);
     write_command(0x0028);    // VCOM OTP
     write_data(0x0006);       // Page 55-56 of SSD2119 datasheet
     
@@ -471,8 +464,8 @@ static void displayInit(void)
     write_data(0x0000);       // Page 49 of SSD2119 datasheet
     
     write_command(0x0001);    // Driver Output Control
-    write_data(0x72EF);       // Page 36-39 of SSD2119 datasheet
     
+    write_data(0x72EF);       // Page 36-39 of SSD2119 datasheet
     write_command(0x0002);    // LCD Driving Waveform Control
     write_data(0x0600);       // Page 40-42 of SSD2119 datasheet
     
@@ -508,6 +501,12 @@ static void displayInit(void)
     
     write_command(0x0027);    // Critical setting to avoid pixel defect
     write_data(0x0078);       // per solomon systech, apparently undocumented.
+    
+    write_command(0x0048);    // Screen driving position - start line
+    write_data(0x0000);       // Page 59 of SSD2119 datasheet
+    
+    write_command(0x0049);    // Screen driving position - end line
+    write_data(0x00ef);       // Page 59 of SSD2119 datasheet
     
     write_command(0x004E);    // Ram Address Set
     write_data(0x0000);       // Page 58 of SSD2119 datasheet
@@ -552,11 +551,10 @@ static void displayInit(void)
     write_command(0x0007);    // Display Control
     write_data(0x0033);       // Page 45 of SSD2119 datasheet
     
-    for (i = 0; i < 50000; i++) {
-        halfClockDelay();
-    }
+    MXC_Delay(150000);
     
     write_command(0x0022);    // RAM data write/read
+    
 }
 
 static void setPalette(unsigned char id)
@@ -890,6 +888,52 @@ void MXC_TFT_FillRect(area_t* area, int color)
         
         for (; x < w; x++) {
             write_color(g_palette_ram[color]);
+        }
+    }
+    
+    __enable_irq();
+}
+
+void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t color)
+{
+    area_t _area;
+    area_t* area;
+    
+    area = &_area;
+    area->x = pixelX;
+    area->y = pixelY;
+    area->w = width;
+    area->h = height;
+    
+    __disable_irq();
+    int y, x, i, h, w;
+    
+    w = area->w;
+    h = area->h;
+    
+    if ((area->x + w) > DISPLAY_WIDTH) {
+        w = DISPLAY_WIDTH - area->x;
+    }
+    
+    if ((area->y + h) > DISPLAY_HEIGHT) {
+        h = DISPLAY_HEIGHT - area->y;
+    }
+    
+    displaySub(area->x, area->y, w, h);
+    
+    for (y = 0; y < h; y++) {
+        for (x = 0; x < (w >> 2); x++) {
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = color;
+            }
+            
+            spi_transmit((unsigned short*)g_fifo, 8);
+        }
+        
+        x <<= 2;
+        
+        for (; x < w; x++) {
+            write_color(color);
         }
     }
     

@@ -157,6 +157,10 @@ var NAVTREEINDEX12 =
 "group__bbfc__registers.html#afed8309a1f14d36a15a5bd4130493921":[0,26,5,0],
 "group__bbfc__registers.html#structmxc__bbfc__regs__t":[0,26,5],
 "group__cameraif.html":[0,1],
+"group__cameraif.html#ga1d958043d91b2355bbd222013629d4fc":[0,1,3],
+"group__cameraif.html#ga5f7a09a4eba8771337846303d517ccc7":[0,1,4],
+"group__cameraif.html#ga9e24c9060b94fa32e0d0177b47e91cfe":[0,1,2],
+"group__cameraif.html#gaf455adaa073ecce715c37e1a625b8635":[0,1,1],
 "group__cameraif__registers.html":[0,1,0],
 "group__cameraif__registers.html#a082142366c4b8762be50630a277cafd1":[0,1,0,8,5],
 "group__cameraif__registers.html#a1f4b3d3764d38bf4c03258ef04b7757c":[0,1,0,8,1],
@@ -193,9 +197,9 @@ var NAVTREEINDEX12 =
 "group__dma.html":[0,3],
 "group__dma.html#a0a09d983e28062a1f69ff01ada58ab96":[0,3,3,5],
 "group__dma.html#a181aad23cc2d98a44ddd08089ae3d866":[0,3,1,4],
-"group__dma.html#a30df446d01f80e4211b2fcef8f754436":[0,3,1,0],
-"group__dma.html#a30df446d01f80e4211b2fcef8f754436":[0,3,3,1],
 "group__dma.html#a30df446d01f80e4211b2fcef8f754436":[0,3,2,0],
+"group__dma.html#a30df446d01f80e4211b2fcef8f754436":[0,3,3,1],
+"group__dma.html#a30df446d01f80e4211b2fcef8f754436":[0,3,1,0],
 "group__dma.html#a3cc0364b140d69c23114b1c565ebe09e":[0,3,3,4],
 "group__dma.html#a4eafb4b34c56771f54f68f3fa7117434":[0,3,3,0],
 "group__dma.html#a73003d93442717af85a1e961c7b00780":[0,3,1,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX12 =
 "group__dma.html#ggab010374c529e9da4bf17c357dfa637eba52c5405f7d53f2e8c0da25686f0bcd51":[0,3,9,7],
 "group__dma.html#ggab010374c529e9da4bf17c357dfa637eba8026054565cc6fa9b51bbaff24429dd7":[0,3,9,5],
 "group__dma.html#ggab010374c529e9da4bf17c357dfa637eba80d70301bac34677bdc45221ed7f8549":[0,3,9,0],
-"group__dma.html#ggab010374c529e9da4bf17c357dfa637ebab46ca22a0b0bec0fc2b825a87d8f444c":[0,3,9,3],
-"group__dma.html#ggab010374c529e9da4bf17c357dfa637ebacebdba9779fe15b3b9b8123ac963f09f":[0,3,9,4],
-"group__dma.html#ggac03ba75f86ae81bc49177b95da1b2946a08f1bce4fff8a5fe2cb35b533dc281fb":[0,3,6,1],
-"group__dma.html#ggac03ba75f86ae81bc49177b95da1b2946a9b03631e9f4d6241aa74aa08d5f6fa57":[0,3,6,3],
-"group__dma.html#ggac03ba75f86ae81bc49177b95da1b2946ad462d3bfce2d0bd4d20076218de97f2c":[0,3,6,2]
+"group__dma.html#ggab010374c529e9da4bf17c357dfa637ebab46ca22a0b0bec0fc2b825a87d8f444c":[0,3,9,3]
 };

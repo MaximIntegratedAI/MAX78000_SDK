@@ -73,9 +73,17 @@ int MXC_GPIO_RevA_Config(const mxc_gpio_cfg_t* cfg, uint8_t psMask)
         break;
         
     case MXC_GPIO_FUNC_ALT3:
-        gpio->en0_clr    = cfg->mask;
-        gpio->en1_clr    = cfg->mask;
-        gpio->en2_set    = cfg->mask;
+        if (psMask == MXC_GPIO_PS_PULL_SELECT) {
+            gpio->en0_set    = cfg->mask;
+            gpio->en1_set    = cfg->mask;
+            gpio->en2_clr    = cfg->mask;
+        }
+        else {
+            gpio->en0_clr    = cfg->mask;
+            gpio->en1_clr    = cfg->mask;
+            gpio->en2_set    = cfg->mask;
+        }
+        
         break;
         
     case MXC_GPIO_FUNC_ALT4:
