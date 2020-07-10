@@ -72,22 +72,21 @@ export CMSIS_ROOT
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
 SRCS += softmax.c
-SRCS += camera.c
-SRCS += ov7692.c
-SRCS += sccb.c
-SRCS += utils.c
+SRCS += TFT/all_imgs.c
 
 # Where to find source files for this test
 VPATH  = .
 VPATH += ./Camera/
 VPATH += ../Common
 VPATH += ./Camera/src
+VPATH += ./TFT
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 # Where to find header files for this test
 IPATH  = .
 IPATH += ./Camera/
 IPATH += ../Common
 IPATH += ./Camera/include
+IPATH += ./TFT
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
@@ -112,7 +111,7 @@ PROJ_CFLAGS+=-Wall
 #STARTUPFILE=start.S
 
 # Override the default optimization level using this variable
-MXC_OPTIMIZE_CFLAGS=-O1
+MXC_OPTIMIZE_CFLAGS=-O0
 
 ################################################################################
 # Include external library makefiles here

@@ -6,8 +6,6 @@
 
 #define DATA_SIZE_IN (160*120*3)
 #define CONSOLE_UART 0
-#define UART_BAUD (8*115200)
-#define CONSOLE_BAUD (8*115200)
 #define MXC_UARTn   MXC_UART_GET_UART(CONSOLE_UART)
 
 // Data input: HWC (little data): 3x160x120

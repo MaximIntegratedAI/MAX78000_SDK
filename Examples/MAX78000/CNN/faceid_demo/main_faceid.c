@@ -1781,7 +1781,7 @@ void cnn_unload(uint8_t *out_buf)
 }
 
 #define NUM_OUTPUTS 512
-static int8_t ml_data[NUM_OUTPUTS];
+static uint8_t ml_data[NUM_OUTPUTS];
 
 int main(void)
 {
@@ -1804,7 +1804,6 @@ int main(void)
   MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
   volatile uint8_t read_byte = 0;
-  volatile int write_byte = 0;
 
   while(1){
     const char *startSync = "Start_Sequence";
@@ -1817,7 +1816,7 @@ int main(void)
         }
       }
       
-      uart_write(startSync, 14);
+      uart_write((uint8_t*)startSync, 14);
       MXC_TMR_Delay(MXC_TMR0, MSEC(200));
     }
 
@@ -1830,8 +1829,8 @@ int main(void)
       case 48: // Test Embedding
         uart_read(rxBuffer, sizeof(rxBuffer));
 
-        unsigned char *cnn_receiveDataPass = "Pass_cnn_receiveData";
-        uart_write(cnn_receiveDataPass, 20);
+        const char *cnn_receiveDataPass = "Pass_cnn_receiveData";
+        uart_write((uint8_t*)cnn_receiveDataPass, 20);
         MXC_TMR_Delay(MXC_TMR0, MSEC(200));
         if (wait_for_feedback() == 0)
           return -1;
@@ -1841,32 +1840,32 @@ int main(void)
           return 0; 
         }
 
-        unsigned char *cnn_loadPass = "Pass_cnn_load";
-        uart_write(cnn_loadPass, 13);
+        const char *cnn_loadPass = "Pass_cnn_load";
+        uart_write((uint8_t*)cnn_loadPass, 13);
         MXC_TMR_Delay(MXC_TMR0, MSEC(200));
         if (wait_for_feedback() == 0)
           return -1;
         
         cnn_wait();
-        unsigned char *cnn_waitPass = "Pass_cnn_wait";
-        uart_write(cnn_waitPass, 13);
+        const char *cnn_waitPass = "Pass_cnn_wait";
+        uart_write((uint8_t*)cnn_waitPass, 13);
         MXC_TMR_Delay(MXC_TMR0, MSEC(200));
         if (wait_for_feedback() == 0)
           return -1;
 
         int success_check;
         success_check = cnn_check();        
-        unsigned char *cnn_checkPass = "Pass_cnn_check";
-        uart_write(cnn_checkPass, 14);
+        const char *cnn_checkPass = "Pass_cnn_check";
+        uart_write((uint8_t*)cnn_checkPass, 14);
         MXC_TMR_Delay(MXC_TMR0, MSEC(200));
         if (wait_for_feedback() == 0)
           return -1;
 
-        uart_write(&success_check, sizeof(int));
+        uart_write((uint8_t*)(&success_check), sizeof(int));
         
         cnn_unload(ml_data);
-        unsigned char *cnn_unloadPass = "Pass_cnn_unload";
-        uart_write(cnn_unloadPass, 15);
+        const char *cnn_unloadPass = "Pass_cnn_unload";
+        uart_write((uint8_t*)cnn_unloadPass, 15);
         MXC_TMR_Delay(MXC_TMR0, MSEC(200));
         if (wait_for_feedback() == 0)
           return -1;
@@ -1897,8 +1896,8 @@ int main(void)
         break;
     }
 
-    unsigned char *endSync = "End_Sequence";
-    uart_write(endSync, 12);
+    const char *endSync = "End_Sequence";
+    uart_write((uint8_t*)endSync, 12);
     MXC_TMR_Delay(MXC_TMR0, MSEC(200));
     if (wait_for_feedback() == 0)
       return -1;

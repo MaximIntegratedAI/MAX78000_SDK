@@ -73,10 +73,6 @@ export CMSIS_ROOT
 
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
-SRCS += src/ov7692.c
-SRCS += src/camera.c
-SRCS += src/sccb.c
-SRCS += src/utils.c
 
 # Where to find source files for this test
 VPATH=.

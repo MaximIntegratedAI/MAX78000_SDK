@@ -63,11 +63,18 @@
 #include "mxc_delay.h"
 #include "camera.h"
 #include "utils.h"
+#include "bitmap.h"
+
 
 // Comment out USE_SAMPLEDATA to use Camera module
-#define USE_SAMPLEDATA
+//#define USE_SAMPLEDATA
 
-#define NUM_OUTPUTS     2    // number of classes
+#define CAMERA_TO_LCD   (1)
+#define IMAGE_SIZE_X  (64)
+#define IMAGE_SIZE_Y  (64)
+
+#define TFT_BUFF_SIZE   50    // TFT buffer size
+#define NUM_OUTPUTS     2     // number of classes
 const char classes[NUM_OUTPUTS][10] = {"Cat", "Dog"};
 
 uint32_t cnn_time; // Stopwatch
@@ -95,11 +102,14 @@ void memcpy32(uint32_t *dst, const uint32_t *src, int n)
   }
 }
 
-// Data input: CHW (big data): 3x64x64
-static const uint32_t input_0[] = INPUT_0;
-static const uint32_t input_1[] = INPUT_1;
-static const uint32_t input_2[] = INPUT_2;
+#ifdef USE_SAMPLEDATA
+  // Data input: CHW (big data): 3x64x64
+  static const uint32_t input_0[] = INPUT_0;
+  static const uint32_t input_1[] = INPUT_1;
+  static const uint32_t input_2[] = INPUT_2;
+#endif
 
+/* **************************************************************************** */
 void load_input(void)
 {
   int i;
@@ -189,6 +199,7 @@ static const uint32_t kernels_61[] = KERNELS_61;
 static const uint32_t kernels_62[] = KERNELS_62;
 static const uint32_t kernels_63[] = KERNELS_63;
 
+/* **************************************************************************** */
 void load_kernels(void)
 {
   *((volatile uint8_t *) 0x50180001) = 0x01; // Set address
@@ -323,6 +334,7 @@ void load_kernels(void)
 
 static const uint8_t bias_0[] = BIAS_0;
 
+/* **************************************************************************** */
 void memcpy_8to32(uint32_t *dst, const uint8_t *src, size_t n)
 {
   while (n-- > 0) {
@@ -330,6 +342,7 @@ void memcpy_8to32(uint32_t *dst, const uint8_t *src, size_t n)
   }
 }
 
+/* **************************************************************************** */
 void load_bias(void)
 {
   memcpy_8to32((uint32_t *) 0x50108000, bias_0, sizeof(uint8_t) * 2);
@@ -764,6 +777,7 @@ int cnn_load(void)
   return 1;
 }
 
+/* **************************************************************************** */
 // cats_vs_dogs_chw-fifo
 // Expected output of layer 6
 int cnn_check(void)
@@ -774,6 +788,7 @@ int cnn_check(void)
   return rv;
 }
 
+/* **************************************************************************** */
 // Custom unload for this network:
 // 32-bit data, shape: [2, 1, 1]
 void cnn_unload(uint32_t *out_buf)
@@ -789,6 +804,7 @@ void cnn_unload(uint32_t *out_buf)
 static int32_t ml_data[NUM_OUTPUTS];
 static q15_t ml_softmax[NUM_OUTPUTS];
 
+/* **************************************************************************** */
 int softmax_layer(void)
 {
   cnn_unload((uint32_t *) ml_data);
@@ -797,11 +813,7 @@ int softmax_layer(void)
   return 1;
 }
 
-
-#define CAMERA_TO_LCD   (1)
-#define IMAGE_SIZE_X  (64)
-#define IMAGE_SIZE_Y  (64)
-
+/* **************************************************************************** */
 static uint8_t signed_to_unsigned(int8_t val) {
         uint8_t value;
         if (val < 0) {
@@ -811,10 +823,22 @@ static uint8_t signed_to_unsigned(int8_t val) {
         return val + 128;
 }
 
+/* **************************************************************************** */
 int8_t unsigned_to_signed(uint8_t val) {
         return val - 128;
 }
 
+/* **************************************************************************** */
+void TFT_Print(char *str, int x, int y, int font) {
+  // fonts id
+  text_t text;
+  text.data = str;
+  text.len = 36;
+
+  MXC_TFT_PrintFont(x, y, font, &text, NULL);
+}
+
+/* **************************************************************************** */
 void lcd_show_sampledata(uint32_t *data0, uint32_t *data1, uint32_t *data2, int length) {
   int i;
   int j;
@@ -823,15 +847,15 @@ void lcd_show_sampledata(uint32_t *data0, uint32_t *data1, uint32_t *data2, int 
   int r;
   int g;
   int b;
-  int scale = 3;
+  int scale = 2.2;
     
   uint32_t color;
   uint8_t *ptr0;
   uint8_t *ptr1;
   uint8_t *ptr2;
 
-  x = 0;
-  y = 0;
+  x = 47;
+  y = 15;
   for (i = 0; i < length; i++) {
     ptr0 = (uint8_t *)&data0[i];
     ptr1 = (uint8_t *)&data1[i];
@@ -843,15 +867,16 @@ void lcd_show_sampledata(uint32_t *data0, uint32_t *data1, uint32_t *data2, int 
       color  = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
       MXC_TFT_WritePixel(x * scale, y * scale, scale, scale, color);
       x += 1;
-      if (x >= IMAGE_SIZE_X) {
-        x = 0;
+      if (x >= (IMAGE_SIZE_X + 47)) {
+        x = 47;
         y += 1;
-        if ((y + 6) >= IMAGE_SIZE_Y) return;
+        if ((y + 6) >= (IMAGE_SIZE_Y + 15)) return;
       }
     }
   }
 }
 
+/* **************************************************************************** */
 void process_camera_img(uint32_t *data0, uint32_t *data1, uint32_t *data2)
 {
  	uint8_t   *frame_buffer;
@@ -876,6 +901,7 @@ void process_camera_img(uint32_t *data0, uint32_t *data1, uint32_t *data2)
   }
 }
 
+/* **************************************************************************** */
 void capture_camera_img(void) {
   camera_start_capture_image();
   while (1) {
@@ -885,6 +911,7 @@ void capture_camera_img(void) {
   }
 }
 
+/* **************************************************************************** */
 void convert_img_unsigned_to_signed(uint32_t *data0, uint32_t *data1, uint32_t *data2) {
   uint8_t *ptr0;
   uint8_t *ptr1;
@@ -899,6 +926,7 @@ void convert_img_unsigned_to_signed(uint32_t *data0, uint32_t *data1, uint32_t *
   }
 }
 
+/* **************************************************************************** */
 void convert_img_signed_to_unsigned(uint32_t *data0, uint32_t *data1, uint32_t *data2) {
   uint8_t *ptr0;
   uint8_t *ptr1;
@@ -913,12 +941,14 @@ void convert_img_signed_to_unsigned(uint32_t *data0, uint32_t *data1, uint32_t *
   }
 }
 
-
+/* **************************************************************************** */
 int main(void)
 {
   int i;
   int digs, tens;
   int ret = 0;
+  char buff[TFT_BUFF_SIZE];
+  int result[NUM_OUTPUTS] = {0};
 
   MXC_ICC_Enable(MXC_ICC0); // Enable cache
 
@@ -948,6 +978,13 @@ int main(void)
 
   printf("\n*** CNN Test ***\n");
 
+  // Initialize TFT display.
+  printf("Init LCD.\n");
+  mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+  MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
+  MXC_TFT_ClearScreen();
+  MXC_TFT_ShowImage(0, 0, img_1_bmp);
+
   // Initialize camera.
   printf("Init Camera.\n");
   camera_init();
@@ -958,19 +995,31 @@ int main(void)
       return -1;
   }
 
-  // Initialize TFT display.
-  printf("Init LCD.\n");
-  MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-  MXC_TFT_ClearScreen();
-  MXC_TFT_SetBackGroundColor(200);
-  MXC_TFT_ClearScreen();
+  MXC_Delay(1000000);
+  MXC_TFT_SetPalette(logo_white_bg_darkgrey_bmp);
+  MXC_TFT_SetBackGroundColor(4);
+
+  MXC_TFT_ShowImage(1, 1, logo_white_bg_darkgrey_bmp);
+
+  memset(buff,32,TFT_BUFF_SIZE);
+  sprintf(buff, "MAXIM INTEGRATED             ");
+  TFT_Print(buff, 55, 50, urw_gothic_13_white_bg_grey);
+
+  sprintf(buff, "Cats-vs-Dogs Demo        ");
+  TFT_Print(buff, 55, 90, urw_gothic_12_white_bg_grey);
+
+  sprintf(buff, "PRESS PB1 TO START!          ");
+  TFT_Print(buff, 55, 130, urw_gothic_13_white_bg_grey);
 
   int frame = 0;
 
   while (1) {
     printf("********** Press PB1 to capture an image **********\r\n");
     while(!PB_Get(0));
-    MXC_Delay(500000);
+    MXC_TFT_ClearScreen();
+    MXC_TFT_ShowImage(1, 1, logo_white_bg_darkgrey_bmp);
+    sprintf(buff, "CAPTURING IMAGE....           ");
+    TFT_Print(buff, 55, 110, urw_gothic_13_white_bg_grey);
 
 #ifdef USE_SAMPLEDATA
     // Copy the sampledata reference to the camera buffer as a test.
@@ -989,6 +1038,8 @@ int main(void)
 #endif
 
     // Show the input data on the lcd.
+    MXC_TFT_ClearScreen();
+    MXC_TFT_ShowImage(1, 1, logo_white_bg_darkgrey_bmp);
     printf("Show camera frame on LCD.\n");
     lcd_show_sampledata(input_0_camera, input_1_camera, input_2_camera, 1024);
     convert_img_unsigned_to_signed(input_0_camera, input_1_camera, input_2_camera);
@@ -1006,9 +1057,40 @@ int main(void)
       digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
       tens = digs % 10;
       digs = digs / 10;
+      result[i] = digs;
       printf("[%7d] -> Class %d %8s: %d.%d%%\r\n", ml_data[i], i, classes[i], digs, tens);
     }
     printf("\n");
+    memset(buff,32,TFT_BUFF_SIZE);
+    sprintf(buff, "Image Detected :                ");
+    TFT_Print(buff, 10, 150, urw_gothic_12_white_bg_grey);
+    memset(buff,0,TFT_BUFF_SIZE);
+    sprintf(buff, "Probability :                   ");
+    TFT_Print(buff, 10, 180, urw_gothic_12_white_bg_grey);
+
+    memset(buff,32,TFT_BUFF_SIZE);
+    if (result[0] > result[1]) {
+      sprintf(buff, "CAT                           ");
+      TFT_Print(buff, 195, 150, urw_gothic_12_white_bg_grey);
+      sprintf(buff, "%d%%", result[0]);
+      TFT_Print(buff, 135, 180, urw_gothic_12_white_bg_grey);
+
+    } else if (result[1] > result[0]) {
+      sprintf(buff, "DOG                           ");
+      TFT_Print(buff, 195, 150, urw_gothic_12_white_bg_grey);
+      sprintf(buff, "%d%%", result[1]);
+      TFT_Print(buff, 135, 180, urw_gothic_12_white_bg_grey);
+
+    } else {
+      sprintf(buff, "Unknown                       ");
+      TFT_Print(buff, 195, 150, urw_gothic_12_white_bg_grey);
+      memset(buff,32,TFT_BUFF_SIZE);
+      sprintf(buff, "NA                            ");
+      TFT_Print(buff, 135, 180, urw_gothic_12_white_bg_grey);
+    }
+
+    sprintf(buff, "PRESS PB1 TO CAPTURE IMAGE      ");
+    TFT_Print(buff, 10, 210, urw_gothic_12_white_bg_grey);
   }
 
   return 0;

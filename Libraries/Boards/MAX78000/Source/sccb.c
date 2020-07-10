@@ -66,8 +66,8 @@
 #define WAIT_US         50
 #define DELAY_US(us)    MXC_Delay(us)
 
-static const mxc_gpio_cfg_t gpio_cfg_scl =   { SCL_PORT, SCL_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-static const mxc_gpio_cfg_t gpio_cfg_sda =   { SDA_PORT, SDA_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+static const mxc_gpio_cfg_t gpio_cfg_scl =   { SCL_PORT, SCL_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
+static const mxc_gpio_cfg_t gpio_cfg_sda =   { SDA_PORT, SDA_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
 
 /******************************** Static Functions ***************************/
 static void start(void)
