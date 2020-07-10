@@ -4,6 +4,10 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+July 9, 2020
+* Moved camera driver files from the example folders to the Libraries\Boards\MAX78000 folder.
+* Replace the CNN/cats_dogs-chw-fifo example with the CNN/cats-dogs_demo example.
+
 July 1, 2020
 * Added macros for referencing evaluation kit LEDs by their name on the board.
 * Improved support for the TFT display on the evaluation kit.
