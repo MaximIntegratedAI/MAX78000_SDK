@@ -42,7 +42,6 @@ SRCS += led.c
 SRCS += pb.c
 SRCS += tft.c
 SRCS += touchscreen.c
-SRCS += utils.c
 SRCS += camera.c
 SRCS += ov7692.c
 SRCS += sccb.c

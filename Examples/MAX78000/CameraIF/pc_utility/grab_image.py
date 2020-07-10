@@ -12,7 +12,8 @@ if len(sys.argv) == 3:
 	baudRate = sys.argv[2]
 else:
 	comport  = sys.argv[1]
-	baudRate = 460800 #default baudrate
+	# Setup the default baudrate.
+	baudRate = 115200
 
 READ_TIMEOUT = 15
 

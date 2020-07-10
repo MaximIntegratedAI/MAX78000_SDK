@@ -62,9 +62,7 @@
 #include "sampledata.h"
 #include "mxc_delay.h"
 #include "camera.h"
-#include "utils.h"
 #include "bitmap.h"
-
 
 // Comment out USE_SAMPLEDATA to use Camera module
 //#define USE_SAMPLEDATA

@@ -5,7 +5,6 @@ import string
 import sys
 import zlib
 import struct
-import cv2
 from PIL import Image, ImageTk
 
 def swap32(i):
@@ -175,15 +174,6 @@ def rgb555_to_rgb(bytesequence):
 		img.append(b)
 
 	return img
-
-def show_image(file):
-	#destroy the window
-	cv2.destroyAllWindows()
-	a = cv2.imread(file)
-	#conversion numpy array into rgb image to show
-	cv2.imshow('CameraImage', a)
-	#wait for 1 second
-	k = cv2.waitKey(1)
 
 #
 # generate_img

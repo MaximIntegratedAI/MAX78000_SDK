@@ -49,10 +49,10 @@
 
 
 /************************    PUBLIC FUNCTIONS  *******************************/
-void utils_delay_ms(uint32_t ms)
-{
-    MXC_Delay(ms * 1000UL);
-}
+//void utils_delay_ms(uint32_t ms)
+//{
+//    MXC_Delay(ms * 1000UL);
+//}
 
 uint32_t utils_get_time_ms(void)
 {

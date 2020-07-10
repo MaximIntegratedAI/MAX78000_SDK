@@ -63,7 +63,7 @@
 #define SDA_OUT()       GPIO_OUT(SDA_PORT, SDA_PIN)
 #define SDA_GET()       GPIO_GET(SDA_PORT, SDA_PIN)
 
-#define WAIT_US         50
+#define WAIT_US         1
 #define DELAY_US(us)    MXC_Delay(us)
 
 static const mxc_gpio_cfg_t gpio_cfg_scl =   { SCL_PORT, SCL_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};

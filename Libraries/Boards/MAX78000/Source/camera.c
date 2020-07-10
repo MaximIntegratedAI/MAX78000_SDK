@@ -37,7 +37,6 @@
 #include "nvic_table.h"
 #include "pt.h"
 #include "cameraif.h"
-#include "utils.h"
 #include "dma.h"
 #include "uart.h"
 #include "mxc_delay.h"
@@ -178,7 +177,7 @@ int camera_init(void)
     MXC_PT_Start(MXC_F_PTG_ENABLE_PT0);
     MXC_GPIO_SetVSSEL(gpio_cfg_pt0.port, MXC_GPIO_VSSEL_VDDIOH, gpio_cfg_pt0.mask);
     // Camera requires a delay after starting its input clock.
-    utils_delay_ms(CAMERA_STARTUP_DELAY);
+    MXC_Delay(MSEC(CAMERA_STARTUP_DELAY));
     
     // Initialize serial camera communication bus.
     sccb_init();
