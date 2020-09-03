@@ -5,6 +5,8 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 ## Release Notes
 
 September 3, 2020
+* Added faceid_evkit example.
+* Adeded snake_game_demo example.
 * Completed Wakeup Timer (WUT) example.
 * Modified TFT libraries to support different screen orientations.
 * Improved DMA support in the camera.
