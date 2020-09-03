@@ -161,7 +161,7 @@ typedef enum {
     RSV79_IRQn,             /* 0x5F  0x017C  95: Reserved */
     RSV80_IRQn,             /* 0x60  0x0180  96: Reserved */
     RSV81_IRQn,             /* 0x61  0x0184  97: Reserved */
-    ECC_IRQn,               /* 0x62  0x0188  98: ECC */
+    RSV82_IRQn,             /* 0x62  0x0188  98: Reserved */
     DVS_IRQn,               /* 0x63  0x018C  99: DVS */
     SIMO_IRQn,              /* 0x64  0x0190 100: SIMO */
     RSV85_IRQn,             /* 0x65  0x0194 101: Reserved */
@@ -327,9 +327,13 @@ typedef enum {
 #define MXC_TRIMSIR                     ((mxc_trimsir_regs_t*)MXC_BASE_TRIMSIR)
 
 /******************************************************************************/
-/*                                                                       BBFC */
+/*                                               Global CNN Function Register */
+//Get rid of these 
 #define MXC_BASE_BBFC                   ((uint32_t)0x40005800UL)
 #define MXC_BBFC                        ((mxc_bbfc_regs_t*)MXC_BASE_BBFC)
+
+#define MXC_BASE_GCFR                   ((uint32_t)0x40005800UL)
+#define MXC_GCFR                        ((mxc_bbfc_regs_t*)MXC_BASE_GCFR)
 
 /******************************************************************************/
 /*                                                    Windowed Watchdog Timer */
@@ -667,13 +671,13 @@ typedef enum {
 /*                                                       Low-Power Comparator */
 #define MXC_CFG_LPCOMP_INSTANCES        (4)
 
-#define MXC_BASE_LPCOMP0                ((uint32_t)0x40088000UL)
+#define MXC_BASE_LPCOMP0                ((uint32_t)0x40006C0CUL)
 #define MXC_LPCOMP0                     ((mxc_lpcomp_regs_t*)MXC_BASE_LPCOMP0)
-#define MXC_BASE_LPCOMP1                ((uint32_t)0x40088400UL)
+#define MXC_BASE_LPCOMP1                ((uint32_t)0x40088000UL)
 #define MXC_LPCOMP1                     ((mxc_lpcomp_regs_t*)MXC_BASE_LPCOMP1)
-#define MXC_BASE_LPCOMP2                ((uint32_t)0x40088800UL)
+#define MXC_BASE_LPCOMP2                ((uint32_t)0x40088004UL)
 #define MXC_LPCOMP2                     ((mxc_lpcomp_regs_t*)MXC_BASE_LPCOMP2)
-#define MXC_BASE_LPCOMP3                ((uint32_t)0x40088C00UL)
+#define MXC_BASE_LPCOMP3                ((uint32_t)0x40088008UL)
 #define MXC_LPCOMP3                     ((mxc_lpcomp_regs_t*)MXC_BASE_LPCOMP3)
 
 

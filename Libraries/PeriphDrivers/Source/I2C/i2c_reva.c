@@ -332,7 +332,7 @@ int MXC_I2C_RevA_ReadByteInteractive(mxc_i2c_regs_t* i2c, unsigned char* byte, m
 int MXC_I2C_RevA_Write(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* len)
 {
     int notAcked = 0;
-    int written = 0;
+    unsigned written = 0;
     
     if (i2c == NULL) {
         return E_NULL_PTR;
@@ -361,7 +361,7 @@ int MXC_I2C_RevA_Write(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* 
 
 int MXC_I2C_RevA_Read(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* len, int ack)
 {
-    int read = 0;
+    unsigned read = 0;
     
     if (i2c == NULL) {
         return E_NULL_PTR;
@@ -387,7 +387,7 @@ int MXC_I2C_RevA_Read(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned int* l
 
 int MXC_I2C_RevA_ReadRXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsigned int len)
 {
-    int read = 0;
+    unsigned read = 0;
     
     if ((i2c == NULL) || (bytes == NULL)) {
         return E_NULL_PTR;
@@ -457,7 +457,7 @@ int MXC_I2C_RevA_GetRXFIFOAvailable(mxc_i2c_regs_t* i2c)
 
 int MXC_I2C_RevA_WriteTXFIFO(mxc_i2c_regs_t* i2c, volatile unsigned char* bytes, unsigned int len)
 {
-    int written = 0;
+    unsigned written = 0;
     
     if ((i2c == NULL) || (bytes == NULL)) {
         return E_NULL_PTR;
@@ -588,7 +588,7 @@ int MXC_I2C_RevA_Recover(mxc_i2c_regs_t* i2c, unsigned int retries)
     
     // Follow the procedure detailed in the header file
     // Delay 10uS between each step to give the line/slaves time to react
-    for (int i = 0; i < retries; i++) {
+    for (unsigned i = 0; i < retries; i++) {
         MXC_Delay(10);
         i2c->ctrl &= ~MXC_F_I2C_CTRL_SCL_OUT;
         
@@ -801,7 +801,7 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_req_t* req)
 
 int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_req_t* req)
 {
-    uint8_t i2cNum;
+    int i2cNum;
     
     mxc_i2c_regs_t* i2c = req->i2c; // Save off pointer for faster access
     
@@ -987,7 +987,7 @@ int MXC_I2C_RevA_SlaveTransactionAsync(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handle
 
 int MXC_I2C_RevA_SetRXThreshold(mxc_i2c_regs_t* i2c, unsigned int numBytes)
 {
-    int rxFIFOlen = (i2c->fifolen & MXC_F_I2C_FIFOLEN_RX_DEPTH) >> MXC_F_I2C_FIFOLEN_RX_DEPTH_POS;
+    unsigned rxFIFOlen = (i2c->fifolen & MXC_F_I2C_FIFOLEN_RX_DEPTH) >> MXC_F_I2C_FIFOLEN_RX_DEPTH_POS;
     
     if (numBytes > rxFIFOlen) {
         return E_BAD_PARAM;
@@ -1004,7 +1004,7 @@ unsigned int MXC_I2C_RevA_GetRXThreshold(mxc_i2c_regs_t* i2c)
 
 int MXC_I2C_RevA_SetTXThreshold(mxc_i2c_regs_t* i2c, unsigned int numBytes)
 {
-    int txFIFOlen = (i2c->fifolen & MXC_F_I2C_FIFOLEN_TX_DEPTH) >> MXC_F_I2C_FIFOLEN_TX_DEPTH_POS;
+    unsigned txFIFOlen = (i2c->fifolen & MXC_F_I2C_FIFOLEN_TX_DEPTH) >> MXC_F_I2C_FIFOLEN_TX_DEPTH_POS;
     
     if (numBytes > txFIFOlen) {
         return E_BAD_PARAM;
@@ -1050,8 +1050,8 @@ void MXC_I2C_RevA_AbortAsync(mxc_i2c_regs_t* i2c)
 
 void MXC_I2C_RevA_MasterAsyncHandler(int i2cNum)
 {
-    int written = AsyncWritten[i2cNum];
-    int read = AsyncRead[i2cNum];
+    unsigned written = AsyncWritten[i2cNum];
+    unsigned read = AsyncRead[i2cNum];
     mxc_i2c_regs_t* i2c = (mxc_i2c_regs_t*) MXC_I2C_GET_BASE(i2cNum);
     mxc_i2c_req_t* req = (mxc_i2c_req_t*) AsyncRequests[i2cNum];
     
@@ -1259,7 +1259,7 @@ void MXC_I2C_RevA_AsyncHandler(mxc_i2c_regs_t* i2c, uint32_t interruptCheck)
         MXC_I2C_RevA_MasterAsyncHandler(i2cNum);
     }
     else {
-        mxc_i2c_regs_t* i2c = (mxc_i2c_regs_t*) MXC_I2C_GET_BASE(i2cNum);
+        i2c = (mxc_i2c_regs_t*) MXC_I2C_GET_BASE(i2cNum);
         mxc_i2c_slave_handler_t callback = (mxc_i2c_slave_handler_t) AsyncRequests[i2cNum];
         i2c->inten0 = MXC_I2C_RevA_SlaveAsyncHandler(i2c, callback, i2c->inten0, &slaveRetVal);
     }

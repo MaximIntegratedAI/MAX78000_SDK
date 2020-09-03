@@ -34,7 +34,7 @@ DSTATUS disk_status (
 {
     DSTATUS status = 0;
 
-    if (!SDHC_Card_Inserted()) {
+    if (!MXC_SDHC_Card_Inserted()) {
 	init_done = 0;
 	status = STA_NOINIT | STA_NODISK;
     }
@@ -69,7 +69,7 @@ DSTATUS disk_initialize (
     }
 #endif
 
-    if (SDHC_Card_Inserted() && (SDHC_Lib_InitCard(INIT_CARD_RETRIES) == E_NO_ERROR)) {
+    if (MXC_SDHC_Card_Inserted() && (MXC_SDHC_Lib_InitCard(INIT_CARD_RETRIES) == E_NO_ERROR)) {
 	/* Card initialized and ready for work */
 	init_done = 1;
 	status = 0;
@@ -95,7 +95,7 @@ DRESULT disk_read (
 {
     DRESULT status;
 
-    if (SDHC_Lib_Read(buff, sector, count, SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+    if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
 	status = RES_ERROR;
     } else {
 	status = RES_OK;
@@ -119,7 +119,7 @@ DRESULT disk_write (
 {
     DRESULT status;
 
-    if (SDHC_Lib_Write(sector, (void *)buff, count, SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+    if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
 	status = RES_ERROR;
     } else {
 	status = RES_OK;
@@ -220,8 +220,8 @@ static DRESULT get_sector_count(void *buff)
     DRESULT status = RES_ERROR;
 
     if (init_done) {
-    	if (SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
-	    *((DWORD *)buff) = SDHC_Lib_GetCapacity(&csd) / FF_MIN_SS;
+    	if (MXC_SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
+	    *((DWORD *)buff) = MXC_SDHC_Lib_GetCapacity(&csd) / FF_MIN_SS;
 	    status = RES_OK;
 	}
     } else {
@@ -237,8 +237,8 @@ static DRESULT get_block_size(void *buff)
     DRESULT status = RES_ERROR;
     
     if (init_done) {
-    	if (SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
-	    *((DWORD *)buff) = SDHC_Lib_GetBlockSize(&csd);
+    	if (MXC_SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
+	    *((DWORD *)buff) = MXC_SDHC_Lib_GetBlockSize(&csd);
 	    status = RES_OK;
 	}
     } else {
@@ -253,7 +253,7 @@ static DRESULT mmc_get_csd(void *buff)
     DRESULT status = RES_ERROR;
 
     if (init_done) {
-    	if (SDHC_Lib_GetCSD(buff) == E_NO_ERROR) {
+    	if (MXC_SDHC_Lib_GetCSD(buff) == E_NO_ERROR) {
 	    status = RES_OK;
 	}
     } else {

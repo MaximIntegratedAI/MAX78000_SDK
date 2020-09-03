@@ -325,6 +325,36 @@ void MXC_TMR_RevB_DisableInt(mxc_tmr_regs_t* tmr)
     tmr->ctrl1 &= ~(MXC_F_TMR_CTRL1_IE_A | MXC_F_TMR_CTRL1_IE_B);
 }
 
+void MXC_TMR_RevB_EnableWakeup(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+{
+    MXC_ASSERT(MXC_TMR_GET_IDX(tmr) >= 0);
+
+    // Enable Timer wake-up source
+    if(cfg->bitMode == TMR_BIT_MODE_16B)
+    {
+        tmr->ctrl1  |= MXC_F_TMR_CTRL1_WE_B;    
+    }
+    else
+    {
+        tmr->ctrl1  |= MXC_F_TMR_CTRL1_WE_A;    
+    }
+}
+
+void MXC_TMR_RevB_DisableWakeup(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+{
+    MXC_ASSERT(MXC_TMR_GET_IDX(tmr) >= 0);
+
+    // Disable Timer wake-up source
+    if(cfg->bitMode == TMR_BIT_MODE_16B)
+    {
+        tmr->ctrl1  &= ~MXC_F_TMR_CTRL1_WE_B;    
+    }
+    else
+    {
+        tmr->ctrl1  &= ~MXC_F_TMR_CTRL1_WE_A;    
+    }
+}
+
 void MXC_TMR_RevB_SetCompare(mxc_tmr_regs_t* tmr, uint32_t cmp_cnt)
 {
     MXC_ASSERT(MXC_TMR_GET_IDX(tmr) >= 0);
@@ -409,6 +439,49 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_regs_t* tmr, uint32_t ticks, uint32_t* time, mx
     if (!(temp_time & 0xffffffff00000000)) {
         *time = temp_time;
         *units = TMR_UNIT_SEC;
+        return E_NO_ERROR;
+    }
+    
+    return E_INVALID;
+}
+
+int MXC_TMR_RevB_GetTicks(mxc_tmr_regs_t *tmr, uint32_t time, mxc_tmr_unit_t units, uint32_t *ticks)
+{
+    uint32_t unit_div0, unit_div1;
+    uint32_t timerClock;
+    uint32_t prescale;
+    uint64_t temp_ticks;
+    
+    timerClock = PeripheralClock;
+
+    prescale = ((tmr->ctrl0 & MXC_F_TMR_CTRL0_CLKDIV_A) >> MXC_F_TMR_CTRL0_CLKDIV_A_POS);      
+    
+    switch (units) {
+        case TMR_UNIT_NANOSEC:
+            unit_div0 = 1000000;
+            unit_div1 = 1000;
+            break;
+        case TMR_UNIT_MICROSEC:
+            unit_div0 = 1000;
+            unit_div1 = 1000;
+            break;
+        case TMR_UNIT_MILLISEC:
+            unit_div0 = 1;
+            unit_div1 = 1000;
+            break;
+        case TMR_UNIT_SEC:
+            unit_div0 = 1;
+            unit_div1 = 1;
+            break;
+        default:
+            return E_BAD_PARAM;
+    }
+    
+    temp_ticks = (uint64_t)time * (timerClock / unit_div0) / (unit_div1 * (1 << (prescale & 0xF)));
+    
+    //make sure ticks is within a 32 bit value
+    if (!(temp_ticks & 0xffffffff00000000)  && (temp_ticks & 0xffffffff)) {
+        *ticks = temp_ticks;
         return E_NO_ERROR;
     }
     

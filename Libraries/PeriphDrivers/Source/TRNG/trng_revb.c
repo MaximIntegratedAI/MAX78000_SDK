@@ -150,3 +150,11 @@ void MXC_TRNG_RevB_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t 
     // Enable interrupts
     MXC_TRNG->ctrl |= MXC_F_TRNG_CTRL_RND_IE;
 }
+
+void MXC_TRNG_RevB_GenerateKey(void)
+{
+  /*Generate AES Key */
+  MXC_TRNG->ctrl |= MXC_F_TRNG_CTRL_KEYGEN;
+
+  while (MXC_TRNG->ctrl & MXC_F_TRNG_CTRL_KEYGEN);
+}

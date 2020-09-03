@@ -111,8 +111,8 @@ typedef struct {
  #define MXC_F_LPGCR_RST_GPIO2_POS                      0 /**< RST_GPIO2 Position */
  #define MXC_F_LPGCR_RST_GPIO2                          ((uint32_t)(0x1UL << MXC_F_LPGCR_RST_GPIO2_POS)) /**< RST_GPIO2 Mask */
 
- #define MXC_F_LPGCR_RST_WDT2_POS                       1 /**< RST_WDT2 Position */
- #define MXC_F_LPGCR_RST_WDT2                           ((uint32_t)(0x1UL << MXC_F_LPGCR_RST_WDT2_POS)) /**< RST_WDT2 Mask */
+ #define MXC_F_LPGCR_RST_WDT1_POS                       1 /**< RST_WDT1 Position */
+ #define MXC_F_LPGCR_RST_WDT1                           ((uint32_t)(0x1UL << MXC_F_LPGCR_RST_WDT1_POS)) /**< RST_WDT1 Mask */
 
  #define MXC_F_LPGCR_RST_TMR4_POS                       2 /**< RST_TMR4 Position */
  #define MXC_F_LPGCR_RST_TMR4                           ((uint32_t)(0x1UL << MXC_F_LPGCR_RST_TMR4_POS)) /**< RST_TMR4 Mask */
@@ -137,8 +137,8 @@ typedef struct {
  #define MXC_F_LPGCR_PCLKDIS_GPIO2_POS                  0 /**< PCLKDIS_GPIO2 Position */
  #define MXC_F_LPGCR_PCLKDIS_GPIO2                      ((uint32_t)(0x1UL << MXC_F_LPGCR_PCLKDIS_GPIO2_POS)) /**< PCLKDIS_GPIO2 Mask */
 
- #define MXC_F_LPGCR_PCLKDIS_WDT2_POS                   1 /**< PCLKDIS_WDT2 Position */
- #define MXC_F_LPGCR_PCLKDIS_WDT2                       ((uint32_t)(0x1UL << MXC_F_LPGCR_PCLKDIS_WDT2_POS)) /**< PCLKDIS_WDT2 Mask */
+ #define MXC_F_LPGCR_PCLKDIS_WDT1_POS                   1 /**< PCLKDIS_WDT1 Position */
+ #define MXC_F_LPGCR_PCLKDIS_WDT1                       ((uint32_t)(0x1UL << MXC_F_LPGCR_PCLKDIS_WDT1_POS)) /**< PCLKDIS_WDT1 Mask */
 
  #define MXC_F_LPGCR_PCLKDIS_TMR4_POS                   2 /**< PCLKDIS_TMR4 Position */
  #define MXC_F_LPGCR_PCLKDIS_TMR4                       ((uint32_t)(0x1UL << MXC_F_LPGCR_PCLKDIS_TMR4_POS)) /**< PCLKDIS_TMR4 Mask */

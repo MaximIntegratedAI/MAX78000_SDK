@@ -64,7 +64,7 @@
 #else
 __attribute__((section(".flashprog")))
 #endif
-int MXC_busy_flc(mxc_flc_regs_t* flc)
+static int MXC_busy_flc(mxc_flc_regs_t* flc)
 {
     return (flc->ctrl & (MXC_F_FLC_CTRL_WR | MXC_F_FLC_CTRL_ME | MXC_F_FLC_CTRL_PGE));
 }
@@ -75,7 +75,7 @@ int MXC_busy_flc(mxc_flc_regs_t* flc)
 #else
 __attribute__((section(".flashprog")))
 #endif
-int MXC_prepare_flc(mxc_flc_regs_t* flc)
+static int MXC_prepare_flc(mxc_flc_regs_t* flc)
 {
     /* Check if the flash controller is busy */
     if (MXC_busy_flc(flc)) {
@@ -162,6 +162,12 @@ __attribute__((section(".flashprog")))
 #endif
 int MXC_FLC_RevA_PageErase(mxc_flc_regs_t* flc, uint32_t addr)
 {
+    int err; 
+    
+    if ((err = MXC_prepare_flc(flc)) != E_NO_ERROR) {
+        return err;
+    }
+    
     /* Write page erase code */
     flc->ctrl = (flc->ctrl & ~MXC_F_FLC_CTRL_ERASE_CODE) | MXC_S_FLC_CTRL_ERASE_CODE_ERASEPAGE;
     /* Issue page erase command */
@@ -348,10 +354,15 @@ int MXC_FLC_RevA_UnlockInfoBlock(mxc_flc_regs_t* flc, uint32_t address)
     if ((address < MXC_INFO_MEM_BASE) || (address >= (MXC_INFO_MEM_BASE + (MXC_INFO_MEM_SIZE * 2)))) {
         return E_BAD_PARAM;
     }
+
+    /* Make sure the info block is locked */
+    flc->actrl = 0x1234;
     
+    /* Write the unlock sequence */
     flc->actrl = 0x3a7f5ca3;
     flc->actrl = 0xa1e34f20;
     flc->actrl = 0x9608b2c1;
+    
     return E_NO_ERROR;
 }
 

@@ -142,6 +142,10 @@ Functions</h2></td></tr>
 <tr class="separator:ga015873a7d2728533fe422e8c952b0556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf6de93d4bcf7b21642125e48528eda3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#gaf6de93d4bcf7b21642125e48528eda3a">MXC_TMR_DisableInt</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr)</td></tr>
 <tr class="separator:gaf6de93d4bcf7b21642125e48528eda3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05065e2e6bd4b707771f771bf2e47afa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga05065e2e6bd4b707771f771bf2e47afa">MXC_TMR_EnableWakeup</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr, <a class="el" href="group__tmr.html#structmxc__tmr__cfg__t">mxc_tmr_cfg_t</a> *cfg)</td></tr>
+<tr class="separator:ga05065e2e6bd4b707771f771bf2e47afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade08f3e38b6383f019e0d47c735adb94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#gade08f3e38b6383f019e0d47c735adb94">MXC_TMR_DisableWakeup</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr, <a class="el" href="group__tmr.html#structmxc__tmr__cfg__t">mxc_tmr_cfg_t</a> *cfg)</td></tr>
+<tr class="separator:gade08f3e38b6383f019e0d47c735adb94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa43ca41ee1a4f223572c621229039c14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#gaa43ca41ee1a4f223572c621229039c14">MXC_TMR_SetCompare</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr, uint32_t cmp_cnt)</td></tr>
 <tr class="separator:gaa43ca41ee1a4f223572c621229039c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8b6dc7b49cb169a2357bdee1a59543b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__tmr.html#ga8b6dc7b49cb169a2357bdee1a59543b3">MXC_TMR_SetCount</a> (<a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *tmr, uint32_t cnt)</td></tr>
@@ -502,7 +506,44 @@ Functions</h2></td></tr>
 <p>disable interupt </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tmr</td><td>The timer </td></tr>
+    <tr><td class="paramname">tmr</td><td>Pointer to timer module to initialize. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gade08f3e38b6383f019e0d47c735adb94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gade08f3e38b6383f019e0d47c735adb94">&#9670;&nbsp;</a></span>MXC_TMR_DisableWakeup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_TMR_DisableWakeup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>tmr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__tmr.html#structmxc__tmr__cfg__t">mxc_tmr_cfg_t</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disable wakeup from sleep. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tmr</td><td>Pointer to timer module to initialize. </td></tr>
+    <tr><td class="paramname">cfg</td><td>System configuration object </td></tr>
   </table>
   </dd>
 </dl>
@@ -528,7 +569,44 @@ Functions</h2></td></tr>
 <p>enable interupt </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tmr</td><td>The timer </td></tr>
+    <tr><td class="paramname">tmr</td><td>Pointer to timer module to initialize. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga05065e2e6bd4b707771f771bf2e47afa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga05065e2e6bd4b707771f771bf2e47afa">&#9670;&nbsp;</a></span>MXC_TMR_EnableWakeup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_TMR_EnableWakeup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__tmr__registers.html#structmxc__tmr__regs__t">mxc_tmr_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>tmr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__tmr.html#structmxc__tmr__cfg__t">mxc_tmr_cfg_t</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable wakeup from sleep. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tmr</td><td>Pointer to timer module to initialize. </td></tr>
+    <tr><td class="paramname">cfg</td><td>System configuration object </td></tr>
   </table>
   </dd>
 </dl>
@@ -1212,7 +1290,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 10 2020 13:45:00 for MAX78000 Peripheral Driver API by
+    <li class="footer">Generated on Fri Aug 21 2020 16:20:53 for MAX78000 Peripheral Driver API by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

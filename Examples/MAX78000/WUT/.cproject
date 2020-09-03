@@ -40,7 +40,7 @@
 							<option id="ilg.gnumcueclipse.managedbuild.cross.option.addtools.createflash.1529750846" name="Create flash image" superClass="ilg.gnumcueclipse.managedbuild.cross.option.addtools.createflash" value="true" valueType="boolean"/>
 							<option id="ilg.gnumcueclipse.managedbuild.cross.option.addtools.printsize.667765305" name="Print size" superClass="ilg.gnumcueclipse.managedbuild.cross.option.addtools.printsize" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnumcueclipse.managedbuild.cross.targetPlatform.786533016" isAbstract="false" osList="all" superClass="ilg.gnumcueclipse.managedbuild.cross.targetPlatform"/>
-							<builder arguments="ECLIPSE=1 -j 8" buildPath="${workspace_loc:/Hello_World}" command="make" id="ilg.gnumcueclipse.managedbuild.cross.builder.592880777" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="ilg.gnumcueclipse.managedbuild.cross.builder"/>
+							<builder arguments="ECLIPSE=1 -j 8" buildPath="${workspace_loc:/WUT}" command="make" id="ilg.gnumcueclipse.managedbuild.cross.builder.592880777" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="ilg.gnumcueclipse.managedbuild.cross.builder"/>
 							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.assembler.1648672385" name="Cross ARM GNU Assembler" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.assembler">
 								<option id="ilg.gnumcueclipse.managedbuild.cross.option.assembler.usepreprocessor.1969112665" name="Use preprocessor" superClass="ilg.gnumcueclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
 								<inputType id="ilg.gnumcueclipse.managedbuild.cross.tool.assembler.input.507854261" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.assembler.input"/>
@@ -91,7 +91,7 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="Hello_World.ilg.gnumcueclipse.managedbuild.cross.target.elf.737306620" name="Executable" projectType="ilg.gnumcueclipse.managedbuild.cross.target.elf"/>
+		<project id="WUT.ilg.gnumcueclipse.managedbuild.cross.target.elf.737306620" name="Executable" projectType="ilg.gnumcueclipse.managedbuild.cross.target.elf"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
@@ -102,7 +102,7 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/Hello_World"/>
+			<resource resourceType="PROJECT" workspacePath="/WUT"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>

@@ -55,3 +55,4 @@ int MXC_AES_RevB_GenericAsync(mxc_aes_req_t* req, uint8_t enc);
 int MXC_AES_RevB_EncryptAsync(mxc_aes_req_t* req);
 int MXC_AES_RevB_DecryptAsync(mxc_aes_req_t* req);
 void MXC_AES_RevB_DMACallback (int ch, int error);
+void MXC_AES_RevB_SetExtKey(const void* key, mxc_aes_keys_t len);

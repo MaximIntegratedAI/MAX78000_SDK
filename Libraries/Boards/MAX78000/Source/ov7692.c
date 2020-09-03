@@ -57,7 +57,7 @@ static const uint8_t default_regs[][2] = {
     {0x16, 0x03}, // Default
     {0x0c, 0xd6},
     {0x82, 0x3},
-    {0x11, 0xf},  // Set clock prescaler
+    {0x11, 0x00},  // Set clock prescaler
     {0x12, 0x6},
     {0x61, 0x0},
     {0x64, 0x11},
@@ -278,6 +278,42 @@ static int set_framesize(int width, int height)
     return ret;
 }
 
+static int set_windowing(int width, int height, int hsize, int vsize)
+{
+    /* Note: width and height is used to control scaling size of the image
+       width: horizontal input size
+       height: vertical input size 
+       hsize: horizontal size of cropped image
+       vsize: vertical size of cropped image
+    */
+    int ret = 0;
+    if (width<hsize || height<vsize) {
+        ret = -1;
+    }
+    ret |= cambus_writeb(0x11, 0x0);
+    ret |= cambus_writeb(0x51, 0x7f);
+    ret |= cambus_writeb(0x50, 0x99);
+    ret |= cambus_writeb(0x21, 0x23);
+    ret |= cambus_writeb(0x20, 0x00);
+    // Apply passed in resolution as input resolution.
+    ret |= cambus_writeb(0xc8, (width >> 8) & 0xff);
+    ret |= cambus_writeb(0xc9, (width >> 0) & 0xff);
+    ret |= cambus_writeb(0xca, (height >> 8) & 0xff);
+    ret |= cambus_writeb(0xcb, (height >> 0) & 0xff);
+
+    // Apply passed in hsize & vsize as output resolution.
+    ret |= cambus_writeb(OH_HIGH, (hsize >> 8) & 0xff);
+    ret |= cambus_writeb(OH_LOW, (hsize >> 0) & 0xff);
+    ret |= cambus_writeb(OV_HIGH, (vsize >> 8) & 0xff);
+    ret |= cambus_writeb(OV_LOW, (vsize >> 0) & 0xff);
+
+    // adjust center position
+    ret |= cambus_writeb(0x9, 0x10);
+    ret |= cambus_writeb(HSTART, 0x55);
+    ret |= cambus_writeb(VSTART, 0xc2);
+
+    return ret;
+}
 
 static int set_contrast(int level)
 {
@@ -483,6 +519,7 @@ int sensor_register(camera_t* camera)
     camera->set_pixformat       = set_pixformat;
     camera->get_pixformat       = get_pixformat;
     camera->set_framesize       = set_framesize;
+    camera->set_windowing       = set_windowing;
     camera->set_contrast        = set_contrast;
     camera->set_brightness      = set_brightness;
     camera->set_saturation      = set_saturation;

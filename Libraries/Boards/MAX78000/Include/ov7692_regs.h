@@ -43,6 +43,11 @@
 #define MIDH        (0x1c)
 #define MIDL        (0x1d)
 
+#define HSTART      (0x17)
+#define HSIZE       (0x18)
+#define VSTART      (0x19)
+#define VSIZE       (0x1A)
+
 #define OH_HIGH     (0xcc)
 #define OH_LOW      (0xcd)
 #define OV_HIGH     (0xce)

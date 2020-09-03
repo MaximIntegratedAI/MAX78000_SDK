@@ -36,6 +36,7 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "gcr_regs.h"
+#include "mcr_regs.h"
 #include "lp.h"
 
 void MXC_LP_EnterSleepMode(void)
@@ -55,9 +56,11 @@ void MXC_LP_EnterSleepMode(void)
 void MXC_LP_EnterDeepSleepMode(void)
 {
     MXC_LP_ClearWakeStatus();
-    
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
+        
     /* Go into Deepsleep mode and wait for an interrupt to wake the processor */
     MXC_GCR->pm         |= 0x9; // upm mode
+    __WFI();
 }
 
 void MXC_LP_EnterBackupMode(void)
@@ -221,6 +224,30 @@ void MXC_LP_EnableRTCAlarmWakeup(void)
 void MXC_LP_DisableRTCAlarmWakeup(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_RTC_WE;
+}
+
+void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr)
+{
+    MXC_ASSERT(MXC_TMR_GET_IDX(tmr) > 3);
+
+    if(tmr == MXC_TMR4) {
+        MXC_PWRSEQ->lppwen  |= MXC_F_PWRSEQ_LPPWEN_TMR4;
+    }
+    else {
+        MXC_PWRSEQ->lppwen  |= MXC_F_PWRSEQ_LPPWEN_TMR5;
+    }
+}
+
+void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr)
+{
+    MXC_ASSERT(MXC_TMR_GET_IDX(tmr) > 3);
+
+    if(tmr == MXC_TMR4) {
+        MXC_PWRSEQ->lppwen  &= ~MXC_F_PWRSEQ_LPPWEN_TMR4;
+    }
+    else {
+        MXC_PWRSEQ->lppwen  &= ~MXC_F_PWRSEQ_LPPWEN_TMR5;
+    }
 }
 
 void MXC_LP_EnableWUTAlarmWakeup(void)

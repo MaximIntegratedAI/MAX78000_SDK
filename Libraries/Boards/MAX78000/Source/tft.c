@@ -47,8 +47,8 @@
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH           320
 #define DISPLAY_HEIGHT          240
-#define TFT_SPI_FREQ    12000000 // Hz
-#define TFT_SPI0_PINS   MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_11
+#define TFT_SPI_FREQ	25000000 // Hz
+#define TFT_SPI0_PINS 	MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_11
 //
 #define PALETTE_OFFSET(x)   concat(images_start_addr + images_header.offset2info_palatte  + 1 /* nb_palette */ + (x)*sizeof(unsigned int), 4)
 #define FONT_OFFSET(x)      concat(images_start_addr + images_header.offset2info_font     + 1 /* nb_font    */ + (x)*sizeof(unsigned int), 4)
@@ -106,6 +106,8 @@ static unsigned int cursor_y;
 
 static area_t       pf_area;
 static int          g_font_id = 0;
+
+static tft_rotation_t tft_rotation = SCREEN_NORMAL;
 
 static mxc_spi_regs_t* spi;
 static int ssel;
@@ -288,6 +290,36 @@ static void print_line(const unsigned char* line, int nb_of_pixel)
     }
 }
 
+static void print_line_rgb565(const unsigned char* line, int nb_of_pixel)
+{
+
+	line+= (nb_of_pixel*2) -2;
+
+    for (int i = 0; i < nb_of_pixel>>2; i++) {
+
+    	g_fifo[0]  = (0x01000100 | (line[1] << 16) | line[0] );
+    	line -=2;
+    	g_fifo[1]  = (0x01000100 | (line[1] << 16) | line[0] );
+    	line -=2;
+    	g_fifo[2]  = (0x01000100 | (line[1] << 16) | line[0] );
+    	line -=2;
+    	g_fifo[3]  = (0x01000100 | (line[1] << 16) | line[0] );
+    	line -=2;
+        spi_transmit((unsigned short*) g_fifo, 8);
+
+    }
+
+    for (int i = 0; i < (nb_of_pixel&0x03); i++) {
+
+    	g_fifo[0]  = (0x01000100 | (line[1] << 16) | line[0] );
+    	line -=2;
+        spi_transmit((unsigned short*) g_fifo, 2);
+
+    }
+
+
+}
+
 static void RLE_decode(unsigned char const* in, unsigned int length, int img_h, int img_w)
 {
     unsigned char   cmd, data;
@@ -464,8 +496,8 @@ static void displayInit(void)
     write_data(0x0000);       // Page 49 of SSD2119 datasheet
     
     write_command(0x0001);    // Driver Output Control
-    
     write_data(0x72EF);       // Page 36-39 of SSD2119 datasheet
+    
     write_command(0x0002);    // LCD Driving Waveform Control
     write_data(0x0600);       // Page 40-42 of SSD2119 datasheet
     
@@ -618,6 +650,44 @@ static void displaySub(int x0, int y0, int width, int height)
     write_command(0x0022);    // RAM data write/read
 }
 
+static void displaySub_Rotated(int x0, int y0, int width, int height)
+{
+    write_command(0x004E);    // RAM address set
+    write_data(y0 & 0x1FF);       // Page 58 of SSD2119 datasheet //ram start horizontal position
+
+    write_command(0x004F);    // RAM address set
+    write_data((DISPLAY_HEIGHT-x0-1) & 0xFF);       // Page 58 of SSD2119 datasheet //ram start vertical position
+
+    write_command(0x0044);    // Vertical RAM address window
+    write_data((((DISPLAY_HEIGHT - x0 - 1) & 0xFF) << 8) | ((DISPLAY_HEIGHT - x0 - width) & 0xFF));       // Page 57 of SSD2119 datasheet
+
+    write_command(0x0045);    // Horizontal RAM address window
+    write_data(y0 & 0x1FF);       // Page 57 of SSD2119 datasheet
+    write_command(0x0046);    // Horizontal RAM address position
+    write_data((y0 + height - 1) & 0x1FF);       // Page 57 of SSD2119 datasheet
+
+    write_command(0x0022);    // RAM data write/read
+}
+
+static void displaySub_Special(int x0, int y0, int width, int height)
+{
+    write_command(0x004E);    // RAM address set
+    write_data((y0+height-1) & 0x1FF);       // Page 58 of SSD2119 datasheet //ram start horizontal position
+
+    write_command(0x004F);    // RAM address set
+    write_data((DISPLAY_HEIGHT-x0-1) & 0xFF);       // Page 58 of SSD2119 datasheet //ram start vertical position
+
+    write_command(0x0044);    // Vertical RAM address window
+    write_data((((DISPLAY_HEIGHT - x0 - 1) & 0xFF) << 8) | ((DISPLAY_HEIGHT - x0 - width) & 0xFF));       // Page 57 of SSD2119 datasheet
+
+    write_command(0x0045);    // Horizontal RAM address window
+    write_data(y0 & 0x1FF);       // Page 57 of SSD2119 datasheet
+    write_command(0x0046);    // Horizontal RAM address position
+    write_data((y0 + height - 1) & 0x1FF);       // Page 57 of SSD2119 datasheet
+
+    write_command(0x0022);    // RAM data write/read
+}
+
 static void writeSubBitmap(int x0, int y0, int img_w, int img_h, const unsigned char* img_data, int sub_x, int sub_w)
 {
     __disable_irq();
@@ -652,6 +722,42 @@ static void writeSubBitmap(int x0, int y0, int img_w, int img_h, const unsigned 
     
     __enable_irq();
 }
+
+static void writeSubBitmap_Rotated(int x0, int y0, int img_w, int img_h, const unsigned char* img_data, int sub_x, int sub_w)
+{
+    __disable_irq();
+    int y, x, i;
+    int img_w_rounded = ((8 * img_w + 31) / 32) * 4;
+
+    if ((x0 + sub_w) > DISPLAY_HEIGHT) {
+    	sub_w = DISPLAY_HEIGHT  - x0;
+    }
+
+    if ((y0 + img_h) > DISPLAY_WIDTH) {
+    	img_h = DISPLAY_WIDTH - y0;
+    }
+
+    displaySub_Rotated(x0, y0, sub_w, img_h);
+
+    for (y = img_h - 1; y >= 0; y--) {
+        for (x = 0; x < (sub_w >> 2); x++) {
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = * (g_palette_ram + img_data[y * img_w_rounded + sub_x + (x << 2) + i]);
+            }
+
+            spi_transmit((unsigned short*) g_fifo, 8);
+        }
+
+        x <<= 2;
+
+        for (; x < sub_w; x++) {
+            write_color(* (g_palette_ram + img_data[y * img_w_rounded + sub_x + x]));
+        }
+    }
+
+    __enable_irq();
+}
+
 
 static void printfCheckBounds(int next_width, int line_height)
 {
@@ -761,6 +867,11 @@ int MXC_TFT_Init(mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl
     return result;
 }
 
+void MXC_TFT_SetRotation(tft_rotation_t rotation)
+{
+	tft_rotation = rotation;
+}
+
 void MXC_TFT_SetBackGroundColor(unsigned int color)
 {
     __disable_irq();
@@ -827,29 +938,94 @@ void MXC_TFT_ShowImage(int x0, int y0, int id)
     width  = bitmap_info.w;
     height = bitmap_info.h;
     
-    if ((x0 + width)  > DISPLAY_WIDTH)   {
+    if (tft_rotation == SCREEN_NORMAL || tft_rotation == SCREEN_FLIP) {
+
+    	if ((x0 + width)  > DISPLAY_WIDTH)   {
         width  = DISPLAY_WIDTH  - x0;
+    	}
+    
+		if ((y0 + height) > DISPLAY_HEIGHT) {
+			height = DISPLAY_HEIGHT - y0;
+		}
+
+		displaySub(x0, y0, width, height);
+
+    } else if (tft_rotation == SCREEN_ROTATE) {
+
+    	if ((x0 + width)  > DISPLAY_HEIGHT)   {
+			width  = DISPLAY_HEIGHT  - x0;
+		}
+
+		if ((y0 + height) > DISPLAY_WIDTH) {
+			height = DISPLAY_WIDTH - y0;
+		}
+
+		displaySub_Rotated(x0, y0, width, height);
+
     }
     
-    if ((y0 + height) > DISPLAY_HEIGHT) {
-        height = DISPLAY_HEIGHT - y0;
-    }
-    
-    //
-    displaySub(x0, y0, width, height);
-    setPalette(bitmap_info.id_palette);
-    
-    if (bitmap_info.rle == 1) {
-        RLE_decode(pixel, bitmap_info.data_size, height, width);
-    }
-    else {
-    
-        img_w_rounded = ((8 * bitmap_info.w + 31) / 32) * 4;
-        
-        for (y = height - 1; y >= 0; y--) {
-            print_line(&pixel[y * img_w_rounded], width);
+	setPalette(bitmap_info.id_palette);
+
+	if (bitmap_info.rle == 1) {
+		RLE_decode(pixel, bitmap_info.data_size, height, width);
+	}
+	else {
+
+		img_w_rounded = ((8 * bitmap_info.w + 31) / 32) * 4;
+
+		for (y = height - 1; y >= 0; y--) {
+			print_line(&pixel[y * img_w_rounded], width);
+		}
+	}
+
+
+}
+
+void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int width, int height)
+{
+    int x,y;
+
+    if (tft_rotation == SCREEN_NORMAL || tft_rotation == SCREEN_FLIP) {
+        if ((x0 + width)  > DISPLAY_WIDTH)   {
+        	width  = DISPLAY_WIDTH  - x0;
         }
+
+        if ((y0 + height) > DISPLAY_HEIGHT) {
+            height = DISPLAY_HEIGHT - y0;
+        }
+
+        displaySub(x0, y0, width, height);
+
+    	for (y = 0; y < height; y++) {
+    		print_line_rgb565(&image[y * width*2], width);
+    	}
+    } else if (tft_rotation == SCREEN_ROTATE) {
+        if ((x0 + width)  > DISPLAY_HEIGHT)   {
+        	width  = DISPLAY_HEIGHT  - x0;
+        }
+
+        if ((y0 + height) > DISPLAY_WIDTH) {
+            height = DISPLAY_WIDTH - y0;
+        }
+
+        write_command(0x0011);    // Entry Mode
+        write_data(0x6840);
+
+        displaySub_Special(x0, y0, width, height);
+
+
+    	for (x = 0; x < width; x++) {
+    		print_line_rgb565(&image[x * height*2], height);
+    	}
+
+        write_command(0x0011);    // Entry Mode
+        write_data(0x6858);
     }
+
+
+
+
+
 }
 
 void MXC_TFT_ClearScreen(void)
@@ -1019,7 +1195,11 @@ void MXC_TFT_PrintFont(int x0, int y0, int id, text_t* str, area_t* area)
         }
         else {
             chId = str->data[i] - '!';
-            writeSubBitmap(x, y0, bitmap_info.w, bitmap_info.h, pixel, chr_pos[chId].x, chr_pos[chId].w);
+            if (tft_rotation == SCREEN_NORMAL || tft_rotation == SCREEN_FLIP) {
+            	writeSubBitmap(x, y0, bitmap_info.w, bitmap_info.h, pixel, chr_pos[chId].x, chr_pos[chId].w);
+            } else if (tft_rotation == SCREEN_ROTATE) {
+            	writeSubBitmap_Rotated(x, y0, bitmap_info.w, bitmap_info.h, pixel, chr_pos[chId].x, chr_pos[chId].w);
+            }
             x += chr_pos[chId].w + 1;// font.intr_chr;
         }
     }
@@ -1044,29 +1224,48 @@ void MXC_TFT_ClearArea(area_t* area, int color)
     w = area->w;
     h = area->h;
     
-    if ((area->x + w) > DISPLAY_WIDTH) {
-        w = DISPLAY_WIDTH - area->x;
-    }
+    if (tft_rotation == SCREEN_NORMAL || tft_rotation == SCREEN_FLIP) {
+        if ((area->x + w) > DISPLAY_WIDTH) {
+            w = DISPLAY_WIDTH - area->x;
+        }
+
+        if ((area->y + h) > DISPLAY_HEIGHT) {
+            h = DISPLAY_HEIGHT - area->y;
+        }
+
+        displaySub(area->x, area->y, w, h);
     
-    if ((area->y + h) > DISPLAY_HEIGHT) {
-        h = DISPLAY_HEIGHT - area->y;
+    } else if (tft_rotation == SCREEN_ROTATE) {
+    	if ((area->x + w) > DISPLAY_HEIGHT) {
+			w = DISPLAY_HEIGHT - area->x;
+		}
+
+		if ((area->y + h) > DISPLAY_WIDTH) {
+			h = DISPLAY_WIDTH - area->y;
+		}
+
+		displaySub_Rotated(area->x, area->y, w, h);
     }
-    
-    displaySub(area->x, area->y, w, h);
     
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
             for (i = 0; i < 4; i++) {
                 g_fifo[i] = * (g_palette_ram + color);
             }
-            
+
             spi_transmit((unsigned short*) g_fifo, 8);
         }
-        
+
         x <<= 2;
-        
+
         for (; x < w; x++) {
             write_color(* (g_palette_ram + color));
         }
     }
+}
+
+void MXC_TFT_WriteReg(unsigned short command, unsigned short data)
+{
+    write_command(command);
+    write_data(data);
 }

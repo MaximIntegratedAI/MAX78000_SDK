@@ -34,9 +34,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date$
- * $Revision$
- *
  *************************************************************************** */
 
 #include "mxc_device.h"
@@ -49,8 +46,6 @@
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
 /* ************************************************************************* */
-
-/********************************************************/
 
 int MXC_AES_Init(void)
 {
@@ -170,3 +165,9 @@ int MXC_AES_DecryptAsync(mxc_aes_req_t* req)
 {
     return MXC_AES_RevB_DecryptAsync(req);
 }
+
+void MXC_AES_SetExtKey(const void* key, mxc_aes_keys_t len)
+{
+    return MXC_AES_RevB_SetExtKey(key, len);
+}
+

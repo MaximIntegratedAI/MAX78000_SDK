@@ -47,7 +47,7 @@ int MXC_WDT_Init(mxc_wdt_regs_t* wdt, mxc_wdt_cfg_t* cfg)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_WDT0);
     }
     else if (wdt == MXC_WDT1) {
-        // This clock is always on #TODO CHECK IF THIS IS TRUE
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_WDT1);
     }
     else {
         return E_BAD_PARAM;
@@ -64,8 +64,7 @@ int MXC_WDT_Shutdown(mxc_wdt_regs_t* wdt)
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_WDT0);
     }
     else if (wdt == MXC_WDT1) {
-        // This clock is always on #TODO CHECK IF THIS IS TRUE
-        
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_WDT1);
     }
     else {
         return E_BAD_PARAM;

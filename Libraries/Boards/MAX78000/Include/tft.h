@@ -59,6 +59,12 @@ typedef struct {
     int len;
 } text_t;
 
+typedef enum {
+    SCREEN_NORMAL,
+	SCREEN_FLIP,
+	SCREEN_ROTATE,
+} tft_rotation_t;
+
 /************************************************************************************/
 
 /**
@@ -115,6 +121,8 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
  * @param      id           Bitmap number
  */
 void MXC_TFT_ShowImage(int x0, int y0, int id);
+
+void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
 
 /**
  * @brief      Fills screen with one color
@@ -181,12 +189,27 @@ void MXC_TFT_PrintFont(int x0, int y0, int font_id, text_t* str, area_t* area);
 void MXC_TFT_Print(int x0, int y0, text_t* str, area_t* area);
 
 /**
- * @brief       Celar area on display
+ * @brief       Clear area on display
  *
  * @param       area            Location on display
  * @param       color           Palette index of rectangle color
  */
 void MXC_TFT_ClearArea(area_t* area, int color);
+
+/**
+ * @brief       Set TFT screen rotation
+ *
+ * @param       rotation            rotation of the screen
+ */
+void MXC_TFT_SetRotation(tft_rotation_t rotation);
+
+/**
+ * @brief       Write Screen Register
+ *
+ * @param       command             command or register address
+ * @param       data                data for the command or register
+ */
+void MXC_TFT_WriteReg(unsigned short command, unsigned short data);
 
 #endif /* _TFT_H_ */
 

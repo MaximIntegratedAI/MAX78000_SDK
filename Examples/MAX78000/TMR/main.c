@@ -48,6 +48,7 @@
 #include "gcr_regs.h"
 #include "pwrseq_regs.h"
 #include "mxc.h"
+#include "lp.h"
 
 /***** Definitions *****/
 #define DEEPSLEEP_MODE          // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
@@ -105,6 +106,7 @@ void PWMTimer()
     
     tmr.pres = TMR_PRES_16;
     tmr.mode = TMR_MODE_PWM;
+    tmr.bitMode = TMR_BIT_MODE_32;    
     tmr.clock = PWM_CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks;
     tmr.pol = 1;
@@ -196,6 +198,7 @@ void OneshotTimer()
     
     tmr.pres = TMR_PRES_128;
     tmr.mode = TMR_MODE_ONESHOT;
+    tmr.bitMode = TMR_BIT_MODE_32;    
     tmr.clock = OST_CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks;      //SystemCoreClock*(1/interval_time);
     tmr.pol = 0;
@@ -208,9 +211,9 @@ void OneshotTimer()
     MXC_TMR_EnableInt(OST_TIMER);
     
     // Enable wkup source in Poower seq register
-    MXC_PWRSEQ->lppwen  |= MXC_F_PWRSEQ_LPPWEN_TMR4;
+    MXC_LP_EnableTimerWakeup(OST_TIMER);
     // Enable Timer wake-up source
-    MXC_TMR4->ctrl1   |= MXC_F_TMR_CTRL1_WE_A;
+    MXC_TMR_EnableWakeup(OST_TIMER, &tmr);
     
     printf("Oneshot timer started.\n\n");
     

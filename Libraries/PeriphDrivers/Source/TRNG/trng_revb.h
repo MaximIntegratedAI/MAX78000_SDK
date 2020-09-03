@@ -45,3 +45,4 @@ void MXC_TRNG_RevB_Handler(void);
 int MXC_TRNG_RevB_RandomInt(void);
 int MXC_TRNG_RevB_Random(uint8_t* data, uint32_t len);
 void MXC_TRNG_RevB_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t callback);
+void MXC_TRNG_RevB_GenerateKey(void);

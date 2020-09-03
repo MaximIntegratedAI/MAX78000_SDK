@@ -124,7 +124,7 @@ struct _mxc_uart_req_t {
      *  @{
      */
     mxc_uart_regs_t* uart;      ///<Point to UART registers
-    uint8_t        *txData;     ///< Buffer containing transmit data. For character sizes
+    const uint8_t  *txData;     ///< Buffer containing transmit data. For character sizes
                                 ///< < 8 bits, pad the MSB of each byte with zeros. For 
                                 ///< character sizes > 8 bits, use two bytes per character
                                 ///< and pad the MSB of the upper byte with zeros
@@ -296,27 +296,6 @@ int MXC_UART_GetActive(mxc_uart_regs_t* uart);
 int MXC_UART_AbortTransmission(mxc_uart_regs_t* uart);
 
 /**
- * @brief   Reads the next available character. This function will block until a character
- *          is available or a UART error occurs.
- *
- * @param   uart         Pointer to UART registers (selects the UART block used.)
- *
- * @return  The character read, otherwise see \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_UART_ReadCharacter (mxc_uart_regs_t* uart);
-
-/**
- * @brief   Writes a character on the UART. This function will block until the character
- *          has been placed in the TX FIFO or a UART error occurs.
- *
- * @param   uart         Pointer to UART registers (selects the UART block used.)
- * @param   character         The character to write
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_UART_WriteCharacter (mxc_uart_regs_t* uart, uint8_t character);
-
-/**
  * @brief   Reads the next available character. If no character is available, this function
  *          will return an error.
  *
@@ -324,7 +303,7 @@ int MXC_UART_WriteCharacter (mxc_uart_regs_t* uart, uint8_t character);
  *
  * @return  The character read, otherwise see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_UART_ReadCharacterRaw (mxc_uart_regs_t* uart);
+int MXC_UART_ReadCharacterRaw(mxc_uart_regs_t* uart);
 
 /**
  * @brief   Writes a character on the UART. If the character cannot be written because the
@@ -335,7 +314,26 @@ int MXC_UART_ReadCharacterRaw (mxc_uart_regs_t* uart);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_UART_WriteCharacterRaw (mxc_uart_regs_t* uart, uint8_t character);
+int MXC_UART_WriteCharacterRaw(mxc_uart_regs_t* uart, uint8_t character);
+
+/**
+ * @brief   Reads the next available character
+ *
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ *
+ * @return  The character read, otherwise see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_UART_ReadCharacter(mxc_uart_regs_t* uart);
+
+/**
+ * @brief   Writes a character on the UART
+ *
+ * @param   uart         Pointer to UART registers (selects the UART block used.)
+ * @param   character    The character to write 
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_UART_WriteCharacter(mxc_uart_regs_t* uart, uint8_t character);
 
 /**
  * @brief   Reads the next available character
@@ -359,7 +357,7 @@ int MXC_UART_Read(mxc_uart_regs_t* uart, uint8_t* buffer, int* len);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_UART_Write(mxc_uart_regs_t* uart, uint8_t* byte, int* len);
+int MXC_UART_Write(mxc_uart_regs_t* uart, const uint8_t* byte, int* len);
 
 /**
  * @brief   Unloads bytes from the receive FIFO.
@@ -404,7 +402,7 @@ unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t* uart);
  *
  * @return  The number of bytes actually written.
  */
-unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes,
+unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, const unsigned char* bytes,
                                     unsigned int len);
 
 /**
@@ -417,7 +415,7 @@ unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes,
  *
  * @return  See \ref MXC_ERROR_CODES for a list of return values
  */
-int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes,
+int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* bytes,
                                 unsigned int len, mxc_uart_dma_complete_cb_t callback);
 
 /**

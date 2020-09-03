@@ -82,26 +82,27 @@ extern const mxc_gpio_cfg_t gpio_cfg_spi1;
 extern const mxc_gpio_cfg_t gpio_cfg_rtcsqw;
 extern const mxc_gpio_cfg_t gpio_cfg_rtcsqwb;
 
-const mxc_gpio_cfg_t gpio_cfg_pt0;
-const mxc_gpio_cfg_t gpio_cfg_pt1;
-const mxc_gpio_cfg_t gpio_cfg_pt2;
-const mxc_gpio_cfg_t gpio_cfg_pt3;
+extern const mxc_gpio_cfg_t gpio_cfg_pt0;
+extern const mxc_gpio_cfg_t gpio_cfg_pt1;
+extern const mxc_gpio_cfg_t gpio_cfg_pt2;
+extern const mxc_gpio_cfg_t gpio_cfg_pt3;
 
-const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_0_7;
-const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_8_9;
-const mxc_gpio_cfg_t gpio_cfg_pcif_P1_BITS_10_11;
-const mxc_gpio_cfg_t gpio_cfg_pcif_hsync;
-const mxc_gpio_cfg_t gpio_cfg_pcif_vsync;
-const mxc_gpio_cfg_t gpio_cfg_pcif_xclk;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_0_7;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_8_9;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_P1_BITS_10_11;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_hsync;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_vsync;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_xclk;
 
-const mxc_gpio_cfg_t gpio_cfg_adc_ain0;
-const mxc_gpio_cfg_t gpio_cfg_adc_ain1;
-const mxc_gpio_cfg_t gpio_cfg_adc_ain2;
-const mxc_gpio_cfg_t gpio_cfg_adc_ain3;
-const mxc_gpio_cfg_t gpio_cfg_adc_ain4;
-const mxc_gpio_cfg_t gpio_cfg_adc_ain5;
-const mxc_gpio_cfg_t gpio_cfg_adc_ain6;
-const mxc_gpio_cfg_t gpio_cfg_adc_ain7;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain0;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain1;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain2;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain3;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain4;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain4;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain5;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain6;
+extern const mxc_gpio_cfg_t gpio_cfg_adc_ain7;
 
 #endif /* _MXC_PINS_H_ */
 

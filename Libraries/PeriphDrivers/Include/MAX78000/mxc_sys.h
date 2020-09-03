@@ -74,7 +74,6 @@ typedef enum {
     MXC_SYS_RESET1_I2C1      = (MXC_F_GCR_RST1_I2C1_POS + 32),     /**< Reset I2C1 */
     MXC_SYS_RESET1_PT        = (MXC_F_GCR_RST1_PT_POS + 32),       /**< Reset PT */
     MXC_SYS_RESET1_OWM       = (MXC_F_GCR_RST1_OWM_POS + 32),      /**< Reset OWM */
-    MXC_SYS_RESET1_WDT1      = (MXC_F_GCR_RST1_WDT1_POS + 32),     /**< Reset WDT1 */
     MXC_SYS_RESET1_CRC       = (MXC_F_GCR_RST1_CRC_POS + 32),      /**< Reset CRC */
     MXC_SYS_RESET1_AES       = (MXC_F_GCR_RST1_AES_POS + 32),      /**< Reset AES */
     MXC_SYS_RESET1_SMPHR     = (MXC_F_GCR_RST1_SMPHR_POS + 32),    /**< Reset SMPHR */
@@ -86,7 +85,7 @@ typedef enum {
     MXC_SYS_RESET1_CPU1      = (MXC_F_GCR_RST1_CPU1_POS + 32),     /**< Reset CPU1 */
     /* LPGCR RESET Below this line we add 64 to separate LPGCR and GCR */
     MXC_SYS_RESET_GPIO2      = (MXC_F_LPGCR_RST_GPIO2_POS + 64),   /**< Reset GPIO2 */
-    MXC_SYS_RESET_WDT2       = (MXC_F_LPGCR_RST_WDT2_POS + 64),    /**< Reset WDT2 */
+    MXC_SYS_RESET_WDT1       = (MXC_F_LPGCR_RST_WDT1_POS + 64),    /**< Reset WDT1 */
     MXC_SYS_RESET_TMR4       = (MXC_F_LPGCR_RST_TMR4_POS + 64),    /**< Reset TMR4 */
     MXC_SYS_RESET_TMR5       = (MXC_F_LPGCR_RST_TMR5_POS + 64),    /**< Reset TMR5 */
     MXC_SYS_RESET_UART3      = (MXC_F_LPGCR_RST_UART3_POS + 64),   /**< Reset UART3 */
@@ -125,7 +124,7 @@ typedef enum {
     MXC_SYS_PERIPH_CLOCK_CPU1        = (MXC_F_GCR_PCLKDIS1_CPU1_POS + 32),              /**< Disable MXC_F_GCR_PCLKDIS1_CPU1 clock */
     /* LPGCR PCLKDIS Below this line we add 64 to seperate GCR and LPGCR registers */
     MXC_SYS_PERIPH_CLOCK_GPIO2       = (MXC_F_LPGCR_PCLKDIS_GPIO2_POS + 64),            /**< Disable MXC_F_LPGCR_PCLKDIS_GPIO2 clock */
-    MXC_SYS_PERIPH_CLOCK_WDT2        = (MXC_F_LPGCR_PCLKDIS_WDT2_POS + 64),             /**< Disable MXC_F_LPGCR_PCLKDIS_WDT2 clock */
+    MXC_SYS_PERIPH_CLOCK_WDT1        = (MXC_F_LPGCR_PCLKDIS_WDT1_POS + 64),             /**< Disable MXC_F_LPGCR_PCLKDIS_WDT2 clock */
     MXC_SYS_PERIPH_CLOCK_TMR4        = (MXC_F_LPGCR_PCLKDIS_TMR4_POS + 64),             /**< Disable MXC_F_LPGCR_PCLKDIS_TMR4 clock */
     MXC_SYS_PERIPH_CLOCK_TMR5        = (MXC_F_LPGCR_PCLKDIS_TMR5_POS + 64),             /**< Disable MXC_F_LPGCR_PCLKDIS_TMR5 clock */
     MXC_SYS_PERIPH_CLOCK_UART3       = (MXC_F_LPGCR_PCLKDIS_UART3_POS + 64),            /**< Disable MXC_F_LPGCR_PCLKDIS_UART3 clock */

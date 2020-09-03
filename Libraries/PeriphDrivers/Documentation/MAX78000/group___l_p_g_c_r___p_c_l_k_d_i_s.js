@@ -10,6 +10,6 @@ var group___l_p_g_c_r___p_c_l_k_d_i_s =
     [ "MXC_F_LPGCR_PCLKDIS_TMR5_POS", "group___l_p_g_c_r___p_c_l_k_d_i_s.html#ga91f9394fe12028b040a62666b42ab915", null ],
     [ "MXC_F_LPGCR_PCLKDIS_UART3", "group___l_p_g_c_r___p_c_l_k_d_i_s.html#gaaea70febe1ec27403ba4f6b48e9ea5f1", null ],
     [ "MXC_F_LPGCR_PCLKDIS_UART3_POS", "group___l_p_g_c_r___p_c_l_k_d_i_s.html#ga3e013ad8119386097989939c082c04c4", null ],
-    [ "MXC_F_LPGCR_PCLKDIS_WDT2", "group___l_p_g_c_r___p_c_l_k_d_i_s.html#ga2137c8193adc488cba509fde1c6be00c", null ],
-    [ "MXC_F_LPGCR_PCLKDIS_WDT2_POS", "group___l_p_g_c_r___p_c_l_k_d_i_s.html#ga0a646fc3549dd58dc2f1ae790b6f9b9e", null ]
+    [ "MXC_F_LPGCR_PCLKDIS_WDT1", "group___l_p_g_c_r___p_c_l_k_d_i_s.html#ga92cc760fa359068306406a92b23aeba8", null ],
+    [ "MXC_F_LPGCR_PCLKDIS_WDT1_POS", "group___l_p_g_c_r___p_c_l_k_d_i_s.html#gaaed8a7eea739fa168ee5e9473bca53be", null ]
 ];

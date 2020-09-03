@@ -58,6 +58,7 @@ static volatile uint32_t g_is_img_rcv = 0;
 static int g_total_img_size = 0;
 static int g_framesize_width = 64;
 static int g_framesize_height = 64;
+static int g_pixel_format = PIXFORMAT_RGB888;
 static fifomode_t g_fifo_mode = FIFO_THREE_BYTE;
 static dmamode_t g_dma_mode = NO_DMA;
 static camera_t camera;
@@ -124,6 +125,10 @@ void camera_irq_handler(void)
             }
         }
         else {
+            while (MXC_PCIF->int_fl & MXC_F_CAMERAIF_INT_FL_FIFO_NOT_EMPTY) {
+                data = MXC_PCIF->fifo_data;
+                MXC_PCIF->int_fl = MXC_F_CAMERAIF_INT_FL_FIFO_NOT_EMPTY;
+            }
             rx_data_index = g_total_img_size;
         }
         
@@ -138,9 +143,9 @@ void camera_irq_handler(void)
 static void setup_dma(void)
 {
     int dma_handle = 0;
-    
-    MXC_DMA->inten = 0x01;
-    
+    MXC_DMA->ch[dma_handle].status = 0x4; // Clear CTZ status flag
+    MXC_DMA->inten = 0x0;
+
     MXC_DMA->ch[dma_handle].dst = (uint32_t) rx_data; // Cast Pointer
     
     if (PCIF_DATA_BUS_WITH == MXC_V_CAMERAIF_CTRL_DATA_WIDTH_8BIT) {
@@ -164,6 +169,8 @@ static void setup_dma(void)
                                     (0x0 << MXC_F_DMA_CTRL_RLDEN_POS)   +
                                     (0x1 << MXC_F_DMA_CTRL_EN_POS)
                                    );
+
+    MXC_DMA->inten = 0x01;
 }
 
 /******************************** Public Functions ***************************/
@@ -178,7 +185,7 @@ int camera_init(void)
     MXC_GPIO_SetVSSEL(gpio_cfg_pt0.port, MXC_GPIO_VSSEL_VDDIOH, gpio_cfg_pt0.mask);
     // Camera requires a delay after starting its input clock.
     MXC_Delay(MSEC(CAMERA_STARTUP_DELAY));
-    
+    MXC_PCIF->ctrl |= 0;
     // Initialize serial camera communication bus.
     sccb_init();
     // Register functions
@@ -240,29 +247,23 @@ int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode
     default:
         return -1;
     }
+
+    // Setup DMA.
+    g_dma_mode = dma_mode;
     
+    g_pixel_format = pixformat;
+
     // Setup hardware bit expansion from rgb565 to rgb888 conversion.
     // If enabled then hardware will read in rgb565 from the camera
     // and treat it as rgb888.
     if (pixformat == PIXFORMAT_RGB888) {
         MXC_PCIF_SetDataWidth(MXC_PCIF_DATAWIDTH_12_BIT);
         // Bit expansion mode will yeild three bytes per pixel.
-        bytes_per_pixel = 3;
-    }
-    
-    // Setup DMA.
-    g_dma_mode = dma_mode;
-    
-    if (g_dma_mode == USE_DMA) {
-        MXC_DMA_Init();
-        setup_dma();
-        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH, (0x1 << MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS));
-        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA, MXC_F_CAMERAIF_CTRL_RX_DMA);
-        MXC_PCIF_DisableInt(MXC_F_CAMERAIF_INT_EN_FIFO_THRESH);
-    }
-    else {
-        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA, 0x0);
-        MXC_PCIF_EnableInt(MXC_F_CAMERAIF_INT_EN_FIFO_THRESH);
+        if(g_dma_mode == USE_DMA) {
+            bytes_per_pixel = 4;
+        } else {
+            bytes_per_pixel = 3;
+        }
     }
     
     // Setup camera resolution and allocate a camera frame buffer.
@@ -284,7 +285,19 @@ int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode
         // Return error if unable to allocate memory.
         return STATUS_ERROR_ALLOCATING;
     }
-    
+    memset((uint8_t*)rx_data, 0xff, g_total_img_size);
+
+    if (g_dma_mode == USE_DMA) {
+        MXC_DMA_Init();
+        setup_dma();
+        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH, (0x1 << MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS));
+        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA, MXC_F_CAMERAIF_CTRL_RX_DMA);
+        MXC_PCIF_DisableInt(MXC_F_CAMERAIF_INT_EN_FIFO_THRESH);
+    }
+    else {
+        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA, 0x0);
+        MXC_PCIF_EnableInt(MXC_F_CAMERAIF_INT_EN_FIFO_THRESH);
+    }
     camera.set_framesize(g_framesize_width, g_framesize_height);
     camera.set_pixformat(pixformat);
     return ret;
@@ -369,10 +382,22 @@ uint8_t* camera_get_pixel_format(void)
 
 void camera_get_image(uint8_t** img, uint32_t* imgLen, uint32_t* w, uint32_t* h)
 {
+    int n = 0, index;
+    MXC_PCIF->int_fl |= MXC_PCIF->int_fl;
+    if (g_dma_mode == USE_DMA && g_pixel_format == PIXFORMAT_RGB888) {
+        // Filter image data
+        index = 4;
+        for(n=3; n<((g_framesize_width )*(g_framesize_height)*3); n++) {
+            index++;
+            if(index%4 == 0) {
+                index++;
+            }
+            rx_data[n] = rx_data[index -1];
+        }
+    }
     *img    = (uint8_t*)rx_data;
     *imgLen = g_total_img_size;
     
     *w = g_framesize_width;
     *h = g_framesize_height;
 }
-

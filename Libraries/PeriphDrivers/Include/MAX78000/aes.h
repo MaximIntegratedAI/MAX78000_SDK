@@ -34,9 +34,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date$
- * $Revision$
- *
  *************************************************************************** */
 
 #ifndef _AES_H_
@@ -56,8 +53,6 @@ extern "C" {
  */
 /*@} end of group aes */
 
-
-/* IN ADDITION TO THIS HEADER, FCL WILL BE SUPPORTED AND PROVIDED IN BINARY FORM */
 /***** Definitions *****/
 
 typedef void (*mxc_aes_complete_t) (void* req, int result);
@@ -71,9 +66,9 @@ typedef void (*mxc_aes_complete_t) (void* req, int result);
   *
   */
 typedef enum {
-    MXC_AES_128BITS        = MXC_S_AES_CTRL_KEY_SIZE_AES128,    // Select AES-128
-    MXC_AES_192BITS        = MXC_S_AES_CTRL_KEY_SIZE_AES192,    // Select AES-192
-    MXC_AES_256BITS        = MXC_S_AES_CTRL_KEY_SIZE_AES256,    // Select AES-256
+    MXC_AES_128BITS        = MXC_S_AES_CTRL_KEY_SIZE_AES128,    ///< Select AES-128 bit key
+    MXC_AES_192BITS        = MXC_S_AES_CTRL_KEY_SIZE_AES192,    ///< Select AES-192 bit key
+    MXC_AES_256BITS        = MXC_S_AES_CTRL_KEY_SIZE_AES256,    ///< Select AES-256 bit key
 } mxc_aes_keys_t;
 
 /**
@@ -81,23 +76,23 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_AES_ENCRYPT_EXT_KEY  = 0,
-    MXC_AES_DECRYPT_EXT_KEY  = 1,
-    MXC_AES_DECRYPT_INT_KEY  = 2
+    MXC_AES_ENCRYPT_EXT_KEY  = 0,   ///< Encryption using External key
+    MXC_AES_DECRYPT_EXT_KEY  = 1,   ///< Encryption using internal key
+    MXC_AES_DECRYPT_INT_KEY  = 2    ///< Decryption using internal key
 } mxc_aes_enc_type_t;
 
 /**
   * @brief  Structure used to set up AES request
   *
   */
-struct _mxc_aes_cipher_req_t {
-    uint32_t length;
-    uint32_t *inputData;
-    uint32_t *resultData;
-    mxc_aes_keys_t keySize; 
-    mxc_aes_enc_type_t encryption;
-    mxc_aes_complete_t callback;
-} typedef mxc_aes_req_t;
+typedef struct _mxc_aes_cipher_req_t {
+    uint32_t length;                ///< Length of the data
+    uint32_t *inputData;            ///< Pointer to input data
+    uint32_t *resultData;           ///< Pointer to encrypted data
+    mxc_aes_keys_t keySize;         ///< Size of AES key
+    mxc_aes_enc_type_t encryption;  ///< Encrytion type or \ref mxc_aes_enc_type_t
+    mxc_aes_complete_t callback;    ///< Callback function
+} mxc_aes_req_t;
 
 /***** Function Prototypes *****/
 
@@ -129,7 +124,7 @@ void MXC_AES_DisableInt (uint32_t interrupt);
 /**
  * @brief   Checks the global AES Busy Status
  *
- * @return  Nonzero if Busy, zero if not busy.
+ * @return  E_BUSY if busy and E_NO_ERROR otherwise, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_IsBusy (void);
 
@@ -161,7 +156,7 @@ void MXC_AES_SetKeySize (mxc_aes_keys_t key);
 /**
  * @brief   Get the currently set key size
  * 
- * @return  mxc_aes_keys_t 
+ * @return  mxc_aes_keys_t see \ref mxc_aes_keys_t
  */
 mxc_aes_keys_t MXC_AES_GetKeySize (void);
 
@@ -203,7 +198,7 @@ void MXC_AES_ClearFlags (uint32_t flags);
  *
  * @param   req  Structure containing data for the encryption
  *
- * @return  See \ref MXC_Error_Codes for a list of return codes.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_Generic (mxc_aes_req_t* req);
 
@@ -213,7 +208,7 @@ int MXC_AES_Generic (mxc_aes_req_t* req);
  *
  * @param   req  Structure containing data for the encryption
  *
- * @return  See \ref MXC_Error_Codes for a list of return codes.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_Encrypt (mxc_aes_req_t* req);
 
@@ -223,7 +218,7 @@ int MXC_AES_Encrypt (mxc_aes_req_t* req);
  *
  * @param   req  Structure containing data for the decryption
  *
- * @return  See \ref MXC_Error_Codes for a list of return codes.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_Decrypt (mxc_aes_req_t* req);
 
@@ -232,7 +227,7 @@ int MXC_AES_Decrypt (mxc_aes_req_t* req);
  * 
  * @param   src_addr  source address
  * @param   len       number of words of data
- * @return  See \ref MXC_Error_Codes for a list of return codes. 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
  */
 int MXC_AES_TXDMAConfig (void *src_addr, int len);
 
@@ -241,17 +236,17 @@ int MXC_AES_TXDMAConfig (void *src_addr, int len);
  * 
  * @param   dest_addr destination address
  * @param   len       number of words of data
- * @return  See \ref MXC_Error_Codes for a list of return codes. 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
  */
 int MXC_AES_RXDMAConfig (void *dest_addr, int len);
 
 /**
- * @brief   Perfor encryption or decryption using DMA 
+ * @brief   Perform encryption or decryption using DMA 
  * 
  * @param   req The result will be stored in the req structure. The user needs
  *              to call MXC_AES_Handler() in the ISR
  * @param   enc 0 for encryption and 1 for decryption
- * @return  See \ref MXC_Error_Codes for a list of return codes.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_GenericAsync (mxc_aes_req_t* req, uint8_t enc);
 
@@ -261,7 +256,7 @@ int MXC_AES_GenericAsync (mxc_aes_req_t* req, uint8_t enc);
  *          to call MXC_AES_Handler() in the ISR
  *
  * @param   req  Structure containing data for the encryption
- * @return  See \ref MXC_Error_Codes for a list of return codes.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_EncryptAsync (mxc_aes_req_t* req);
 
@@ -271,9 +266,16 @@ int MXC_AES_EncryptAsync (mxc_aes_req_t* req);
  *          to call MXC_AES_Handler() in the ISR
  *
  * @param   req  Structure containing data for the decryption
- * @return  See \ref MXC_Error_Codes for a list of return codes.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_AES_DecryptAsync (mxc_aes_req_t* req);
+
+/**
+ * @brief   Set the external key
+ * @param   key  Buffer for the key.
+ * @param   len  Key size.
+ */
+void MXC_AES_SetExtKey(const void* key, mxc_aes_keys_t len);
 
 #ifdef __cplusplus
 }

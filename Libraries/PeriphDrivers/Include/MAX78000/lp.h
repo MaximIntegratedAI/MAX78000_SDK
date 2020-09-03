@@ -46,6 +46,7 @@
 #include "mcr_regs.h"
 #include "gcr_regs.h"
 #include "gpio.h"
+#include "tmr.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -228,6 +229,20 @@ void MXC_LP_EnableRTCAlarmWakeup (void);
  * @brief      Disables the RTC alarm from waking up the device.
  */
 void MXC_LP_DisableRTCAlarmWakeup (void);
+
+/**
+ * @brief      Enables Timer to wakeup from any low power mode. 
+ * 
+ * @param      tmr  Pointer to timer module.
+ */
+void MXC_LP_EnableTimerWakeup(mxc_tmr_regs_t* tmr);
+
+/**
+ * @brief      Disables Timer from waking up device.  
+ * 
+ * @param      tmr  Pointer to timer module.
+ */
+void MXC_LP_DisableTimerWakeup(mxc_tmr_regs_t* tmr);
 
 /**
  * @brief      Enables the WUT alarm to wake up the device from any low power mode.

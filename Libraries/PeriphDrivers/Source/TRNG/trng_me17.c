@@ -104,3 +104,8 @@ void MXC_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_trng_complete_t callb
 {
     MXC_TRNG_RevB_RandomAsync(data, len, callback);
 }
+
+void MXC_TRNG_GenerateKey(void)
+{
+    /* Unsupported on ME17 */
+}

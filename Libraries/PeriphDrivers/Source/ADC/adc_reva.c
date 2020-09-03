@@ -63,8 +63,7 @@
 static mxc_adc_monitor_req_t* states[MXC_MONITOR_NUM];
 static mxc_adc_complete_cb_t async_callback;
 static mxc_adc_conversion_req_t* async_req;
-volatile uint32_t data;
-volatile uint8_t flag;      //indicates  to irqhandler where to store data
+static volatile uint8_t flag;      //indicates  to irqhandler where to store data
 
 int MXC_ADC_RevA_Init(void)
 {

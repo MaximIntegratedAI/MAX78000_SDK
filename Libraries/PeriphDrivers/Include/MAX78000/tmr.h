@@ -228,16 +228,32 @@ uint32_t MXC_TMR_GetFlags (mxc_tmr_regs_t* tmr);
 /**
  * @brief   enable interupt
  *
- * @param   tmr   The timer
+ * @param   tmr   Pointer to timer module to initialize.
  */
 void MXC_TMR_EnableInt (mxc_tmr_regs_t* tmr);
 
 /**
  * @brief   disable interupt
  *
- * @param   tmr   The timer
+ * @param   tmr   Pointer to timer module to initialize.
  */
 void MXC_TMR_DisableInt (mxc_tmr_regs_t* tmr);
+
+/**
+ * @brief   Enable wakeup from sleep
+ * 
+ * @param   tmr   Pointer to timer module to initialize.
+ * @param   cfg   System configuration object  
+ */
+void MXC_TMR_EnableWakeup (mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg);
+
+/**
+ * @brief   Disable wakeup from sleep
+ * 
+ * @param   tmr   Pointer to timer module to initialize.
+ * @param   cfg   System configuration object
+ */
+void MXC_TMR_DisableWakeup (mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg);
 
 /**
  * @brief   Set the timer compare count.

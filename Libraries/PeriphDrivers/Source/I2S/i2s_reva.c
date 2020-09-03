@@ -141,7 +141,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         dataMask =  0x000000ff;
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
-            for (int i = 0; i < req->length ; i++) {
+            for (uint32_t i = 0; i < req->length ; i++) {
                 * ((uint8_t*) req->txData++) = * ((uint8_t*) req->rawData++) & dataMask;
             }
         }
@@ -167,7 +167,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         dataMask = 0x0000ffff;
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
-            for (int i = 0; i < req->length ; i++) {
+            for (uint32_t i = 0; i < req->length ; i++) {
                 * ((uint16_t*) req->txData++) = * ((uint16_t*) req->rawData++) & dataMask;
             }
         }
@@ -187,7 +187,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         dataMask = 0x00fffff;
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
-            for (int i = 0; i < req->length ; i++) {
+            for (uint32_t i = 0; i < req->length ; i++) {
                 * ((uint32_t*) req->txData++) = (* ((uint32_t*) req->rawData++) & dataMask) << 12;
             }
         }
@@ -207,7 +207,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         dataMask = 0x00ffffff;
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
-            for (int i = 0; i < req->length ; i++) {
+            for (uint32_t i = 0; i < req->length ; i++) {
                 * ((uint32_t*) req->txData++) = (* ((uint32_t*) req->rawData++) & dataMask) << 8;
             }
         }
@@ -227,7 +227,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         dataMask = 0xffffffff;
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
-            for (int i = 0; i < req->length ; i++) {
+            for (uint32_t i = 0; i < req->length ; i++) {
                 * ((uint32_t*) req->txData++) = * ((uint32_t*) req->rawData++) & dataMask;
             }
         }

@@ -96,6 +96,7 @@ typedef struct _camera {
     int (*set_pixformat)(pixformat_t pixformat);
     int (*get_pixformat)(pixformat_t* pixformat);
     int (*set_framesize)(int width, int height);
+    int (*set_windowing)(int width, int height, int hsize, int vsize);
     int (*set_contrast)(int level);
     int (*set_brightness)(int level);
     int (*set_saturation)(int level);

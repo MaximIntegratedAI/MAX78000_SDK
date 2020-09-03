@@ -1,6 +1,7 @@
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/cameraif.h:55: warning: missing title after \defgroup cameraif
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/i2s.h:240: warning: end of file while inside a group
 
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/aes.h:93: warning: unable to resolve reference to `mxc_aes_enc_type_t' for \ref command
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/gpio.h:276: warning: argument 'cfg' of command @param is not found in the argument list of MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask)
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/gpio.h:280: warning: The following parameters of MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask) are not documented:
   parameter 'port'
@@ -60,9 +61,9 @@
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/tmr.h:147: warning: argument 'bool' of command @param is not found in the argument list of MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/tmr.h:155: warning: The following parameters of MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins) are not documented:
   parameter 'init_pins'
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:382: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:380: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:254: warning: unable to resolve reference to `UART' for \ref command
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:244: warning: unable to resolve reference to `UART' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:416: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
+/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:414: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/wut.h:227: warning: argument 'dbbFreq' of command @param is not found in the argument list of MXC_WUT_GetSleepTicks(void)
 /home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/wut.h:123: warning: argument 'wut' of command @param is not found in the argument list of MXC_WUT_Shutdown(void)

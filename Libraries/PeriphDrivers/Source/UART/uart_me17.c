@@ -222,7 +222,7 @@ int MXC_UART_Read(mxc_uart_regs_t* uart, uint8_t* buffer, int* len)
     return MXC_UART_RevB_Read(uart, buffer, len);
 }
 
-int MXC_UART_Write(mxc_uart_regs_t* uart, uint8_t* byte, int* len)
+int MXC_UART_Write(mxc_uart_regs_t* uart, const uint8_t* byte, int* len)
 {
     return MXC_UART_RevB_Write(uart, byte, len);
 }
@@ -267,13 +267,13 @@ unsigned int MXC_UART_GetRXFIFOAvailable(mxc_uart_regs_t* uart)
     return MXC_UART_RevB_GetRXFIFOAvailable(uart);
 }
 
-unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes,
+unsigned int MXC_UART_WriteTXFIFO(mxc_uart_regs_t* uart, const unsigned char* bytes,
                                   unsigned int len)
 {
     return MXC_UART_RevB_WriteTXFIFO(uart, bytes, len);
 }
 
-int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes,
+int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* bytes,
                             unsigned int len, mxc_uart_dma_complete_cb_t callback)
 {
     mxc_dma_config_t config;

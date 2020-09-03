@@ -59,10 +59,6 @@
 
 /* **** Functions **** */
 
-int MXC_busy_flc (mxc_flc_regs_t *flc);
-
-int MXC_prepare_flc (mxc_flc_regs_t *flc);
-
 int MXC_FLC_RevA_Busy (void);
 
 int MXC_FLC_RevA_MassErase (mxc_flc_regs_t *flc);

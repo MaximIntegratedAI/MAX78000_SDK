@@ -12,7 +12,7 @@ var group__required =
     [ "ssIdx", "group__required.html#ga265582641e03d3e8aab76429d632d7bd", null ],
     [ "txCnt", "group__required.html#gab08c6d802a1534b503d57b1cfb785bbf", null ],
     [ "txCnt", "group__required.html#gab08c6d802a1534b503d57b1cfb785bbf", null ],
-    [ "txData", "group__required.html#ga03c054bb486fb65133eb9f6849266fb1", null ],
+    [ "txData", "group__required.html#ga7dbe1c75593b075e387474ea112ce73b", null ],
     [ "txData", "group__required.html#ga03c054bb486fb65133eb9f6849266fb1", null ],
     [ "txLen", "group__required.html#gabaa4e72af025cc3c53b626f14cb40c1d", null ],
     [ "txLen", "group__required.html#gabaa4e72af025cc3c53b626f14cb40c1d", null ],

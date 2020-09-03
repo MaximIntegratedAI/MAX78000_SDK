@@ -28,7 +28,6 @@ var modules =
     [ "AES_KEY_Registers", "group__aes__key__registers.html", "group__aes__key__registers" ],
     [ "BBFC_Registers", "group__bbfc__registers.html", "group__bbfc__registers" ],
     [ "DVS_Registers", "group__dvs__registers.html", "group__dvs__registers" ],
-    [ "ECC_Registers", "group__ecc__registers.html", "group__ecc__registers" ],
     [ "FCR_Registers", "group__fcr__registers.html", "group__fcr__registers" ],
     [ "GCR_Registers", "group__gcr__registers.html", "group__gcr__registers" ],
     [ "LPGCR_Registers", "group__lpgcr__registers.html", "group__lpgcr__registers" ],
@@ -36,5 +35,6 @@ var modules =
     [ "PT_Registers", "group__pt__registers.html", "group__pt__registers" ],
     [ "PTG_Registers", "group__ptg__registers.html", "group__ptg__registers" ],
     [ "SIMO_Registers", "group__simo__registers.html", "group__simo__registers" ],
+    [ "SIR_Registers", "group__sir__registers.html", "group__sir__registers" ],
     [ "External Memory Cache Controller (EMCC)", "group__emcc.html", "group__emcc" ]
 ];

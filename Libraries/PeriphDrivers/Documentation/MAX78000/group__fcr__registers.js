@@ -1,16 +1,16 @@
 var group__fcr__registers =
 [
     [ "Register Offsets", "group___f_c_r___register___offsets.html", "group___f_c_r___register___offsets" ],
-    [ "FCR_REG0", "group___f_c_r___r_e_g0.html", "group___f_c_r___r_e_g0" ],
-    [ "FCR_REG1", "group___f_c_r___r_e_g1.html", "group___f_c_r___r_e_g1" ],
-    [ "FCR_REG2", "group___f_c_r___r_e_g2.html", "group___f_c_r___r_e_g2" ],
-    [ "FCR_REG3", "group___f_c_r___r_e_g3.html", "group___f_c_r___r_e_g3" ],
+    [ "FCR_FCTRL0", "group___f_c_r___f_c_t_r_l0.html", "group___f_c_r___f_c_t_r_l0" ],
+    [ "FCR_AUTOCAL0", "group___f_c_r___a_u_t_o_c_a_l0.html", "group___f_c_r___a_u_t_o_c_a_l0" ],
+    [ "FCR_AUTOCAL1", "group___f_c_r___a_u_t_o_c_a_l1.html", "group___f_c_r___a_u_t_o_c_a_l1" ],
+    [ "FCR_AUTOCAL2", "group___f_c_r___a_u_t_o_c_a_l2.html", "group___f_c_r___a_u_t_o_c_a_l2" ],
     [ "FCR_URVCTRL", "group___f_c_r___u_r_v_c_t_r_l.html", "group___f_c_r___u_r_v_c_t_r_l" ],
     [ "mxc_fcr_regs_t", "group__fcr__registers.html#structmxc__fcr__regs__t", [
-      [ "reg0", "group__fcr__registers.html#afed8309a1f14d36a15a5bd4130493921", null ],
-      [ "reg1", "group__fcr__registers.html#af66ab9280dafe8770dedc060ebfc073e", null ],
-      [ "reg2", "group__fcr__registers.html#a67778e4274547359e8867657f8a045bd", null ],
-      [ "reg3", "group__fcr__registers.html#a9fb5bfad096c07cac472562e8205daa8", null ],
+      [ "autocal0", "group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26", null ],
+      [ "autocal1", "group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba", null ],
+      [ "autocal2", "group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9", null ],
+      [ "fctrl0", "group__fcr__registers.html#ac8284d716d273ab4c7b42d3f978f1b62", null ],
       [ "urvbootaddr", "group__fcr__registers.html#a1a01be51552e0de249b6aca3622faf1d", null ],
       [ "urvctrl", "group__fcr__registers.html#aa150e48bd81d6220af2a0c3b3eb303ea", null ]
     ] ]

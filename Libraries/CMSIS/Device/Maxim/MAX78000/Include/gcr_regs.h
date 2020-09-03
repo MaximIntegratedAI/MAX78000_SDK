@@ -504,9 +504,6 @@ typedef struct {
  #define MXC_F_GCR_RST1_OWM_POS                         7 /**< RST1_OWM Position */
  #define MXC_F_GCR_RST1_OWM                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_OWM_POS)) /**< RST1_OWM Mask */
 
- #define MXC_F_GCR_RST1_WDT1_POS                        8 /**< RST1_WDT1 Position */
- #define MXC_F_GCR_RST1_WDT1                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_WDT1_POS)) /**< RST1_WDT1 Mask */
-
  #define MXC_F_GCR_RST1_CRC_POS                         9 /**< RST1_CRC Position */
  #define MXC_F_GCR_RST1_CRC                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_CRC_POS)) /**< RST1_CRC Mask */
 

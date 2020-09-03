@@ -50,15 +50,15 @@ int MXC_UART_RevB_AbortTransmission (mxc_uart_regs_t* uart);
 int MXC_UART_RevB_ReadCharacterRaw (mxc_uart_regs_t* uart);
 int MXC_UART_RevB_WriteCharacterRaw (mxc_uart_regs_t* uart, uint8_t character);
 int MXC_UART_RevB_Read (mxc_uart_regs_t* uart, uint8_t* buffer, int* len);
-int MXC_UART_RevB_Write (mxc_uart_regs_t* uart, uint8_t* byte, int* len);
+int MXC_UART_RevB_Write (mxc_uart_regs_t* uart, const uint8_t* byte, int* len);
 unsigned int MXC_UART_RevB_ReadRXFIFO (mxc_uart_regs_t* uart, unsigned char* bytes,
                                        unsigned int len);
 int MXC_UART_RevB_ReadRXFIFODMA (mxc_uart_regs_t* uart, unsigned char* bytes,
         unsigned int len, mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevB_GetRXFIFOAvailable (mxc_uart_regs_t* uart);
-unsigned int MXC_UART_RevB_WriteTXFIFO (mxc_uart_regs_t* uart, unsigned char* bytes,
+unsigned int MXC_UART_RevB_WriteTXFIFO (mxc_uart_regs_t* uart, const unsigned char* bytes,
                                         unsigned int len);
-int MXC_UART_RevB_WriteTXFIFODMA (mxc_uart_regs_t* uart, unsigned char* bytes,
+int MXC_UART_RevB_WriteTXFIFODMA (mxc_uart_regs_t* uart, const unsigned char* bytes,
         unsigned int len, mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevB_GetTXFIFOAvailable (mxc_uart_regs_t* uart);
 int MXC_UART_RevB_ClearRXFIFO (mxc_uart_regs_t* uart);

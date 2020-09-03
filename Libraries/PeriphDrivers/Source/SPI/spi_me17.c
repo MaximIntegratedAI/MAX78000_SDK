@@ -190,6 +190,7 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t* spi)
     int spi_num;
     spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
+    (void)spi_num;
     
     MXC_SPI_RevA_Shutdown(spi);
     

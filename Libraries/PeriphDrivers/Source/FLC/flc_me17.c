@@ -45,7 +45,7 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "flc.h"
-#include "flc_reva.h"
+#include "flc_revb.h"
 #include "flc_common.h"
 #include "mcr_regs.h" // For ECCEN registers.
 
@@ -107,7 +107,7 @@ __attribute__((section(".flashprog")))
 #endif
 int MXC_FLC_Busy(void)
 {
-    return MXC_FLC_RevA_Busy();
+    return MXC_FLC_RevB_Busy();
 }
 
 #if IAR_PRAGMAS
@@ -129,12 +129,8 @@ int MXC_FLC_ME17_PageErase(uint32_t address)
     if ((err = MXC_FLC_ME17_GetPhysicalAddress(address, &addr)) < E_NO_ERROR) {
         return err;
     }
-    
-    if ((err = MXC_prepare_flc(flc)) != E_NO_ERROR) {
-        return err;
-    }
-    
-    err = MXC_FLC_RevA_PageErase(flc, addr);
+
+    err = MXC_FLC_RevB_PageErase(flc, addr);
     // Flush the cache
     MXC_FLC_ME17_Flash_Operation();
     
@@ -167,7 +163,7 @@ int MXC_FLC_ME17_Write128(uint32_t address, uint32_t* data)
         return err;
     }
     
-    err = MXC_FLC_RevA_Write128(flc, addr, data);
+    err = MXC_FLC_RevB_Write128(flc, addr, data);
     
     // Flush the cache
     MXC_FLC_ME17_Flash_Operation();
@@ -203,7 +199,7 @@ int MXC_FLC_ME17_Write32(uint32_t address, uint32_t data)
         return err;
     }
     
-    return MXC_FLC_RevA_Write32(flc, address, data, addr);
+    return MXC_FLC_RevB_Write32(flc, address, data, addr);
     
 }
 
@@ -214,7 +210,7 @@ int MXC_FLC_ME17_MassErase(void)
     
     for (i = 0; i < MXC_FLC_INSTANCES; i++) {
         flc = MXC_FLC_GET_FLC(i);
-        err = MXC_FLC_RevA_MassErase(flc);
+        err = MXC_FLC_RevB_MassErase(flc);
         
         if (err != E_NO_ERROR) {
             return err;
@@ -236,7 +232,7 @@ int MXC_FLC_ME17_UnlockInfoBlock(uint32_t address)
         return err;
     }
     
-    return MXC_FLC_RevA_UnlockInfoBlock(flc, address);
+    return MXC_FLC_RevB_UnlockInfoBlock(flc, address);
 }
 int MXC_FLC_ME17_LockInfoBlock(uint32_t address)
 {
@@ -247,7 +243,7 @@ int MXC_FLC_ME17_LockInfoBlock(uint32_t address)
         return err;
     }
     
-    return MXC_FLC_RevA_LockInfoBlock(flc, address);
+    return MXC_FLC_RevB_LockInfoBlock(flc, address);
 }
 /* ****************************************************************************** */
 int MXC_FLC_MassErase(void)
@@ -281,22 +277,22 @@ void MXC_FLC_Read(int address, void* buffer, int len)
 
 int MXC_FLC_EnableInt(uint32_t flags)
 {
-    return MXC_FLC_RevA_EnableInt(flags);
+    return MXC_FLC_RevB_EnableInt(flags);
 }
 
 int MXC_FLC_DisableInt(uint32_t flags)
 {
-    return MXC_FLC_RevA_DisableInt(flags);
+    return MXC_FLC_RevB_DisableInt(flags);
 }
 
 int MXC_FLC_GetFlags(void)
 {
-    return MXC_FLC_RevA_GetFlags();
+    return MXC_FLC_RevB_GetFlags();
 }
 
 int MXC_FLC_ClearFlags(uint32_t flags)
 {
-    return MXC_FLC_RevA_ClearFlags(flags);
+    return MXC_FLC_RevB_ClearFlags(flags);
 }
 
 int MXC_FLC_UnlockInfoBlock(uint32_t address)

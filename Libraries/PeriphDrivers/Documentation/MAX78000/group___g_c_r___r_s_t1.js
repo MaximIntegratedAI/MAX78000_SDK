@@ -23,7 +23,5 @@ var group___g_c_r___r_s_t1 =
     [ "MXC_F_GCR_RST1_SMPHR", "group___g_c_r___r_s_t1.html#ga6f192f72817088d17a3f457c23f5f409", null ],
     [ "MXC_F_GCR_RST1_SMPHR_POS", "group___g_c_r___r_s_t1.html#ga971a09a5ebd57bc925f7a3cb113e85f2", null ],
     [ "MXC_F_GCR_RST1_SPI0", "group___g_c_r___r_s_t1.html#gae18a429adc6228661aa441c22fdfd5ac", null ],
-    [ "MXC_F_GCR_RST1_SPI0_POS", "group___g_c_r___r_s_t1.html#ga9ebf2a3c52cf6e6ad2aef72b452249c2", null ],
-    [ "MXC_F_GCR_RST1_WDT1", "group___g_c_r___r_s_t1.html#ga31133572beb2b27dc5836af6bf1675ac", null ],
-    [ "MXC_F_GCR_RST1_WDT1_POS", "group___g_c_r___r_s_t1.html#ga507bd57e76f5409560ac4e7d4ed049ab", null ]
+    [ "MXC_F_GCR_RST1_SPI0_POS", "group___g_c_r___r_s_t1.html#ga9ebf2a3c52cf6e6ad2aef72b452249c2", null ]
 ];

@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['fcr_5freg0',['FCR_REG0',['../group___f_c_r___r_e_g0.html',1,'']]],
-  ['fcr_5freg1',['FCR_REG1',['../group___f_c_r___r_e_g1.html',1,'']]],
-  ['fcr_5freg2',['FCR_REG2',['../group___f_c_r___r_e_g2.html',1,'']]],
-  ['fcr_5freg3',['FCR_REG3',['../group___f_c_r___r_e_g3.html',1,'']]],
+  ['fcr_5fautocal0',['FCR_AUTOCAL0',['../group___f_c_r___a_u_t_o_c_a_l0.html',1,'']]],
+  ['fcr_5fautocal1',['FCR_AUTOCAL1',['../group___f_c_r___a_u_t_o_c_a_l1.html',1,'']]],
+  ['fcr_5fautocal2',['FCR_AUTOCAL2',['../group___f_c_r___a_u_t_o_c_a_l2.html',1,'']]],
+  ['fcr_5ffctrl0',['FCR_FCTRL0',['../group___f_c_r___f_c_t_r_l0.html',1,'']]],
   ['fcr_5fregisters',['FCR_Registers',['../group__fcr__registers.html',1,'']]],
   ['fcr_5furvctrl',['FCR_URVCTRL',['../group___f_c_r___u_r_v_c_t_r_l.html',1,'']]],
   ['flash_20controller_20_20_28flc_29',['Flash Controller  (FLC)',['../group__flc.html',1,'']]],

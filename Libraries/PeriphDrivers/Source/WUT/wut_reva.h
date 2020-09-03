@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-10-25 14:21:06 -0500 (Fri, 25 Oct 2019) $
- * $Revision: 48094 $
- *
  **************************************************************************** */
 
 /* **** Includes **** */
@@ -41,15 +38,7 @@
 #include "wut.h"
 #include "gcr_regs.h"
 
-/* **** Definitions **** */
-
-/* **** Globals **** */
-
-/* **** Local Variables **** */
-
 /* **** Functions **** */
-
-/* ************************************************************************** */
 void MXC_WUT_RevA_Init(mxc_wut_regs_t* wut, mxc_wut_pres_t pres);
 
 void MXC_WUT_RevA_Shutdown(mxc_wut_regs_t* wut);
@@ -57,7 +46,6 @@ void MXC_WUT_RevA_Shutdown(mxc_wut_regs_t* wut);
 void MXC_WUT_RevA_Enable(mxc_wut_regs_t* wut);
 
 void MXC_WUT_RevA_Disable(mxc_wut_regs_t* wut);
-
 
 void MXC_WUT_RevA_Config(mxc_wut_regs_t* wut, const mxc_wut_cfg_t *cfg);
 

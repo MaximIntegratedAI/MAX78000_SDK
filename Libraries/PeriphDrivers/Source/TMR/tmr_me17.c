@@ -299,12 +299,22 @@ uint32_t MXC_TMR_GetFlags(mxc_tmr_regs_t* tmr)
 
 void MXC_TMR_EnableInt(mxc_tmr_regs_t* tmr)
 {
-    return MXC_TMR_RevB_EnableInt(tmr);
+    MXC_TMR_RevB_EnableInt(tmr);
 }
 
 void MXC_TMR_DisableInt(mxc_tmr_regs_t* tmr)
 {
-    return MXC_TMR_RevB_DisableInt(tmr);
+    MXC_TMR_RevB_DisableInt(tmr);
+}
+
+void MXC_TMR_EnableWakeup (mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+{
+    MXC_TMR_RevB_EnableWakeup (tmr, cfg);
+}
+
+void MXC_TMR_DisableWakeup (mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
+{
+    MXC_TMR_RevB_DisableWakeup (tmr, cfg);
 }
 
 void MXC_TMR_SetCompare(mxc_tmr_regs_t* tmr, uint32_t cmp_cnt)
@@ -366,3 +376,9 @@ int MXC_TMR_GetTime(mxc_tmr_regs_t* tmr, uint32_t ticks, uint32_t* time, mxc_tmr
 {
     return MXC_TMR_RevB_GetTime(tmr, ticks, time, units);
 }
+
+int MXC_TMR_GetTicks(mxc_tmr_regs_t *tmr, uint32_t time, mxc_tmr_unit_t units, uint32_t *ticks)
+{
+    return MXC_TMR_RevB_GetTicks(tmr, time, units, ticks);
+}
+

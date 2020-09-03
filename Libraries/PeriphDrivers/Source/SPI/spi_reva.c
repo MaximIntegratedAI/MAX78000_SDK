@@ -95,7 +95,7 @@ int MXC_SPI_RevA_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int
     MXC_SPI_SetFrequency(spi, hz);
     
     //set slave select polarity
-    spi->ctrl2 |= ((!!ssPolarity) << MXC_F_SPI_CTRL2_SS_POL_POS);
+    spi->ctrl2 = ((!!ssPolarity) << MXC_F_SPI_CTRL2_SS_POL_POS);
     
     // Clear the interrupts
     spi->intfl = spi->intfl;
@@ -270,6 +270,7 @@ int MXC_SPI_RevA_GetDataSize(mxc_spi_regs_t* spi)
     int spi_num;
     spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
+    (void)spi_num;
     
     if (!(spi->ctrl2 & MXC_F_SPI_CTRL2_NUMBITS)) {
         return 16;
@@ -294,6 +295,7 @@ int MXC_SPI_RevA_SetSlave(mxc_spi_regs_t* spi, int ssIdx)
     
     spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
+    (void)spi_num;
     
     // Setup the slave select
     MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE, ((1 << ssIdx) << MXC_F_SPI_CTRL0_SS_ACTIVE_POS));
@@ -304,6 +306,7 @@ int MXC_SPI_RevA_GetSlave(mxc_spi_regs_t* spi)
 {
     int spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
+    (void)spi_num;
     
     return ((spi->ctrl0 & MXC_F_SPI_CTRL0_SS_ACTIVE) >> MXC_F_SPI_CTRL0_SS_ACTIVE_POS) >> 1;
 }
@@ -313,6 +316,7 @@ int MXC_SPI_RevA_SetWidth(mxc_spi_regs_t* spi, mxc_spi_width_t spiWidth)
     int spi_num;
     spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
+    (void)spi_num;
     
     spi->ctrl2 &= ~(MXC_F_SPI_CTRL2_THREE_WIRE | MXC_F_SPI_CTRL2_DATA_WIDTH);
     
@@ -359,6 +363,7 @@ int MXC_SPI_RevA_StartTransmission(mxc_spi_regs_t* spi)
 {
     int spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
+    (void)spi_num;
     
     if (MXC_SPI_GetActive(spi) == E_BUSY) {
         return E_BUSY;
@@ -381,7 +386,9 @@ int MXC_SPI_RevA_GetActive(mxc_spi_regs_t* spi)
 int MXC_SPI_RevA_AbortTransmission(mxc_spi_regs_t* spi)
 {
     int spi_num;
-    MXC_ASSERT((spi_num = MXC_SPI_GET_IDX(spi)) >= 0);
+    spi_num = MXC_SPI_GET_IDX(spi);
+    MXC_ASSERT(spi_num >= 0);
+
     // Disable interrupts, clear the flags
     spi->inten = 0;
     spi->intfl = spi->intfl;
@@ -624,7 +631,7 @@ int MXC_SPI_RevA_TransSetup(mxc_spi_req_t* req)
         
     }
     
-    if (req->rxData != NULL) {
+    if (req->rxData != NULL && req->rxLen > 0) {
         MXC_SETFIELD((req->spi)->ctrl1, MXC_F_SPI_CTRL1_RX_NUM_CHAR,
                      req->rxLen << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);
         (req->spi)->dma |= MXC_F_SPI_DMA_RX_FIFO_EN;
@@ -644,10 +651,16 @@ int MXC_SPI_RevA_TransSetup(mxc_spi_req_t* req)
             req->txData = req->rxData;
             req->txLen = req->rxLen;
         }
+    }
         
+    if(req->txData != NULL && req->txLen > 0) {
         MXC_SETFIELD((req->spi)->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR,
                      req->txLen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
         (req->spi)->dma |= MXC_F_SPI_DMA_TX_FIFO_EN;
+    }
+    else {
+        (req->spi)->ctrl1 &= ~(MXC_F_SPI_CTRL1_TX_NUM_CHAR);
+        (req->spi)->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN);
     }
     
     (req->spi)->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
@@ -1153,7 +1166,8 @@ void MXC_SPI_RevA_AbortAsync(mxc_spi_regs_t* spi)
 
 void MXC_SPI_RevA_AsyncHandler(mxc_spi_regs_t* spi)
 {
-    int spi_num, rx_avail;
+    int spi_num;
+    unsigned rx_avail;
     uint32_t flags;
     
     // Clear the interrupt flags

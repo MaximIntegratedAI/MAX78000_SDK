@@ -44,6 +44,16 @@
 /************************************ DEFINES ********************************/
 #define TS_SPI0_PINS            MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10
 #define TS_SPI_FREQ             1000000 // Hz
+
+#ifndef FLIP_SCREEN
+#define FLIP_SCREEN 0
+#endif
+#ifndef ROTATE_SCREEN
+#define ROTATE_SCREEN 0
+#endif
+#define X_RES_T	320
+#define Y_RES_T	240
+
 /******************************* TYPE DEFINITIONS ****************************/
 typedef struct _TS_Buttons_t {
     int x0;
@@ -127,11 +137,29 @@ static int tsGetXY(unsigned short* x, unsigned short* y)
         }
         while (tsZ1 & 0x7F0);
         
+#if (FLIP_SCREEN == 1)
+        *x = X_RES_T - *x;
+        *y = Y_RES_T - *y;
+#elif (ROTATE_SCREEN == 1)
+        unsigned short swap = *x;
+        *x = 240-*y-1;
+        *y = swap;
+#endif
         ret = 1;
-    }
-    else {
-        *x = 0;
-        *y = 0;
+
+    } else {
+
+#if (FLIP_SCREEN == 1)
+    	*x = X_RES_T;
+    	*y = Y_RES_T;
+#elif (ROTATE_SCREEN == 1)
+    	*x = Y_RES_T;
+    	*y = X_RES_T;
+#else
+    	*x = 0;
+    	*y = 0;
+#endif
+
         ret = 0;
     }
     
