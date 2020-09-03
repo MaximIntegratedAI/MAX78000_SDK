@@ -4,9 +4,21 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+September 3, 2020
+* Completed Wakeup Timer (WUT) example.
+* Modified TFT libraries to support different screen orientations.
+* Improved DMA support in the camera.
+* Changed FCR register and field names to match user guide.
+* Reordered watchdog timer instances to match the user guide.
+* Removed unused ECC files.
+* Set the correct base addresses for the low-power comparators.
+* Added functions to allow wake up from low-power timers.
+* Updated the flash controller code to the latest revision.
+* Improved full-duplex communication code for UART.
+
 July 9, 2020
 * Moved camera driver files from the example folders to the Libraries\Boards\MAX78000 folder.
-* Replace the CNN/cats_dogs-chw-fifo example with the CNN/cats-dogs_demo example.
+* Replaced the CNN/cats_dogs-chw-fifo example with the CNN/cats-dogs_demo example.
 
 July 1, 2020
 * Added macros for referencing evaluation kit LEDs by their name on the board.
@@ -46,21 +58,26 @@ May 21, 2020
 |----------------------|:-----------:|:---------------:|-------------------------------------------------------------------------------------------------|
 | ADC                  |   Complete  |       Yes       | The overflow, low limit, and high limit are not reported properly in the example.               |
 | AES                  |   Complete  |       Yes       |                                                                                                 |
-| CNN/cats-vs-dogs-chw |   Complete  |        No       |                                                                                                 |
-| CNN/cifar-10         |   Complete  |        No       |                                                                                                 |
-| CNN/cifar-100        |   Complete  |        No       |                                                                                                 |
-| CNN/kws20            |   Complete  |        No       |                                                                                                 |
-| CNN/kws20_demo       |   Complete  |     Partial     | The example can be imported into Eclipse, but it has no debug configuration associated with it. |
-| CNN/mnist            |   Complete  |        No       |                                                                                                 |
-| CNN/mnist-riscv      |   Complete  |        No       |                                                                                                 |
+| CNN/cats-dogs_demo   |   Complete  |       Yes       |                                                                                                 |
+| CNN/cats-vs-dogs-chw |   Complete  |     Partial     |                                                                                                 |
+| CNN/cifar-10         |   Complete  |       Yes       |                                                                                                 |
+| CNN/cifar-100        |   Complete  |       Yes       |                                                                                                 |
+| CNN/faceid           |   Complete  |       Yes       |                                                                                                 |
+| CNN/faceid_demo      |   Complete  |     Partial     |                                                                                                 |
+| CNN/faceid_evkit     |   Complete  |       Yes       |                                                                                                 |
+| CNN/kws20            |   Complete  |       Yes       |                                                                                                 |
+| CNN/kws20_demo       |   Complete  |       Yes       |                                                                                                 |
+| CNN/mnist            |   Complete  |     Partial     |                                                                                                 |
+| CNN/mnist-riscv      |   Complete  |       Yes       |                                                                                                 |
+| CNN/snake_game_demo  |   Complete  |       Yes       |                                                                                                 |
 | CRC                  |   Complete  |       Yes       |                                                                                                 |
 | DMA                  |   Complete  |       Yes       |                                                                                                 |
 | ECC                  |   Complete  |       Yes       |                                                                                                 |
-| Flash                | In Progress |   In Progress   |                                                                                                 |
+| Flash                |   Complete  |       Yes       |                                                                                                 |
 | GPIO                 |   Complete  |       Yes       |                                                                                                 |
 | Hello_World          |   Complete  |       Yes       |                                                                                                 |
 | I2C                  | In Progress |   In Progress   |                                                                                                 |
-| I2S                  | In Progress |   In Progress   |                                                                                                 |
+| I2S                  |   Complete  |       Yes       |                                                                                                 |
 | ICC                  |   Complete  |       Yes       |                                                                                                 |
 | LP                   | In Progress |   In Progress   |                                                                                                 |
 | Pulse_Train          |   Complete  |       Yes       |                                                                                                 |
@@ -69,6 +86,6 @@ May 21, 2020
 | TFT_Demo             |   Complete  |       Yes       | The Readme.md file needs to be completed.                                                       |
 | TMR                  |   Complete  |       Yes       | The PWM signal created by this example is not currently working.                                |
 | TRNG                 |   Complete  |       Yes       |                                                                                                 |
-| UART                 | In Progress |   In Progress   |                                                                                                 |
-| Watchdog             | In Progress |   In Progress   |                                                                                                 |
-| WUT                  | In Progress |   In Progress   |                                                                                                 |
+| UART                 |   Complete  |       Yes       |                                                                                                 |
+| Watchdog             |   Complete  |       Yes       |                                                                                                 |
+| WUT                  |   Complete  |       Yes       |                                                                                                 |
