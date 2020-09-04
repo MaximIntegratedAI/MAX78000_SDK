@@ -42,7 +42,6 @@
 #include "dma.h"
 #include "aes_regs.h"
 #include "aes_key_regs.h"
-#include "trng.h"
 #include "aes_revb.h"
 
 /* **** Variable Declaration **** */
@@ -73,8 +72,6 @@ static void memcpy32r(uint32_t * dst, const uint32_t * src, unsigned int len)
 int MXC_AES_RevB_Init(void)
 {
   MXC_AES->ctrl = 0x00;
-
-  MXC_TRNG_GenerateKey();
 
   while (MXC_AES_IsBusy() != E_NO_ERROR);
 
