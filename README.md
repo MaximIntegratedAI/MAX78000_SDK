@@ -4,6 +4,9 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+September 4, 2020
+* Resolved warning in AES initialization code.
+
 September 3, 2020
 * Added faceid_evkit example.
 * Adeded snake_game_demo example.
