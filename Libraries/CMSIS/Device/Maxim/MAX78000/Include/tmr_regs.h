@@ -198,7 +198,7 @@ typedef struct {
  #define MXC_S_TMR_CTRL0_MODE_A_CAPCOMP                 (MXC_V_TMR_CTRL0_MODE_A_CAPCOMP << MXC_F_TMR_CTRL0_MODE_A_POS) /**< CTRL0_MODE_A_CAPCOMP Setting */
  #define MXC_V_TMR_CTRL0_MODE_A_DUAL_EDGE               ((uint32_t)0x8UL) /**< CTRL0_MODE_A_DUAL_EDGE Value */
  #define MXC_S_TMR_CTRL0_MODE_A_DUAL_EDGE               (MXC_V_TMR_CTRL0_MODE_A_DUAL_EDGE << MXC_F_TMR_CTRL0_MODE_A_POS) /**< CTRL0_MODE_A_DUAL_EDGE Setting */
- #define MXC_V_TMR_CTRL0_MODE_A_IGATED                  ((uint32_t)0xCUL) /**< CTRL0_MODE_A_IGATED Value */
+ #define MXC_V_TMR_CTRL0_MODE_A_IGATED                  ((uint32_t)0xEUL) /**< CTRL0_MODE_A_IGATED Value */
  #define MXC_S_TMR_CTRL0_MODE_A_IGATED                  (MXC_V_TMR_CTRL0_MODE_A_IGATED << MXC_F_TMR_CTRL0_MODE_A_POS) /**< CTRL0_MODE_A_IGATED Setting */
 
  #define MXC_F_TMR_CTRL0_CLKDIV_A_POS                   4 /**< CTRL0_CLKDIV_A Position */

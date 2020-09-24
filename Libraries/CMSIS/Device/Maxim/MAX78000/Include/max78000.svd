@@ -8843,7 +8843,7 @@
         <enumeratedValue>
          <name>IGATED</name>
          <description>Inactive Gated Mode</description>
-         <value>12</value>
+         <value>14</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
