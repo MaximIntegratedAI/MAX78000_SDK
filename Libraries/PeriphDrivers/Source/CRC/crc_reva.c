@@ -143,7 +143,7 @@ int MXC_CRC_RevA_Compute(mxc_crc_req_t* req)
     MXC_CRC->ctrl |= MXC_F_CRC_CTRL_EN;
     
     while (length--) {
-        MXC_CRC->datain = req->dataBuffer[i++];
+        MXC_CRC->datain32 = req->dataBuffer[i++];
         
         while (MXC_CRC->ctrl & MXC_F_CRC_CTRL_BUSY);
     }

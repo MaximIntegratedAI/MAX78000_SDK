@@ -14,5 +14,9 @@ var searchData=
   ['flc_5fdata',['FLC_DATA',['../group___f_l_c___d_a_t_a.html',1,'']]],
   ['flc_5feccdata',['FLC_ECCDATA',['../group___f_l_c___e_c_c_d_a_t_a.html',1,'']]],
   ['flc_5fintr',['FLC_INTR',['../group___f_l_c___i_n_t_r.html',1,'']]],
-  ['flc_5fregisters',['FLC_Registers',['../group__flc__registers.html',1,'']]]
+  ['flc_5fregisters',['FLC_Registers',['../group__flc__registers.html',1,'']]],
+  ['flc_5frlr0',['FLC_RLR0',['../group___f_l_c___r_l_r0.html',1,'']]],
+  ['flc_5frlr1',['FLC_RLR1',['../group___f_l_c___r_l_r1.html',1,'']]],
+  ['flc_5fwelr0',['FLC_WELR0',['../group___f_l_c___w_e_l_r0.html',1,'']]],
+  ['flc_5fwelr1',['FLC_WELR1',['../group___f_l_c___w_e_l_r1.html',1,'']]]
 ];

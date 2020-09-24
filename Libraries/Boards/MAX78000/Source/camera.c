@@ -43,6 +43,7 @@
 #include "gpio.h"
 #include "camera.h"
 #include "sccb.h"
+#include "dma_regs.h"
 
 /*******************************      DEFINES      ***************************/
 #define FIFO_THRES_HOLD         (4)
@@ -140,10 +141,18 @@ void camera_irq_handler(void)
     MXC_PCIF->int_fl = flags; // clear flags
 }
 
+#ifdef __riscv
+void __attribute__((interrupt("machine")))  PCIF_IRQHandler(void)
+{
+    camera_irq_handler();
+    NVIC_ClearPendingIRQ(PCIF_IRQn);
+}
+#endif
+
 static void setup_dma(void)
 {
     int dma_handle = 0;
-    MXC_DMA->ch[dma_handle].status = 0x4; // Clear CTZ status flag
+    MXC_DMA->ch[dma_handle].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
     MXC_DMA->inten = 0x0;
 
     MXC_DMA->ch[dma_handle].dst = (uint32_t) rx_data; // Cast Pointer
@@ -170,7 +179,7 @@ static void setup_dma(void)
                                     (0x1 << MXC_F_DMA_CTRL_EN_POS)
                                    );
 
-    MXC_DMA->inten = 0x01;
+    MXC_DMA->inten = MXC_F_DMA_INTEN_CH0;
 }
 
 /******************************** Public Functions ***************************/
@@ -216,7 +225,12 @@ int camera_init(void)
         MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_PCIF_SYS, MXC_F_CAMERAIF_CTRL_PCIF_SYS);
         
         MXC_PCIF_EnableInt(MXC_F_CAMERAIF_INT_EN_IMG_DONE);
-        NVIC_SetVector(PCIF_IRQn, camera_irq_handler);
+        #ifndef __riscv
+            NVIC_SetVector(PCIF_IRQn, camera_irq_handler);
+        #else
+            __enable_irq();
+            NVIC_EnableIRQ(PCIF_IRQn);
+        #endif
     }
     
     return ret;

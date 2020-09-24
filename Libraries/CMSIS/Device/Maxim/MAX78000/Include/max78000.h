@@ -323,7 +323,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                         Trim System Initalization Register */
-#define MXC_BASE_TRIMSIR                ((uint32_t)0x40105400UL)
+#define MXC_BASE_TRIMSIR                ((uint32_t)0x40005400UL)
 #define MXC_TRIMSIR                     ((mxc_trimsir_regs_t*)MXC_BASE_TRIMSIR)
 
 /******************************************************************************/

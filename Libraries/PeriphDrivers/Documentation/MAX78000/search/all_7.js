@@ -25,6 +25,10 @@ var searchData=
   ['flc_5feccdata',['FLC_ECCDATA',['../group___f_l_c___e_c_c_d_a_t_a.html',1,'']]],
   ['flc_5fintr',['FLC_INTR',['../group___f_l_c___i_n_t_r.html',1,'']]],
   ['flc_5fregisters',['FLC_Registers',['../group__flc__registers.html',1,'']]],
+  ['flc_5frlr0',['FLC_RLR0',['../group___f_l_c___r_l_r0.html',1,'']]],
+  ['flc_5frlr1',['FLC_RLR1',['../group___f_l_c___r_l_r1.html',1,'']]],
+  ['flc_5fwelr0',['FLC_WELR0',['../group___f_l_c___w_e_l_r0.html',1,'']]],
+  ['flc_5fwelr1',['FLC_WELR1',['../group___f_l_c___w_e_l_r1.html',1,'']]],
   ['fstat',['fstat',['../group__sir__registers.html#a3561f2c3ee0e429c1dca85d580154cc9',1,'mxc_sir_regs_t']]],
   ['func',['func',['../group__gpio.html#a82db8d3ca4a2643b6b3214d4e16b832a',1,'mxc_gpio_cfg_t']]]
 ];

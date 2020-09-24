@@ -4,6 +4,13 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+September 24, 2020
+* Added mnist-streaming example.
+* Modified cats-dogs_demo to use DMA.
+* Added 8-bit and 16-bit accessors to CRC data register.
+* Added missing WELR and RLR registers to FLC block.
+* Corrected the address for the TRIMSIR block.
+
 September 4, 2020
 * Resolved warning in AES initialization code.
 

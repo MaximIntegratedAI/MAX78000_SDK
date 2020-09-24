@@ -987,7 +987,7 @@ int main(void)
   printf("Init Camera.\n");
   camera_init();
 
-  ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, NO_DMA);
+  ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA);
   if (ret != STATUS_OK) {
       printf("Error returned from setting up camera. Error %d\n", ret);
       return -1;
