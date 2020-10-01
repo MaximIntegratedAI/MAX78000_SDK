@@ -3,6 +3,5 @@ Examples/*/*/buildrv
 Examples/*/*/*/build
 Examples/*/*/*/buildrv
 .vscode/settings.json
-Libraries/PeriphDrivers/bin/MAX78000/softfp/libPeriphDriver_softfp.a
-Libraries/PeriphDrivers/bin/MAX78000/softfp_riscv/libPeriphDriver_softfp.a
+Libraries/PeriphDrivers/bin
 Examples/MAX78000/PowerTest
