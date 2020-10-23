@@ -71,8 +71,6 @@ int MXC_OWM_RevA_Init(const mxc_owm_cfg_t* cfg)
         break;
         
     default:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXFC);   // SPIXFC
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIP);  // SPIX
         return E_BAD_PARAM;
     }
     

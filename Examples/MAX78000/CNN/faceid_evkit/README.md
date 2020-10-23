@@ -40,18 +40,49 @@ Load firmware image using Openocd. **Make sure to remove PICO adapter once firmw
 
 ### Face Database Generation:
 
+This section describes how to add new pictures to the data base.
+
 #### Prerequisites:
+
 - Python 3.6.9 or higher (tested for 3.7.7 and 3.8.1)
-- NumPy (>=1.19)
-- Scipy (>=1.4)
-- OpenCv (>=3.4)
-- PySerial (>=3.4)
-- MatplotLib (>=3.2)
-- PyTorch (>=1.4.0)
-- Torchvision (>=0.5.0)
+- numpy (>=1.19)
+- scipy (>=1.4)
+- opencv-python (>=3.4)
+- pyserial (>=3.4)
+- matplotlib (>=3.2)
+- torch (>=1.4.0)
+- torchvision (>=0.5.0)
+
+#### Taking Face Pictures
+
+In order to achieve best identification, following steps are recommended:
+
+1. Phone or webcam can be used to take pictures.
+2. Make sure the subject face is well illuminated.
+
+3. Pictures should be a passport style, with subject's face covering about 60-70% of the area: 
+
+![](Resources\image1.png)
+
+4. Use a light color background; make sure it is not underexposed, and there is no shadow in the background or face. 
+
+5. Take one picture with each of the following poses, total of 6-8 pictures:
+
+   a) facing directly to camera (1 picture)
+
+   b) tilting face slightly (5-10 degree) to right, left, up and down, but still looking at the camera (4 pictures)
+
+   c) zoomed out face directly to camera covering about 20-30% of area (1 picture): 
+
+![](Resources\image2.png)
+
+6. If needed, you may add additional 1-2 pictures with some facial expressions (eg. smile) directly facing the camera, similar to 5-a (1-2 pictures)
+
+7. Save pictures in .jpg format with arbitrary names.
 
 #### Populate Face Images
-Navigate to 'db' folder and create a folder for each subject in your database and copy each subject's photos into these folders. These photos must contain subject's face directed to the camera but do not need to be consisting only the face. The structure of the directory should be as the following.
+
+Navigate to 'db' folder and create a folder for each subject in your database and copy each subject's photos into these folders. The name of the folder will be used as the detected subject's name. These photos must contain subject's face directed to the camera but do not need to be consisting only the face. The structure of the directory should be as the following. 
 
 ```bash
 ├── db
@@ -80,7 +111,14 @@ Run the python script by:
 $ python db_gen/generate_face_db.py --db db --db-filename embeddings --include-path include
 ```
 
-The script updates embeddings.h file under 'include' folder using the images under 'db' folder. 
+The script updates embeddings.h file under 'include' folder using the images under 'db' folder.  Next, you can rebuild the project and load the firmware as described before:
+
+```bash
+$ make clean
+$ make 
+```
+
+
 
 ## CNN Model Design
 ### Problem Definition
@@ -89,9 +127,9 @@ To identify people from 3 channel (RGB) frontal facial images, i.e. portraits. S
 ### Approach
 The main approach in the literature is composed of three steps:
 
-- Face Extraction: Detection of the faces in the image and extract a rectangular subimage that contains only face.
+- Face Extraction: Detection of the faces in the image and extract a rectangular sub-image that contains only face.
 - Face Alignment: The rotation angles (in 3D) of the face in the image is find to compensate its effect by affine transformation.
-- Face Identification: The extracted subimage is used to identify the person.
+- Face Identification: The extracted sub-image is used to identify the person.
 
 In this project, the aim is to run all those steps in a single AI-85 chip so the approach is to identify the faces with a single from uncropped portraits, each contains 1 face only.
 

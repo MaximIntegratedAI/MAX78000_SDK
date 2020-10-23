@@ -104,6 +104,14 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
 {
     uint32_t dataMask;
     
+    //Data pointers
+    uint8_t  *txdata_8   = (uint8_t*) req->txData;
+    uint16_t *txdata_16  = (uint16_t*) req->txData;
+    uint32_t *txdata_32  = (uint32_t*) req->txData;
+    uint8_t  *rawdata_8  = (uint8_t*) req->rawData;
+    uint16_t *rawdata_16 = (uint16_t*) req->rawData;    
+    uint32_t *rawdata_32 = (uint32_t*) req->rawData;
+
     if ((req->txData == NULL) & (req->rxData == NULL)) {
         return E_NULL_PTR;
     }
@@ -142,7 +150,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
             for (uint32_t i = 0; i < req->length ; i++) {
-                * ((uint8_t*) req->txData++) = * ((uint8_t*) req->rawData++) & dataMask;
+                *txdata_8++ = *rawdata_8++ & dataMask;
             }
         }
         
@@ -168,7 +176,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
             for (uint32_t i = 0; i < req->length ; i++) {
-                * ((uint16_t*) req->txData++) = * ((uint16_t*) req->rawData++) & dataMask;
+                *txdata_16++ = *rawdata_16++ & dataMask;
             }
         }
         
@@ -188,7 +196,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
             for (uint32_t i = 0; i < req->length ; i++) {
-                * ((uint32_t*) req->txData++) = (* ((uint32_t*) req->rawData++) & dataMask) << 12;
+                *txdata_32++ = (*rawdata_32++ & dataMask) << 12;
             }
         }
         
@@ -208,7 +216,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
             for (uint32_t i = 0; i < req->length ; i++) {
-                * ((uint32_t*) req->txData++) = (* ((uint32_t*) req->rawData++) & dataMask) << 8;
+                *txdata_32++ = (*rawdata_32++ & dataMask) << 8;
             }
         }
         
@@ -228,7 +236,7 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         
         if ((req->rawData != NULL) && (req->txData != NULL)) {
             for (uint32_t i = 0; i < req->length ; i++) {
-                * ((uint32_t*) req->txData++) = * ((uint32_t*) req->rawData++) & dataMask;
+                *txdata_32++ = *rawdata_32++ & dataMask;
             }
         }
         

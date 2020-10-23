@@ -51,9 +51,8 @@ COMPILER=GCC
 
 # Specify the board used
 ifeq "$(BOARD)" ""
-#BOARD=BCB
 BOARD=EvKit_V1
-#BOARD=Emulator
+#BOARD=FTHR_RevA
 endif
 
 PROJ_CFLAGS+=-D UART_BAUD=921600 -D CONSOLE_BAUD=921600

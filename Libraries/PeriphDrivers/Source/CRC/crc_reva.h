@@ -35,7 +35,7 @@
 
 int MXC_CRC_RevA_Init (void);
 int MXC_CRC_RevA_Shutdown (void);
-int MXC_CRC_RevA_Handler (int ch, int error);
+void MXC_CRC_RevA_Handler (int ch, int error);
 void MXC_CRC_RevA_SetDirection (mxc_crc_bitorder_t bitOrder);
 mxc_crc_bitorder_t MXC_CRC_RevA_GetDirection (void);
 void MXC_CRC_RevA_SwapDataIn(mxc_crc_bitorder_t bitOrder);

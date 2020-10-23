@@ -56,6 +56,16 @@
 
 /***** Definitions *****/
 
+#if defined (BOARD_EVKIT_V1)
+#define LATE_SW_NAME     "SW2"
+#define EARLY_SW_NAME    "SW3"
+#elif defined (BOARD_FTHR_REVA)
+#define LATE_SW_NAME     "SW1"
+#define EARLY_SW_NAME    "SW2"
+#else
+#error "This example has been written to work with the MAX78000 EV Kit and FTHR boards."
+#endif
+
 /***** Globals *****/
 //use push buttons defined in board.h
 extern const mxc_gpio_cfg_t pb_pin[];
@@ -153,11 +163,11 @@ int main(void)
     }
     
     printf("\n************** Watchdog Timer Demo ****************\n");
-    printf("SW2: Push SW2 to trigger a \"too-late\" watchdog reset. This will stop resetting\n");
+    printf("%s: Push %s to trigger a \"too-late\" watchdog reset. This will stop resetting\n", LATE_SW_NAME, LATE_SW_NAME);
     printf("     the watchdog timer until it generates the \"too-late\" interrupt.  After that\n");
     printf("     it will reset the watchdog timer only once, allowing it to pass the reset\n");
     printf("     timeout period.\n\n");
-    printf("SW3: Push SW3 to reset the watchdog timer in the \"too-early\" period.\n");
+    printf("%s: Push %s to reset the watchdog timer in the \"too-early\" period.\n", EARLY_SW_NAME, EARLY_SW_NAME);
     
     //Blink LED
     // MXC_GPIO_OutClr(led_pin[0].port,led_pin[0].mask);

@@ -56,8 +56,24 @@ void MXC_LP_EnterDeepSleepMode(void)
     MXC_LP_ClearWakeStatus();
     MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
     
+    /* Set SLEEPDEEP bit */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+
     /* Go into Deepsleep mode and wait for an interrupt to wake the processor */
-    MXC_GCR->pm         |= 0x9; // upm mode
+    MXC_GCR->pm |= 0x9; // UPM mode
+    __WFI();
+}
+
+void MXC_LP_EnterStandbyMode(void)
+{
+    MXC_LP_ClearWakeStatus();
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
+    
+    /* Set SLEEPDEEP bit */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+
+    /* Go into standby mode and wait for an interrupt to wake the processor */
+    MXC_GCR->pm |= 0x2; // standby mode
     __WFI();
 }
 

@@ -46,7 +46,13 @@
 /***** Definitions *****/
 
 /* Change to #undef USE_INTERRUPTS for polling mode */
-#define USE_INTERRUPTS
+//#define USE_INTERRUPTS
+
+#if defined(EvKit_V1)
+#define ADC_CHANNEL     MXC_ADC_CH_0
+#elif defined(FTHR_RevA)
+#define ADC_CHANNEL     MXC_ADC_CH_3
+#endif
 
 /***** Globals *****/
 #ifdef USE_INTERRUPTS
@@ -73,7 +79,7 @@ int main(void)
 {
     // unsigned int overflow;
     
-    printf("ADC Example\n");
+    printf("\n***** ADC Example ***** \n");
     
     /* Initialize ADC */
     if (MXC_ADC_Init() != E_NO_ERROR) {
@@ -83,10 +89,11 @@ int main(void)
     }
     
     /* Set up LIMIT0 to monitor high and low trip points */
-    MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_0, MXC_ADC_CH_0);
-    MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_0, 0x300);
-    MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_0, 0x25);
-    MXC_ADC_EnableMonitor(MXC_ADC_MONITOR_0);
+    while(MXC_ADC->status & (MXC_F_ADC_STATUS_ACTIVE | MXC_F_ADC_STATUS_AFE_PWR_UP_ACTIVE));
+    MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_3, ADC_CHANNEL);
+    MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_3, 0x300);
+    MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_3, 0x25);
+    MXC_ADC_EnableMonitor(MXC_ADC_MONITOR_3);
     
 #ifdef USE_INTERRUPTS
     NVIC_EnableIRQ(ADC_IRQn);
@@ -96,17 +103,17 @@ int main(void)
         /* Flash LED when starting ADC cycle */
         LED_On(LED1);
         MXC_TMR_Delay(MXC_TMR0, MSEC(10));
-        LED_Off(LED2);
+        LED_Off(LED1);
         
         /* Convert channel 0 */
 #ifdef USE_INTERRUPTS
         adc_done = 0;
-        MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
+        MXC_ADC_StartConversionAsync(ADC_CHANNEL, adc_complete_cb);
         
         while (!adc_done) {};
         
 #else
-        MXC_ADC_StartConversion(MXC_ADC_CH_0);
+        MXC_ADC_StartConversion(ADC_CHANNEL);
         
 #endif
         static uint8_t overflow;

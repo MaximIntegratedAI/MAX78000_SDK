@@ -46,6 +46,8 @@
 extern "C" {
 #endif
 
+#define BOARD_EVKIT_V1
+
 #ifndef CONSOLE_UART
 #define CONSOLE_UART    0      /// UART instance to use for console
 #endif
@@ -100,6 +102,26 @@ int Console_PrepForSleep(void);
  */
 int Debug_Init(void);
 #endif // __riscv
+
+/**
+ * \brief   Microphone power control.
+ *
+ * \param   on          1 for ON, 0 for OFF
+ *
+ * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+#define POWER_OFF         0
+#define POWER_ON          1
+int Microphone_Power(int on);
+
+/**
+ * \brief   Camera power control.
+ *
+ * \param   on          1 for ON, 0 for OFF
+ *
+ * \return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int Camera_Power(int on);
 
 
 #ifdef __cplusplus

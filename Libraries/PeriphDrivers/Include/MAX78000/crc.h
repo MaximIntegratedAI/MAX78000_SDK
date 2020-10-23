@@ -98,10 +98,8 @@ int MXC_CRC_Shutdown (void);
  *          when using Async functions
  * @param   ch      DMA channel
  * @param   error   error
- * 
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_CRC_Handler (int ch, int error);
+void MXC_CRC_Handler (int ch, int error);
 
 /**
  * @brief   Set the bit-order of CRC calculation

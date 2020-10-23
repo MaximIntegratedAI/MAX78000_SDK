@@ -49,9 +49,12 @@
 #include "icc.h"
 #include "flc_regs.h"
 #include "gcr_regs.h"
+#include "mxc_delay.h"
 
 /***** Definitions *****/
-#define TESTSIZE        8192        //2 pages worth so we can do erase functions 
+#define WORDS_PER_PG	(8192 / 4)					// (Bytes/Page)*(word/bytes)
+#define NUM_PAGES		3							// Number of flash pages to write
+#define TESTSIZE        (WORDS_PER_PG * NUM_PAGES)  // Number of words written to flash
 
 #define MXC_FLASH_MEM_SIZE_TEST MXC_FLASH_MEM_SIZE
 
@@ -193,7 +196,6 @@ void flash_init(void)
     // APB clock is 54MHz on the real silicon
     MXC_FLC0->clkdiv = 24;
     
-    MXC_FLC_ClearFlags(0x3);
     // Setup and enable interrupt
     NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler);
     NVIC_EnableIRQ(FLC0_IRQn);
@@ -303,7 +305,7 @@ int main(void)
     int fail = 0;
     int error_status, i;
     uint32_t start, end;
-    uint32_t buffer[0x1000];
+    uint32_t buffer[0x2000];
     
     /* Note: This example must execute out of RAM, due to MXC_FLC_MassErase() call, below */
     printf("\n\n***** Flash Control Example *****\n");
@@ -312,7 +314,7 @@ int main(void)
     flash_init();
     
     // Clear and enable flash programming interrupts
-    MXC_FLC_EnableInt((MXC_F_FLC_INTR_DONEIE | MXC_F_FLC_INTR_AFIE));
+    MXC_FLC_EnableInt(MXC_F_FLC_INTR_DONEIE | MXC_F_FLC_INTR_AFIE);
     isr_flags = 0;
     isr_cnt = 0;
     
@@ -352,8 +354,8 @@ int main(void)
         testdata[i] = i;
     }
     
-    MXC_ICC_Disable(MXC_ICC0);
     i = 0;
+    MXC_ICC_Disable(MXC_ICC0);
     
     for (testaddr = (MXC_FLASH_MEM_BASE); i < TESTSIZE; testaddr += 4) {
         // Clear and enable flash programming interrupts
@@ -393,10 +395,10 @@ int main(void)
         i++;
     }
     
-    //Page Erase
-    MXC_FLC_PageErase(MXC_FLASH_MEM_BASE);
+    // Erase page 2 of flash memory
+    MXC_FLC_PageErase(MXC_FLASH_MEM_BASE + 2*MXC_FLASH_PAGE_SIZE);
     
-    if (check_erased(MXC_FLASH_MEM_BASE, MXC_FLASH_PAGE_SIZE)) {
+    if (check_erased(MXC_FLASH_MEM_BASE + 2*MXC_FLASH_PAGE_SIZE, MXC_FLASH_PAGE_SIZE)) {
         printf("Page Erase is verified\n");
         
     }
@@ -406,11 +408,12 @@ int main(void)
     }
     
     // Erase parital pages or wide range of pages and keep the data on the page not inbetween start and end.
-    start = (MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE + 0x500);
+    // In this case erase part of pages 1 and 2
+    start = (MXC_FLASH_MEM_BASE + 0x80);
     end = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
-    flash_erase(start, end, buffer, 0x1000);
+    flash_erase(start, end, buffer, 0x2000);
     
-    if (check_erased(start, ((end - start) - 0x1000))) {
+    if (check_erased(start, (end - start))) {
         printf("Flash Erase is verified\n");
     }
     else {

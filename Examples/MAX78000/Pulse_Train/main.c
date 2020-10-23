@@ -48,6 +48,17 @@
 
 /***** Definitions *****/
 #define    ALL_PT    0x03
+#define		SQ_WV_HZ			10			//Square wave frequency
+#define		CONT_WV_BPS 		2			//Continuous wave bits/sec
+#define		CONT_WV_PATTERN		0x16		//Continuous wave bit pattern (pattern will only output 5 least significant bits)
+
+#define		FTHR_OUT_SQ			0			//Output square
+#define		FTHR_OUT_CONT		1
+
+#if (FTHR_OUT_SQ && FTHR_OUT_CONT) || !(FTHR_OUT_SQ || FTHR_OUT_CONT)
+#error "Please select either FTHR_OUT_SQ or FTHR_OUT_CONT."
+#endif
+
 /***** Globals *****/
 
 /***** Functions *****/
@@ -61,53 +72,75 @@ void PT_IRQHandler(void)
 }
 
 // *****************************************************************************
-void ContinuousPulseTrain(void)
+void ContinuousPulseTrain(int ch)
 {
     //Setup GPIO to PT output function
     //GPIO P0.18 uses PT0
     
     //setup PT configuration
     mxc_pt_cfg_t ptConfig;
-    ptConfig.channel = 0;                           //PT0
-    ptConfig.bps = 2;                               //bit rate
+    ptConfig.channel = ch;                  //PT0
+    ptConfig.bps = CONT_WV_BPS;             //bit rate
     ptConfig.ptLength = 5;                          //bits
-    ptConfig.pattern = 0x16;
+    ptConfig.pattern = CONT_WV_PATTERN;
     ptConfig.loop = 0;                              //continuous loop
     ptConfig.loopDelay = 0;
     
     MXC_PT_Config(&ptConfig);
     
-    //start PT4
+    if(ch) {
+    	MXC_PT_Start(MXC_F_PTG_ENABLE_PT1);
+    }
+    else {
     MXC_PT_Start(MXC_F_PTG_ENABLE_PT0);
+}
 }
 
 // *****************************************************************************
-void SquareWave(void)
+void SquareWave(int ch)
 {
     //Setup GPIO to PT output function
     //GPIO P0.19 uses PT1
     
-    uint32_t freq = 10;//Hz
-    MXC_PT_SqrWaveConfig(1, freq);                  //PT1
+    uint32_t freq = SQ_WV_HZ;			//Hz
+    MXC_PT_SqrWaveConfig(ch, freq);     //PT1
     
-    //start PT3
+    if(ch) {
     MXC_PT_Start(MXC_F_PTG_ENABLE_PT1);
+}
+    else {
+    	MXC_PT_Start(MXC_F_PTG_ENABLE_PT0);
+    }
 }
 
 // *****************************************************************************
 int main(void)
 {
-    printf("\n*************** Pulse Train Demo ****************\n");
-    printf("PT0 (P0.18) = Outputs continuous pattern of 10110b at 2bps\n");
-    printf("PT1 (P0.19) = Outputs 10Hz continuous square wave\n");
+#ifdef BOARD_EVKIT_V1
+    printf("\n***** Pulse Train Demo *****\n");
+    printf("PT0 (P0.18) = Outputs continuous pattern of 0x%x at %dbps\n", CONT_WV_PATTERN, CONT_WV_BPS);
+    printf("PT1 (P0.19) = Outputs %dHz continuous square wave\n", SQ_WV_HZ);
+#else
+    printf("\n***** Pulse Train Demo *****\n");
+    printf("This example outputs either a continuous pattern of 0x%x at\n", CONT_WV_PATTERN);
+    printf("%dbps or a %dHz continuous square wave on PT channel 1 (P0.19).\n", CONT_WV_BPS, SQ_WV_HZ);
+#endif
     
     NVIC_EnableIRQ(PT_IRQn);         //enabled default interrupt handler
     MXC_PT_EnableInt(ALL_PT);        //enabled interrupts for all PT
     MXC_PT_Init(MXC_PT_CLK_DIV1);    //initialize pulse trains
     
-    //configure and start pulse trains
-    ContinuousPulseTrain();
-    SquareWave();
+#ifdef BOARD_EVKIT_V1 						//Using Standard EV Kit
+    ContinuousPulseTrain(0);
+    SquareWave(1);
+#else									//Using Featherboard
+	if(FTHR_OUT_CONT) {
+		ContinuousPulseTrain(1);
+	}
+	else {
+		SquareWave(1);
+	}
+#endif
     
     while (1) {}
 }

@@ -68,7 +68,14 @@
 /* **** Definitions **** */
 
 /* Enable/Disable Features */
-#define ENABLE_TFT						 // enables TFT display
+#if defined (BOARD_EVKIT_V1)
+	#define ENABLE_TFT						 // enables TFT display
+#elif defined (BOARD_FTHR_REVA)
+	#undef ENABLE_TFT
+#else
+    #error "This demo works with either Maxim's MAX78000 EV Kit or Maxim's MAX78000 Feather board."
+#endif
+
 #define ENABLE_PRINT_ENVELOPE            // enables printing average waveform envelope for samples
 //#define ENABLE_CLASSIFICATION_DISPLAY	 // enables printing classification result
 #define ENABLE_SILENCE_DETECTION		 // Starts collecting only after avg > THRESHOLD_HIGH, otherwise starts from first sample
@@ -191,6 +198,11 @@ int main(void)
 	/* Switch to 100 MHz clock */
 	MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 	SystemCoreClockUpdate();
+
+#if defined (BOARD_FTHR_REVA)
+    /* Enable microphone power on Feather board */
+    Microphone_Power(POWER_ON);
+#endif
 
 	/* Reset all domains, restore power to CNN */
 	MXC_BBFC->reg3 = 0xf; // Reset
@@ -524,8 +536,7 @@ void I2SInit()
 
     if((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         printf("\nError in I2S_Init: %d\n", err);
-		while (1)
-			;
+		while (1);
     }
 
     /* Set I2S RX FIFO threshold to generate interrupt */
@@ -542,8 +553,9 @@ void I2SInit()
 /* **************************************************************************** */
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data,
 		int16_t *out_class, double *out_prob) {
-
+#ifdef ENABLE_TFT
 	char buff[TFT_BUFF_SIZE];
+#endif
 	int32_t temp[NUM_OUTPUTS];
 	q15_t max = 0;    // soft_max output is 0->32767
 	int32_t max_ml = 1<<31;  // ml before going to soft_max

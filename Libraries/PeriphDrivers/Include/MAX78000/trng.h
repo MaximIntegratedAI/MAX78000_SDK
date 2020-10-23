@@ -1,6 +1,6 @@
 /**
- * @file
- * @brief   Trust Protection Unit driver.
+ * @file    trng.h
+ * @brief   Random number generator driver.
  */
 
 /* ****************************************************************************
@@ -127,6 +127,11 @@ int MXC_TRNG_Random (uint8_t* data, uint32_t len);
  *
  */
 void MXC_TRNG_RandomAsync (uint8_t* data, uint32_t len, mxc_trng_complete_t callback);
+
+/**
+ * @brief   Generate an AES key and transfer to the AES block
+ */
+void MXC_TRNG_GenerateKey(void);
 
 #ifdef __cplusplus
 }

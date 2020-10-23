@@ -335,7 +335,7 @@ int MXC_UART_RevC_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, uns
     
     states[uart_num].channelRx = channel;
     MXC_DMA_ConfigChannel(config, srcdst);
-    MXC_DMA_SetCallback(channel, (void*) MXC_UART_DMACallback);
+    MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
     MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
@@ -390,7 +390,7 @@ int MXC_UART_RevC_WriteTXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, un
     
     states[uart_num].channelTx = channel;
     MXC_DMA_ConfigChannel(config, srcdst);
-    MXC_DMA_SetCallback(channel, (void*) MXC_UART_DMACallback);
+    MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
     MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
@@ -669,24 +669,8 @@ int MXC_UART_RevC_TransactionDMA(mxc_uart_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevC_DMACallback(int ch, int error)
+void MXC_UART_RevC_DMACallback(int ch, int error)
 {
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-    
-    // For future use
-    for (int i = 0; i < MXC_UART_INSTANCES; i ++) {
-        if (states[i].channelTx == ch) {
-            break;
-        }
-        
-        else if (states[i].channelRx == ch) {
-            break;
-        }
-    }
-    
-    return error;
 }
 
 int MXC_UART_RevC_AsyncCallback(mxc_uart_regs_t* uart, int retVal)

@@ -187,6 +187,8 @@ int camera_init(void)
 {
     int ret = 0;
     
+	Camera_Power(1);
+    
     // initialize XCLK for camera
     MXC_PT_Init(MXC_PT_CLK_DIV1);
     MXC_PT_SqrWaveConfig(0, CAMERA_FREQ);
@@ -309,11 +311,14 @@ int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode
         MXC_PCIF_DisableInt(MXC_F_CAMERAIF_INT_EN_FIFO_THRESH);
     }
     else {
+		// Slow down clock if not using dma
+		ret |= camera.write_reg(0x11, 0xf); // clock prescaler
         MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA, 0x0);
         MXC_PCIF_EnableInt(MXC_F_CAMERAIF_INT_EN_FIFO_THRESH);
     }
-    camera.set_framesize(g_framesize_width, g_framesize_height);
     camera.set_pixformat(pixformat);
+    camera.set_framesize(g_framesize_width, g_framesize_height);
+
     return ret;
 }
 

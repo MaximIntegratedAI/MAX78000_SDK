@@ -52,6 +52,7 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
+#BOARD=FTHR_RevA
 endif
 
 # This is the path to the CMSIS root directory
@@ -85,6 +86,9 @@ IPATH = .
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
 
+# Define the Board which the example is running on
+PROJ_CFLAGS+=-D$(BOARD)
+
 # Enable all warnings
 PROJ_CFLAGS+=-Wall
 
@@ -104,7 +108,7 @@ PROJ_CFLAGS+=-Wall
 #STARTUPFILE=start.S
 
 # Set MXC_OPTIMIZE to override the default optimization level 
-#MXC_OPTIMIZE_CFLAGS=-O1
+MXC_OPTIMIZE_CFLAGS=-O0
 
 # Point this variable to a linker file to override the default file
 LINKER=$(TARGET_LC).ld

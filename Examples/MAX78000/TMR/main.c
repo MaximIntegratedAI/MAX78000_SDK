@@ -49,9 +49,12 @@
 #include "pwrseq_regs.h"
 #include "mxc.h"
 #include "lp.h"
+#include "led.h"
+#include "pb.h"
 
 /***** Definitions *****/
-#define DEEPSLEEP_MODE          // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
+#define SLEEP_MODE          // Select between SLEEP_MODE and DEEPSLEEP_MODE for LPTIMER
+//#define DEEPSLEEP_MODE
 
 #define PB2     1
 
@@ -131,7 +134,7 @@ void ContinuousTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
-    MXC_GPIO_OutToggle(led_pin[0].port, led_pin[0].mask);
+    LED_Toggle(LED1);
 }
 
 void ContinuousTimer()
@@ -174,14 +177,17 @@ void OneshotTimerHandler()
     // Clear interrupt
     if (MXC_TMR4->wkfl & MXC_F_TMR_WKFL_A) {
         MXC_TMR4->wkfl = MXC_F_TMR_WKFL_A;
-        MXC_GPIO_OutToggle(led_pin[1].port, led_pin[1].mask);
-        MXC_GPIO_OutToggle(led_pin[1].port, led_pin[1].mask);
-        MXC_GPIO_OutToggle(led_pin[1].port, led_pin[1].mask);
+#ifdef BOARD_EVKIT_V1
+        LED_Toggle(LED2);
+#endif
+        printf("One Shot Timer Expired!\n");
     }
 }
 
 void OneshotTimer()
 {
+    for(int i = 0; i < 5000; i++);      //Button debounce
+
     // Declare variables
     mxc_tmr_cfg_t tmr;
     uint32_t periodTicks = MXC_TMR_GetPeriod(OST_TIMER, OST_CLOCK_SOURCE, 128, OST_FREQ);
@@ -236,19 +242,19 @@ int main(void)
     
     printf("\n************************** Timer Example **************************\n\n");
     printf("1. A oneshot mode timer, Timer 4 (low-power timer) is used to create an\n");
-    printf("   interrupt at a freq of %d Hz. LED2 (Port 0.3) will toggle when the\n", OST_FREQ);
-    printf("   interrupt occurs.\n\n");
+    printf("   interrupt at a freq of %d Hz. If running the example on the Standard\n", OST_FREQ);
+    printf("   EV Kit, LED2 will toggle when the interrupt occurs.\n\n");
     printf("2. Timer 0 is used to output a PWM signal on Port 0.5.\n");
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
     printf("3. Timer 1 is configured as 16-bit timer used in continuous mode\n");
     printf("   which is used to create an interrupt at freq of %d Hz.\n", CONT_FREQ);
-    printf("   LED1 (Port 0.2) will toggle when the interrupt occurs.\n\n");
+    printf("   LED1 will toggle when the interrupt occurs.\n\n");
     printf("Push PB1 to start the PWM and continuous timer and PB2 to start lptimer in oneshot mode.\n\n");
     
     PB_RegisterCallback(0, (pb_callback) PB1Handler);
     
     while (1) {
-        if (MXC_GPIO_InGet(pb_pin[PB2].port, pb_pin[PB2].mask) == 0) {
+        if (PB_Get(1) == 1) {
             NVIC_SetVector(TMR4_IRQn, OneshotTimerHandler);
             NVIC_EnableIRQ(TMR4_IRQn);
             
@@ -258,9 +264,7 @@ int main(void)
             MXC_LP_EnterSleepMode();
             
 #else
-            MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
-            MXC_LP_ClearWakeStatus();
-            MXC_GCR->pm   |= MXC_S_GCR_PM_MODE_UPM;     // upm mode
+            MXC_LP_EnterDeepSleepMode();
 #endif
         }
     }

@@ -51,9 +51,8 @@ COMPILER=GCC
 
 # Specify the board used
 ifeq "$(BOARD)" ""
-#BOARD=BCB
 BOARD=EvKit_V1
-#BOARD=Emulator
+#BOARD=FTHR_RevA
 endif
 
 # This is the path to the CMSIS root directory
@@ -93,6 +92,9 @@ endif
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 PROJ_CFLAGS+=-DARM_MATH_CM4
+
+# Define which Board is being used
+PROJ_CFLAGS+=-D$(BOARD)
 
 # Enable all warnings
 PROJ_CFLAGS+=-Wall

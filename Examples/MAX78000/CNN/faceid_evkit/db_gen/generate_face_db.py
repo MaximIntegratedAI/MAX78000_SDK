@@ -50,6 +50,11 @@ def create_db_from_folder(args):
 
     embedding_db, _ = append_db_file_from_path(args.db, face_detector, ai85_adapter,
                                                db_dict=None, verbose=True)
+    if not embedding_db:
+        print(f'Cannot create a DB file. No face could be detected from the images in folder ',
+              f'`{args.db}`')
+        return
+
     save_embedding_db(embedding_db, path.join(CURRENT_DIR, args.db_filename + '.bin'),
                       add_prev_imgs=True)
     create_embeddings_include_file(CURRENT_DIR, args.db_filename, args.include_path)

@@ -52,6 +52,7 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
+#BOARD=FTHR_RevA
 endif
 
 # This is the path to the CMSIS root directory
@@ -84,6 +85,9 @@ IPATH = .
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
+
+# Control program based on board
+PROJ_CFLAGS+=-D$(BOARD)
 
 # Enable all warnings
 PROJ_CFLAGS+=-Wall

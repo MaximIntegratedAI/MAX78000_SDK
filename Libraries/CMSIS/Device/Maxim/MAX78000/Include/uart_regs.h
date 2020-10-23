@@ -147,7 +147,7 @@ typedef struct {
  #define MXC_F_UART_CTRL_TX_FLUSH                       ((uint32_t)(0x1UL << MXC_F_UART_CTRL_TX_FLUSH_POS)) /**< CTRL_TX_FLUSH Mask */
 
  #define MXC_F_UART_CTRL_RX_FLUSH_POS                   9 /**< CTRL_RX_FLUSH Position */
- #define MXC_F_UART_CTRL_RX_FLUSH                       ((uint32_t)(0x3UL << MXC_F_UART_CTRL_RX_FLUSH_POS)) /**< CTRL_RX_FLUSH Mask */
+ #define MXC_F_UART_CTRL_RX_FLUSH                       ((uint32_t)(0x1UL << MXC_F_UART_CTRL_RX_FLUSH_POS)) /**< CTRL_RX_FLUSH Mask */
 
  #define MXC_F_UART_CTRL_CHAR_SIZE_POS                  10 /**< CTRL_CHAR_SIZE Position */
  #define MXC_F_UART_CTRL_CHAR_SIZE                      ((uint32_t)(0x3UL << MXC_F_UART_CTRL_CHAR_SIZE_POS)) /**< CTRL_CHAR_SIZE Mask */

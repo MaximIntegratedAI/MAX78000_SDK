@@ -32,7 +32,6 @@ Navigate directory where KWS20 demo software is located and build the project:
 
 ```bash
 $ cd /Examples/MAX78000/CNN/kws20_demo
-$ make
 ```
 
 If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
@@ -41,11 +40,25 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make distclean
 ```
 
+Before building firmware you must select the correct value for _BOARD_  in "Makefile", either "EvKit\_V1" or "FTHR\_RevA", depending on hardware you are using to run the example.
+
+Enter the following command to build all of the files needed to run the example.
+
+```bash
+$ make
+```
+
 ### Load firmware image to target:
 
-Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
+If using the standard EV Kit (EvKit_V1):
 
-Connect PICO adapter to JH5 SWD header. 
+- Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
+- Connect PICO adapter to JH5 SWD header. 
+
+
+If using the Feather board (FTHR_RevA):
+
+-   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 
 Load firmware image using Openocd. **Make sure to remove PICO adapter once firmware is loaded.**
 
@@ -53,7 +66,7 @@ Load firmware image using Openocd. **Make sure to remove PICO adapter once firmw
 ./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
 ```
 
-### Jumper setting:
+### EVKIT jumper setting:
 
 Make sure to install jumper at JP20-CLK (INT position) as shown bellow:
 
@@ -77,9 +90,9 @@ Following words can be detected:
 
  ['**up', 'down', 'left', 'right', 'stop', 'go', 'yes', 'no', 'on', 'off', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'zero**']
 
- The MAX78000 EVKIT firmware recognizes keywords and reports result and confidence level.
+ The MAX78000 KWS20 firmware recognizes keywords and reports result and confidence level.
 
-The microphone (U15) is located between JH4 and JH5 headers.
+The microphone (U15) is located between JH4 and JH5 headers on EVKIT or between J5 and J7 audio connectors on Feather board.
 
 
 
@@ -91,7 +104,7 @@ The microphone (U15) is located between JH4 and JH5 headers.
 
 Debug terminal shows more information on status and detected words. 
 
-The USB cable connected to CN1 (USB/PWR) provides power and serial communication to MAX78000 EVKIT.
+The USB cable connected to CN1 (USB/PWR) provides power and serial communication to MAX78000 EVKIT or Feather board.
 
 To configure PC terminal program select correct COM port and settings as follow:
 

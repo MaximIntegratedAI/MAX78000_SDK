@@ -48,6 +48,7 @@ static int g_slv_addr;
 static pixformat_t g_pixelformat = PIXFORMAT_RGB565;
 
 static const uint8_t default_regs[][2] = {
+    {0x12, 0x80}, // System reset
     {0x69, 0x52}, // BLC window selection, BLC enable (default is 0x12)
     {0x1e, 0xb3}, // AddLT1F (default 0xb1)
     {0x48, 0x42},
@@ -56,31 +57,34 @@ static const uint8_t default_regs[][2] = {
     {0xff, 0x00}, // Select system control register bank
     {0x16, 0x03}, // Default
     {0x0c, 0xd6},
-    {0x82, 0x3},
+    {0x82, 0x03},
     {0x11, 0x00},  // Set clock prescaler
-    {0x12, 0x6},
-    {0x61, 0x0},
-    {0x64, 0x11},
+    {0x12, 0x06},
+    {0x61, 0x00},
+    {0x64, 0x21},
     {0xc3, 0x80},
     {0x81, 0x3f},
-    {0x16, 0x3},
-    {0x37, 0xc},
+    {0x16, 0x07},
+    {0x31, 0x82},
+    {0x37, 0x04},
     {0x3e, 0x20},
-    {0x5e, 0x0},
-    {0xc4, 0x1},
+    {0x5e, 0x10},
+    {0x69, 0x02},
+    {0xc4, 0x01},
     {0xc5, 0x80},
-    {0xc6, 0x1},
+    {0xc6, 0x01},
     {0xc7, 0x80},
-    {0xc8, 0x2},
+    {0xc8, 0x02},
     {0xc9, 0x80},
-    {0xca, 0x1},
+    {0xca, 0x01},
     {0xcb, 0xe0},
-    {0xcc, 0x0},
+    {0xcc, 0x00},
     {0xcd, 0x40}, // Default to 64 line width
-    {0xce, 0x0},
+    {0xce, 0x00},
     {0xcf, 0x40}, // Default to 64 lines high
     {0x1c, 0x7f},
     {0x1d, 0xa2},
+    {0x0e, 0x00},
     {0xee, 0xee}  // End of register list marker 0xee
 };
 
@@ -252,9 +256,28 @@ static int get_pixformat(pixformat_t *pixformat)
 static int set_framesize(int width, int height)
 {
     int ret = 0;
+    uint8_t input_factor_large[4] = { 0 };
     // Default input factor for large images
-    uint8_t input_factor_large[] = { 0x02, 0x80, 0x01, 0xe0 };
-    uint8_t input_factor_small[] = { 0x01, 0xbf, 0x01, 0xbf };
+    if ((width < 320) || (height < 240)) { // check if size is QVGA or less
+        input_factor_large[0] = 0x02;
+        input_factor_large[1] = 0x80;
+        input_factor_large[2] = 0x00;
+        input_factor_large[3] = 0xf0;
+        uint8_t value;
+        ret |= cambus_readb(REG12, &value);
+        ret |= cambus_writeb(REG12, (value | 0x40)); // enable skip mode
+        ret |= cambus_writeb(0x17, 0x65); // Horizontal Window Start Point Control (LSBs), default is 0x69
+        ret |= cambus_writeb(0x18, 0xa4); // Horizontal sensor size (default)
+        ret |= cambus_writeb(0x19, 0x06); // Vertical Window Start Line Control
+        ret |= cambus_writeb(0x1a, 0x7b); // Vertical sensor size
+    } else {
+        input_factor_large[0] = 0x02;
+        input_factor_large[1] = 0x80;
+        input_factor_large[2] = 0x01;
+        input_factor_large[3] = 0xe0;
+    }
+
+    uint8_t input_factor_small[] = { 0x01, 0xbf, 0x00, 0xf0 };
     uint8_t *input_factor_ptr = input_factor_large;
     
     // Image typically outputs one line short, add a line to account.

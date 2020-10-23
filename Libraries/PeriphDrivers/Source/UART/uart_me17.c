@@ -386,7 +386,7 @@ int MXC_UART_AsyncHandler(mxc_uart_regs_t* uart)
     return MXC_UART_RevB_AsyncHandler(uart);
 }
 
-int MXC_UART_DMACallback(int ch, int error)
+void MXC_UART_DMACallback(int ch, int error)
 {
-    return MXC_UART_RevB_DMACallback(ch, error);
+    MXC_UART_RevB_DMACallback(ch, error);
 }

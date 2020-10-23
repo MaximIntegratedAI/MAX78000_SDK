@@ -50,6 +50,9 @@
 #define POLY    0xEDB88320
 #define CHECK   0xDEBB20E3
 
+#define SYNC	0
+#define ASYNC	1
+
 /***** Globals *****/
 volatile int wait;
 volatile int callback_result;
@@ -135,17 +138,18 @@ void Test_CRC(int asynchronous)
 // *****************************************************************************
 int main(void)
 {
-    printf("\nCRC Sync and Async Example\n\n");
+    printf("\n***** CRC Example *****\n\n");
     
-    Test_CRC(0);
+    Test_CRC(SYNC);
     
     MXC_DMA_ReleaseChannel(0);
     NVIC_SetVector(DMA0_IRQn, DMA0_IRQHandler);
     NVIC_EnableIRQ(DMA0_IRQn);
-    Test_CRC(1);
+    __enable_irq();
+    Test_CRC(ASYNC);
     
     if (fail) {
-        printf("\Example Failed");
+        printf("Example Failed");
     }
     else {
         printf("\nExample Succeeded");

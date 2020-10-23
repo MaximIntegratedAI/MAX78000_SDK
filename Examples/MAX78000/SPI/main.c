@@ -1,7 +1,7 @@
 /**
  * @file    main.c
  * @brief   SPI Master Demo
- * @details Shows Master loopback demo for QSPI0
+ * @details Shows Master loopback demo for SPI
  *          Read the printf() for instructions
  */
 
@@ -50,12 +50,13 @@
 #include "uart.h"
 #include "spi.h"
 #include "dma.h"
+#include "board.h"
 
 
 /***** Preprocessors *****/
-#define MASTERSYNC                  // 1. MASTERSYNC
-// 2. MASTERASYNC
-// 3. MASTERDMA
+#define MASTERSYNC
+// #define MASTERASYNC
+// #define MASTERDMA
 
 /***** Definitions *****/
 #define DATA_LEN        100         // Words
@@ -72,20 +73,22 @@ volatile int SPI_FLAG;
 volatile uint8_t DMA_FLAG = 0;
 
 /***** Functions *****/
-#if (SPI_INSTANCE_NUM == 0)
+#if defined (BOARD_FTHR_REVA)
 #define SPI         MXC_SPI0
 #define SPI_IRQ     SPI0_IRQn
 void SPI0_IRQHandler(void)
 {
     MXC_SPI_AsyncHandler(SPI);
 }
-#elif (SPI_INSTANCE_NUM == 1)
+#elif defined (BOARD_EVKIT_V1)
 #define SPI         MXC_SPI1
 #define SPI_IRQ     SPI1_IRQn
 void SPI1_IRQHandler(void)
 {
     MXC_SPI_AsyncHandler(SPI);
 }
+#else
+#error "This example has been configured to work with the EV Kit or the FTHR boards."
 #endif
 
 void DMA0_IRQHandler(void)
@@ -113,8 +116,13 @@ int main(void)
     mxc_spi_pins_t spi_pins;
     
     printf("\n**************************** SPI MASTER TEST *************************\n");
+    #if defined (BOARD_FTHR_REVA)
+        printf("This example configures the SPI to send data between the MISO (P0.6) and\n");
+        printf("MOSI (P0.5) pins.  Connect these two pins together.  \n\n");
+    #elif defined (BOARD_EVKIT_V1)
     printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
     printf("MOSI (P0.21) pins.  Connect these two pins together.  \n\n");
+    #endif
     printf("Multiple word sizes (2 through 16 bits) are demonstrated.\n\n");
     
     spi_pins.clock = TRUE;

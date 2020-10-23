@@ -85,7 +85,9 @@ void RTC_IRQHandler(void)
     /* Check time-of-day alarm flag. */
     if (flags & MXC_F_RTC_CTRL_TOD_ALARM) {
         MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_TOD_ALARM);
+#ifdef BOARD_EVKIT_V1
         LED_Toggle(LED_TODA);
+#endif
         /* Set a new alarm 10 seconds from current time. */
         time = MXC_RTC_GetSecond();
         
@@ -153,7 +155,9 @@ int main(void)
     printf("(LED1) is toggled each time the sub-second alarm triggers.\n\n");
     printf("The time-of-day alarm is set to %d seconds.  When the time-of-day alarm\n", TIME_OF_DAY_SEC);
     printf("triggers, the rate of the sub-second alarm is switched to %d ms.\n\n",      SUBSECOND_MSEC_1);
+#ifdef BOARD_EVKIT_V1
     printf("(LED2) is toggled each time the time-of-day alarm triggers.\n\n");
+#endif
     printf("The time-of-day alarm is then rearmed for another %d sec.  Pressing SW2\n", TIME_OF_DAY_SEC);
     printf("will output the current value of the RTC to the console UART.\n\n");
     
@@ -161,11 +165,15 @@ int main(void)
     
     
     /* Setup callback to receive notification of when button is pressed. */
+#ifdef BOARD_EVKIT_V1
     PB_RegisterCallback(0, (pb_callback) buttonHandler);
+#else
+    PB_RegisterCallback(1, (pb_callback) buttonHandler);
+#endif
     
     /* Turn LED off initially */
-    LED_On(LED_ALARM);
-    LED_On(LED_TODA);
+    LED_Off(LED_ALARM);
+    LED_Off(LED_TODA);
     
     if (MXC_RTC_Init(0, 0) != E_NO_ERROR) {
         printf("Failed RTC Initialization\n");

@@ -38,7 +38,6 @@ void MXC_AES_RevB_EnableInt (uint32_t interrupt);
 void MXC_AES_RevB_DisableInt (uint32_t interrupt);
 int MXC_AES_RevB_IsBusy (void);
 int MXC_AES_RevB_Shutdown (void);
-void MXC_AES_RevB_GenerateKey(void);
 void MXC_AES_RevB_SetKeySize(mxc_aes_keys_t key);
 mxc_aes_keys_t MXC_AES_RevB_GetKeySize(void);
 void MXC_AES_RevB_FlushInputFIFO(void);

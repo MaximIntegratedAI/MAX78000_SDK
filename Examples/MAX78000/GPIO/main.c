@@ -41,12 +41,14 @@
 #include <stdio.h>
 #include <string.h>
 #include "mxc_device.h"
+#include "mxc_delay.h"
 #include "nvic_table.h"
 #include "pb.h"
 #include "board.h"
 #include "gpio.h"
 
 /***** Definitions *****/
+#ifdef EvKit_V1
 #define MXC_GPIO_PORT_IN                MXC_GPIO2
 #define MXC_GPIO_PIN_IN                 MXC_GPIO_PIN_6
 
@@ -58,6 +60,21 @@
 
 #define MXC_GPIO_PORT_INTERRUPT_STATUS  MXC_GPIO0
 #define MXC_GPIO_PIN_INTERRUPT_STATUS   MXC_GPIO_PIN_3
+#endif
+
+#ifdef FTHR_RevA
+#define MXC_GPIO_PORT_IN                MXC_GPIO1
+#define MXC_GPIO_PIN_IN                 MXC_GPIO_PIN_7
+
+#define MXC_GPIO_PORT_OUT               MXC_GPIO2
+#define MXC_GPIO_PIN_OUT                MXC_GPIO_PIN_0
+
+#define MXC_GPIO_PORT_INTERRUPT_IN      MXC_GPIO0
+#define MXC_GPIO_PIN_INTERRUPT_IN       MXC_GPIO_PIN_2
+
+#define MXC_GPIO_PORT_INTERRUPT_STATUS  MXC_GPIO0
+#define MXC_GPIO_PIN_INTERRUPT_STATUS   MXC_GPIO_PIN_9
+#endif
 
 /***** Globals *****/
 
@@ -75,10 +92,19 @@ int main(void)
     mxc_gpio_cfg_t gpio_interrupt;
     mxc_gpio_cfg_t gpio_interrupt_status;
     
-    printf("\n\n************************* GPIO Example ***********************\n\n");
-    printf("1. This example reads P2.6 and outputs the same state onto P0.2.\n");
-    printf("2. An interrupt is set up on P2.7 . P0.3 toggles when that\n");
-    printf("   interrupt occurs.\n\n");
+    #ifdef EvKit_V1
+    printf("\n\n***** GPIO Example *****\n\n");
+    printf("1. This example reads P2.6 (PB1 input) and outputs the same state onto\n");
+    printf("   P0.2 (LED1).\n");
+    printf("2. An interrupt is set up on P2.7 (PB2 input). P0.3 (LED2) toggles when\n");
+    printf("   that interrupt occurs.\n\n");
+    #else
+    printf("\n\n***** GPIO Example *****\n\n");
+    printf("1. This example reads P1.7 (SW2 input) and outputs the same state onto\n");
+    printf("   P2.0 (LED1).\n");
+    printf("2. An interrupt is set to occur when SW1 (P0.2) is pressed. P0.9 and\n");
+    printf("   LED1 toggles when that interrupt occurs.\n\n");
+    #endif
     
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
     gpio_interrupt_status.port = MXC_GPIO_PORT_INTERRUPT_STATUS;
@@ -89,7 +115,7 @@ int main(void)
     MXC_GPIO_Config(&gpio_interrupt_status);
     
     /*
-     *   Set up interrupt on P2.7.
+     *   Set up interrupt pin.
      *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
      *     reads high when button is not pressed.
      */

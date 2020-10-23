@@ -89,8 +89,8 @@ typedef struct {
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0000:</tt> CRC CTRL Register */
   union{
     __IO uint32_t datain32;             /**< <tt>\b 0x0004:</tt> CRC DATAIN32 Register */
-    __IO uint32_t datain16[2];          /**< <tt>\b 0x0004:</tt> CRC DATAIN16 Register */
-    __IO uint32_t datain8[4];           /**< <tt>\b 0x0004:</tt> CRC DATAIN8 Register */
+    __IO uint16_t datain16[2];          /**< <tt>\b 0x0004:</tt> CRC DATAIN16 Register */
+    __IO uint8_t  datain8[4];           /**< <tt>\b 0x0004:</tt> CRC DATAIN8 Register */
   };
     __IO uint32_t poly;                 /**< <tt>\b 0x0008:</tt> CRC POLY Register */
     __IO uint32_t val;                  /**< <tt>\b 0x000C:</tt> CRC VAL Register */
@@ -155,7 +155,7 @@ typedef struct {
  * @{
  */
  #define MXC_F_CRC_DATAIN16_DATA_POS                    0 /**< DATAIN16_DATA Position */
- #define MXC_F_CRC_DATAIN16_DATA                        ((uint32_t)(0xFFFFUL << MXC_F_CRC_DATAIN16_DATA_POS)) /**< DATAIN16_DATA Mask */
+ #define MXC_F_CRC_DATAIN16_DATA                        ((uint16_t)(0xFFFFUL << MXC_F_CRC_DATAIN16_DATA_POS)) /**< DATAIN16_DATA Mask */
 
 /**@} end of group CRC_DATAIN16_Register */
 
@@ -166,7 +166,7 @@ typedef struct {
  * @{
  */
  #define MXC_F_CRC_DATAIN8_DATA_POS                     0 /**< DATAIN8_DATA Position */
- #define MXC_F_CRC_DATAIN8_DATA                         ((uint32_t)(0xFFUL << MXC_F_CRC_DATAIN8_DATA_POS)) /**< DATAIN8_DATA Mask */
+ #define MXC_F_CRC_DATAIN8_DATA                         ((uint8_t)(0xFFUL << MXC_F_CRC_DATAIN8_DATA_POS)) /**< DATAIN8_DATA Mask */
 
 /**@} end of group CRC_DATAIN8_Register */
 

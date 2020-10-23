@@ -53,7 +53,7 @@
 #include "nvic_table.h"
 
 /***** Definitions *****/
-// #define DMA
+#define DMA
 
 #define UART_BAUD           115200
 #define BUFF_SIZE           1024
@@ -61,6 +61,16 @@
 /***** Globals *****/
 volatile int READ_FLAG;
 volatile int DMA_FLAG;
+
+#if defined (BOARD_EVKIT_V1)
+#define READING_UART        1
+#define WRITING_UART        2
+#elif defined (BOARD_FTHR_REVA)
+#define READING_UART        2
+#define WRITING_UART        3
+#else
+#error "This example has been written for the MAX78000 Ev Kit or FTHR board."
+#endif
 
 /***** Functions *****/
 #ifdef DMA
@@ -70,9 +80,9 @@ void DMA_Handler(void)
     DMA_FLAG = 0;
 }
 #else
-void UART1_Handler(void)
+void UART_Handler(void)
 {
-    MXC_UART_AsyncHandler(MXC_UART1);
+    MXC_UART_AsyncHandler(MXC_UART_GET_UART(READING_UART));
 }
 #endif
 
@@ -88,9 +98,8 @@ int main(void)
     uint8_t RxData[BUFF_SIZE];
     
     printf("\n\n**************** UART Example ******************\n");
-    printf("This example sends data from one UART to another\n");
-    printf("\n\nConnect UART1 to UART2 for this example.\n");
-    printf("P0.12 -> P1.1 and P0.13 -> P1.0\n\n");
+    printf("This example sends data from one UART to another.\n");
+    printf("\nConnect the TX pin of UART%d to the RX pin of UART%d for this example.\n", WRITING_UART, READING_UART);
     
     printf("\n-->UART Baud \t: %d Hz\n", UART_BAUD);
     printf("\n-->Test Length \t: %d bytes\n", BUFF_SIZE);
@@ -107,18 +116,18 @@ int main(void)
     NVIC_SetVector(DMA0_IRQn, DMA_Handler);
     NVIC_EnableIRQ(DMA0_IRQn);
 #else
-    NVIC_ClearPendingIRQ(UART1_IRQn);
-    NVIC_DisableIRQ(UART1_IRQn);
-    NVIC_SetVector(UART1_IRQn, UART1_Handler);
-    NVIC_EnableIRQ(UART1_IRQn);
+    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(READING_UART));
+    NVIC_DisableIRQ(MXC_UART_GET_IRQ(READING_UART));
+    NVIC_SetVector(MXC_UART_GET_IRQ(READING_UART), UART_Handler);
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(READING_UART));
 #endif
     
     // Initialize the UART
-    error = MXC_UART_Init(MXC_UART1, UART_BAUD, MXC_UART_APB_CLK);
-    printf("\n-->UART 1 Baud rate: %d", error);
+    error = MXC_UART_Init(MXC_UART_GET_UART(READING_UART), UART_BAUD, MXC_UART_APB_CLK);
+    printf("\n-->UART %d Baud rate: %d", READING_UART, error);
     
-    error = MXC_UART_Init(MXC_UART2, UART_BAUD, MXC_UART_APB_CLK);
-    printf("\n-->UART 2 Baud rate: %d\n\n", error);
+    error = MXC_UART_Init(MXC_UART_GET_UART(WRITING_UART), UART_BAUD, MXC_UART_APB_CLK);
+    printf("\n-->UART %d Baud rate: %d\n\n", WRITING_UART, error);
     
     if (error < E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
@@ -131,14 +140,14 @@ int main(void)
     }
     
     mxc_uart_req_t read_req;
-    read_req.uart = MXC_UART1;
+    read_req.uart = MXC_UART_GET_UART(READING_UART);
     read_req.rxData = RxData;
     read_req.rxLen = BUFF_SIZE;
     read_req.txLen = 0;
     read_req.callback = readCallback;
     
     mxc_uart_req_t write_req;
-    write_req.uart = MXC_UART2;
+    write_req.uart = MXC_UART_GET_UART(WRITING_UART);
     write_req.txData = TxData;
     write_req.txLen = BUFF_SIZE;
     write_req.rxLen = 0;
@@ -146,6 +155,8 @@ int main(void)
     
     READ_FLAG = 1;
     DMA_FLAG = 1;
+    
+    MXC_UART_ClearRXFIFO(MXC_UART_GET_UART(READING_UART));
     
 #ifdef DMA
     error = MXC_UART_TransactionDMA(&read_req);
@@ -159,6 +170,7 @@ int main(void)
         
         while (1) {}
     }
+    
     
     error = MXC_UART_Transaction(&write_req);
     

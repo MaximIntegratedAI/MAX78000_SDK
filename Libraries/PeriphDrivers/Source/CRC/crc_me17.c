@@ -62,9 +62,9 @@ int MXC_CRC_Shutdown(void)
     return error;
 }
 
-int MXC_CRC_Handler(int ch, int error)
+void MXC_CRC_Handler(int ch, int error)
 {
-    return MXC_CRC_RevA_Handler(ch, error);
+    MXC_CRC_RevA_Handler(ch, error);
 }
 
 void MXC_CRC_SetDirection(mxc_crc_bitorder_t bitOrder)

@@ -92,8 +92,14 @@ int main(void)
     mxc_wut_cfg_t cfg;
     uint32_t ticks;
     
-    printf("/************** Wakeup timer example ********************/\n");
-    printf("This example is to show how the Wakeup timer is used and configured\n");
+    printf("\n\n************** Wakeup timer example ********************\n");
+    printf("This example is to show how the Wakeup timer is used and configured.\n");
+    
+#ifdef BOARD_EVKIT_V1
+    printf("Press SW2 to continue.\n");
+#else
+    printf("Press SW1 to continue.\n");
+#endif
     
     PB_RegisterCallback(0, buttonHandler);
     
@@ -124,9 +130,7 @@ int main(void)
         
 #else
         printf("Entering DEEP SLEEP mode.\n");
-        MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
-        MXC_LP_ClearWakeStatus();
-        MXC_GCR->pm   |= MXC_S_GCR_PM_MODE_UPM;     // deep sleep mode
+        MXC_LP_EnterDeepSleepMode();
         printf("Waking up from DEEP SLEEP mode.\n");
 #endif
     }

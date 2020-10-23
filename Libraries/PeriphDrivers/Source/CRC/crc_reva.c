@@ -65,14 +65,10 @@ int MXC_CRC_RevA_Shutdown(void)
     return E_NO_ERROR;
 }
 
-int MXC_CRC_RevA_Handler(int ch, int error)
+void MXC_CRC_RevA_Handler(int ch, int error)
 {
     if (error == E_NO_ERROR) {
         CRCreq->resultCRC = MXC_CRC_GetResult();
-        return E_NO_ERROR;
-    }
-    else {
-        return error;
     }
 }
 
@@ -196,7 +192,7 @@ int MXC_CRC_RevA_ComputeAsync(mxc_crc_req_t* req)
     MXC_CRC->ctrl |= MXC_F_CRC_CTRL_EN;
     
     MXC_DMA_ConfigChannel(config, srcdst);
-    MXC_DMA_SetCallback(channel, (void*) MXC_CRC_Handler);
+    MXC_DMA_SetCallback(channel, MXC_CRC_Handler);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
     MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;

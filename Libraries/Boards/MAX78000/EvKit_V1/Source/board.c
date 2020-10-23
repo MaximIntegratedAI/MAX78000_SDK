@@ -171,3 +171,15 @@ int Debug_Init(void)
     return E_NO_ERROR;
 }
 #endif // __riscv
+
+/******************************************************************************/
+int Camera_Power(int on)
+{
+    return E_NOT_SUPPORTED;
+}
+
+/******************************************************************************/
+int Microphone_Power(int on)
+{
+    return E_NOT_SUPPORTED;
+}

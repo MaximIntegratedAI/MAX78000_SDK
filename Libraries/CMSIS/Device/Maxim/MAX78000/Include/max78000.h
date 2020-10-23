@@ -161,7 +161,7 @@ typedef enum {
     RSV79_IRQn,             /* 0x5F  0x017C  95: Reserved */
     RSV80_IRQn,             /* 0x60  0x0180  96: Reserved */
     RSV81_IRQn,             /* 0x61  0x0184  97: Reserved */
-    RSV82_IRQn,             /* 0x62  0x0188  98: Reserved */
+    ECC_IRQn,               /* 0x62  0x0188  98: ECC */
     DVS_IRQn,               /* 0x63  0x018C  99: DVS */
     SIMO_IRQn,              /* 0x64  0x0190 100: SIMO */
     RSV85_IRQn,             /* 0x65  0x0194 101: Reserved */

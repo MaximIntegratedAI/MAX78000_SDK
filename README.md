@@ -4,6 +4,14 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+October 23, 2020
+* Added support for MAX78000 FTRH Rev A board.
+* Modified camera driver to use DMA.
+* Set CRC data register data types properly to contol access width.
+* Added missing ECC IRQ.
+* Added missing semaphore registers.
+* Added implementation of 1-Wire API.
+
 September 24, 2020
 * Added mnist-streaming example.
 * Modified cats-dogs_demo to use DMA.

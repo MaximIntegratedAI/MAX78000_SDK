@@ -960,12 +960,18 @@ int main(void)
 
   printf("\n*** CNN Test ***\n");
 
-  if (!cnn_load()) fail();
+  if (!cnn_load()) {
+	  fail();
+  }
   MXC_TMR_SW_Start(MXC_TMR0);
   cnn_wait();
 
-  if (!cnn_check()) fail();
-  if (!softmax_layer()) fail();
+  if (!cnn_check()) {
+	  fail();
+  }
+  if (!softmax_layer()) {
+	  fail();
+  }
 
   printf("\n*** PASS ***\n\n");
 

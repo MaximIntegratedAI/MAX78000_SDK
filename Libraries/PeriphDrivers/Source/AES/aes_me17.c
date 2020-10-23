@@ -41,6 +41,7 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "aes_revb.h"
+#include "trng.h"
 
 
 /* ************************************************************************* */
@@ -88,7 +89,8 @@ void MXC_AES_DMACallback(int ch, int error)
 
 void MXC_AES_GenerateKey(void)
 {
-    MXC_AES_RevB_GenerateKey();
+    // Generating a random key is part of the TRNG block.
+    MXC_TRNG_GenerateKey();
 }
 
 void MXC_AES_SetKeySize(mxc_aes_keys_t key)

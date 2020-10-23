@@ -665,7 +665,7 @@ int main(void)
   Debug_Init(); // Set up RISCV JTAG
   MXC_ICC_Enable(MXC_ICC1); // Enable cache
 
-  printf("\n*** CNN Test ***\n");
+  printf("\n*** RISC-V CNN Test ***\n");
 
   if (!cnn_load()) fail();
   MXC_TMR_SW_Start(MXC_TMR0);

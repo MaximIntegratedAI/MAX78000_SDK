@@ -2,15 +2,29 @@
 
 The ECC engine is used to watch for errors in data RAM.  The memory is scanned to ensure no errors exist.  
 
-A word is then modified to have a single bit error.  That word is read and the ECC flags are examined to make sure a correctable error is detected.  The expected behavior here is that the read of the corropted memory will result in the non-corrupted value, but the ECC error and ECC not double bit error flags will be set.
+A word is then modified to have a single bit error.  That word is read and the ECC flags are examined to make sure a correctable error is detected.  The expected behavior here is that the read of the corrupted memory will result in the non-corrupted value, but the ECC error and ECC not double bit error flags will be set.
 
 That same word is modified again to contain a double bit error.  The word is read and the ECC flags are examined to make sure a non-correctable error is reported.
 
-## Required Connections
+## Setup
+##### Building Firmware:
+Before building firmware you must select the correct value for _BOARD_  in "Makefile", either "EvKit\_V1" or "FTHR\_RevA", depending on the EV kit you are using to run the example.
 
+After doing so, navigate to the directory where the example is located using a terminal window. Enter the following comand to build all of the files needed to run the example.
+
+```
+$ make
+```
+
+##### Required Connections:
+If using the standard EV Kit (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins 1 and 2 (P0_1) of the JH1 (UART 0 EN) header.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+If using the Featherboard (FTHR_RevA):
+-   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

@@ -658,7 +658,7 @@ int MXC_UART_AsyncHandler(mxc_uart_regs_t* uart);
  * 
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_UART_DMACallback (int ch, int error);
+void MXC_UART_DMACallback (int ch, int error);
 
 /**@} end of group uart */
 

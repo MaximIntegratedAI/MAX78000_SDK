@@ -43,20 +43,24 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "mxc_sys.h"
-#include "icc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "nvic_table.h"
-#include "i2s_regs.h"
+
 #include "board.h"
+#include "icc.h"
 #include "i2s.h"
+#include "i2s_regs.h"
+#include "led.h"
+#include "max20303.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "nvic_table.h"
 
 #define I2S_RX_BUFFER_SIZE  256
 int32_t i2s_rx_buffer[I2S_RX_BUFFER_SIZE];
 
 /***** Global Data *****/
 volatile uint8_t i2s_flag = 0;
+uint8_t recv_data = 0;
 
 void i2s_isr(void)
 {
@@ -81,7 +85,24 @@ int main()
     SystemCoreClockUpdate();
     
     /* Jumper J20 (I2S CLK SEL) needs to be installed to INT position to provide 12.288MHz clock from on-board oscillator */
-    printf("\n*** I2S Receiver Example ***\n");
+    printf("\n***** I2S Receiver Example *****\n");
+
+    /* Initialize microphone on the Featherboard */
+    #ifdef BOARD_FTHR_REVA
+    if(max20303_init(MXC_I2C1) != E_NO_ERROR) {
+        printf("Unable to initialize I2C interface to commonicate with PMIC!\n");
+        while(1);
+    }
+
+    if(max20303_mic_power(1) != E_NO_ERROR) {
+        printf("Unable to turn on microphone!\n");
+        while(1);
+    }
+
+    MXC_Delay(MXC_DELAY_MSEC(200));
+
+    printf("\nMicrophone enabled!\n");
+    #endif
     
     /* Initialize I2S RX buffer */
     memset(i2s_rx_buffer, 0, sizeof(i2s_rx_buffer));
@@ -129,7 +150,7 @@ int main()
         i2s_flag = 0;
         /* Read number of samples in I2S RX FIFO */
         rx_size = MXC_I2S->dmach0 >> MXC_F_I2S_DMACH0_RX_LVL_POS;
-        printf("%d ", rx_size);
+       // printf("%d ", rx_size);
         
         while (rx_size--) {
             /* Copy captured microphone sample into i2s_rx_buffer. The actual value is 18 MSB of 32-bit word */
@@ -138,6 +159,11 @@ int main()
             if (buf_current > buf_end) {
                 buf_current = buf_start;
             }
+        }
+
+        if(!recv_data && *(buf_current-1) != 0) {
+        	printf("Receiving microphone data!\n");
+        	recv_data = 1;
         }
     }
     

@@ -488,7 +488,7 @@ int MXC_UART_RevB_ClearRXFIFO(mxc_uart_regs_t* uart)
 
     uart->ctrl |= MXC_F_UART_CTRL_RX_FLUSH;
 
-    while (uart->ctrl & MXC_F_UART_CTRL_RX_FLUSH);
+    while ((uart->status & MXC_F_UART_STATUS_RX_EM) == 0);
 
     return E_NO_ERROR;
 }
@@ -501,7 +501,7 @@ int MXC_UART_RevB_ClearTXFIFO(mxc_uart_regs_t* uart)
 
     uart->ctrl |= MXC_F_UART_CTRL_TX_FLUSH;
 
-    while (uart->ctrl & MXC_F_UART_CTRL_TX_FLUSH);
+    while ((uart->status & MXC_F_UART_STATUS_TX_EM) == 0);
 
     return E_NO_ERROR;
 }
@@ -892,7 +892,7 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, uns
 
     states[uart_num].channelRx = channel;
     MXC_DMA_ConfigChannel(config, srcdst);
-    MXC_DMA_SetCallback(channel, (void*) MXC_UART_DMACallback);
+    MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
     MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
@@ -935,7 +935,7 @@ int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* byt
 
     states[uart_num].channelTx = channel;
     MXC_DMA_ConfigChannel(config, srcdst);
-    MXC_DMA_SetCallback(channel, (void*) MXC_UART_DMACallback);
+    MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
     MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
@@ -991,21 +991,6 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_DMACallback(int ch, int error)
+void MXC_UART_RevB_DMACallback(int ch, int error)
 {
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    for (int i = 0; i < MXC_UART_INSTANCES; i ++) {
-        if (states[i].channelTx == ch) {
-            break;
-        }
-
-        else if (states[i].channelRx == ch) {
-            break;
-        }
-    }
-
-    return error;
 }

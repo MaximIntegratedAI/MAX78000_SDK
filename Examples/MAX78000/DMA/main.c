@@ -64,6 +64,7 @@ void my_int_func(int a, int b)
     int flags;
     flags = MXC_DMA_ChannelGetFlags(mychannel);
     MXC_DMA_ChannelClearFlags(mychannel, flags);
+    flag++;
 }
 
 void memCpyComplete(void* dest)
@@ -109,8 +110,6 @@ void example1(void)
     //Validate
     if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
-        
-        while (1);
         
         fail += 1;
     }
@@ -197,8 +196,6 @@ void example2(void)
     if (memcmp(srcdata, dstdata, MAX_SIZE) != 0 ||
             memcmp(srcdata2, dstdata2, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
-        
-        while (1);
         
         fail += 1;
     }

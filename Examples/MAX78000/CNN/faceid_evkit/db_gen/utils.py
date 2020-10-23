@@ -38,6 +38,7 @@ import scipy
 import scipy.ndimage
 from matplotlib.image import imread
 import matplotlib.pyplot as plt
+from PIL import Image, ExifTags
 
 
 def load_db(db_path, subj_name_file_path=None):
@@ -123,6 +124,43 @@ def equalize_hist(img, percentile=95):
     return new_img.astype(np.uint8)
 
 
+def get_image_rotation(img_path):
+    """Reads exif data of the image to get image orientation
+    """
+    for orientation in ExifTags.TAGS:
+        if ExifTags.TAGS[orientation] == 'Orientation':
+            break
+
+    image = Image.open(img_path)
+    try:
+        exif = image._getexif()  # pylint: disable=protected-access
+        if exif:
+            if orientation in exif:
+                return exif[orientation]
+    except Exception:  # pylint: disable=broad-except
+        print(f'No exif object for {img_path}')
+
+    return 1
+
+
+def rotate_image(img, img_rot):
+    """Rotates image wrt `orientation` value of the exif data
+    """
+    if img_rot == 1:
+        pass
+    elif img_rot == 6:
+        return np.rot90(img, k=3).copy()
+    elif img_rot == 8:
+        return np.rot90(img, k=1).copy()
+    elif img_rot == 3:
+        return np.rot90(img, k=2).copy()
+    else:
+        print(f'Unknown orientation code: {img_rot}. Image will be used as is.')
+
+    return img
+
+
+# pylint: disable=too-many-statements
 def append_db_file_from_path(folder_path, mtcnn, ai85_adapter, db_dict=None, verbose=True,
                              preview_images=False):
     """Creates embeddings for each image in the given folder and appends to the existing embedding
@@ -134,6 +172,7 @@ def append_db_file_from_path(folder_path, mtcnn, ai85_adapter, db_dict=None, ver
     subj_id = 0
     subject_list = sorted(os.listdir(folder_path))
     for subject in subject_list:
+        print(f'Processing subject: {subject}')
         img_id = 0
         subject_path = os.path.join(folder_path, subject)
         if not os.path.isdir(subject_path):
@@ -141,8 +180,13 @@ def append_db_file_from_path(folder_path, mtcnn, ai85_adapter, db_dict=None, ver
         if not os.listdir(subject_path):
             subj_id += 1
         for file in os.listdir(subject_path):
+            print(f'\tFile: {file}')
             img_path = os.path.join(subject_path, file)
+            img_rot = get_image_rotation(img_path)
             img = imread(img_path)
+            img = rotate_image(img, img_rot)
+            if img.dtype == np.float32:
+                img = (255 * img).astype(np.uint8)
             img = get_face_image(img, mtcnn)
             if img is not None:
                 if img.shape == (160, 120, 3):

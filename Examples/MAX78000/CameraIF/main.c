@@ -110,7 +110,7 @@ int main(void)
     printf("Camera Manufacture ID is %04x\n", id);
     
     // Setup the camera image dimensions, pixel format and data aquiring details.
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, NO_DMA);
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA);
     
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
