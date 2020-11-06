@@ -42,9 +42,6 @@ Connect the TX pin of UART3 to the RX pin of UART2 for this example.
 
 -->Test Length  : 1024 bytes
 
--->UART 2 Baud rate: 115384
--->UART 3 Baud rate: 115200
-
 -->UART Initialized
 
 -->Data verified

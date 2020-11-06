@@ -253,7 +253,7 @@ int MXC_DMA_SetSrcDst (mxc_dma_srcdst_t srcdst);
  *
  * @return     See \ref MXC_Error_Codes for a list of return values
  */
-int MXC_DMA_GetSrcDst (mxc_dma_srcdst_t srcdst);
+int MXC_DMA_GetSrcDst (mxc_dma_srcdst_t* srcdst);
 
 /**
  * @brief      Set channel reload source, destination, and count for the transfer
@@ -273,7 +273,7 @@ int MXC_DMA_SetSrcReload (mxc_dma_srcdst_t srcdstReload);
  *
  * @return     See \ref MXC_Error_Codes for a list of return values
  */
-int MXC_DMA_GetSrcReload (mxc_dma_srcdst_t srcdstReload);
+int MXC_DMA_GetSrcReload (mxc_dma_srcdst_t* srcdstReload);
 
 /**
  * @brief      Set channel interrupt callback

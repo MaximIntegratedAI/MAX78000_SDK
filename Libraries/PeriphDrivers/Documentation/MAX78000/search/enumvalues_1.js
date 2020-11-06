@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['owm_5fext_5fpu_5fact_5fhigh',['OWM_EXT_PU_ACT_HIGH',['../group__owm.html#gga22f537c7c373ba506abf27c7bef81e73a86d3d8a80732bedc940320840c4aed26',1,'owm.h']]],
-  ['owm_5fext_5fpu_5fact_5flow',['OWM_EXT_PU_ACT_LOW',['../group__owm.html#gga22f537c7c373ba506abf27c7bef81e73a859d9e5cdb1802d87ebb01544cc138ca',1,'owm.h']]],
-  ['owm_5fext_5fpu_5funused',['OWM_EXT_PU_UNUSED',['../group__owm.html#gga22f537c7c373ba506abf27c7bef81e73a596f3a5bd16c38bfbd8583fcffdf5f49',1,'owm.h']]]
+  ['spi_5fwidth_5f3wire',['SPI_WIDTH_3WIRE',['../group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409af81d265e20049a145b1b62a36bee2928',1,'spi.h']]],
+  ['spi_5fwidth_5fdual',['SPI_WIDTH_DUAL',['../group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409afda490db41f7d68dffcd82768608e271',1,'spi.h']]],
+  ['spi_5fwidth_5fquad',['SPI_WIDTH_QUAD',['../group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409a69486e065cec07c46e922a149a65bb49',1,'spi.h']]],
+  ['spi_5fwidth_5fstandard',['SPI_WIDTH_STANDARD',['../group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409af55a2ccb187d2d7b4ba3015ca0a34271',1,'spi.h']]]
 ];

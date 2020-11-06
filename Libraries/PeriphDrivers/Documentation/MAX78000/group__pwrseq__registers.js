@@ -16,7 +16,11 @@ var group__pwrseq__registers =
       [ "lppwst", "group__pwrseq__registers.html#a6e4ead1f458c574666a6299e006fd54a", null ],
       [ "lpwken0", "group__pwrseq__registers.html#a97f282caf7d5e2e5915beeb9c503c65d", null ],
       [ "lpwken1", "group__pwrseq__registers.html#aa98efb241bc464987d610087c2f162cf", null ],
+      [ "lpwken2", "group__pwrseq__registers.html#a159c00b43ea545c8d85c06889566c4eb", null ],
+      [ "lpwken3", "group__pwrseq__registers.html#a22bc5bc732cf6da03779cab5defad9a5", null ],
       [ "lpwkst0", "group__pwrseq__registers.html#a9c0479fb0841c945e045251f39489958", null ],
-      [ "lpwkst1", "group__pwrseq__registers.html#af424cdcc2f16dc202d60854373e9c114", null ]
+      [ "lpwkst1", "group__pwrseq__registers.html#af424cdcc2f16dc202d60854373e9c114", null ],
+      [ "lpwkst2", "group__pwrseq__registers.html#a717582034a99fa9c1019511215ed264c", null ],
+      [ "lpwkst3", "group__pwrseq__registers.html#ab7bb5552d95c063e8a32520797fd7b07", null ]
     ] ]
 ];

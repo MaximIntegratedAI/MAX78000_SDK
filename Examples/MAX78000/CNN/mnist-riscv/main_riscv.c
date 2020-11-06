@@ -667,12 +667,18 @@ int main(void)
 
   printf("\n*** RISC-V CNN Test ***\n");
 
-  if (!cnn_load()) fail();
+  if (!cnn_load()) {
+	  fail();
+  }
   MXC_TMR_SW_Start(MXC_TMR0);
   cnn_wait();
 
-  if (!cnn_check()) fail();
-  if (!softmax_layer()) fail();
+  if (!cnn_check()) {
+	  fail();
+  }
+  if (!softmax_layer()) {
+	  fail();
+  }
 
   printf("\n*** PASS ***\n\n");
 
@@ -693,6 +699,7 @@ int main(void)
     printf("[%7d] -> Class %d: %d.%d%%\n", ml_data[i], i, digs, tens);
   }
 
+  while(1);
   return 0;
 }
 

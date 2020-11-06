@@ -30,6 +30,10 @@
  * ownership rights.
  *
  *************************************************************************** */
+#ifdef __CC_ARM //Keil 
+#pragma diag_suppress 188  // enumerated type mixed with another type
+#pragma diag_suppress 68  // integer conversion resulted in a change of sign
+#endif
 
 #include <stdio.h>
 #include <stddef.h>
@@ -69,7 +73,7 @@ static int MXC_SPI_RevA_TransSetup(mxc_spi_req_t* req);
 int MXC_SPI_RevA_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
                       unsigned ssPolarity, unsigned int hz)
 {
-    uint8_t spi_num;
+    int spi_num;
     
     spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
@@ -842,8 +846,8 @@ int MXC_SPI_RevA_MasterTransactionAsync(mxc_spi_req_t* req)
 
 int MXC_SPI_RevA_MasterTransactionDMA(mxc_spi_req_t* req, int reqselTx, int reqselRx)
 {
-    uint8_t spi_num, bits;
-    uint8_t channel, error;
+    int spi_num;
+    uint8_t channel, error, bits;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
     
@@ -1008,8 +1012,8 @@ int MXC_SPI_RevA_SlaveTransactionAsync(mxc_spi_req_t* req)
 
 int MXC_SPI_RevA_SlaveTransactionDMA(mxc_spi_req_t* req, int reqselTx, int reqselRx)
 {
-    uint8_t spi_num, bits;
-    uint8_t channel, error;
+    int spi_num;
+    uint8_t channel, error, bits;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
     
@@ -1153,7 +1157,7 @@ void MXC_SPI_RevA_DMACallback(int ch, int error)
 
 int MXC_SPI_RevA_SetDefaultTXData(mxc_spi_regs_t* spi, unsigned int defaultTXData)
 {
-    uint8_t spi_num = MXC_SPI_GET_IDX(spi);
+    int spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
     states[spi_num].defaultTXData = defaultTXData;
     return E_NO_ERROR;

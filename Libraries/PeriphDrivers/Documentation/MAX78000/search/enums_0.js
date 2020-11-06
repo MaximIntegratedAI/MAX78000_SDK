@@ -24,6 +24,7 @@ var searchData=
   ['mxc_5ficc_5finfo_5ft',['mxc_icc_info_t',['../group__icc.html#ga9254ee07d84b706398d5e4e0f1c41134',1,'icc.h']]],
   ['mxc_5flp_5fcfg_5fds_5fpd_5ft',['mxc_lp_cfg_ds_pd_t',['../group__pwrseq.html#gadabad2ba77443823611af98d5e259231',1,'lp.h']]],
   ['mxc_5flp_5fovr_5ft',['mxc_lp_ovr_t',['../group__pwrseq.html#ga428cd955ec855f628fc24392a67ecebb',1,'lp.h']]],
+  ['mxc_5fowm_5fext_5fpu_5ft',['mxc_owm_ext_pu_t',['../group__owm.html#ga7ea4dcc0c110361bf2b9b8b875b7c3e4',1,'owm.h']]],
   ['mxc_5fpcif_5fdatawidth_5ft',['mxc_pcif_datawidth_t',['../group__cameraif.html#gaf455adaa073ecce715c37e1a625b8635',1,'cameraif.h']]],
   ['mxc_5fpcif_5fgpio_5fdatawidth_5ft',['mxc_pcif_gpio_datawidth_t',['../group__cameraif.html#ga9e24c9060b94fa32e0d0177b47e91cfe',1,'cameraif.h']]],
   ['mxc_5fpcif_5freadmode_5ft',['mxc_pcif_readmode_t',['../group__cameraif.html#ga1d958043d91b2355bbd222013629d4fc',1,'cameraif.h']]],

@@ -30,6 +30,9 @@
  * ownership rights.
  *
  *************************************************************************** */
+#ifdef __CC_ARM  // Keil 
+ #pragma diag_suppress 188  // enumerated type mixed with another type
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -160,7 +163,7 @@ void MXC_AES_RevB_ClearFlags(uint32_t flags)
 int MXC_AES_RevB_Generic(mxc_aes_req_t* req)
 {
   int i;
-  int remain = req->length;
+  int remain;
 
   if (req == NULL) {
     return E_NULL_PTR;
@@ -174,6 +177,8 @@ int MXC_AES_RevB_Generic(mxc_aes_req_t* req)
     return E_BAD_PARAM;
   }
 
+  remain = req->length;
+  
   MXC_AES_RevB_FlushInputFIFO();
   MXC_AES_RevB_FlushOutputFIFO();
 

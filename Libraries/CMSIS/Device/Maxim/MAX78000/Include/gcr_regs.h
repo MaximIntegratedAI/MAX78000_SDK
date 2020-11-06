@@ -108,6 +108,8 @@ typedef struct {
     __IO uint32_t eccced;               /**< <tt>\b 0x68:</tt> GCR ECCCED Register */
     __IO uint32_t eccie;                /**< <tt>\b 0x6C:</tt> GCR ECCIE Register */
     __IO uint32_t eccaddr;              /**< <tt>\b 0x70:</tt> GCR ECCADDR Register */
+    __R  uint32_t rsv_0x74_0x7f[3];
+    __IO uint32_t gpr;                  /**< <tt>\b 0x80:</tt> GCR GPR Register */
 } mxc_gcr_regs_t;
 
 /* Register offsets for module GCR */
@@ -135,6 +137,7 @@ typedef struct {
  #define MXC_R_GCR_ECCCED                   ((uint32_t)0x00000068UL) /**< Offset from GCR Base Address: <tt> 0x0068</tt> */ 
  #define MXC_R_GCR_ECCIE                    ((uint32_t)0x0000006CUL) /**< Offset from GCR Base Address: <tt> 0x006C</tt> */ 
  #define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */ 
+ #define MXC_R_GCR_GPR                      ((uint32_t)0x00000080UL) /**< Offset from GCR Base Address: <tt> 0x0080</tt> */ 
 /**@} end of group gcr_registers */
 
 /**
@@ -384,7 +387,11 @@ typedef struct {
  #define MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1               (MXC_V_GCR_PCLKDIV_CNNCLKDIV_DIV1 << MXC_F_GCR_PCLKDIV_CNNCLKDIV_POS) /**< PCLKDIV_CNNCLKDIV_DIV1 Setting */
 
  #define MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS                17 /**< PCLKDIV_CNNCLKSEL Position */
- #define MXC_F_GCR_PCLKDIV_CNNCLKSEL                    ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS)) /**< PCLKDIV_CNNCLKSEL Mask */
+ #define MXC_F_GCR_PCLKDIV_CNNCLKSEL                    ((uint32_t)(0x3UL << MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS)) /**< PCLKDIV_CNNCLKSEL Mask */
+ #define MXC_V_GCR_PCLKDIV_CNNCLKSEL_PCLK               ((uint32_t)0x0UL) /**< PCLKDIV_CNNCLKSEL_PCLK Value */
+ #define MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK               (MXC_V_GCR_PCLKDIV_CNNCLKSEL_PCLK << MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS) /**< PCLKDIV_CNNCLKSEL_PCLK Setting */
+ #define MXC_V_GCR_PCLKDIV_CNNCLKSEL_ISO                ((uint32_t)0x1UL) /**< PCLKDIV_CNNCLKSEL_ISO Value */
+ #define MXC_S_GCR_PCLKDIV_CNNCLKSEL_ISO                (MXC_V_GCR_PCLKDIV_CNNCLKSEL_ISO << MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS) /**< PCLKDIV_CNNCLKSEL_ISO Setting */
 
 /**@} end of group GCR_PCLKDIV_Register */
 
@@ -473,7 +480,13 @@ typedef struct {
  #define MXC_F_GCR_MEMZ_RAM3_POS                        3 /**< MEMZ_RAM3 Position */
  #define MXC_F_GCR_MEMZ_RAM3                            ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_RAM3_POS)) /**< MEMZ_RAM3 Mask */
 
- #define MXC_F_GCR_MEMZ_ICC1_POS                        14 /**< MEMZ_ICC1 Position */
+ #define MXC_F_GCR_MEMZ_SYSRAM0ECC_POS                  4 /**< MEMZ_SYSRAM0ECC Position */
+ #define MXC_F_GCR_MEMZ_SYSRAM0ECC                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_SYSRAM0ECC_POS)) /**< MEMZ_SYSRAM0ECC Mask */
+
+ #define MXC_F_GCR_MEMZ_ICC0_POS                        5 /**< MEMZ_ICC0 Position */
+ #define MXC_F_GCR_MEMZ_ICC0                            ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_ICC0_POS)) /**< MEMZ_ICC0 Mask */
+
+ #define MXC_F_GCR_MEMZ_ICC1_POS                        6 /**< MEMZ_ICC1 Position */
  #define MXC_F_GCR_MEMZ_ICC1                            ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_ICC1_POS)) /**< MEMZ_ICC1 Mask */
 
 /**@} end of group GCR_MEMZ_Register */

@@ -53,10 +53,10 @@
 #define SYNC	0
 #define ASYNC	1
 
+#define DATA_LENGTH   100
+
 /***** Globals *****/
 volatile int wait;
-volatile int callback_result;
-volatile int counter;
 volatile int fail = 0;
 
 /***** Functions *****/
@@ -85,18 +85,18 @@ void Test_CRC(int asynchronous)
     
     printf(asynchronous ? "TEST CRC ASYNC\n" : "TEST CRC SYNC\n");
     
-    for (i = 0; i < 100; i++) {
+    for (i = 0; i < DATA_LENGTH; i++) {
         array[i] = i;
     }
     
     mxc_crc_req_t crc_req = {
         array,
-        100,
+        DATA_LENGTH,
         0
     };
     
     MXC_CRC_Init();
-    // Load CRC polynomial into crc polynomial register
+
     MXC_CRC_SetPoly(POLY);
     
     if (asynchronous) {
@@ -111,12 +111,12 @@ void Test_CRC(int asynchronous)
     
     printf("\nCRC Poly Result: %x", crc_req.resultCRC);
     
-    array[100] = ~(crc_req.resultCRC);
+    array[DATA_LENGTH] = ~crc_req.resultCRC;
     
-    crc_req.dataLen = 101;
+    crc_req.dataLen = DATA_LENGTH + 1;
     
     MXC_CRC_Init();
-    // Load CRC polynomial into crc polynomial register
+
     MXC_CRC_SetPoly(POLY);
     
     if (asynchronous) {
@@ -142,6 +142,7 @@ int main(void)
     
     Test_CRC(SYNC);
     
+    //Release DMA Channel 0 to use it for CRC transaction (Any DMA channel can be used)
     MXC_DMA_ReleaseChannel(0);
     NVIC_SetVector(DMA0_IRQn, DMA0_IRQHandler);
     NVIC_EnableIRQ(DMA0_IRQn);
@@ -149,7 +150,7 @@ int main(void)
     Test_CRC(ASYNC);
     
     if (fail) {
-        printf("Example Failed");
+        printf("\nExample Failed");
     }
     else {
         printf("\nExample Succeeded");

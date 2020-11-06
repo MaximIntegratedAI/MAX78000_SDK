@@ -219,7 +219,7 @@ int MXC_OWM_RevA_Read(uint8_t* data, int len)
 /* ************************************************************************* */
 int MXC_OWM_RevA_ReadROM(uint8_t* ROMCode)
 {
-    int num_read = 0;
+    int num_read;
     
     // Send reset and wait for presence pulse
     if (MXC_OWM_Reset()) {
@@ -249,7 +249,7 @@ int MXC_OWM_RevA_ReadROM(uint8_t* ROMCode)
 /* ************************************************************************* */
 int MXC_OWM_RevA_MatchROM(uint8_t* ROMCode)
 {
-    int num_wrote = 0;
+    int num_wrote;
     
     // Send reset and wait for presence pulse
     if (MXC_OWM_Reset()) {
@@ -279,7 +279,7 @@ int MXC_OWM_RevA_MatchROM(uint8_t* ROMCode)
 /* ************************************************************************* */
 int MXC_OWM_RevA_ODMatchROM(uint8_t* ROMCode)
 {
-    int num_wrote = 0;
+    int num_wrote;
     
     // Set to standard speed
     MXC_OWM->cfg &= ~(MXC_F_OWM_CFG_OVERDRIVE);
@@ -372,14 +372,14 @@ int MXC_OWM_RevA_SearchROM(int newSearch, uint8_t* ROMCode)
     int nibble_start_bit = 1;
     int rom_byte_number = 0;
     uint8_t rom_nibble_mask = 0x0F;
-    uint8_t search_direction = 0;
-    int readValue = 0;
-    int sentBits = 0;
-    int discrepancy = 0;
-    int bit_position = 0;
-    int discrepancy_mask = 0;
+    uint8_t search_direction;
+    int readValue;
+    int sentBits;
+    int discrepancy;
+    int bit_position;
+    int discrepancy_mask;
     int last_zero = 0;
-    uint8_t crc8 = 0;
+    uint8_t crc8;
     int search_result = 0;
     
     // Clear ROM array

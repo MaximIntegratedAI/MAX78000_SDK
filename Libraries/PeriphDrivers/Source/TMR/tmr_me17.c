@@ -39,7 +39,7 @@
 
 int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
 {
-    uint8_t tmr_id;
+    int tmr_id;
     uint8_t clockSource = MXC_TMR_CLK0;
     
     if (cfg == NULL) {
@@ -234,7 +234,7 @@ uint32_t MXC_TMR_GetCapture(mxc_tmr_regs_t* tmr)
 uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t* tmr, mxc_tmr_clock_t clock, uint32_t prescalar, uint32_t frequency)
 {
     uint32_t clockFrequency = PeripheralClock;
-    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
+    int tmr_id = MXC_TMR_GET_IDX(tmr);
     
     MXC_ASSERT(tmr_id >= 0);
     

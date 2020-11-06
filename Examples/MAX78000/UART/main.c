@@ -123,21 +123,19 @@ int main(void)
 #endif
     
     // Initialize the UART
-    error = MXC_UART_Init(MXC_UART_GET_UART(READING_UART), UART_BAUD, MXC_UART_APB_CLK);
-    printf("\n-->UART %d Baud rate: %d", READING_UART, error);
-    
-    error = MXC_UART_Init(MXC_UART_GET_UART(WRITING_UART), UART_BAUD, MXC_UART_APB_CLK);
-    printf("\n-->UART %d Baud rate: %d\n\n", WRITING_UART, error);
-    
-    if (error < E_NO_ERROR) {
+    if((error = MXC_UART_Init(MXC_UART_GET_UART(READING_UART), UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        
         while (1) {}
     }
-    else {
-        printf("-->UART Initialized\n\n");
+    
+    if((error = MXC_UART_Init(MXC_UART_GET_UART(WRITING_UART), UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
+        printf("-->Error initializing UART: %d\n", error);
+        printf("-->Example Failed\n");
+        while (1) {}
     }
+    
+    printf("-->UART Initialized\n\n");
     
     mxc_uart_req_t read_req;
     read_req.uart = MXC_UART_GET_UART(READING_UART);
@@ -155,7 +153,7 @@ int main(void)
     
     READ_FLAG = 1;
     DMA_FLAG = 1;
-    
+
     MXC_UART_ClearRXFIFO(MXC_UART_GET_UART(READING_UART));
     
 #ifdef DMA
@@ -167,17 +165,15 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
-        
         while (1) {}
     }
-    
+
     
     error = MXC_UART_Transaction(&write_req);
     
     if (error != E_NO_ERROR) {
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
-        
         while (1) {}
     }
     

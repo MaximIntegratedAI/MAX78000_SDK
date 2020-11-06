@@ -30,6 +30,9 @@
  * ownership rights.
  *
  **************************************************************************** */
+#ifdef __CC_ARM  // Keil 
+#pragma diag_suppress 188  // enumerated type mixed with another type
+#endif
 
 /* **** Includes **** */
 #include <stddef.h>
@@ -75,59 +78,7 @@ int MXC_TMR_RevB_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, mxc_tmr_clksel_t 
     tmr->intfl |= (MXC_F_TMR_INTFL_IRQ_A | MXC_F_TMR_INTFL_IRQ_B);
     
     // Set the prescale
-    switch (cfg->pres) {
-    case TMR_PRES_1:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1 << timerOffset);
-        break;
-        
-    case TMR_PRES_2:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2 << timerOffset);
-        break;
-        
-    case TMR_PRES_4:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4 << timerOffset);
-        break;
-        
-    case TMR_PRES_8:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_8 << timerOffset);
-        break;
-        
-    case TMR_PRES_16:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_16 << timerOffset);
-        break;
-        
-    case TMR_PRES_32:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_32 << timerOffset);
-        break;
-        
-    case TMR_PRES_64:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_64 << timerOffset);
-        break;
-        
-    case TMR_PRES_128:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_128 << timerOffset);
-        break;
-        
-    case TMR_PRES_256:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_256 << timerOffset);
-        break;
-        
-    case TMR_PRES_512:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_512 << timerOffset);
-        break;
-        
-    case TMR_PRES_1024:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_1024 << timerOffset);
-        break;
-        
-    case TMR_PRES_2048:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_2048 << timerOffset);
-        break;
-        
-    case TMR_PRES_4096:
-        tmr->ctrl0 |= (MXC_S_TMR_CTRL0_CLKDIV_A_DIV_BY_4096 << timerOffset);
-        break;
-    }
+    tmr->ctrl0 |= (cfg->pres << timerOffset);
     
     // Select clock Source
     tmr->ctrl1 |= ((clock << MXC_F_TMR_CTRL1_CLKSEL_A_POS) << timerOffset);
@@ -145,7 +96,6 @@ int MXC_TMR_RevB_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, mxc_tmr_clksel_t 
     case TMR_MODE_COUNTER:
         if (cfg->bitMode == TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
-            break;
         }
         
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
@@ -154,7 +104,6 @@ int MXC_TMR_RevB_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, mxc_tmr_clksel_t 
     case TMR_MODE_CAPTURE:
         if (cfg->bitMode == TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
-            break;
         }
         
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
@@ -167,7 +116,6 @@ int MXC_TMR_RevB_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, mxc_tmr_clksel_t 
     case TMR_MODE_GATED:
         if (cfg->bitMode == TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
-            break;
         }
         
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
@@ -176,7 +124,6 @@ int MXC_TMR_RevB_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, mxc_tmr_clksel_t 
     case TMR_MODE_CAPTURE_COMPARE:
         if (cfg->bitMode == TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
-            break;
         }
         
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
@@ -185,7 +132,6 @@ int MXC_TMR_RevB_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, mxc_tmr_clksel_t 
     case TMR_MODE_PWM:
         if (cfg->bitMode == TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
-            break;
         }
         
         MXC_TMR_RevB_ConfigGeneric(tmr, cfg);
@@ -216,7 +162,7 @@ void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg)
     
     while (!(tmr->ctrl1 & (MXC_F_TMR_CTRL1_CLKRDY_A << timerOffset)));
     
-    tmr->ctrl0 |= ((cfg->mode << MXC_F_TMR_CTRL0_MODE_A_POS) << timerOffset);
+    tmr->ctrl0 |= (cfg->mode << timerOffset);
     tmr->ctrl0 |= ((cfg->pol << MXC_F_TMR_CTRL0_POL_A_POS) << timerOffset);
     //enable timer interrupt if needed
     tmr->cnt = (0x1 << timerOffset);

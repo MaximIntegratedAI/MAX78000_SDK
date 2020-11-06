@@ -6,6 +6,7 @@ var group__gcr__registers_structmxc__gcr__regs__t =
     [ "eccerr", "group__gcr__registers.html#a3d9300f370fea5ec743ab5e6d12db523", null ],
     [ "eccie", "group__gcr__registers.html#af22a3cb8fed5c7882995ff8e36131a8b", null ],
     [ "eventen", "group__gcr__registers.html#abb33e43ce55ab7142a4ea3ebc11b1e24", null ],
+    [ "gpr", "group__gcr__registers.html#ac31f0872e3b72fbdd501dc20215319a3", null ],
     [ "memctrl", "group__gcr__registers.html#a4d2fd2c661cc165f36e3b36cb794cafe", null ],
     [ "memz", "group__gcr__registers.html#a6826ace542358140e4ade1c99ed5ca87", null ],
     [ "pclkdis0", "group__gcr__registers.html#a8db7241bc2204b183f6bfc85b2e88a95", null ],

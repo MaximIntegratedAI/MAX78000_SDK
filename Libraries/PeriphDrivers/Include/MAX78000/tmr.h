@@ -82,12 +82,12 @@ typedef enum {
  */
 typedef enum {
     TMR_MODE_ONESHOT          = MXC_S_TMR_CTRL0_MODE_A_ONE_SHOT,      /**< Timer Mode ONESHOT */
-    TMR_MODE_CONTINUOUS       = MXC_V_TMR_CTRL0_MODE_A_CONTINUOUS,    /**< Timer Mode CONTINUOUS */
-    TMR_MODE_COUNTER          = MXC_V_TMR_CTRL0_MODE_A_COUNTER,       /**< Timer Mode COUNTER */
-    TMR_MODE_PWM              = MXC_V_TMR_CTRL0_MODE_A_PWM,           /**< Timer Mode PWM */
-    TMR_MODE_CAPTURE          = MXC_V_TMR_CTRL0_MODE_A_CAPTURE,       /**< Timer Mode CAPTURE */
-    TMR_MODE_COMPARE          = MXC_V_TMR_CTRL0_MODE_A_COMPARE,       /**< Timer Mode COMPARE */
-    TMR_MODE_GATED            = MXC_V_TMR_CTRL0_MODE_A_GATED,         /**< Timer Mode GATED */
+    TMR_MODE_CONTINUOUS       = MXC_S_TMR_CTRL0_MODE_A_CONTINUOUS,    /**< Timer Mode CONTINUOUS */
+    TMR_MODE_COUNTER          = MXC_S_TMR_CTRL0_MODE_A_COUNTER,       /**< Timer Mode COUNTER */
+    TMR_MODE_PWM              = MXC_S_TMR_CTRL0_MODE_A_PWM,           /**< Timer Mode PWM */
+    TMR_MODE_CAPTURE          = MXC_S_TMR_CTRL0_MODE_A_CAPTURE,       /**< Timer Mode CAPTURE */
+    TMR_MODE_COMPARE          = MXC_S_TMR_CTRL0_MODE_A_COMPARE,       /**< Timer Mode COMPARE */
+    TMR_MODE_GATED            = MXC_S_TMR_CTRL0_MODE_A_GATED,         /**< Timer Mode GATED */
     TMR_MODE_CAPTURE_COMPARE  = MXC_S_TMR_CTRL0_MODE_A_CAPCOMP        /**< Timer Mode CAPTURECOMPARE */
 } mxc_tmr_mode_t;
 

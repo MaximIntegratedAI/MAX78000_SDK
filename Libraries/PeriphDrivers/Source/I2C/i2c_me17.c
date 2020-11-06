@@ -264,12 +264,12 @@ void MXC_I2C_ClearFlags(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int f
 
 void MXC_I2C_EnableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int flags1)
 {
-    MXC_I2C_EnableInt(i2c, flags0, flags1);
+    MXC_I2C_RevA_EnableInt(i2c, flags0, flags1);
 }
 
 void MXC_I2C_DisableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int flags1)
 {
-    MXC_I2C_DisableInt(i2c, flags0, flags1);
+    MXC_I2C_RevA_DisableInt(i2c, flags0, flags1);
 }
 
 int MXC_I2C_Recover(mxc_i2c_regs_t* i2c, unsigned int retries)

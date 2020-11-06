@@ -63,6 +63,7 @@
 #include "cameraif_regs.h"
 #include "cameraif.h"
 #include "uart.h"
+#include "board.h"
 
 // Comment out USE_SAMPLEDATA to use Camera module
 //#define USE_SAMPLEDATA
@@ -783,6 +784,11 @@ int main(void)
   int slaveAddress, id, ret=0;
   // Initialize camera.
   printf("Init Camera.\n");
+
+  if(Camera_Power(1) != E_NO_ERROR) {
+	  printf("Failed to turn on microphone.\n");
+	  while(1);
+  }
 
   camera_init();
   // Set camera clock prescaler

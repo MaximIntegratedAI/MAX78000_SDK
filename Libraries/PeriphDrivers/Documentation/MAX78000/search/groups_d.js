@@ -36,6 +36,7 @@ var searchData=
   ['register_20offsets',['Register Offsets',['../group___s_i_r___register___offsets.html',1,'']]],
   ['register_20offsets',['Register Offsets',['../group___s_p_i___register___offsets.html',1,'']]],
   ['register_20offsets',['Register Offsets',['../group___t_m_r___register___offsets.html',1,'']]],
+  ['register_20offsets',['Register Offsets',['../group___t_r_i_m_s_i_r___register___offsets.html',1,'']]],
   ['register_20offsets',['Register Offsets',['../group___t_r_n_g___register___offsets.html',1,'']]],
   ['register_20offsets',['Register Offsets',['../group___u_a_r_t___register___offsets.html',1,'']]],
   ['register_20offsets',['Register Offsets',['../group___w_d_t___register___offsets.html',1,'']]],

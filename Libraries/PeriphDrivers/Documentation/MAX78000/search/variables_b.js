@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['mail0',['mail0',['../group__sema__registers.html#aea15dd0ae422757576a87cd2d478a68b',1,'mxc_sema_regs_t']]],
+  ['mail1',['mail1',['../group__sema__registers.html#a408536f466328bc61447de9a02eb6c18',1,'mxc_sema_regs_t']]],
   ['mask',['mask',['../group__gpio.html#ad3bee21df6875eeccd25d3c577e0600a',1,'mxc_gpio_cfg_t']]],
   ['maxton',['maxton',['../group__simo__registers.html#a4ed97232e1922e09665d19cfe90cad39',1,'mxc_simo_regs_t']]],
   ['memctrl',['memctrl',['../group__gcr__registers.html#a4d2fd2c661cc165f36e3b36cb794cafe',1,'mxc_gcr_regs_t']]],

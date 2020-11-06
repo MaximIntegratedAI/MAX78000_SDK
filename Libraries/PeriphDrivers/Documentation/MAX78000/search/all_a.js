@@ -43,9 +43,10 @@ var searchData=
   ['inen',['inen',['../group__gpio__registers.html#a3966f88b0d7d63574afa3a4a373f119b',1,'mxc_gpio_regs_t']]],
   ['info',['info',['../group__icc__registers.html#a4d6b29337a6769bf23915e8600d5adb8',1,'mxc_icc_regs_t']]],
   ['inputdata',['inputData',['../structmxc__aes__req__t.html#ad3f82b31501cd82f51e2657cd1d9d3d4',1,'mxc_aes_req_t']]],
+  ['inro',['inro',['../group__trimsir__registers.html#ae41f404c8794e1cb27170ed5ed44fdbe',1,'mxc_trimsir_regs_t']]],
   ['int_5fen',['int_en',['../group__cameraif__registers.html#a3e6d001d1e0e8d1e47c89262c1acc0f2',1,'mxc_cameraif_regs_t::int_en()'],['../group__uart__registers.html#a3e6d001d1e0e8d1e47c89262c1acc0f2',1,'mxc_uart_regs_t::int_en()']]],
   ['int_5ffl',['int_fl',['../group__cameraif__registers.html#a082142366c4b8762be50630a277cafd1',1,'mxc_cameraif_regs_t::int_fl()'],['../group__uart__registers.html#a082142366c4b8762be50630a277cafd1',1,'mxc_uart_regs_t::int_fl()']]],
-  ['int_5fpu_5fen',['int_pu_en',['../group__owm.html#aeec51bc03c0d43668208c8d433356f1a',1,'owm_cfg_t']]],
+  ['int_5fpu_5fen',['int_pu_en',['../group__owm.html#aeec51bc03c0d43668208c8d433356f1a',1,'mxc_owm_cfg_t']]],
   ['inten',['inten',['../group__aes__registers.html#ac739c97e3dfed1c05d96249bc00d2578',1,'mxc_aes_regs_t::inten()'],['../group__gpio__registers.html#ac739c97e3dfed1c05d96249bc00d2578',1,'mxc_gpio_regs_t::inten()'],['../group__i2s__registers.html#ac739c97e3dfed1c05d96249bc00d2578',1,'mxc_i2s_regs_t::inten()'],['../group__owm__registers.html#ac739c97e3dfed1c05d96249bc00d2578',1,'mxc_owm_regs_t::inten()'],['../group__ptg__registers.html#ac739c97e3dfed1c05d96249bc00d2578',1,'mxc_ptg_regs_t::inten()'],['../group__spi__registers.html#ac739c97e3dfed1c05d96249bc00d2578',1,'mxc_spi_regs_t::inten()']]],
   ['inten0',['inten0',['../group__i2c__registers.html#a2de93d5a07abeb987ec72ef1481b50d0',1,'mxc_i2c_regs_t']]],
   ['inten1',['inten1',['../group__i2c__registers.html#a80433756902327aaa84e6d8b3efc8314',1,'mxc_i2c_regs_t']]],
@@ -61,5 +62,8 @@ var searchData=
   ['invalidate',['invalidate',['../group__icc__registers.html#af614ad0651176983fbfa1a1b34a74932',1,'mxc_icc_regs_t']]],
   ['ipka',['ipka',['../group__simo__registers.html#ac91088c3ff031a2c433e1f9bc6d29b00',1,'mxc_simo_regs_t']]],
   ['ipkb',['ipkb',['../group__simo__registers.html#a495c2bb1e616fe11da1ab39e528bb1d4',1,'mxc_simo_regs_t']]],
-  ['ipo_5fmtrim',['ipo_mtrim',['../group__mcr__registers.html#acb00ab73bb501477bf6820e427cf8631',1,'mxc_mcr_regs_t']]]
+  ['ipo_5fmtrim',['ipo_mtrim',['../group__mcr__registers.html#acb00ab73bb501477bf6820e427cf8631',1,'mxc_mcr_regs_t']]],
+  ['ipolo',['ipolo',['../group__trimsir__registers.html#aaf0f35a745426793675c3b81c23a9ba2',1,'mxc_trimsir_regs_t']]],
+  ['irq0',['irq0',['../group__sema__registers.html#aa2c2c5b4388c245574217f71c9d24d0a',1,'mxc_sema_regs_t']]],
+  ['irq1',['irq1',['../group__sema__registers.html#a776f8c49bdca9e061b5427c36b815624',1,'mxc_sema_regs_t']]]
 ];

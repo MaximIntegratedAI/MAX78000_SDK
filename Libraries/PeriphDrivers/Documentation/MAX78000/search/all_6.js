@@ -38,7 +38,7 @@ var searchData=
   ['enable',['enable',['../group__ptg__registers.html#afef784a65cdafc597b144a87a2609aa5',1,'mxc_ptg_regs_t']]],
   ['encryption',['encryption',['../structmxc__aes__req__t.html#a08cb937b151057241c7343cc0f11a4d7',1,'mxc_aes_req_t']]],
   ['eventen',['eventen',['../group__gcr__registers.html#abb33e43ce55ab7142a4ea3ebc11b1e24',1,'mxc_gcr_regs_t']]],
-  ['ext_5fpu_5fmode',['ext_pu_mode',['../group__owm.html#a21dec33af6fa94330d3548fc5ab6af4b',1,'owm_cfg_t']]],
+  ['ext_5fpu_5fmode',['ext_pu_mode',['../group__owm.html#aa6aa798684aee445522660fa96b64fd9',1,'mxc_owm_cfg_t']]],
   ['extsetup',['extsetup',['../group__i2s__registers.html#aaedbec3ea04f59a5a08eede9decb5ecc',1,'mxc_i2s_regs_t']]],
   ['error_20codes',['Error Codes',['../group___m_x_c___error___codes.html',1,'']]],
   ['exclusive_20access_20locks',['Exclusive Access Locks',['../group__mxc__lock__utilities.html',1,'']]]

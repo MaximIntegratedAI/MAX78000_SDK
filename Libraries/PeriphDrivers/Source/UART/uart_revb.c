@@ -64,19 +64,33 @@ uart_req_state_t states[MXC_UART_INSTANCES];
 /* ************************************************************************* */
 int MXC_UART_RevB_Init(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clock_t clock)
 {
+    int err;
+
     if (MXC_UART_GET_IDX(uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    // Initialize UART
-    MXC_UART_SetRXThreshold(uart, 1);       // Set RX threshold to 1 byte
+    // Set RX threshold to 1 byte
+    if((err = MXC_UART_SetRXThreshold(uart, 1)) != E_NO_ERROR) {
+        return err;
+    }
+    
+    // Set Datasize to 8 bits
+    if((err = MXC_UART_SetDataSize(uart, 8)) != E_NO_ERROR) {
+        return err;
+    }
 
-    MXC_UART_SetDataSize(uart, 8);          // Set Datasize to 8 bits
+    if((err = MXC_UART_SetParity(uart, MXC_UART_PARITY_DISABLE)) != E_NO_ERROR) {
+        return err;
+    }
 
-    MXC_UART_SetParity(uart, MXC_UART_PARITY_DISABLE);
-    MXC_UART_SetStopBits(uart, MXC_UART_STOP_1);
+    if((err = MXC_UART_SetStopBits(uart, MXC_UART_STOP_1)) != E_NO_ERROR) {
+        return err;
+    }
 
-    return MXC_UART_SetFrequency(uart, baud, clock);
+    MXC_UART_SetFrequency(uart, baud, clock);
+    
+    return E_NO_ERROR;
 }
 
 int MXC_UART_RevB_ReadyForSleep(mxc_uart_regs_t* uart)
@@ -892,7 +906,7 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, uns
 
     states[uart_num].channelRx = channel;
     MXC_DMA_ConfigChannel(config, srcdst);
-    MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
+    MXC_DMA_SetCallback(channel, NULL);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
     MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
@@ -935,7 +949,7 @@ int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* byt
 
     states[uart_num].channelTx = channel;
     MXC_DMA_ConfigChannel(config, srcdst);
-    MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
+    MXC_DMA_SetCallback(channel, NULL);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
     MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
@@ -989,8 +1003,4 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_req_t* req)
     }
 
     return E_NO_ERROR;
-}
-
-void MXC_UART_RevB_DMACallback(int ch, int error)
-{
 }

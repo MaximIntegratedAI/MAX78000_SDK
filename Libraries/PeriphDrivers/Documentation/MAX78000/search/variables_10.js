@@ -7,6 +7,7 @@ var searchData=
   ['sec',['sec',['../group__rtc__registers.html#a42840f18466e61b7fe0bde5d005a6a66',1,'mxc_rtc_regs_t']]],
   ['semaphores',['semaphores',['../group__sema__registers.html#a98971ed2c545ea0d067e1f5e9fae6c16',1,'mxc_sema_regs_t']]],
   ['sfstat',['sfstat',['../group__sir__registers.html#adb4e4c85254e79d1f530180853f5154d',1,'mxc_sir_regs_t']]],
+  ['simo',['simo',['../group__trimsir__registers.html#a009f5cac6aeb027d331754ca2d0e7415',1,'mxc_trimsir_regs_t']]],
   ['sistat',['sistat',['../group__sir__registers.html#a443b929a7e980c2f956bc1a1ff251168',1,'mxc_sir_regs_t']]],
   ['slave',['slave',['../group__i2c__registers.html#a71276e634c2bcb5792dc763b43a44e44',1,'mxc_i2c_regs_t']]],
   ['snapshot',['snapshot',['../group__wut__registers.html#ae991811ce95dc2ea8be1f59848562bcd',1,'mxc_wut_regs_t']]],

@@ -143,7 +143,7 @@ __isr_vector:
     .long RSV51_IRQHandler             /* 0x43  0x010C  67: Reserved */
     .long RSV52_IRQHandler             /* 0x44  0x0110  68: Reserved */
     .long WUT_IRQHandler               /* 0x45  0x0114  69: Wakeup Timer */
-    .long GPIOWake_IRQHandler          /* 0x46  0x0118  70: GPIO and AIN Wakeup */
+    .long GPIOWAKE_IRQHandler          /* 0x46  0x0118  70: GPIO and AIN Wakeup */
     .long RSV55_IRQHandler             /* 0x47  0x011C  71: Reserved */
     .long SPI0_IRQHandler              /* 0x48  0x0120  72: SPI0 */
     .long WDT1_IRQHandler              /* 0x49  0x0124  73: LP Watchdog */
@@ -355,7 +355,7 @@ Reset_Handler:
     def_irq_handler RSV51_IRQHandler             /* 0x43  0x010C  67: Reserved */
     def_irq_handler RSV52_IRQHandler             /* 0x44  0x0110  68: Reserved */
     def_irq_handler WUT_IRQHandler               /* 0x45  0x0114  69: Wakeup Timer */
-    def_irq_handler GPIOWake_IRQHandler          /* 0x46  0x0118  70: GPIO and AIN Wakeup */
+    def_irq_handler GPIOWAKE_IRQHandler          /* 0x46  0x0118  70: GPIO and AIN Wakeup */
     def_irq_handler RSV55_IRQHandler             /* 0x47  0x011C  71: Reserved */
     def_irq_handler SPI0_IRQHandler              /* 0x48  0x0120  72: SPI0 */
     def_irq_handler WDT1_IRQHandler              /* 0x49  0x0124  73: LP Watchdog */

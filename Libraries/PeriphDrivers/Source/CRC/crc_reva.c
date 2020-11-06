@@ -30,6 +30,10 @@
  * ownership rights.
  *
  *************************************************************************** */
+ 
+#ifdef __CC_ARM
+#pragma diag_suppress 188
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -122,7 +126,7 @@ uint32_t MXC_CRC_RevA_GetResult(void)
 int MXC_CRC_RevA_Compute(mxc_crc_req_t* req)
 {
     int i = 0;
-    volatile int length = req->dataLen;
+    volatile int length;
     
     if (req == NULL) {
         return E_NULL_PTR;
@@ -135,6 +139,8 @@ int MXC_CRC_RevA_Compute(mxc_crc_req_t* req)
     if (req->dataLen == 0) {
         return E_INVALID;
     }
+    
+    length = req->dataLen;
     
     MXC_CRC->ctrl |= MXC_F_CRC_CTRL_EN;
     

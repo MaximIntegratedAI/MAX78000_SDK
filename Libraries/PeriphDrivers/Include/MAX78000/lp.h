@@ -4,7 +4,7 @@
  */
 
 /* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,6 +33,9 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
+ *
+ * $Date: 2018-08-28 17:03:02 -0500 (Tue, 28 Aug 2018) $
+ * $Revision: 37424 $
  *
  *************************************************************************** */
 
@@ -88,16 +91,15 @@ void MXC_LP_EnterSleepMode (void);
 void MXC_LP_EnterDeepSleepMode (void);
 
 /**
+ * @brief      Places the device into Standby mode.  This function returns once an RTC or external interrupt occur.
+ */
+void MXC_LP_EnterStandbyMode (void);
+
+/**
  * @brief      Places the device into BACKUP mode.  CPU state is not maintained in this mode, so this function never returns.
  *             Instead, the device will restart once an RTC or external interrupt occur.
  */
 void MXC_LP_EnterBackupMode (void);
-
-/**
- * @brief      Places the device into Storage mode.  CPU state is not maintained in this mode, so this function never returns.
- *             Instead, the device will restart once an RTC or external interrupt occur.
- */
-void MXC_LP_EnterStorageMode (void);
 
 /**
  * @brief      Places the device into Shutdown mode.  CPU state is not maintained in this mode, so this function never returns.
@@ -111,23 +113,6 @@ void MXC_LP_EnterShutDownMode (void);
  * @param[in]  ovr   The ovr options are only 0.9V, 1.0V, and 1.1V use enum mxc_lp_ovr_t
  */
 void MXC_LP_SetOVR (mxc_lp_ovr_t ovr);
-
-/**
- * @brief      Enable retention regulator
- */
-void MXC_LP_RetentionRegEnable (void);
-
-/**
- * @brief      Disable retention regulator
- */
-void MXC_LP_RetentionRegDisable (void);
-
-/**
- * @brief      Is the retention regulator enabled
- *
- * @return     1 = enabled 0 =  disabled
- */
-int  MXC_LP_RetentionRegIsEnabled (void);
 
 /**
  * @brief      Turn bandgap on
@@ -145,57 +130,6 @@ void MXC_LP_BandgapOff (void);
  * @return     1 = bandgap on , 0 = bandgap off
  */
 int MXC_LP_BandgapIsOn (void);
-
-/**
- * @brief      Enable Power on Reset VDD Core Monitor
- */
-void MXC_LP_PORVCOREoreMonitorEnable (void);
-
-/**
- * @brief      Disable Power on Reset VDD Core Monitor
- */
-void MXC_LP_PORVCOREoreMonitorDisable (void);
-
-/**
- * @brief      Is Power on Reset VDD Core Monitor enabled
- *
- * @return     1 = enabled , 0 = disabled
- */
-int MXC_LP_PORVCOREoreMonitorIsEnabled (void);
-
-/**
- * @brief      Enable LDO
- */
-void MXC_LP_LDOEnable (void);
-
-/**
- * @brief      Disable LDO
- */
-void MXC_LP_LDODisable (void);
-
-/**
- * @brief      Is LDO enabled
- *
- * @return     1 = enabled , 0 = disabled
- */
-int  MXC_LP_LDOIsEnabled (void);
-
-/**
- * @brief      Enable Fast wakeup
- */
-void MXC_LP_FastWakeupEnable (void);
-
-/**
- * @brief      Disable Fast wakeup
- */
-void MXC_LP_FastWakeupDisable (void);
-
-/**
- * @brief      Is Fast wake up is Enabled
- *
- * @return     1 = enabled , 0 = disabled
- */
-int  MXC_LP_FastWakeupIsEnabled (void);
 
 /**
  * @brief      clear all wake up status
@@ -253,9 +187,6 @@ void MXC_LP_EnableWUTAlarmWakeup (void);
  * @brief      Disables the WUT alarm from waking up the device.
  */
 void MXC_LP_DisableWUTAlarmWakeup (void);
-/**
- * @brief      Enables the USB to wake up the device from any low power mode.
- */
 
 /**
  * @brief      Configure which clocks are powered down at deep sleep and which are not affected.

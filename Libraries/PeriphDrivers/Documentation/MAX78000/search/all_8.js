@@ -58,5 +58,6 @@ var searchData=
   ['gpio_5fvssel',['GPIO_VSSEL',['../group___g_p_i_o___v_s_s_e_l.html',1,'']]],
   ['gpio_5fwken',['GPIO_WKEN',['../group___g_p_i_o___w_k_e_n.html',1,'']]],
   ['gpio_5fwken_5fclr',['GPIO_WKEN_CLR',['../group___g_p_i_o___w_k_e_n___c_l_r.html',1,'']]],
-  ['gpio_5fwken_5fset',['GPIO_WKEN_SET',['../group___g_p_i_o___w_k_e_n___s_e_t.html',1,'']]]
+  ['gpio_5fwken_5fset',['GPIO_WKEN_SET',['../group___g_p_i_o___w_k_e_n___s_e_t.html',1,'']]],
+  ['gpr',['gpr',['../group__gcr__registers.html#ac31f0872e3b72fbdd501dc20215319a3',1,'mxc_gcr_regs_t']]]
 ];

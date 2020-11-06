@@ -33,6 +33,10 @@
  *
  *************************************************************************** */
 
+#ifdef __riscv
+    #error "The MXC_Delay functions are not currently supported on the RISC-V core."
+#else
+
 /* **** Includes **** */
 #include <stdint.h>
 #include <stddef.h>
@@ -41,14 +45,12 @@
 
 /* **** File Scope Variables **** */
 static volatile int overflows = -1;
-#ifndef __riscv
 static uint32_t endtick;
 static uint32_t ctrl_save;
 static mxc_delay_complete_t cbFunc;
 
 static void MXC_DelayInit(unsigned long us);
 extern void SysTick_Handler(void);
-#endif // __riscv
 
 /* ************************************************************************** */
 __weak void SysTick_Handler(void)
@@ -59,8 +61,6 @@ __weak void SysTick_Handler(void)
 /* ************************************************************************** */
 void MXC_DelayHandler(void)
 {
-#ifndef __riscv
-
     // Check and clear overflow flag
     if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
         // Decrement overflow flag if delay is still ongoing
@@ -76,11 +76,8 @@ void MXC_DelayHandler(void)
             }
         }
     }
-    
-#endif // __riscv
 }
 
-#ifndef __riscv
 /* ************************************************************************** */
 static void MXC_DelayInit(unsigned long us)
 {
@@ -122,12 +119,10 @@ static void MXC_DelayInit(unsigned long us)
         endtick = starttick - lastticks;
     }
 }
-#endif // __riscv
 
 /* ************************************************************************** */
 int MXC_DelayAsync(unsigned long us, mxc_delay_complete_t callback)
 {
-#ifndef __riscv
     cbFunc = callback;
     
     // Check if timeout currently ongoing
@@ -148,15 +143,12 @@ int MXC_DelayAsync(unsigned long us, mxc_delay_complete_t callback)
         SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
     }
     
-#endif // __riscv
     return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
 int MXC_DelayCheck(void)
 {
-#ifndef __riscv
-
     // Check if timeout currently ongoing
     if (overflows < 0) {
         if (cbFunc != NULL) {
@@ -179,15 +171,12 @@ int MXC_DelayCheck(void)
         return E_NO_ERROR;
     }
     
-#endif // __riscv
     return E_BUSY;
 }
 
 /* ************************************************************************** */
 void MXC_DelayAbort(void)
 {
-#ifndef __riscv
-
     if (cbFunc != NULL) {
         cbFunc(E_ABORT);
         cbFunc = NULL;
@@ -195,14 +184,11 @@ void MXC_DelayAbort(void)
     
     SysTick->CTRL = ctrl_save;
     overflows = -1;
-#endif // __riscv
 }
 
 /* ************************************************************************** */
 int MXC_Delay(unsigned long us)
 {
-#ifndef __riscv
-
     // Check if timeout currently ongoing
     if (overflows > 0) {
         return E_BUSY;
@@ -230,8 +216,7 @@ int MXC_Delay(unsigned long us)
     while (SysTick->VAL > endtick);
     
     MXC_DelayAbort();
-    
-#endif // __riscv
     return E_NO_ERROR;
 }
 
+#endif // __riscv

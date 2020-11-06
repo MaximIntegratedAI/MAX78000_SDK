@@ -67,7 +67,7 @@ int MXC_ADC_RevA_StartConversion (mxc_adc_chsel_t channel);
 int MXC_ADC_RevA_StartConversionAsync (mxc_adc_chsel_t channel, mxc_adc_complete_cb_t callback);
 int MXC_ADC_RevA_StartConversionDMA (mxc_adc_chsel_t channel, uint16_t *data, void (*callback) (int, int));
 int MXC_ADC_RevA_Handler (void);
-int MXC_ADC_RevA_Convert (mxc_adc_conversion_req_t req);
+int MXC_ADC_RevA_Convert (mxc_adc_conversion_req_t* req);
 int MXC_ADC_RevA_ConvertAsync (mxc_adc_conversion_req_t req);
 void MXC_ADC_RevA_Monitor (mxc_adc_monitor_req_t req);
 void MXC_ADC_RevA_MonitorAsync (mxc_adc_monitor_req_t req);

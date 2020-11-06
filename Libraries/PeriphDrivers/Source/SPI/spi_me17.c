@@ -51,7 +51,7 @@
 int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numSlaves,
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
 {
-    uint8_t spi_num;
+    int spi_num;
     
     spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);

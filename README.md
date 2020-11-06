@@ -4,6 +4,12 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+November 6, 2020
+* Added missing GCR registers and fields.
+* Cleaned up PWRSEQ registers.
+* Improved low power functionality support.
+* Removed MXC_Delay functions from the RISC-V libraries.
+
 October 23, 2020
 * Added support for MAX78000 FTRH Rev A board.
 * Modified camera driver to use DMA.

@@ -387,7 +387,7 @@ int MXC_ADC_Handler (void);
  *
  * @return     \ref MXC_Error_Codes for error.
  */
-int MXC_ADC_Convert (mxc_adc_conversion_req_t req);
+int MXC_ADC_Convert (mxc_adc_conversion_req_t* req);
 
 /**
  * @brief      Perform a conversion on a specific channel

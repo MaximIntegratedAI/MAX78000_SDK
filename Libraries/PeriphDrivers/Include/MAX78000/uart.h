@@ -650,16 +650,6 @@ int MXC_UART_AbortAsync(mxc_uart_regs_t* uart);
  */
 int MXC_UART_AsyncHandler(mxc_uart_regs_t* uart);
 
-/**
- * @brief   DMA Callback function
- *
- * @param   ch           DMA channel
- * @param   error        Error
- * 
- * @return  See \ref MXC_Error_Codes for the list of error return codes.
- */
-void MXC_UART_DMACallback (int ch, int error);
-
 /**@} end of group uart */
 
 #ifdef __cplusplus

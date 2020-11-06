@@ -36,5 +36,6 @@ var modules =
     [ "PTG_Registers", "group__ptg__registers.html", "group__ptg__registers" ],
     [ "SIMO_Registers", "group__simo__registers.html", "group__simo__registers" ],
     [ "SIR_Registers", "group__sir__registers.html", "group__sir__registers" ],
+    [ "TRIMSIR_Registers", "group__trimsir__registers.html", "group__trimsir__registers" ],
     [ "External Memory Cache Controller (EMCC)", "group__emcc.html", "group__emcc" ]
 ];

@@ -18,6 +18,7 @@ var searchData=
   ['rst',['rst',['../group__lpgcr__registers.html#a6b354f86847ea7baeb4e7b6b35070422',1,'mxc_lpgcr_regs_t::rst()'],['../group__wdt__registers.html#a5e60cc2ae13ed2a525bbee7118ac69cd',1,'mxc_wdt_regs_t::rst()']]],
   ['rst0',['rst0',['../group__gcr__registers.html#a5557fd03ed7398e31f6611c6b0e23bd6',1,'mxc_gcr_regs_t']]],
   ['rst1',['rst1',['../group__gcr__registers.html#aa20185f27fffbec3311f25dd4ed63ed5',1,'mxc_gcr_regs_t']]],
+  ['rtc',['rtc',['../group__trimsir__registers.html#a9a746db2451fb3ae05c8e0d596de0a9b',1,'mxc_trimsir_regs_t']]],
   ['rx_5fbuf',['rx_buf',['../group__i2c.html#a62d96b3e83f506af2c4c5c1ddfd3c785',1,'_i2c_req_t']]],
   ['rx_5flen',['rx_len',['../group__i2c.html#a7d1a4ab0355b90b84277c05f75119f55',1,'_i2c_req_t']]],
   ['rxcnt',['rxCnt',['../group__required.html#ga1bf34bc0d63b8e4a68fa9fb295b03f34',1,'_mxc_spi_req_t::rxCnt()'],['../group__required.html#ga1bf34bc0d63b8e4a68fa9fb295b03f34',1,'_mxc_uart_req_t::rxCnt()']]],

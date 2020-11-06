@@ -83,7 +83,7 @@ int MXC_DMA_SetSrcDst(mxc_dma_srcdst_t srcdst)
     return MXC_DMA_RevA_SetSrcDst(srcdst);
 }
 
-int MXC_DMA_GetSrcDst(mxc_dma_srcdst_t srcdst)
+int MXC_DMA_GetSrcDst(mxc_dma_srcdst_t* srcdst)
 {
     return MXC_DMA_RevA_GetSrcDst(srcdst);
 }
@@ -93,7 +93,7 @@ int MXC_DMA_SetSrcReload(mxc_dma_srcdst_t srcdst)
     return MXC_DMA_RevA_SetSrcReload(srcdst);
 }
 
-int MXC_DMA_GetSrcReload(mxc_dma_srcdst_t srcdst)
+int MXC_DMA_GetSrcReload(mxc_dma_srcdst_t* srcdst)
 {
     return MXC_DMA_RevA_GetSrcReload(srcdst);
 }

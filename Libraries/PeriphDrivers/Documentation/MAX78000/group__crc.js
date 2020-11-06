@@ -12,7 +12,7 @@ var group__crc =
     [ "MXC_CRC_GetDirection", "group__crc.html#ga0adc9cf3bde4290f972ce94d91fbaf8e", null ],
     [ "MXC_CRC_GetPoly", "group__crc.html#ga99ffa24c86df3c8c8e9e20f7e6a9f437", null ],
     [ "MXC_CRC_GetResult", "group__crc.html#ga1a8f5f296e4c256e0f9eef792310555a", null ],
-    [ "MXC_CRC_Handler", "group__crc.html#ga7fc61680594af2cd9a44ac703f4ad1cb", null ],
+    [ "MXC_CRC_Handler", "group__crc.html#ga9af1bae70d77dc26f96f9a7e036847a5", null ],
     [ "MXC_CRC_Init", "group__crc.html#ga6da82cb789435ed9eecbbb546176284c", null ],
     [ "MXC_CRC_SetDirection", "group__crc.html#ga4821e71ea0cdabf6a07678bdd3469312", null ],
     [ "MXC_CRC_SetPoly", "group__crc.html#gab0b9837f0f9283c54f131ab09a4b6c5d", null ],

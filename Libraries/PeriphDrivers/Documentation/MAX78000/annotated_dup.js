@@ -25,6 +25,7 @@ var annotated_dup =
     [ "mxc_icc_regs_t", "group__icc__registers.html#structmxc__icc__regs__t", "group__icc__registers_structmxc__icc__regs__t" ],
     [ "mxc_lpgcr_regs_t", "group__lpgcr__registers.html#structmxc__lpgcr__regs__t", "group__lpgcr__registers_structmxc__lpgcr__regs__t" ],
     [ "mxc_mcr_regs_t", "group__mcr__registers.html#structmxc__mcr__regs__t", "group__mcr__registers_structmxc__mcr__regs__t" ],
+    [ "mxc_owm_cfg_t", "group__owm.html#structmxc__owm__cfg__t", "group__owm_structmxc__owm__cfg__t" ],
     [ "mxc_owm_regs_t", "group__owm__registers.html#structmxc__owm__regs__t", "group__owm__registers_structmxc__owm__regs__t" ],
     [ "mxc_pt_cfg_t", "group__pulsetrain.html#structmxc__pt__cfg__t", "group__pulsetrain_structmxc__pt__cfg__t" ],
     [ "mxc_pt_regs_t", "group__pt__registers.html#structmxc__pt__regs__t", "group__pt__registers_structmxc__pt__regs__t" ],
@@ -38,12 +39,12 @@ var annotated_dup =
     [ "mxc_spi_req_t", "group__spi.html#struct__mxc__spi__req__t", "group__spi_struct__mxc__spi__req__t" ],
     [ "mxc_tmr_cfg_t", "group__tmr.html#structmxc__tmr__cfg__t", "group__tmr_structmxc__tmr__cfg__t" ],
     [ "mxc_tmr_regs_t", "group__tmr__registers.html#structmxc__tmr__regs__t", "group__tmr__registers_structmxc__tmr__regs__t" ],
+    [ "mxc_trimsir_regs_t", "group__trimsir__registers.html#structmxc__trimsir__regs__t", "group__trimsir__registers_structmxc__trimsir__regs__t" ],
     [ "mxc_trng_regs_t", "group__trng__registers.html#structmxc__trng__regs__t", "group__trng__registers_structmxc__trng__regs__t" ],
     [ "mxc_uart_regs_t", "group__uart__registers.html#structmxc__uart__regs__t", "group__uart__registers_structmxc__uart__regs__t" ],
     [ "mxc_uart_req_t", "group__uart.html#struct__mxc__uart__req__t", "group__uart_struct__mxc__uart__req__t" ],
     [ "mxc_wdt_cfg_t", "group__wdt.html#structmxc__wdt__cfg__t", "group__wdt_structmxc__wdt__cfg__t" ],
     [ "mxc_wdt_regs_t", "group__wdt__registers.html#structmxc__wdt__regs__t", "group__wdt__registers_structmxc__wdt__regs__t" ],
     [ "mxc_wut_cfg_t", "group__wut.html#structmxc__wut__cfg__t", "group__wut_structmxc__wut__cfg__t" ],
-    [ "mxc_wut_regs_t", "group__wut__registers.html#structmxc__wut__regs__t", "group__wut__registers_structmxc__wut__regs__t" ],
-    [ "owm_cfg_t", "group__owm.html#structowm__cfg__t", "group__owm_structowm__cfg__t" ]
+    [ "mxc_wut_regs_t", "group__wut__registers.html#structmxc__wut__regs__t", "group__wut__registers_structmxc__wut__regs__t" ]
 ];

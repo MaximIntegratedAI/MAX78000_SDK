@@ -206,8 +206,6 @@ Functions</h2></td></tr>
 <tr class="separator:ga56e16b50653c8574a3c67d64f084799f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9ac3f3ec969196fe03ae6dfdb89db837"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#ga9ac3f3ec969196fe03ae6dfdb89db837">MXC_UART_AsyncHandler</a> (<a class="el" href="group__uart__registers.html#structmxc__uart__regs__t">mxc_uart_regs_t</a> *uart)</td></tr>
 <tr class="separator:ga9ac3f3ec969196fe03ae6dfdb89db837"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf6826f2f6ad668da2bc09deecbc33378"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uart.html#gaf6826f2f6ad668da2bc09deecbc33378">MXC_UART_DMACallback</a> (int ch, int error)</td></tr>
-<tr class="separator:gaf6826f2f6ad668da2bc09deecbc33378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -647,44 +645,6 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
   <table class="params">
     <tr><td class="paramname">uart</td><td>Pointer to UART registers (selects the UART block used.) </td></tr>
     <tr><td class="paramname">mask</td><td>The interrupts to be disabled</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for the list of error return codes. </dd></dl>
-
-</div>
-</div>
-<a id="gaf6826f2f6ad668da2bc09deecbc33378"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf6826f2f6ad668da2bc09deecbc33378">&#9670;&nbsp;</a></span>MXC_UART_DMACallback()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int MXC_UART_DMACallback </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>ch</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>error</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>DMA Callback function. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ch</td><td>DMA channel </td></tr>
-    <tr><td class="paramname">error</td><td>Error</td></tr>
   </table>
   </dd>
 </dl>
@@ -1876,7 +1836,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 24 2020 12:25:15 for MAX78000 Peripheral Driver API by
+    <li class="footer">Generated on Fri Nov 6 2020 11:13:21 for MAX78000 Peripheral Driver API by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

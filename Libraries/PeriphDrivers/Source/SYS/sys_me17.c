@@ -299,6 +299,12 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 int MXC_SYS_Clock_Timeout(uint32_t ready)
 {
+    #ifdef __riscv
+        // The current RISC-V implementation is to block until the clock is ready.
+        // We do not have access to a system tick in the RV core.
+        while(!(MXC_GCR->clkctrl & ready));
+        return E_NO_ERROR;
+    #else
     // Start timeout, wait for ready
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
 
@@ -311,6 +317,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     while (MXC_DelayCheck() == E_BUSY);
 
     return E_TIME_OUT;
+    #endif // __riscv
 }
 
 /* ************************************************************************** */

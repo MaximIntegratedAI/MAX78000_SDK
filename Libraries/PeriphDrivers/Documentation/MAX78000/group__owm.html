@@ -99,8 +99,8 @@ Modules</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:structowm__cfg__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#structowm__cfg__t">owm_cfg_t</a></td></tr>
-<tr class="separator:structowm__cfg__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structmxc__owm__cfg__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#structmxc__owm__cfg__t">mxc_owm_cfg_t</a></td></tr>
+<tr class="separator:structmxc__owm__cfg__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
@@ -121,67 +121,89 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga22f537c7c373ba506abf27c7bef81e73"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga22f537c7c373ba506abf27c7bef81e73">owm_ext_pu_t</a> </td></tr>
-<tr class="separator:ga22f537c7c373ba506abf27c7bef81e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7ea4dcc0c110361bf2b9b8b875b7c3e4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga7ea4dcc0c110361bf2b9b8b875b7c3e4">mxc_owm_ext_pu_t</a> </td></tr>
+<tr class="separator:ga7ea4dcc0c110361bf2b9b8b875b7c3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga21b93678a809f4b3fe2b816ecf38476b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga21b93678a809f4b3fe2b816ecf38476b">OWM_Init</a> (const <a class="el" href="group__owm.html#structowm__cfg__t">owm_cfg_t</a> *cfg, const sys_cfg_owm_t *sys_cfg)</td></tr>
-<tr class="separator:ga21b93678a809f4b3fe2b816ecf38476b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab82aa80ee9e005f1f6ba50f21d2ad2fa"><td class="memItemLeft" align="right" valign="top"><a id="gab82aa80ee9e005f1f6ba50f21d2ad2fa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gab82aa80ee9e005f1f6ba50f21d2ad2fa">OWM_Shutdown</a> (void)</td></tr>
-<tr class="separator:gab82aa80ee9e005f1f6ba50f21d2ad2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5a5f5f24781d3384981373960c219242"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga5a5f5f24781d3384981373960c219242">OWM_Reset</a> (void)</td></tr>
-<tr class="separator:ga5a5f5f24781d3384981373960c219242"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2545aca9a98eb42d12c5639fa53be9be"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga2545aca9a98eb42d12c5639fa53be9be">OWM_TouchByte</a> (uint8_t data)</td></tr>
-<tr class="separator:ga2545aca9a98eb42d12c5639fa53be9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf95fc518bd9ae74facdeca5d18440c18"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gaf95fc518bd9ae74facdeca5d18440c18">OWM_WriteByte</a> (uint8_t data)</td></tr>
-<tr class="separator:gaf95fc518bd9ae74facdeca5d18440c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga80293b14456fc2249aceafad97a6b321"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga80293b14456fc2249aceafad97a6b321">OWM_ReadByte</a> (void)</td></tr>
-<tr class="separator:ga80293b14456fc2249aceafad97a6b321"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga39cb9d8aa14299cf3fbd19b2e1fdab35"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga39cb9d8aa14299cf3fbd19b2e1fdab35">OWM_TouchBit</a> (uint8_t bit)</td></tr>
-<tr class="separator:ga39cb9d8aa14299cf3fbd19b2e1fdab35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga622fa0073c0f37697bad4d5ed29af7a4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga622fa0073c0f37697bad4d5ed29af7a4">OWM_WriteBit</a> (uint8_t bit)</td></tr>
-<tr class="separator:ga622fa0073c0f37697bad4d5ed29af7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8cc078d1d7dede5a85d33139476ed07c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga8cc078d1d7dede5a85d33139476ed07c">OWM_ReadBit</a> (void)</td></tr>
-<tr class="separator:ga8cc078d1d7dede5a85d33139476ed07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40a2d52afc4d8d02c5b49dcc4c1508fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga40a2d52afc4d8d02c5b49dcc4c1508fe">OWM_Write</a> (uint8_t *data, int len)</td></tr>
-<tr class="separator:ga40a2d52afc4d8d02c5b49dcc4c1508fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8de96edfce3200dc8f14f1b48440ea7c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga8de96edfce3200dc8f14f1b48440ea7c">OWM_Read</a> (uint8_t *data, int len)</td></tr>
-<tr class="separator:ga8de96edfce3200dc8f14f1b48440ea7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga32cf20a41896d59500bfaa63cacb82dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga32cf20a41896d59500bfaa63cacb82dc">OWM_ReadROM</a> (uint8_t *ROMCode)</td></tr>
-<tr class="separator:ga32cf20a41896d59500bfaa63cacb82dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaad30da878db6b3089453e579bf389c26"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gaad30da878db6b3089453e579bf389c26">OWM_MatchROM</a> (uint8_t *ROMCode)</td></tr>
-<tr class="separator:gaad30da878db6b3089453e579bf389c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1d0c3a37ff4c22a0e8eace6996ca3f23"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga1d0c3a37ff4c22a0e8eace6996ca3f23">OWM_ODMatchROM</a> (uint8_t *ROMCode)</td></tr>
-<tr class="separator:ga1d0c3a37ff4c22a0e8eace6996ca3f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ca1e7dc0c017e1c310daeebd1661839"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga4ca1e7dc0c017e1c310daeebd1661839">OWM_SkipROM</a> (void)</td></tr>
-<tr class="separator:ga4ca1e7dc0c017e1c310daeebd1661839"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga690e0451836a80bb3771ccd36657948e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga690e0451836a80bb3771ccd36657948e">OWM_ODSkipROM</a> (void)</td></tr>
-<tr class="separator:ga690e0451836a80bb3771ccd36657948e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga46582e325563b8f471cacebed6fbc271"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga46582e325563b8f471cacebed6fbc271">OWM_Resume</a> (void)</td></tr>
-<tr class="separator:ga46582e325563b8f471cacebed6fbc271"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3dd214613fa926dccbbd7d46c20c7106"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga3dd214613fa926dccbbd7d46c20c7106">OWM_SearchROM</a> (int newSearch, uint8_t *ROMCode)</td></tr>
-<tr class="separator:ga3dd214613fa926dccbbd7d46c20c7106"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga479cb53b564e0e85d213541390962086"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga479cb53b564e0e85d213541390962086">OWM_ClearFlags</a> (uint32_t mask)</td></tr>
-<tr class="separator:ga479cb53b564e0e85d213541390962086"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5f88eefc03d77239397e3a8546bb3bd2"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga5f88eefc03d77239397e3a8546bb3bd2">OWM_GetFlags</a> (void)</td></tr>
-<tr class="separator:ga5f88eefc03d77239397e3a8546bb3bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabe28873729495deb59f35ec940d53187"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gabe28873729495deb59f35ec940d53187">OWM_SetExtPullup</a> (int enable)</td></tr>
-<tr class="separator:gabe28873729495deb59f35ec940d53187"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga636dfc21fd6c5225c07f34667d263b30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga636dfc21fd6c5225c07f34667d263b30">OWM_SetOverdrive</a> (int enable)</td></tr>
-<tr class="separator:ga636dfc21fd6c5225c07f34667d263b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5dd39b62dc394b6e93b3c58179991522"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga5dd39b62dc394b6e93b3c58179991522">MXC_OWM_Init</a> (const <a class="el" href="group__owm.html#structmxc__owm__cfg__t">mxc_owm_cfg_t</a> *cfg)</td></tr>
+<tr class="separator:ga5dd39b62dc394b6e93b3c58179991522"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3fe9006fdcdf20c2a8d9dbec72a88f67"><td class="memItemLeft" align="right" valign="top"><a id="ga3fe9006fdcdf20c2a8d9dbec72a88f67"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga3fe9006fdcdf20c2a8d9dbec72a88f67">MXC_OWM_Shutdown</a> (void)</td></tr>
+<tr class="separator:ga3fe9006fdcdf20c2a8d9dbec72a88f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2a2e1fed8ea860ec2aa860c39e93b77e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga2a2e1fed8ea860ec2aa860c39e93b77e">MXC_OWM_Reset</a> (void)</td></tr>
+<tr class="separator:ga2a2e1fed8ea860ec2aa860c39e93b77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7bd1f2d4142c2a88a11fc2385f904698"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga7bd1f2d4142c2a88a11fc2385f904698">MXC_OWM_TouchByte</a> (uint8_t data)</td></tr>
+<tr class="separator:ga7bd1f2d4142c2a88a11fc2385f904698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf68e5019e22fcd4427ce43cc5bea54f3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gaf68e5019e22fcd4427ce43cc5bea54f3">MXC_OWM_WriteByte</a> (uint8_t data)</td></tr>
+<tr class="separator:gaf68e5019e22fcd4427ce43cc5bea54f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad361bbe75c3bd3714272e82e54323d37"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gad361bbe75c3bd3714272e82e54323d37">MXC_OWM_ReadByte</a> (void)</td></tr>
+<tr class="separator:gad361bbe75c3bd3714272e82e54323d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga73230f7d19e0f3fed2f55f1559e8c489"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga73230f7d19e0f3fed2f55f1559e8c489">MXC_OWM_TouchBit</a> (uint8_t bit)</td></tr>
+<tr class="separator:ga73230f7d19e0f3fed2f55f1559e8c489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga739620941b3632e4fd1bd80f385e990e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga739620941b3632e4fd1bd80f385e990e">MXC_OWM_WriteBit</a> (uint8_t bit)</td></tr>
+<tr class="separator:ga739620941b3632e4fd1bd80f385e990e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga70dc9d9499f1db2b9d02b6775403c3f6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga70dc9d9499f1db2b9d02b6775403c3f6">MXC_OWM_ReadBit</a> (void)</td></tr>
+<tr class="separator:ga70dc9d9499f1db2b9d02b6775403c3f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae761cfafa604b559bda40242a3ba4fd4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gae761cfafa604b559bda40242a3ba4fd4">MXC_OWM_Write</a> (uint8_t *data, int len)</td></tr>
+<tr class="separator:gae761cfafa604b559bda40242a3ba4fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga831cadf5b34bf91695c68fd92c865a5b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga831cadf5b34bf91695c68fd92c865a5b">MXC_OWM_Read</a> (uint8_t *data, int len)</td></tr>
+<tr class="separator:ga831cadf5b34bf91695c68fd92c865a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0727e25fb533ee60e8a771063515d205"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga0727e25fb533ee60e8a771063515d205">MXC_OWM_ReadROM</a> (uint8_t *ROMCode)</td></tr>
+<tr class="separator:ga0727e25fb533ee60e8a771063515d205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3fc1fc26807fe6abb12155d89d1ae327"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga3fc1fc26807fe6abb12155d89d1ae327">MXC_OWM_MatchROM</a> (uint8_t *ROMCode)</td></tr>
+<tr class="separator:ga3fc1fc26807fe6abb12155d89d1ae327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2dcf481fad2d9c7c9e7d64aae6aa0ffd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga2dcf481fad2d9c7c9e7d64aae6aa0ffd">MXC_OWM_ODMatchROM</a> (uint8_t *ROMCode)</td></tr>
+<tr class="separator:ga2dcf481fad2d9c7c9e7d64aae6aa0ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga185814776ad32601c7afc984f5284752"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga185814776ad32601c7afc984f5284752">MXC_OWM_SkipROM</a> (void)</td></tr>
+<tr class="separator:ga185814776ad32601c7afc984f5284752"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab119f3f422733568957b5a55bc3fb9a8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gab119f3f422733568957b5a55bc3fb9a8">MXC_OWM_ODSkipROM</a> (void)</td></tr>
+<tr class="separator:gab119f3f422733568957b5a55bc3fb9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac58ec4ae2ca2ffd46181d31786bed508"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gac58ec4ae2ca2ffd46181d31786bed508">MXC_OWM_Resume</a> (void)</td></tr>
+<tr class="separator:gac58ec4ae2ca2ffd46181d31786bed508"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac70b0ce9f27ff2f26bd1a48d6c44f3da"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gac70b0ce9f27ff2f26bd1a48d6c44f3da">MXC_OWM_SearchROM</a> (int newSearch, uint8_t *ROMCode)</td></tr>
+<tr class="separator:gac70b0ce9f27ff2f26bd1a48d6c44f3da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6718b656ae8d3b945c735930bfe9c336"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga6718b656ae8d3b945c735930bfe9c336">MXC_OWM_ClearFlags</a> (uint32_t mask)</td></tr>
+<tr class="separator:ga6718b656ae8d3b945c735930bfe9c336"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadaed2256b86e3d96aa105f2e50b17198"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gadaed2256b86e3d96aa105f2e50b17198">MXC_OWM_GetFlags</a> (void)</td></tr>
+<tr class="separator:gadaed2256b86e3d96aa105f2e50b17198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga84748d370ac8b864f1d70701e4fa4943"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga84748d370ac8b864f1d70701e4fa4943">MXC_OWM_SetExtPullup</a> (int enable)</td></tr>
+<tr class="separator:ga84748d370ac8b864f1d70701e4fa4943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga167383237d64434acc76eb229a482c9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga167383237d64434acc76eb229a482c9c">MXC_OWM_SetOverdrive</a> (int enable)</td></tr>
+<tr class="separator:ga167383237d64434acc76eb229a482c9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2bc0bf02a34d65509f00fdf449f1a790"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga2bc0bf02a34d65509f00fdf449f1a790">MXC_OWM_EnableInt</a> (int flags)</td></tr>
+<tr class="separator:ga2bc0bf02a34d65509f00fdf449f1a790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab54c7e0f51cd3942a13778a19deb668c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gab54c7e0f51cd3942a13778a19deb668c">MXC_OWM_DisableInt</a> (int flags)</td></tr>
+<tr class="separator:gab54c7e0f51cd3942a13778a19deb668c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab9859fc4ed6a773bb242b6a945743084"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gab9859fc4ed6a773bb242b6a945743084">MXC_OWM_SetForcePresenceDetect</a> (int enable)</td></tr>
+<tr class="separator:gab9859fc4ed6a773bb242b6a945743084"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b2a355bd504bd3494ea4b975e435c6c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga3b2a355bd504bd3494ea4b975e435c6c">MXC_OWM_SetInternalPullup</a> (int enable)</td></tr>
+<tr class="separator:ga3b2a355bd504bd3494ea4b975e435c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga13bd05a09c121a69c6b4125a2d4248b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga13bd05a09c121a69c6b4125a2d4248b7">MXC_OWM_SetExternalPullup</a> (<a class="el" href="group__owm.html#ga7ea4dcc0c110361bf2b9b8b875b7c3e4">mxc_owm_ext_pu_t</a> ext_pu_mode)</td></tr>
+<tr class="separator:ga13bd05a09c121a69c6b4125a2d4248b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac02cec6fec8e20d918b15b592d760393"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gac02cec6fec8e20d918b15b592d760393">MXC_OWM_SystemClockUpdated</a> (void)</td></tr>
+<tr class="separator:gac02cec6fec8e20d918b15b592d760393"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a89006befe9954ecc8f02953aa85687"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga4a89006befe9954ecc8f02953aa85687">MXC_OWM_SetSearchROMAccelerator</a> (int enable)</td></tr>
+<tr class="separator:ga4a89006befe9954ecc8f02953aa85687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac04d396caa59e4f1898e35ecd955e7a2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#gac04d396caa59e4f1898e35ecd955e7a2">MXC_OWM_BitBang_Init</a> (int initialState)</td></tr>
+<tr class="separator:gac04d396caa59e4f1898e35ecd955e7a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6fc77edbf1a704fe77a9f2e94279976e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga6fc77edbf1a704fe77a9f2e94279976e">MXC_OWM_BitBang_Read</a> (void)</td></tr>
+<tr class="separator:ga6fc77edbf1a704fe77a9f2e94279976e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7f07aa2ff1e2b13aa2d87d9644be9eb4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga7f07aa2ff1e2b13aa2d87d9644be9eb4">MXC_OWM_BitBang_Write</a> (int state)</td></tr>
+<tr class="separator:ga7f07aa2ff1e2b13aa2d87d9644be9eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e22cd12146591cd7e24d5aaf886b2a1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#ga3e22cd12146591cd7e24d5aaf886b2a1">MXC_OWM_BitBang_Disable</a> (void)</td></tr>
+<tr class="separator:ga3e22cd12146591cd7e24d5aaf886b2a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structowm__cfg__t" id="structowm__cfg__t"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structowm__cfg__t">&#9670;&nbsp;</a></span>owm_cfg_t</h2>
+<a name="structmxc__owm__cfg__t" id="structmxc__owm__cfg__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmxc__owm__cfg__t">&#9670;&nbsp;</a></span>mxc_owm_cfg_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct owm_cfg_t</td>
+          <td class="memname">struct mxc_owm_cfg_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -190,24 +212,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <tr><td colspan="2"><h3>Data Fields</h3></td></tr>
 <tr class="memitem:aeec51bc03c0d43668208c8d433356f1a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#aeec51bc03c0d43668208c8d433356f1a">int_pu_en</a></td></tr>
 <tr class="separator:aeec51bc03c0d43668208c8d433356f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21dec33af6fa94330d3548fc5ab6af4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__owm.html#ga22f537c7c373ba506abf27c7bef81e73">owm_ext_pu_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#a21dec33af6fa94330d3548fc5ab6af4b">ext_pu_mode</a></td></tr>
-<tr class="separator:a21dec33af6fa94330d3548fc5ab6af4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6aa798684aee445522660fa96b64fd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__owm.html#ga7ea4dcc0c110361bf2b9b8b875b7c3e4">mxc_owm_ext_pu_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#aa6aa798684aee445522660fa96b64fd9">ext_pu_mode</a></td></tr>
+<tr class="separator:aa6aa798684aee445522660fa96b64fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d0b0ec4ac98555c22275189570e5ce1"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__owm.html#a7d0b0ec4ac98555c22275189570e5ce1">long_line_mode</a></td></tr>
 <tr class="separator:a7d0b0ec4ac98555c22275189570e5ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h4 class="groupheader">Field Documentation</h4>
-<a id="a21dec33af6fa94330d3548fc5ab6af4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21dec33af6fa94330d3548fc5ab6af4b">&#9670;&nbsp;</a></span>ext_pu_mode</h2>
+<a id="aa6aa798684aee445522660fa96b64fd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6aa798684aee445522660fa96b64fd9">&#9670;&nbsp;</a></span>ext_pu_mode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__owm.html#ga22f537c7c373ba506abf27c7bef81e73">owm_ext_pu_t</a> ext_pu_mode</td>
+          <td class="memname"><a class="el" href="group__owm.html#ga7ea4dcc0c110361bf2b9b8b875b7c3e4">mxc_owm_ext_pu_t</a> ext_pu_mode</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>See <a class="el" href="group__owm.html#ga22f537c7c373ba506abf27c7bef81e73">owm_ext_pu_t</a>. </p>
+<p>See <a class="el" href="group__owm.html#ga7ea4dcc0c110361bf2b9b8b875b7c3e4" title="Enumeration type for specifying options for 1-Wire external pullup mode. ">mxc_owm_ext_pu_t</a>. </p>
 
 </div>
 </div>
@@ -351,38 +373,135 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ga22f537c7c373ba506abf27c7bef81e73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga22f537c7c373ba506abf27c7bef81e73">&#9670;&nbsp;</a></span>owm_ext_pu_t</h2>
+<a id="ga7ea4dcc0c110361bf2b9b8b875b7c3e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7ea4dcc0c110361bf2b9b8b875b7c3e4">&#9670;&nbsp;</a></span>mxc_owm_ext_pu_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__owm.html#ga22f537c7c373ba506abf27c7bef81e73">owm_ext_pu_t</a></td>
+          <td class="memname">enum <a class="el" href="group__owm.html#ga7ea4dcc0c110361bf2b9b8b875b7c3e4">mxc_owm_ext_pu_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
 <p>Enumeration type for specifying options for 1-Wire external pullup mode. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga22f537c7c373ba506abf27c7bef81e73a86d3d8a80732bedc940320840c4aed26"></a>OWM_EXT_PU_ACT_HIGH&#160;</td><td class="fielddoc"><p>Pullup pin is active high when enabled. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga7ea4dcc0c110361bf2b9b8b875b7c3e4a7f30a8309d657a2d62153d08ede46d62"></a>MXC_OWM_EXT_PU_ACT_HIGH&#160;</td><td class="fielddoc"><p>Pullup pin is active high when enabled. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga22f537c7c373ba506abf27c7bef81e73a859d9e5cdb1802d87ebb01544cc138ca"></a>OWM_EXT_PU_ACT_LOW&#160;</td><td class="fielddoc"><p>Pullup pin is active low when enabled. </p>
+<tr><td class="fieldname"><a id="gga7ea4dcc0c110361bf2b9b8b875b7c3e4a7e71cec8682ee5cfc4e24d32f4cd9dc3"></a>MXC_OWM_EXT_PU_ACT_LOW&#160;</td><td class="fielddoc"><p>Pullup pin is active low when enabled. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga22f537c7c373ba506abf27c7bef81e73a596f3a5bd16c38bfbd8583fcffdf5f49"></a>OWM_EXT_PU_UNUSED&#160;</td><td class="fielddoc"><p>Pullup pin is not used for an external pullup. </p>
+<tr><td class="fieldname"><a id="gga7ea4dcc0c110361bf2b9b8b875b7c3e4ab03dfba768c0276304fe48e44ebf284d"></a>MXC_OWM_EXT_PU_UNUSED&#160;</td><td class="fielddoc"><p>Pullup pin is not used for an external pullup. </p>
 </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga479cb53b564e0e85d213541390962086"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga479cb53b564e0e85d213541390962086">&#9670;&nbsp;</a></span>OWM_ClearFlags()</h2>
+<a id="ga3e22cd12146591cd7e24d5aaf886b2a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3e22cd12146591cd7e24d5aaf886b2a1">&#9670;&nbsp;</a></span>MXC_OWM_BitBang_Disable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void OWM_ClearFlags </td>
+          <td class="memname">int MXC_OWM_BitBang_Disable </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disable Bit Bang mode. </p>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="gac04d396caa59e4f1898e35ecd955e7a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac04d396caa59e4f1898e35ecd955e7a2">&#9670;&nbsp;</a></span>MXC_OWM_BitBang_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_OWM_BitBang_Init </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>initialState</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prepare OWM for bit bang mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initialState</td><td>Starting value of owm</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga6fc77edbf1a704fe77a9f2e94279976e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6fc77edbf1a704fe77a9f2e94279976e">&#9670;&nbsp;</a></span>MXC_OWM_BitBang_Read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_OWM_BitBang_Read </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read current value of wire. </p>
+<dl class="section return"><dt>Returns</dt><dd>Value of wire </dd></dl>
+
+</div>
+</div>
+<a id="ga7f07aa2ff1e2b13aa2d87d9644be9eb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7f07aa2ff1e2b13aa2d87d9644be9eb4">&#9670;&nbsp;</a></span>MXC_OWM_BitBang_Write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_OWM_BitBang_Write </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set value of wire. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>Value to drive wire to</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga6718b656ae8d3b945c735930bfe9c336"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6718b656ae8d3b945c735930bfe9c336">&#9670;&nbsp;</a></span>MXC_OWM_ClearFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_OWM_ClearFlags </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>mask</em></td><td>)</td>
@@ -401,14 +520,66 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga5f88eefc03d77239397e3a8546bb3bd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5f88eefc03d77239397e3a8546bb3bd2">&#9670;&nbsp;</a></span>OWM_GetFlags()</h2>
+<a id="gab54c7e0f51cd3942a13778a19deb668c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab54c7e0f51cd3942a13778a19deb668c">&#9670;&nbsp;</a></span>MXC_OWM_DisableInt()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned OWM_GetFlags </td>
+          <td class="memname">void MXC_OWM_DisableInt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>flags</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disables interrupts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flags</td><td>which owm interrupts to disable </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga2bc0bf02a34d65509f00fdf449f1a790"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2bc0bf02a34d65509f00fdf449f1a790">&#9670;&nbsp;</a></span>MXC_OWM_EnableInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_OWM_EnableInt </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>flags</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables interrupts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">flags</td><td>which owm interrupts to enable </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gadaed2256b86e3d96aa105f2e50b17198"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadaed2256b86e3d96aa105f2e50b17198">&#9670;&nbsp;</a></span>MXC_OWM_GetFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned MXC_OWM_GetFlags </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -422,28 +593,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga21b93678a809f4b3fe2b816ecf38476b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga21b93678a809f4b3fe2b816ecf38476b">&#9670;&nbsp;</a></span>OWM_Init()</h2>
+<a id="ga5dd39b62dc394b6e93b3c58179991522"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5dd39b62dc394b6e93b3c58179991522">&#9670;&nbsp;</a></span>MXC_OWM_Init()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_Init </td>
+          <td class="memname">int MXC_OWM_Init </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__owm.html#structowm__cfg__t">owm_cfg_t</a> *&#160;</td>
-          <td class="paramname"><em>cfg</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const <a class="el" href="group__owm.html#structmxc__owm__cfg__t">mxc_owm_cfg_t</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const sys_cfg_owm_t *&#160;</td>
-          <td class="paramname"><em>sys_cfg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -451,8 +612,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <p>Initialize and enable OWM module. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cfg</td><td>Pointer to OWM configuration. </td></tr>
-    <tr><td class="paramname">sys_cfg</td><td>System configuration object</td></tr>
+    <tr><td class="paramname">cfg</td><td>Pointer to OWM configuration.</td></tr>
   </table>
   </dd>
 </dl>
@@ -470,14 +630,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="gaad30da878db6b3089453e579bf389c26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaad30da878db6b3089453e579bf389c26">&#9670;&nbsp;</a></span>OWM_MatchROM()</h2>
+<a id="ga3fc1fc26807fe6abb12155d89d1ae327"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3fc1fc26807fe6abb12155d89d1ae327">&#9670;&nbsp;</a></span>MXC_OWM_MatchROM()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_MatchROM </td>
+          <td class="memname">int MXC_OWM_MatchROM </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>ROMCode</em></td><td>)</td>
@@ -489,7 +649,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <p>Starts 1-Wire communication with Match ROM command. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ROMCode</td><td>Pointer to buffer with ROM code to match </td></tr>
+    <tr><td class="paramname">ROMCode</td><td>Pointer to buffer with ROM code to match</td></tr>
   </table>
   </dd>
 </dl>
@@ -499,14 +659,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga1d0c3a37ff4c22a0e8eace6996ca3f23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1d0c3a37ff4c22a0e8eace6996ca3f23">&#9670;&nbsp;</a></span>OWM_ODMatchROM()</h2>
+<a id="ga2dcf481fad2d9c7c9e7d64aae6aa0ffd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2dcf481fad2d9c7c9e7d64aae6aa0ffd">&#9670;&nbsp;</a></span>MXC_OWM_ODMatchROM()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_ODMatchROM </td>
+          <td class="memname">int MXC_OWM_ODMatchROM </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>ROMCode</em></td><td>)</td>
@@ -516,10 +676,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 </div><div class="memdoc">
 
 <p>Starts 1-Wire communication with Overdrive Match ROM command. </p>
-<dl class="section note"><dt>Note</dt><dd>After Overdrive Match ROM command is sent, the OWM is set to overdrive speed. To set back to standard speed use OWM_SetOverdrive. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>After Overdrive Match ROM command is sent, the OWM is set to overdrive speed. To set back to standard speed use MXC_OWM_SetOverdrive.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ROMCode</td><td>Pointer to buffer with ROM code to match </td></tr>
+    <tr><td class="paramname">ROMCode</td><td>Pointer to buffer with ROM code to match</td></tr>
   </table>
   </dd>
 </dl>
@@ -529,14 +689,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga690e0451836a80bb3771ccd36657948e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga690e0451836a80bb3771ccd36657948e">&#9670;&nbsp;</a></span>OWM_ODSkipROM()</h2>
+<a id="gab119f3f422733568957b5a55bc3fb9a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab119f3f422733568957b5a55bc3fb9a8">&#9670;&nbsp;</a></span>MXC_OWM_ODSkipROM()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_ODSkipROM </td>
+          <td class="memname">int MXC_OWM_ODSkipROM </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -546,21 +706,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 </div><div class="memdoc">
 
 <p>Starts 1-Wire communication with Overdrive Skip ROM command. </p>
-<dl class="section note"><dt>Note</dt><dd>After Overdrive Skip ROM command is sent, the OWM is set to overdrive speed. To set back to standard speed use OWM_SetOverdrive </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>After Overdrive Skip ROM command is sent, the OWM is set to overdrive speed. To set back to standard speed use MXC_OWM_SetOverdrive</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if everything is successful </dd>
 <dd>
 <a class="el" href="group___m_x_c___error___codes.html#ga52b168e8df885a6861076e16363af90a">E_COMM_ERR</a> if reset or write fails </dd></dl>
 
 </div>
 </div>
-<a id="ga8de96edfce3200dc8f14f1b48440ea7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8de96edfce3200dc8f14f1b48440ea7c">&#9670;&nbsp;</a></span>OWM_Read()</h2>
+<a id="ga831cadf5b34bf91695c68fd92c865a5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga831cadf5b34bf91695c68fd92c865a5b">&#9670;&nbsp;</a></span>MXC_OWM_Read()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_Read </td>
+          <td class="memname">int MXC_OWM_Read </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -593,14 +753,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga8cc078d1d7dede5a85d33139476ed07c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8cc078d1d7dede5a85d33139476ed07c">&#9670;&nbsp;</a></span>OWM_ReadBit()</h2>
+<a id="ga70dc9d9499f1db2b9d02b6775403c3f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga70dc9d9499f1db2b9d02b6775403c3f6">&#9670;&nbsp;</a></span>MXC_OWM_ReadBit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_ReadBit </td>
+          <td class="memname">int MXC_OWM_ReadBit </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -614,14 +774,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga80293b14456fc2249aceafad97a6b321"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga80293b14456fc2249aceafad97a6b321">&#9670;&nbsp;</a></span>OWM_ReadByte()</h2>
+<a id="gad361bbe75c3bd3714272e82e54323d37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad361bbe75c3bd3714272e82e54323d37">&#9670;&nbsp;</a></span>MXC_OWM_ReadByte()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_ReadByte </td>
+          <td class="memname">int MXC_OWM_ReadByte </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -635,14 +795,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga32cf20a41896d59500bfaa63cacb82dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga32cf20a41896d59500bfaa63cacb82dc">&#9670;&nbsp;</a></span>OWM_ReadROM()</h2>
+<a id="ga0727e25fb533ee60e8a771063515d205"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0727e25fb533ee60e8a771063515d205">&#9670;&nbsp;</a></span>MXC_OWM_ReadROM()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_ReadROM </td>
+          <td class="memname">int MXC_OWM_ReadROM </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>ROMCode</em></td><td>)</td>
@@ -652,10 +812,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 </div><div class="memdoc">
 
 <p>Starts 1-Wire communication with Read ROM command. </p>
-<dl class="section note"><dt>Note</dt><dd>Only use the Read ROM command with one slave on the bus </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Only use the Read ROM command with one slave on the bus</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ROMCode</td><td>Pointer to buffer for ROM code read </td></tr>
+    <tr><td class="paramname">ROMCode</td><td>Pointer to buffer for ROM code read</td></tr>
   </table>
   </dd>
 </dl>
@@ -665,14 +825,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga5a5f5f24781d3384981373960c219242"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5a5f5f24781d3384981373960c219242">&#9670;&nbsp;</a></span>OWM_Reset()</h2>
+<a id="ga2a2e1fed8ea860ec2aa860c39e93b77e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2a2e1fed8ea860ec2aa860c39e93b77e">&#9670;&nbsp;</a></span>MXC_OWM_Reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_Reset </td>
+          <td class="memname">int MXC_OWM_Reset </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -686,14 +846,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga46582e325563b8f471cacebed6fbc271"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga46582e325563b8f471cacebed6fbc271">&#9670;&nbsp;</a></span>OWM_Resume()</h2>
+<a id="gac58ec4ae2ca2ffd46181d31786bed508"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac58ec4ae2ca2ffd46181d31786bed508">&#9670;&nbsp;</a></span>MXC_OWM_Resume()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_Resume </td>
+          <td class="memname">int MXC_OWM_Resume </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -709,14 +869,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga3dd214613fa926dccbbd7d46c20c7106"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3dd214613fa926dccbbd7d46c20c7106">&#9670;&nbsp;</a></span>OWM_SearchROM()</h2>
+<a id="gac70b0ce9f27ff2f26bd1a48d6c44f3da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac70b0ce9f27ff2f26bd1a48d6c44f3da">&#9670;&nbsp;</a></span>MXC_OWM_SearchROM()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_SearchROM </td>
+          <td class="memname">int MXC_OWM_SearchROM </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>newSearch</em>, </td>
@@ -739,7 +899,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">newSearch</td><td>(1) = start new search, (0) = continue search for next ROM </td></tr>
-    <tr><td class="paramname">ROMCode</td><td>Pointer to buffer with ROM code found </td></tr>
+    <tr><td class="paramname">ROMCode</td><td>Pointer to buffer with ROM code found</td></tr>
   </table>
   </dd>
 </dl>
@@ -747,14 +907,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="gabe28873729495deb59f35ec940d53187"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabe28873729495deb59f35ec940d53187">&#9670;&nbsp;</a></span>OWM_SetExtPullup()</h2>
+<a id="ga13bd05a09c121a69c6b4125a2d4248b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga13bd05a09c121a69c6b4125a2d4248b7">&#9670;&nbsp;</a></span>MXC_OWM_SetExternalPullup()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void OWM_SetExtPullup </td>
+          <td class="memname">int MXC_OWM_SetExternalPullup </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__owm.html#ga7ea4dcc0c110361bf2b9b8b875b7c3e4">mxc_owm_ext_pu_t</a>&#160;</td>
+          <td class="paramname"><em>ext_pu_mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables/Disables the External pullup. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ext_pu_mode</td><td>See mxc_owm_ext_pu_t for values</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga84748d370ac8b864f1d70701e4fa4943"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga84748d370ac8b864f1d70701e4fa4943">&#9670;&nbsp;</a></span>MXC_OWM_SetExtPullup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_OWM_SetExtPullup </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>enable</em></td><td>)</td>
@@ -773,14 +960,68 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga636dfc21fd6c5225c07f34667d263b30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga636dfc21fd6c5225c07f34667d263b30">&#9670;&nbsp;</a></span>OWM_SetOverdrive()</h2>
+<a id="gab9859fc4ed6a773bb242b6a945743084"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab9859fc4ed6a773bb242b6a945743084">&#9670;&nbsp;</a></span>MXC_OWM_SetForcePresenceDetect()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void OWM_SetOverdrive </td>
+          <td class="memname">int MXC_OWM_SetForcePresenceDetect </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables/Disables driving of OWM_IO low during presence detection. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>(1) = enable, (0) = disable</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga3b2a355bd504bd3494ea4b975e435c6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3b2a355bd504bd3494ea4b975e435c6c">&#9670;&nbsp;</a></span>MXC_OWM_SetInternalPullup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_OWM_SetInternalPullup </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables/Disables the Internal pullup. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>(1) = enable, (0) = disable</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga167383237d64434acc76eb229a482c9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga167383237d64434acc76eb229a482c9c">&#9670;&nbsp;</a></span>MXC_OWM_SetOverdrive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_OWM_SetOverdrive </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>enable</em></td><td>)</td>
@@ -799,14 +1040,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga4ca1e7dc0c017e1c310daeebd1661839"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4ca1e7dc0c017e1c310daeebd1661839">&#9670;&nbsp;</a></span>OWM_SkipROM()</h2>
+<a id="ga4a89006befe9954ecc8f02953aa85687"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4a89006befe9954ecc8f02953aa85687">&#9670;&nbsp;</a></span>MXC_OWM_SetSearchROMAccelerator()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_SkipROM </td>
+          <td class="memname">int MXC_OWM_SetSearchROMAccelerator </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable/Disable Search ROM Accelerator mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>(1) = enable, (0) = disable</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga185814776ad32601c7afc984f5284752"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga185814776ad32601c7afc984f5284752">&#9670;&nbsp;</a></span>MXC_OWM_SkipROM()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_OWM_SkipROM </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -822,14 +1090,35 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga39cb9d8aa14299cf3fbd19b2e1fdab35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga39cb9d8aa14299cf3fbd19b2e1fdab35">&#9670;&nbsp;</a></span>OWM_TouchBit()</h2>
+<a id="gac02cec6fec8e20d918b15b592d760393"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac02cec6fec8e20d918b15b592d760393">&#9670;&nbsp;</a></span>MXC_OWM_SystemClockUpdated()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_TouchBit </td>
+          <td class="memname">int MXC_OWM_SystemClockUpdated </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Call to correct divider if system clock has changed. </p>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga73230f7d19e0f3fed2f55f1559e8c489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga73230f7d19e0f3fed2f55f1559e8c489">&#9670;&nbsp;</a></span>MXC_OWM_TouchBit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_OWM_TouchBit </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>bit</em></td><td>)</td>
@@ -841,7 +1130,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <p>Send and receive one bit of data. Will block until transaction is complete. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bit</td><td>bit to send </td></tr>
+    <tr><td class="paramname">bit</td><td>bit to send</td></tr>
   </table>
   </dd>
 </dl>
@@ -849,14 +1138,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga2545aca9a98eb42d12c5639fa53be9be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2545aca9a98eb42d12c5639fa53be9be">&#9670;&nbsp;</a></span>OWM_TouchByte()</h2>
+<a id="ga7bd1f2d4142c2a88a11fc2385f904698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7bd1f2d4142c2a88a11fc2385f904698">&#9670;&nbsp;</a></span>MXC_OWM_TouchByte()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_TouchByte </td>
+          <td class="memname">int MXC_OWM_TouchByte </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
@@ -868,7 +1157,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <p>Send and receive one byte of data. Will block until transaction is complete. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>data to send </td></tr>
+    <tr><td class="paramname">data</td><td>data to send</td></tr>
   </table>
   </dd>
 </dl>
@@ -876,14 +1165,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga40a2d52afc4d8d02c5b49dcc4c1508fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga40a2d52afc4d8d02c5b49dcc4c1508fe">&#9670;&nbsp;</a></span>OWM_Write()</h2>
+<a id="gae761cfafa604b559bda40242a3ba4fd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae761cfafa604b559bda40242a3ba4fd4">&#9670;&nbsp;</a></span>MXC_OWM_Write()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_Write </td>
+          <td class="memname">int MXC_OWM_Write </td>
           <td>(</td>
           <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -916,14 +1205,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="ga622fa0073c0f37697bad4d5ed29af7a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga622fa0073c0f37697bad4d5ed29af7a4">&#9670;&nbsp;</a></span>OWM_WriteBit()</h2>
+<a id="ga739620941b3632e4fd1bd80f385e990e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga739620941b3632e4fd1bd80f385e990e">&#9670;&nbsp;</a></span>MXC_OWM_WriteBit()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_WriteBit </td>
+          <td class="memname">int MXC_OWM_WriteBit </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>bit</em></td><td>)</td>
@@ -935,7 +1224,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <p>Write one bit of data. Will block until transaction is complete. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bit</td><td>bit to send </td></tr>
+    <tr><td class="paramname">bit</td><td>bit to send</td></tr>
   </table>
   </dd>
 </dl>
@@ -945,14 +1234,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
-<a id="gaf95fc518bd9ae74facdeca5d18440c18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf95fc518bd9ae74facdeca5d18440c18">&#9670;&nbsp;</a></span>OWM_WriteByte()</h2>
+<a id="gaf68e5019e22fcd4427ce43cc5bea54f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf68e5019e22fcd4427ce43cc5bea54f3">&#9670;&nbsp;</a></span>MXC_OWM_WriteByte()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int OWM_WriteByte </td>
+          <td class="memname">int MXC_OWM_WriteByte </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
@@ -964,7 +1253,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <p>Write one byte of data. Will block until transaction is complete. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>data to send </td></tr>
+    <tr><td class="paramname">data</td><td>data to send</td></tr>
   </table>
   </dd>
 </dl>
@@ -979,7 +1268,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 24 2020 12:25:15 for MAX78000 Peripheral Driver API by
+    <li class="footer">Generated on Fri Nov 6 2020 11:13:21 for MAX78000 Peripheral Driver API by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

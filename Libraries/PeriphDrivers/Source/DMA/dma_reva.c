@@ -30,6 +30,9 @@
  * ownership rights.
  *
  *************************************************************************** */
+#ifdef __CC_ARM  // Keil 
+#pragma diag_suppress 68  // integer conversion resulted in a change of sign
+#endif
 
 /****** Includes *******/
 #include <stddef.h>
@@ -212,12 +215,12 @@ int MXC_DMA_RevA_SetSrcDst(mxc_dma_srcdst_t srcdst)
 }
 
 
-int MXC_DMA_RevA_GetSrcDst(mxc_dma_srcdst_t srcdst)
+int MXC_DMA_RevA_GetSrcDst(mxc_dma_srcdst_t* srcdst)
 {
-    if (CHECK_HANDLE(srcdst.ch)) {
-        srcdst.source = (void*) dma_resource[srcdst.ch].regs->src;
-        srcdst.dest = (void*) dma_resource[srcdst.ch].regs->dst;
-        srcdst.len = (dma_resource[srcdst.ch].regs->cnt) & ~MXC_F_DMA_CNTRLD_EN;
+    if (CHECK_HANDLE(srcdst->ch)) {
+        srcdst->source = (void*) dma_resource[srcdst->ch].regs->src;
+        srcdst->dest = (void*) dma_resource[srcdst->ch].regs->dst;
+        srcdst->len = (dma_resource[srcdst->ch].regs->cnt) & ~MXC_F_DMA_CNTRLD_EN;
     }
     else {
         return E_BAD_PARAM;
@@ -250,12 +253,12 @@ int MXC_DMA_RevA_SetSrcReload(mxc_dma_srcdst_t srcdst)
 }
 
 
-int MXC_DMA_RevA_GetSrcReload(mxc_dma_srcdst_t srcdst)
+int MXC_DMA_RevA_GetSrcReload(mxc_dma_srcdst_t* srcdst)
 {
-    if (CHECK_HANDLE(srcdst.ch)) {
-        srcdst.source = (void*) dma_resource[srcdst.ch].regs->srcrld;
-        srcdst.dest = (void*) dma_resource[srcdst.ch].regs->dstrld;
-        srcdst.len = (dma_resource[srcdst.ch].regs->cntrld) & ~MXC_F_DMA_CNTRLD_EN;
+    if (CHECK_HANDLE(srcdst->ch)) {
+        srcdst->source = (void*) dma_resource[srcdst->ch].regs->srcrld;
+        srcdst->dest = (void*) dma_resource[srcdst->ch].regs->dstrld;
+        srcdst->len = (dma_resource[srcdst->ch].regs->cntrld) & ~MXC_F_DMA_CNTRLD_EN;
     }
     else {
         return E_BAD_PARAM;

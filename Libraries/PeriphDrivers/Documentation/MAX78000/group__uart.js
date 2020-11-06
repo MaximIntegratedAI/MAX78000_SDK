@@ -38,7 +38,6 @@ var group__uart =
     [ "MXC_UART_ClearRXFIFO", "group__uart.html#ga1275a45a60c1cfd4cb4acbd6737a1c50", null ],
     [ "MXC_UART_ClearTXFIFO", "group__uart.html#ga9e5c4dde28738388e6ed8126eb0bf4e3", null ],
     [ "MXC_UART_DisableInt", "group__uart.html#ga5fd085debd53242cec896a06880bcea3", null ],
-    [ "MXC_UART_DMACallback", "group__uart.html#gaf6826f2f6ad668da2bc09deecbc33378", null ],
     [ "MXC_UART_EnableInt", "group__uart.html#ga3258382626c1fe0e71771d53eb09fcca", null ],
     [ "MXC_UART_GetActive", "group__uart.html#ga724bb717925ccf2f4c4643a9d9949315", null ],
     [ "MXC_UART_GetFlags", "group__uart.html#ga59d00ccf6ed8d09e32a11768d711b2cb", null ],

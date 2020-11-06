@@ -241,7 +241,7 @@ static int emac_phy_init(void)
         lpa = emac_mdio_read(MII_LPA);
         
         media  = emac_mii_nway_result(lpa & adv);
-        speed  = (media & (ADVERTISE_100FULL | ADVERTISE_100HALF) ? 1 : 0);
+        speed  = ((media & (ADVERTISE_100FULL | ADVERTISE_100HALF)) ? 1 : 0);
         duplex = (media & ADVERTISE_FULL) ? 1 : 0;
         
         ncfgr = EMAC_READL(emac, cfg);

@@ -163,7 +163,9 @@ int MXC_FLC_ME17_Write128(uint32_t address, uint32_t* data)
         return err;
     }
     
-    err = MXC_FLC_RevB_Write128(flc, addr, data);
+    if((err = MXC_FLC_RevB_Write128(flc, addr, data)) != E_NO_ERROR) {
+        return err;
+    }
     
     // Flush the cache
     MXC_FLC_ME17_Flash_Operation();

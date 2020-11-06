@@ -251,9 +251,9 @@ int MXC_ADC_Handler(void)
     return MXC_ADC_RevA_Handler();
 }
 
-int MXC_ADC_Convert(mxc_adc_conversion_req_t req)
+int MXC_ADC_Convert(mxc_adc_conversion_req_t* req)
 {
-    initGPIOForChannel(req.channel);
+    initGPIOForChannel(req->channel);
     
     return MXC_ADC_RevA_Convert(req);
 }

@@ -454,7 +454,7 @@ int MXC_ADC_RevA_Handler(void)
     return E_NO_ERROR;
 }
 
-int  MXC_ADC_RevA_Convert(mxc_adc_conversion_req_t req)
+int  MXC_ADC_RevA_Convert(mxc_adc_conversion_req_t* req)
 {
     uint16_t data;
     int error;
@@ -462,10 +462,10 @@ int  MXC_ADC_RevA_Convert(mxc_adc_conversion_req_t req)
     //clear selction bits
     MXC_ADC->ctrl &= ~(MXC_F_ADC_CTRL_CH_SEL);
     //set selction its to next channel to convert
-    MXC_ADC->ctrl |= (req.channel << MXC_F_ADC_CTRL_CH_SEL_POS) & MXC_F_ADC_CTRL_CH_SEL;
+    MXC_ADC->ctrl |= (req->channel << MXC_F_ADC_CTRL_CH_SEL_POS) & MXC_F_ADC_CTRL_CH_SEL;
     
-    if (req.channel <= MXC_V_ADC_CTRL_ADC_CHSEL_AIN7) {
-        MXC_ADC_RevA_SetExtScale(req.scale);
+    if (req->channel <= MXC_V_ADC_CTRL_ADC_CHSEL_AIN7) {
+        MXC_ADC_RevA_SetExtScale(req->scale);
     }
     
     //clear ADC done interrupt flag
@@ -478,7 +478,7 @@ int  MXC_ADC_RevA_Convert(mxc_adc_conversion_req_t req)
         return error;
     }
     
-    req.rawADCValue = data;
+    req->rawADCValue = data;
     
     return E_NO_ERROR;
 }

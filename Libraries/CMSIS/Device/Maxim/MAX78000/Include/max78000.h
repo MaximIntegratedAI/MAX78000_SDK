@@ -133,7 +133,7 @@ typedef enum {
     RSV51_IRQn,             /* 0x43  0x010C  67: Reserved */
     RSV52_IRQn,             /* 0x44  0x0110  68: Reserved */
     WUT_IRQn,               /* 0x45  0x0114  69: Wakeup Timer */
-    GPIOWake_IRQn,          /* 0x46  0x0118  70: GPIO and AIN Wakeup */
+    GPIOWAKE_IRQn,          /* 0x46  0x0118  70: GPIO and AIN Wakeup */
     RSV55_IRQn,             /* 0x47  0x011C  71: Reserved */
     SPI0_IRQn,              /* 0x48  0x0120  72: SPI0 */
     WDT1_IRQn,              /* 0x49  0x0124  73: LP Watchdog */

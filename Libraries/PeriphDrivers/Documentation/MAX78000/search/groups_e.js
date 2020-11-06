@@ -1,6 +1,10 @@
 var searchData=
 [
   ['semaphore_20_28sema_29',['Semaphore (SEMA)',['../group__sema.html',1,'']]],
+  ['sema_5firq0',['SEMA_IRQ0',['../group___s_e_m_a___i_r_q0.html',1,'']]],
+  ['sema_5firq1',['SEMA_IRQ1',['../group___s_e_m_a___i_r_q1.html',1,'']]],
+  ['sema_5fmail0',['SEMA_MAIL0',['../group___s_e_m_a___m_a_i_l0.html',1,'']]],
+  ['sema_5fmail1',['SEMA_MAIL1',['../group___s_e_m_a___m_a_i_l1.html',1,'']]],
   ['sema_5fregisters',['SEMA_Registers',['../group__sema__registers.html',1,'']]],
   ['sema_5fsemaphores',['SEMA_SEMAPHORES',['../group___s_e_m_a___s_e_m_a_p_h_o_r_e_s.html',1,'']]],
   ['sema_5fstatus',['SEMA_STATUS',['../group___s_e_m_a___s_t_a_t_u_s.html',1,'']]],
