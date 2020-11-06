@@ -62,9 +62,9 @@
  */
 #include "adc.h"
 #include "aes.h"
+#include "cameraif.h"
 #include "crc.h"
 #include "dma.h"
-#include "emcc.h"
 #include "flc.h"
 #include "gpio.h"
 #include "i2c.h"
@@ -81,6 +81,5 @@
 #include "uart.h"
 #include "wdt.h"
 #include "wut.h"
-
 
 #endif /* __MAX32xxx_H_ */
