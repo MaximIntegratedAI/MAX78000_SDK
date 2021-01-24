@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2020 Maxim Integrated Products, Inc., All rights Reserved.
+ * Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
  *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
@@ -39,7 +39,7 @@
 #include <string.h>
 
 #define PR_DEBUG(fmt, args...)  if(1) printf("D[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args )  ///< TODO
-#define PR_INFO(fmt, args...)   if(1) printf("I[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args )  ///< TODO
+#define PR_INFO(fmt, args...)   if(0) printf("I[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args )  ///< TODO
 #define PR_WARN(fmt, args...)   if(1) printf("W[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args )  ///< TODO
 #define PR_ERR(fmt, args...)    if(1) printf("E[%-10s:%4d] " fmt "\r\n", S_MODULE_NAME, __LINE__, ##args )  ///< TODO
 

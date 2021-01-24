@@ -64,6 +64,9 @@
 
 /* **** Globals **** */
 
+/* Symbol defined when loading RISCV image */
+extern uint32_t _binary_riscv_bin_start;
+
 /* **** Functions **** */
 
 /* ************************************************************************** */
@@ -482,5 +485,28 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
         MXC_GCR->rst0  = (0x1 << reset);
     }
 }
-/**@} end of mxc_sys */
 
+/* ************************************************************************** */
+void MXC_SYS_RISCVRun(void)
+{
+    /* Disable the the RSCV */
+    MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
+
+    /* Set the interrupt vector base address */
+    MXC_FCR->urvbootaddr = (uint32_t)&_binary_riscv_bin_start;
+
+    /* Power up the RSCV */
+    MXC_GCR->pclkdis1 &= ~(MXC_F_GCR_PCLKDIS1_CPU1);
+
+    /* CPU1 reset */
+    MXC_GCR->rst1 |= MXC_F_GCR_RST1_CPU1;
+}
+
+/* ************************************************************************** */
+void MXC_SYS_RISCVShutdown(void)
+{
+    /* Disable the the RSCV */
+    MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
+}
+
+/**@} end of mxc_sys */

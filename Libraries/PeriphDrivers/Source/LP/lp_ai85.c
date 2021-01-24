@@ -207,44 +207,6 @@ int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
     return E_NO_ERROR;
 }
 
-void MXC_LP_SysRam0Shutdown(void)
-{
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRAM0SD;
-}
-
-void MXC_LP_SysRam0PowerUp(void)
-{
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRAM0SD;
-}
-
-void MXC_LP_SysRam1Shutdown(void)
-{
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRAM1SD;
-}
-
-void MXC_LP_SysRam1PowerUp(void)
-{
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRAM1SD;
-}
-
-void MXC_LP_SysRam2Shutdown(void)
-{
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRAM2SD;
-}
-
-void MXC_LP_SysRam2PowerUp(void)
-{
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRAM2SD;
-}
-
-void MXC_LP_SysRam3Shutdown(void)
-{
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRAM3SD;
-}
-
-void MXC_LP_SysRam3PowerUp(void)
-{
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRAM3SD;
-}
 #endif // __riscv
+
 

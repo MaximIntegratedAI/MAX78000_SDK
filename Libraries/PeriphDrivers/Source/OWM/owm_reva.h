@@ -1,8 +1,8 @@
 /* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright(C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
+ * copy of this software and associated documentation files(the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
@@ -29,13 +29,18 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-28 17:03:02 -0500 (Tue, 28 Aug 2018) $
+ * $Date: 2018-08-28 17:03:02 -0500(Tue, 28 Aug 2018) $
  * $Revision: 37424 $
  *
  **************************************************************************** */
 
 /* **** Includes **** */
 #include "owm.h"
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "owm_reva_regs.h"
+#include "owm_regs.h"
+
 
 /* **** Definitions **** */
 
@@ -44,37 +49,37 @@
 /* **** Functions **** */
 
 /* ************************************************************************* */
-int MXC_OWM_RevA_Init (const mxc_owm_cfg_t *cfg);
-void MXC_OWM_RevA_Shutdown (void);
-int MXC_OWM_RevA_Reset (void);
-int MXC_OWM_RevA_TouchByte (uint8_t data);
-int MXC_OWM_RevA_WriteByte (uint8_t data);
-int MXC_OWM_RevA_ReadByte (void);
-int MXC_OWM_RevA_TouchBit (uint8_t bit);
-int MXC_OWM_RevA_WriteBit (uint8_t bit);
-int MXC_OWM_RevA_ReadBit (void);
-int MXC_OWM_RevA_Write (uint8_t* data, int len);
-int MXC_OWM_RevA_Read (uint8_t* data, int len);
-int MXC_OWM_RevA_ReadROM (uint8_t* ROMCode);
-int MXC_OWM_RevA_MatchROM (uint8_t* ROMCode);
-int MXC_OWM_RevA_ODMatchROM (uint8_t* ROMCode);
-int MXC_OWM_RevA_SkipROM (void);
-int MXC_OWM_RevA_ODSkipROM (void);
-int MXC_OWM_RevA_Resume (void);
-int MXC_OWM_RevA_SearchROM (int newSearch, uint8_t* ROMCode);
-void MXC_OWM_RevA_ClearFlags (uint32_t mask);
-unsigned MXC_OWM_RevA_GetFlags (void);
-void MXC_OWM_RevA_SetExtPullup (int enable);
-void MXC_OWM_RevA_SetOverdrive (int enable);
-void MXC_OWM_RevA_EnableInt (int flags);
-void MXC_OWM_RevA_DisableInt (int flags);
-int MXC_OWM_RevA_SetForcePresenceDetect (int enable);
-int MXC_OWM_RevA_SetInternalPullup (int enable);
-int MXC_OWM_RevA_SetExternalPullup (mxc_owm_ext_pu_t ext_pu_mode);
-int MXC_OWM_RevA_SystemClockUpdated (void);
-int MXC_OWM_RevA_SetSearchROMAccelerator (int enable);
-int MXC_OWM_RevA_BitBang_Init (int initialState);
-int MXC_OWM_RevA_BitBang_Read (void);
-int MXC_OWM_RevA_BitBang_Write (int state);
-int MXC_OWM_RevA_BitBang_Disable (void);
+int MXC_OWM_RevA_Init(mxc_owm_reva_regs_t *owm, const mxc_owm_cfg_t *cfg);
+void MXC_OWM_RevA_Shutdown(mxc_owm_reva_regs_t *owm);
+int MXC_OWM_RevA_Reset(mxc_owm_reva_regs_t *owm);
+int MXC_OWM_RevA_TouchByte(mxc_owm_reva_regs_t *owm, uint8_t data);
+int MXC_OWM_RevA_WriteByte(uint8_t data);
+int MXC_OWM_RevA_ReadByte(void);
+int MXC_OWM_RevA_TouchBit(mxc_owm_reva_regs_t *owm, uint8_t bit);
+int MXC_OWM_RevA_WriteBit(uint8_t bit);
+int MXC_OWM_RevA_ReadBit(void);
+int MXC_OWM_RevA_Write(mxc_owm_reva_regs_t *owm, uint8_t* data, int len);
+int MXC_OWM_RevA_Read(mxc_owm_reva_regs_t *owm, uint8_t* data, int len);
+int MXC_OWM_RevA_ReadROM(uint8_t* ROMCode);
+int MXC_OWM_RevA_MatchROM(uint8_t* ROMCode);
+int MXC_OWM_RevA_ODMatchROM(mxc_owm_reva_regs_t *owm, uint8_t* ROMCode);
+int MXC_OWM_RevA_SkipROM(void);
+int MXC_OWM_RevA_ODSkipROM(mxc_owm_reva_regs_t *owm);
+int MXC_OWM_RevA_Resume(void);
+int MXC_OWM_RevA_SearchROM(mxc_owm_reva_regs_t *owm, int newSearch, uint8_t* ROMCode);
+void MXC_OWM_RevA_ClearFlags(mxc_owm_reva_regs_t *owm, uint32_t mask);
+unsigned MXC_OWM_RevA_GetFlags(mxc_owm_reva_regs_t *owm);
+void MXC_OWM_RevA_SetExtPullup(mxc_owm_reva_regs_t *owm, int enable);
+void MXC_OWM_RevA_SetOverdrive(mxc_owm_reva_regs_t *owm, int enable);
+void MXC_OWM_RevA_EnableInt(mxc_owm_reva_regs_t *owm, int flags);
+void MXC_OWM_RevA_DisableInt(mxc_owm_reva_regs_t *owm, int flags);
+int MXC_OWM_RevA_SetForcePresenceDetect(mxc_owm_reva_regs_t *owm, int enable);
+int MXC_OWM_RevA_SetInternalPullup(mxc_owm_reva_regs_t *owm, int enable);
+int MXC_OWM_RevA_SetExternalPullup(mxc_owm_reva_regs_t *owm, mxc_owm_ext_pu_t ext_pu_mode);
+int MXC_OWM_RevA_SystemClockUpdated(mxc_owm_reva_regs_t *owm);
+int MXC_OWM_RevA_SetSearchROMAccelerator(mxc_owm_reva_regs_t *owm, int enable);
+int MXC_OWM_RevA_BitBang_Init(mxc_owm_reva_regs_t *owm, int initialState);
+int MXC_OWM_RevA_BitBang_Read(mxc_owm_reva_regs_t *owm);
+int MXC_OWM_RevA_BitBang_Write(mxc_owm_reva_regs_t *owm, int state);
+int MXC_OWM_RevA_BitBang_Disable(mxc_owm_reva_regs_t *owm);
 

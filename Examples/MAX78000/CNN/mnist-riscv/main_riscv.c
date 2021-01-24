@@ -47,7 +47,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "mxc_sys.h"
-#include "bbfc_regs.h"
+#include "gcfr_regs.h"
 #include "fcr_regs.h"
 #include "icc.h"
 #include "led.h"
@@ -685,11 +685,11 @@ int main(void)
   printf("Time for CNN: %d us\n\n", cnn_time);
 
   // Disable power to CNN
-  MXC_BBFC->reg3 = 0xf; // Reset
-  MXC_BBFC->reg1 = 0x0; // Mask memory
-  MXC_BBFC->reg0 = 0x0; // Power
-  MXC_BBFC->reg2 = 0xf; // Iso
-  MXC_BBFC->reg3 = 0x0; // Reset
+  MXC_GCFR->reg3 = 0xf; // Reset
+  MXC_GCFR->reg1 = 0x0; // Mask memory
+  MXC_GCFR->reg0 = 0x0; // Power
+  MXC_GCFR->reg2 = 0xf; // Iso
+  MXC_GCFR->reg3 = 0x0; // Reset
 
   printf("Classification results:\n");
   for (i = 0; i < NUM_OUTPUTS; i++) {

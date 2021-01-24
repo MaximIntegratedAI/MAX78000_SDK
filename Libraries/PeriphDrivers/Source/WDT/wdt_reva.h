@@ -1,8 +1,8 @@
 /* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright(C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software");,
+ * copy of this software and associated documentation files(the "Software");,
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
@@ -37,22 +37,23 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "wdt.h"
+#include "wdt_reva_regs.h"
 
 /* **** Definitions **** */
 typedef enum {
-    MXC_WDT_DISABLE = 0,
-    MXC_WDT_ENABLE = 1,
-} mxc_wdt_en_t;
+    MXC_WDT_REVA_DISABLE = 0,
+    MXC_WDT_REVA_ENABLE = 1,
+} mxc_wdt_reva_en_t;
 
 /* **** Functions **** */
-void MXC_WDT_RevA_SetIntPeriod (mxc_wdt_regs_t* wdt, mxc_wdt_period_t period);
-void MXC_WDT_RevA_SetResetPeriod (mxc_wdt_regs_t* wdt, mxc_wdt_period_t period);
-void MXC_WDT_RevA_Enable (mxc_wdt_regs_t* wdt);
-void MXC_WDT_RevA_Disable (mxc_wdt_regs_t* wdt);
-void MXC_WDT_RevA_EnableInt (mxc_wdt_regs_t* wdt, mxc_wdt_en_t enable);
-void MXC_WDT_RevA_EnableReset (mxc_wdt_regs_t* wdt, mxc_wdt_en_t enable);
-void MXC_WDT_RevA_ResetTimer (mxc_wdt_regs_t* wdt);
-int MXC_WDT_RevA_GetResetFlag (mxc_wdt_regs_t* wdt);
-void MXC_WDT_RevA_ClearResetFlag (mxc_wdt_regs_t* wdt);
-int MXC_WDT_RevA_GetIntFlag (mxc_wdt_regs_t* wdt);
-void MXC_WDT_RevA_ClearIntFlag (mxc_wdt_regs_t* wdt);
+void MXC_WDT_RevA_SetIntPeriod(mxc_wdt_reva_regs_t* wdt, mxc_wdt_period_t period);
+void MXC_WDT_RevA_SetResetPeriod(mxc_wdt_reva_regs_t* wdt, mxc_wdt_period_t period);
+void MXC_WDT_RevA_Enable(mxc_wdt_reva_regs_t* wdt);
+void MXC_WDT_RevA_Disable(mxc_wdt_reva_regs_t* wdt);
+void MXC_WDT_RevA_EnableInt(mxc_wdt_reva_regs_t* wdt, mxc_wdt_reva_en_t enable);
+void MXC_WDT_RevA_EnableReset(mxc_wdt_reva_regs_t* wdt, mxc_wdt_reva_en_t enable);
+void MXC_WDT_RevA_ResetTimer(mxc_wdt_reva_regs_t* wdt);
+int MXC_WDT_RevA_GetResetFlag(mxc_wdt_reva_regs_t* wdt);
+void MXC_WDT_RevA_ClearResetFlag(mxc_wdt_reva_regs_t* wdt);
+int MXC_WDT_RevA_GetIntFlag(mxc_wdt_reva_regs_t* wdt);
+void MXC_WDT_RevA_ClearIntFlag(mxc_wdt_reva_regs_t* wdt);

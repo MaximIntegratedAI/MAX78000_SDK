@@ -202,11 +202,17 @@ int MXC_SYS_Clock_Select (mxc_sys_system_clock_t clock);
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
  */
 int MXC_SYS_Clock_Timeout (uint32_t ready);
+
 /**
  * @brief Reset the peripherals and/or CPU in the rstr0 or rstr1 register.
  * @param           Enumeration for what to reset. Can reset multiple items at once.
  */
 void MXC_SYS_Reset_Periph (mxc_sys_reset_t reset);
+
+/**
+ * @brief Returns the clock rate (in Hz) of the Risc-V core.
+ */
+uint32_t MXC_SYS_RiscVClockRate(void);
 
 #ifdef __cplusplus
 }

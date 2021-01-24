@@ -107,7 +107,6 @@ void SPI_Callback(mxc_spi_req_t* req, int error)
     SPI_FLAG = error;
 }
 
-
 int main(void)
 {
     int i, j, retVal;
@@ -120,8 +119,8 @@ int main(void)
         printf("This example configures the SPI to send data between the MISO (P0.6) and\n");
         printf("MOSI (P0.5) pins.  Connect these two pins together.  \n\n");
     #elif defined (BOARD_EVKIT_V1)
-    printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
-    printf("MOSI (P0.21) pins.  Connect these two pins together.  \n\n");
+        printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
+        printf("MOSI (P0.21) pins.  Connect these two pins together.  \n\n");
     #endif
     printf("Multiple word sizes (2 through 16 bits) are demonstrated.\n\n");
     
@@ -170,7 +169,7 @@ int main(void)
         req.ssDeassert = 1;
         req.txCnt = 0;
         req.rxCnt = 0;
-        req.completeCB = (spi_complete_t) SPI_Callback;
+        req.completeCB = (spi_complete_cb_t) SPI_Callback;
         SPI_FLAG = 1;
         
         retVal = MXC_SPI_SetDataSize(SPI, i);

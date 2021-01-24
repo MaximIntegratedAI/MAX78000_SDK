@@ -73,6 +73,19 @@
  */
 #define MXC_DELAY_USEC(us)          (us)
 
+#ifdef __riscv
+
+/**
+ * @brief      Blocks and delays for the specified number of microseconds.
+ * @details    Uses the Performance Counter to create the requested delay. The current
+ *             and settings of the performance counter registers will be destroyed.
+ * @param      us    microseconds to delay
+ * @return     #E_NO_ERROR if no errors, @ref MXC_Error_Codes "error" if unsuccessful.
+ */
+int MXC_Delay (unsigned long us);
+
+#else
+
 /**
  * @brief   The callback routine used by MXC_DelayAsync() when the delay is complete
  *          or aborted early.
@@ -102,6 +115,7 @@ int MXC_Delay (unsigned long us);
  * @note       MXC_Delay_handler() must be called from the SysTick interrupt service
  *             routine or at a rate greater than the SysTick overflow rate.
  * @param      us    microseconds to delay
+ * @param      callback Function pointer to the function to call after the delay has expired.
  * @return     #E_NO_ERROR if no errors, #E_BUSY if currently servicing another
  *             delay request.
  */
@@ -128,5 +142,7 @@ void MXC_DelayAbort (void);
 void MXC_DelayHandler (void);
 
 /**@} end of group MXC_delay */
+
+#endif /* __riscv */
 
 #endif /* _DELAY_H_ */

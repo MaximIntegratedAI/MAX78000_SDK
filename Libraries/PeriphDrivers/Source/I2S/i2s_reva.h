@@ -43,35 +43,39 @@
 #include "dma.h"
 #include "i2s_regs.h"
 #include "i2s.h"
+#include "i2s_reva_regs.h"
 
-int MXC_I2S_RevA_Init(mxc_i2s_req_t *req);
 
-int MXC_I2S_RevA_Shutdown(void);
+/* **** Functions **** */
 
-int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t *req);
+int MXC_I2S_RevA_Init(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req);
 
-void MXC_I2S_RevA_TXEnable(void);
+int MXC_I2S_RevA_Shutdown(mxc_i2s_reva_regs_t *i2s);
 
-void MXC_I2S_RevA_TXDisable(void);
+int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t *req);
 
-void MXC_I2S_RevA_RXEnable(void);
+void MXC_I2S_RevA_TXEnable(mxc_i2s_reva_regs_t *i2s);
 
-void MXC_I2S_RevA_RXDisable(void);
+void MXC_I2S_RevA_TXDisable(mxc_i2s_reva_regs_t *i2s);
 
-int MXC_I2S_RevA_SetRXThreshold(uint8_t threshold);
+void MXC_I2S_RevA_RXEnable(mxc_i2s_reva_regs_t *i2s);
 
-int MXC_I2S_RevA_SetFrequency(mxc_i2s_ch_mode_t mode, uint16_t clkdiv);
+void MXC_I2S_RevA_RXDisable(mxc_i2s_reva_regs_t *i2s);
 
-void MXC_I2S_RevA_Flush(void);
+int MXC_I2S_RevA_SetRXThreshold(mxc_i2s_reva_regs_t *i2s, uint8_t threshold);
 
-void MXC_I2S_RevA_EnableInt(uint32_t flags);
+int MXC_I2S_RevA_SetFrequency(mxc_i2s_reva_regs_t *i2s, mxc_i2s_ch_mode_t mode, uint16_t clkdiv);
 
-void MXC_I2S_RevA_DisableInt(uint32_t flags);
+void MXC_I2S_RevA_Flush(mxc_i2s_reva_regs_t *i2s);
 
-int MXC_I2S_RevA_GetFlags(void);
+void MXC_I2S_RevA_EnableInt(mxc_i2s_reva_regs_t *i2s, uint32_t flags);
 
-void MXC_I2S_RevA_ClearFlags(uint32_t flags);
+void MXC_I2S_RevA_DisableInt(mxc_i2s_reva_regs_t *i2s, uint32_t flags);
 
-void MXC_I2S_RevA_TXDMAConfig(void *src_addr, int len);
+int MXC_I2S_RevA_GetFlags(mxc_i2s_reva_regs_t *i2s);
 
-void MXC_I2S_RevA_RXDMAConfig(void *dest_addr, int len);
+void MXC_I2S_RevA_ClearFlags(mxc_i2s_reva_regs_t *i2s, uint32_t flags);
+
+void MXC_I2S_RevA_TXDMAConfig(mxc_i2s_reva_regs_t *i2s, void *src_addr, int len);
+
+void MXC_I2S_RevA_RXDMAConfig(mxc_i2s_reva_regs_t *i2s, void *dest_addr, int len);

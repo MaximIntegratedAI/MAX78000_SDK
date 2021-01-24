@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/* *****************************************************************************
+ * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,39 +29,18 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
-
-/****** Includes *******/
+ **************************************************************************** */
 #include "mxc_device.h"
-#include "mxc_sys.h"
-#include "mxc_assert.h"
-#include "simo_regs.h"
 #include "simo.h"
+#include "simo_reva_regs.h"
 
 /* **** Function Prototypes **** */
-void MXC_SIMO_RevA_setVregO_A(uint32_t voltage);
-void MXC_SIMO_RevA_setVregO_B(uint32_t voltage);
-void MXC_SIMO_RevA_setVregO_C(uint32_t voltage);
-void MXC_SIMO_RevA_setVregO_D(uint32_t voltage);
+void MXC_SIMO_RevA_SetVregO_A(mxc_simo_reva_regs_t *simo, uint32_t voltage);
+void MXC_SIMO_RevA_SetVregO_B(mxc_simo_reva_regs_t *simo, uint32_t voltage);
+void MXC_SIMO_RevA_SetVregO_C(mxc_simo_reva_regs_t *simo, uint32_t voltage);
+void MXC_SIMO_RevA_SetVregO_D(mxc_simo_reva_regs_t *simo, uint32_t voltage);
 
-void MXC_SIMO_RevA_setIpkA(uint32_t peak_current);
-void MXC_SIMO_RevA_setIpkB(uint32_t peak_current);
-void MXC_SIMO_RevA_setIpkC(uint32_t peak_current);
-void MXC_SIMO_RevA_setIpkD(uint32_t peak_current);
-
-void MXC_SIMO_RevA_setMaxTon(uint32_t ontime);
-
-void MXC_SIMO_RevA_setAlertThresholdA(uint32_t threshold);
-void MXC_SIMO_RevA_setAlertThresholdB(uint32_t threshold);
-void MXC_SIMO_RevA_setAlertThresholdC(uint32_t threshold);
-void MXC_SIMO_RevA_setAlertThresholdD(uint32_t threshold);
-
-void MXC_SIMO_RevA_setZeroCrossCalA(uint32_t zerocross);
-void MXC_SIMO_RevA_setZeroCrossCalB(uint32_t zerocross);
-void MXC_SIMO_RevA_setZeroCrossCalC(uint32_t zerocross);
-void MXC_SIMO_RevA_setZeroCrossCalD(uint32_t zerocross);
-
-uint32_t MXC_SIMO_RevA_getOutReadyA(void);
-uint32_t MXC_SIMO_RevA_getOutReadyB(void);
-uint32_t MXC_SIMO_RevA_getOutReadyC(void);
-uint32_t MXC_SIMO_RevA_getOutReadyD(void);
+uint32_t MXC_SIMO_RevA_GetOutReadyA(mxc_simo_reva_regs_t *simo);
+uint32_t MXC_SIMO_RevA_GetOutReadyB(mxc_simo_reva_regs_t *simo);
+uint32_t MXC_SIMO_RevA_GetOutReadyC(mxc_simo_reva_regs_t *simo);
+uint32_t MXC_SIMO_RevA_GetOutReadyD(mxc_simo_reva_regs_t *simo);

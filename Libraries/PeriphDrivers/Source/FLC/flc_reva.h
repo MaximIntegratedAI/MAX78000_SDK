@@ -45,8 +45,7 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "flc.h"
-#include "flc_regs.h"
-#include "mcr_regs.h" // For ECCEN registers.
+#include "flc_reva_regs.h"
 
 /**
  * @ingroup flc
@@ -61,13 +60,13 @@
 
 int MXC_FLC_RevA_Busy (void);
 
-int MXC_FLC_RevA_MassErase (mxc_flc_regs_t *flc);
+int MXC_FLC_RevA_MassErase (mxc_flc_reva_regs_t *flc);
 
-int MXC_FLC_RevA_PageErase (mxc_flc_regs_t *flc,uint32_t addr);
+int MXC_FLC_RevA_PageErase (mxc_flc_reva_regs_t *flc,uint32_t addr);
 
-int MXC_FLC_RevA_Write32 (mxc_flc_regs_t *flc, uint32_t locgialAddr, uint32_t data, uint32_t physicalAddr);
+int MXC_FLC_RevA_Write32 (mxc_flc_reva_regs_t *flc, uint32_t locgialAddr, uint32_t data, uint32_t physicalAddr);
 
-int MXC_FLC_RevA_Write128 (mxc_flc_regs_t *flc, uint32_t addr, uint32_t *data);
+int MXC_FLC_RevA_Write128 (mxc_flc_reva_regs_t *flc, uint32_t addr, uint32_t *data);
 
 int MXC_FLC_RevA_EnableInt (uint32_t mask);
 
@@ -77,9 +76,9 @@ int MXC_FLC_RevA_GetFlags (void);
 
 int MXC_FLC_RevA_ClearFlags (uint32_t mask);
 
-int MXC_FLC_RevA_UnlockInfoBlock (mxc_flc_regs_t *flc, uint32_t address);
+int MXC_FLC_RevA_UnlockInfoBlock (mxc_flc_reva_regs_t *flc, uint32_t address);
 
-int MXC_FLC_RevA_LockInfoBlock (mxc_flc_regs_t *flc, uint32_t address);
+int MXC_FLC_RevA_LockInfoBlock (mxc_flc_reva_regs_t *flc, uint32_t address);
 /**@} end of group flc */
 
 

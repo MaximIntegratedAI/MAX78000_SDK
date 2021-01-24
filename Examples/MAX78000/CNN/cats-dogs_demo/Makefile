@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2020 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -52,6 +52,7 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
+#BOARD=FTHR_RevA
 endif
 
 # This is the path to the CMSIS root directory
@@ -69,27 +70,49 @@ export CMSIS_ROOT
 
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
+SRCS += cnn.c
 SRCS += softmax.c
-SRCS += TFT/all_imgs.c
+ifeq "$(BOARD)" "EvKit_V1"
+SRCS += TFT/evkit/all_imgs.c
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+SRCS += TFT/fthr/img_1_rgb565.c
+SRCS += TFT/fthr/logo_rgb565.c
+SRCS += TFT/fthr/SansSerif16x16.c
+endif
 
 # Where to find source files for this test
 VPATH  = .
 VPATH += ./Camera/
 VPATH += ../Common
 VPATH += ./Camera/src
-VPATH += ./TFT
+ifeq "$(BOARD)" "EvKit_V1"
+VPATH += ./TFT/evkit/
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+VPATH += TFT/fthr/
+endif
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 # Where to find header files for this test
 IPATH  = .
 IPATH += ./Camera/
 IPATH += ../Common
 IPATH += ./Camera/include
-IPATH += ./TFT
+IPATH += TFT/evkit/
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 PROJ_CFLAGS+=-DARM_MATH_CM4
+
+ifeq "$(BOARD)" "EvKit_V1"
+PROJ_CFLAGS+=-DTFT_ENABLE
+endif
+
+ifeq "$(BOARD)" "FTHR_RevA"
+# Only enable if 2.4" TFT is connected to Feather
+#PROJ_CFLAGS+=-DTFT_ENABLE
+endif
 
 # Enable all warnings
 PROJ_CFLAGS+=-Wall
@@ -109,7 +132,7 @@ PROJ_CFLAGS+=-Wall
 #STARTUPFILE=start.S
 
 # Override the default optimization level using this variable
-MXC_OPTIMIZE_CFLAGS=-O0
+MXC_OPTIMIZE_CFLAGS=-O2
 
 ################################################################################
 # Include external library makefiles here

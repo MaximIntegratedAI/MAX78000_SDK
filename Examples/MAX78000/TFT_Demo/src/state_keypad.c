@@ -64,83 +64,97 @@ static int init(void)
     int x, y;
     int x0 = 120;
     int y0 = 40;
-    
+#ifdef ENABLE_TS
     MXC_TS_RemoveAllButton();
+#endif
     MXC_TFT_SetPalette(logo_white_bg_white_bmp);
     MXC_TFT_SetBackGroundColor(0);
-    
+
     MXC_TFT_ShowImage(11, 7, logo_white_bg_white_bmp);
-    
+
     x = x0;
     y = y0;
     MXC_TFT_ShowImage(x, y, key_1_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_1);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_2_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_2);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_3_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_3);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_clear_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_F);
-    
+#endif
     //
     x = x0;
     y += BUTTON_SIZE_Y ;
     MXC_TFT_ShowImage(x, y, key_4_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_4);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_5_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_5);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_6_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_6);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_cancel_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_E);
-    
+#endif
     //
     x = x0;
     y += BUTTON_SIZE_Y ;
     MXC_TFT_ShowImage(x, y, key_7_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_7);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_8_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_8);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_9_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_9);
-    
+#endif
     x += BUTTON_SIZE_X ;
     MXC_TFT_ShowImage(x, y, key_enter_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_D);
-    
+#endif
     //
     x = x0;
     x += BUTTON_SIZE_X ;
     y += BUTTON_SIZE_Y ;
     MXC_TFT_ShowImage(x, y, key_0_bg_white_bmp);
+#ifdef ENABLE_TS
     MXC_TS_AddButton(x, y,  x + 42,  y + 41,    KEY_0);
-    
+#endif
     MXC_TFT_PrintFont(11,   80, urw_gothic_13_grey_bg_white,  &text_msg[0],  NULL);
     input_text->len = 0;
-    
+
     return 0;
 }
 
 static void print_inputs(int key)
 {
     static area_t area;
-    
+
     if (key == 0) { // means clear screen
         MXC_TFT_ClearArea(&area, 0);
         input_text->len = 0;
@@ -176,27 +190,27 @@ static int key_process(int key)
     case KEY_B:
         print_inputs(key);
         break;
-        
+
     case KEY_C: // exit
         state_set_current(get_home_state());
         break;
-        
+
     case KEY_D: // enter
         state_set_current(get_home_state());
         break;
-        
+
     case KEY_E: // cancel
         print_inputs(-1);
         break;
-        
+
     case KEY_F: // clear
         print_inputs(0);
         break;
-        
+
     default:
         break;
     }
-    
+
     return 0;
 }
 
@@ -207,4 +221,3 @@ State* get_keypad_state(void)
 {
     return &g_state;
 }
-

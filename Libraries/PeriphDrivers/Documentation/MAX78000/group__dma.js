@@ -95,6 +95,7 @@ var group__dma =
     [ "MXC_DMA_MemCpy", "group__dma.html#gafe7fe8d66927bef5f74347087dcd59bd", null ],
     [ "MXC_DMA_ReleaseChannel", "group__dma.html#ga7f4a2a29bbd6d59fa07b9298d08608c3", null ],
     [ "MXC_DMA_SetCallback", "group__dma.html#ga380fe1bb7949724c0b6afec532d21715", null ],
+    [ "MXC_DMA_SetChannelInterruptEn", "group__dma.html#ga2c2053dc85e25bc7fb649c1d091f6691", null ],
     [ "MXC_DMA_SetSrcDst", "group__dma.html#gaf3b612ad64be852f6dbf6ddda796ce45", null ],
     [ "MXC_DMA_SetSrcReload", "group__dma.html#ga5eaf7d9ab53aea7b09238773b0139180", null ],
     [ "MXC_DMA_Start", "group__dma.html#ga7e1e8b82917dfc32f690915c57c9df27", null ],

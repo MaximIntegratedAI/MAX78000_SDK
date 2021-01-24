@@ -36,6 +36,8 @@
 #ifndef _STATE_H_
 #define _STATE_H_
 
+#define urw_gothic_16_white_bg_grey 0
+
 typedef int (*Init_func)(void);
 typedef int (*Keypad_process)(int key);
 typedef void (*Time_Tick)(void);

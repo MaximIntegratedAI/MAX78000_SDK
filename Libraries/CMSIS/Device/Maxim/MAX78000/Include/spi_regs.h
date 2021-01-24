@@ -223,8 +223,38 @@ typedef struct {
 
  #define MXC_F_SPI_CTRL2_NUMBITS_POS                    8 /**< CTRL2_NUMBITS Position */
  #define MXC_F_SPI_CTRL2_NUMBITS                        ((uint32_t)(0xFUL << MXC_F_SPI_CTRL2_NUMBITS_POS)) /**< CTRL2_NUMBITS Mask */
- #define MXC_V_SPI_CTRL2_NUMBITS_0                      ((uint32_t)0x0UL) /**< CTRL2_NUMBITS_0 Value */
- #define MXC_S_SPI_CTRL2_NUMBITS_0                      (MXC_V_SPI_CTRL2_NUMBITS_0 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_0 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_16                     ((uint32_t)0x0UL) /**< CTRL2_NUMBITS_16 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_16                     (MXC_V_SPI_CTRL2_NUMBITS_16 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_16 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_1                      ((uint32_t)0x1UL) /**< CTRL2_NUMBITS_1 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_1                      (MXC_V_SPI_CTRL2_NUMBITS_1 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_1 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_2                      ((uint32_t)0x2UL) /**< CTRL2_NUMBITS_2 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_2                      (MXC_V_SPI_CTRL2_NUMBITS_2 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_2 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_3                      ((uint32_t)0x3UL) /**< CTRL2_NUMBITS_3 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_3                      (MXC_V_SPI_CTRL2_NUMBITS_3 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_3 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_4                      ((uint32_t)0x4UL) /**< CTRL2_NUMBITS_4 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_4                      (MXC_V_SPI_CTRL2_NUMBITS_4 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_4 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_5                      ((uint32_t)0x5UL) /**< CTRL2_NUMBITS_5 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_5                      (MXC_V_SPI_CTRL2_NUMBITS_5 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_5 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_6                      ((uint32_t)0x6UL) /**< CTRL2_NUMBITS_6 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_6                      (MXC_V_SPI_CTRL2_NUMBITS_6 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_6 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_7                      ((uint32_t)0x7UL) /**< CTRL2_NUMBITS_7 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_7                      (MXC_V_SPI_CTRL2_NUMBITS_7 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_7 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_8                      ((uint32_t)0x8UL) /**< CTRL2_NUMBITS_8 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_8                      (MXC_V_SPI_CTRL2_NUMBITS_8 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_8 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_9                      ((uint32_t)0x9UL) /**< CTRL2_NUMBITS_9 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_9                      (MXC_V_SPI_CTRL2_NUMBITS_9 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_9 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_10                     ((uint32_t)0xAUL) /**< CTRL2_NUMBITS_10 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_10                     (MXC_V_SPI_CTRL2_NUMBITS_10 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_10 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_11                     ((uint32_t)0xBUL) /**< CTRL2_NUMBITS_11 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_11                     (MXC_V_SPI_CTRL2_NUMBITS_11 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_11 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_12                     ((uint32_t)0xCUL) /**< CTRL2_NUMBITS_12 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_12                     (MXC_V_SPI_CTRL2_NUMBITS_12 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_12 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_13                     ((uint32_t)0xDUL) /**< CTRL2_NUMBITS_13 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_13                     (MXC_V_SPI_CTRL2_NUMBITS_13 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_13 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_14                     ((uint32_t)0xEUL) /**< CTRL2_NUMBITS_14 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_14                     (MXC_V_SPI_CTRL2_NUMBITS_14 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_14 Setting */
+ #define MXC_V_SPI_CTRL2_NUMBITS_15                     ((uint32_t)0xFUL) /**< CTRL2_NUMBITS_15 Value */
+ #define MXC_S_SPI_CTRL2_NUMBITS_15                     (MXC_V_SPI_CTRL2_NUMBITS_15 << MXC_F_SPI_CTRL2_NUMBITS_POS) /**< CTRL2_NUMBITS_15 Setting */
 
  #define MXC_F_SPI_CTRL2_DATA_WIDTH_POS                 12 /**< CTRL2_DATA_WIDTH Position */
  #define MXC_F_SPI_CTRL2_DATA_WIDTH                     ((uint32_t)(0x3UL << MXC_F_SPI_CTRL2_DATA_WIDTH_POS)) /**< CTRL2_DATA_WIDTH Mask */

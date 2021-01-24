@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2020 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -52,6 +52,7 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
+#BOARD=FTHR_RevA
 endif
 
 # This is the path to the CMSIS root directory
@@ -78,14 +79,28 @@ SRCS += src/state_home.c
 SRCS += src/state.c
 SRCS += src/state_info.c
 SRCS += src/utils.c
+ifeq "$(BOARD)" "EvKit_V1"
 SRCS += resources/all_imgs.c
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+SRCS += resources/tft_fthr/img_1_rgb565.c
+SRCS += resources/tft_fthr/Arial12x12.c
+SRCS += resources/tft_fthr/Arial24x23.c
+SRCS += resources/tft_fthr/Arial28x28.c
+SRCS += resources/tft_fthr/SansSerif16x16.c
+SRCS += resources/tft_fthr/SansSerif19x19.c
+endif
 
 # Where to find source files for this test
 VPATH=.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 VPATH += ./src
+ifeq "$(BOARD)" "EvKit_V1"
 VPATH += ./resources
-
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+VPATH += ./resources/tft_fthr
+endif
 # Where to find header files for this test
 IPATH = .
 IPATH += include
@@ -104,9 +119,16 @@ PROJ_CFLAGS+=-Wall
 # Use this variables to specify and alternate tool path
 #TOOL_DIR=/opt/gcc-arm-none-eabi-4_8-2013q4/bin
 
-
 # Use these variables to add project specific tool options
-PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY
+ifeq "$(BOARD)" "EvKit_V1"
+PROJ_CFLAGS += -DENABLE_TFT
+PROJ_CFLAGS += -DENABLE_TS
+endif
+
+ifeq "$(BOARD)" "FTHR_RevA"
+#PROJ_CFLAGS += -DENABLE_TFT
+endif
+
 #PROJ_CFLAGS+=--specs=nano.specs
 #PROJ_LDFLAGS+=--specs=nano.specs
 
@@ -114,7 +136,7 @@ PROJ_CFLAGS += -DDISABLE_EVKIT_DISPLAY
 #STARTUPFILE=start.S
 
 # Set MXC_OPTIMIZE to override the default optimization level 
-MXC_OPTIMIZE_CFLAGS=-O0
+MXC_OPTIMIZE_CFLAGS=-O1
 
 # Point this variable to a linker file to override the default file
 LINKER=$(TARGET_LC).ld

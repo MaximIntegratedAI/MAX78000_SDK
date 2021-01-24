@@ -56,9 +56,11 @@
 #include "mxc_delay.h"
 #include "camera.h"
 #include "utils.h"
+#include "dma.h"
 
 #define IMAGE_XRES  64
 #define IMAGE_YRES  64
+#define CAMERA_FREQ (10 * 1000 * 1000)
 
 void process_img(void)
 {
@@ -80,9 +82,14 @@ int main(void)
     int ret = 0;
     int slaveAddress;
     int id;
+    int dma_channel;
+
+    // Initialize DMA for camera interface
+    MXC_DMA_Init();
+    dma_channel = MXC_DMA_AcquireChannel();
     
     // Initialize the camera driver.
-    camera_init();
+    camera_init(CAMERA_FREQ);
     printf("\n\nCameraIF Example\n");
     
     // Obtain the I2C slave address of the camera.
@@ -110,7 +117,7 @@ int main(void)
     printf("Camera Manufacture ID is %04x\n", id);
     
     // Setup the camera image dimensions, pixel format and data aquiring details.
-    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA);
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, USE_DMA, dma_channel);
     
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);

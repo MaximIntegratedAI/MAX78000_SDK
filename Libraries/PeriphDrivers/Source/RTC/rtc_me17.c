@@ -48,51 +48,51 @@
 
 int MXC_RTC_EnableInt(uint32_t mask)
 {
-    return MXC_RTC_RevA_EnableInt(MXC_RTC, mask);
+    return MXC_RTC_RevA_EnableInt((mxc_rtc_reva_regs_t*) MXC_RTC, mask);
 }
 
 int MXC_RTC_DisableInt(uint32_t mask)
 {
-    return MXC_RTC_RevA_DisableInt(MXC_RTC, mask);
+    return MXC_RTC_RevA_DisableInt((mxc_rtc_reva_regs_t*) MXC_RTC, mask);
 }
 
 int MXC_RTC_SetTimeofdayAlarm(uint32_t ras)
 {
-    return MXC_RTC_RevA_SetTimeofdayAlarm(MXC_RTC, ras);
+    return MXC_RTC_RevA_SetTimeofdayAlarm((mxc_rtc_reva_regs_t*) MXC_RTC, ras);
 }
 
 int MXC_RTC_SetSubsecondAlarm(uint32_t rssa)
 {
-    return MXC_RTC_RevA_SetSubsecondAlarm(MXC_RTC, rssa);
+    return MXC_RTC_RevA_SetSubsecondAlarm((mxc_rtc_reva_regs_t*) MXC_RTC, rssa);
 }
 
 int MXC_RTC_Start(void)
 {
-    return MXC_RTC_RevA_Start(MXC_RTC);
+    return MXC_RTC_RevA_Start((mxc_rtc_reva_regs_t*) MXC_RTC);
 }
 
 int MXC_RTC_Stop(void)
 {
-    return MXC_RTC_RevA_Stop(MXC_RTC);
+    return MXC_RTC_RevA_Stop((mxc_rtc_reva_regs_t*) MXC_RTC);
 }
 
 int MXC_RTC_Init(uint32_t sec, uint8_t ssec)
 {
     MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
     
-    return MXC_RTC_RevA_Init(MXC_RTC, sec, ssec);
+    return MXC_RTC_RevA_Init((mxc_rtc_reva_regs_t*) MXC_RTC, sec, ssec);
 }
 
-int MXC_RTC_SquareWave(mxc_rtc_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)
+int MXC_RTC_SquareWave(mxc_rtc_reva_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)
 {
     MXC_GPIO_Config(&gpio_cfg_rtcsqw);
     
-    return MXC_RTC_RevA_SquareWave(MXC_RTC, sqe, ft);
+    return MXC_RTC_RevA_SquareWave((mxc_rtc_reva_regs_t*) MXC_RTC, sqe, ft);
 }
 
 int MXC_RTC_Trim(int8_t trm)
 {
-    return MXC_RTC_RevA_Trim(MXC_RTC, trm);
+    return MXC_RTC_RevA_Trim((mxc_rtc_reva_regs_t*) MXC_RTC, trm);
 }
 
 int MXC_RTC_GetFlags(void)

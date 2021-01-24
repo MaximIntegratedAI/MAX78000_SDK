@@ -93,6 +93,19 @@ void MXC_LP_EnterShutDownMode(void)
     while (1); // Should never reach this line - device will reset on exit from shutdown mode.
 }
 
+void MXC_LP_EnterLPMode(void)
+{
+    MXC_LP_ClearWakeStatus();
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
+    
+    /* Set SLEEPDEEP bit */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+
+    /* Go into low power mode and wait for an interrupt to wake the processor */
+    MXC_GCR->pm |= MXC_S_GCR_PM_MODE_LPM; 
+    __WFI();
+}
+
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
 {
     //not supported yet
@@ -203,44 +216,4 @@ int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
     
     MXC_GCR->pm |= mask;
     return E_NO_ERROR;
-}
-
-void MXC_LP_SysRam0Shutdown(void)
-{
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRAM0SD;
-}
-
-void MXC_LP_SysRam0PowerUp(void)
-{
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRAM0SD;
-}
-
-void MXC_LP_SysRam1Shutdown(void)
-{
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRAM1SD;
-}
-
-void MXC_LP_SysRam1PowerUp(void)
-{
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRAM1SD;
-}
-
-void MXC_LP_SysRam2Shutdown(void)
-{
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRAM2SD;
-}
-
-void MXC_LP_SysRam2PowerUp(void)
-{
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRAM2SD;
-}
-
-void MXC_LP_SysRam3Shutdown(void)
-{
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_SRAM3SD;
-}
-
-void MXC_LP_SysRam3PowerUp(void)
-{
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_SRAM3SD;
 }

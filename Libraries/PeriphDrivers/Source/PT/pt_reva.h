@@ -32,8 +32,8 @@
  *************************************************************************** */
 #include "pt.h"
 #include "gcr_regs.h"
-#include "pt_regs.h"
-#include "ptg_regs.h"
+#include "pt_reva_regs.h"
+#include "ptg_reva_regs.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_assert.h"
@@ -41,18 +41,18 @@
 #include "mcr_regs.h"
 #include <stdio.h>
 
-void MXC_PT_RevA_Init (mxc_clk_scale_t clk_scale);
-int  MXC_PT_RevA_Shutdown (uint32_t pts);
-int  MXC_PT_RevA_Config (mxc_pt_cfg_t *cfg);
-int  MXC_PT_RevA_SqrWaveConfig (unsigned channel, uint32_t freq);
-void MXC_PT_RevA_Start (unsigned pts);
-void MXC_PT_RevA_Stop (unsigned pts);
-uint32_t MXC_PT_RevA_IsActive (uint32_t pts);
+void MXC_PT_RevA_Init (mxc_ptg_reva_regs_t* ptg, mxc_clk_scale_t clk_scale);
+int  MXC_PT_RevA_Shutdown (mxc_ptg_reva_regs_t* ptg, uint32_t pts);
+int  MXC_PT_RevA_Config (mxc_ptg_reva_regs_t* ptg, mxc_pt_cfg_t *cfg);
+int  MXC_PT_RevA_SqrWaveConfig (mxc_ptg_reva_regs_t* ptg, mxc_pt_cfg_t* sqwcfg, unsigned channel, uint32_t freq);
+void MXC_PT_RevA_Start (mxc_ptg_reva_regs_t* ptg, unsigned pts);
+void MXC_PT_RevA_Stop (mxc_ptg_reva_regs_t* ptg, unsigned pts);
+uint32_t MXC_PT_RevA_IsActive (mxc_ptg_reva_regs_t* ptg, uint32_t pts);
 void MXC_PT_RevA_SetPattern (unsigned pts, uint32_t pattern);
-void MXC_PT_RevA_EnableInt (uint32_t pts);
-void MXC_PT_RevA_DisableInt (uint32_t pts);
-uint32_t MXC_PT_RevA_GetFlags (void);
-void MXC_PT_RevA_ClearFlags (uint32_t flags);
+void MXC_PT_RevA_EnableInt (mxc_ptg_reva_regs_t* ptg, uint32_t pts);
+void MXC_PT_RevA_DisableInt (mxc_ptg_reva_regs_t* ptg, uint32_t pts);
+uint32_t MXC_PT_RevA_GetFlags (mxc_ptg_reva_regs_t* ptg);
+void MXC_PT_RevA_ClearFlags (mxc_ptg_reva_regs_t* ptg, uint32_t flags);
 void MXC_PT_RevA_EnableRestart (unsigned start, unsigned stop, uint8_t restartIndex);
 void MXC_PT_RevA_DisableRestart (unsigned channel, uint8_t restartIndex);
-void MXC_PT_RevA_Resync (uint32_t pts);
+void MXC_PT_RevA_Resync (mxc_ptg_reva_regs_t* ptg, uint32_t pts);

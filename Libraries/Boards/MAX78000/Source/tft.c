@@ -870,6 +870,8 @@ int MXC_TFT_Init(mxc_spi_regs_t* tft_spi, int ss_idx, mxc_gpio_cfg_t* reset_ctrl
 void MXC_TFT_SetRotation(tft_rotation_t rotation)
 {
 	tft_rotation = rotation;
+	if(tft_rotation == SCREEN_FLIP)
+	  MXC_TFT_WriteReg(0x0001, 0x30EF); // flip screen horizontally
 }
 
 void MXC_TFT_SetBackGroundColor(unsigned int color)

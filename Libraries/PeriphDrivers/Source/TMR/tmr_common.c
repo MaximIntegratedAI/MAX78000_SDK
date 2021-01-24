@@ -112,7 +112,7 @@ unsigned int MXC_TMR_Common_TO_Elapsed(mxc_tmr_regs_t* tmr)
 {
     uint32_t elapsed;
     mxc_tmr_unit_t units;
-    MXC_TMR_GetTime(tmr, MXC_TMR_GetCount(tmr), &elapsed, &units);
+    MXC_TMR_GetTime (tmr, tmr->cnt, &elapsed, &units);
     
     switch (units) {
     case TMR_UNIT_NANOSEC:

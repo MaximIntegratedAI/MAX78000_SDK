@@ -35,107 +35,114 @@
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "uart.h"
+#include "uart_revb.h"
 #include "dma.h"
 
 /* **** Definitions **** */
-#define MXC_UART_ERRINT_EN (MXC_F_UART_INT_EN_RX_FERR | \
-                            MXC_F_UART_INT_EN_RX_PAR | \
-                            MXC_F_UART_INT_EN_RX_OV)
+#define MXC_UART_REVB_ERRINT_EN (MXC_F_UART_REVB_INT_EN_RX_FERR | \
+                            MXC_F_UART_REVB_INT_EN_RX_PAR | \
+                            MXC_F_UART_REVB_INT_EN_RX_OV)
 
-#define MXC_UART_ERRINT_FL (MXC_F_UART_INT_FL_RX_FERR | \
-                            MXC_F_UART_INT_FL_RX_PAR | \
-                            MXC_F_UART_INT_FL_RX_OV)
+#define MXC_UART_REVB_ERRINT_FL (MXC_F_UART_REVB_INT_FL_RX_FERR | \
+                            MXC_F_UART_REVB_INT_FL_RX_PAR | \
+                            MXC_F_UART_REVB_INT_FL_RX_OV)
 
 /* **** Variable Declaration **** */
 static void* AsyncTxRequests[MXC_UART_INSTANCES];
 static void* AsyncRxRequests[MXC_UART_INSTANCES];
 
 typedef struct {
-    mxc_uart_req_t* req;
+    mxc_uart_revb_req_t *req;
     int channelTx;
     int channelRx;
-} uart_req_state_t;
+} uart_revb_req_state_t;
 
-uart_req_state_t states[MXC_UART_INSTANCES];
+uart_revb_req_state_t states[MXC_UART_INSTANCES];
+
 /* **** Function Prototypes **** */
 
 /* ************************************************************************* */
 /* Control/Configuration functions                                           */
 /* ************************************************************************* */
-int MXC_UART_RevB_Init(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clock_t clock)
+int MXC_UART_RevB_Init (mxc_uart_revb_regs_t* uart, unsigned int baud, mxc_uart_revb_clock_t clock)
 {
-    int err;
+	int err;
 
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if(MXC_UART_GET_IDX((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    // Set RX threshold to 1 byte
-    if((err = MXC_UART_SetRXThreshold(uart, 1)) != E_NO_ERROR) {
-        return err;
+    // Initialize UART
+    if((err = MXC_UART_SetRXThreshold ((mxc_uart_regs_t*) uart, 1)) != E_NO_ERROR) {      // Set RX threshold to 1 byte
+    	return err;
     }
-    
-    // Set Datasize to 8 bits
-    if((err = MXC_UART_SetDataSize(uart, 8)) != E_NO_ERROR) {
+
+    if((err = MXC_UART_SetDataSize ((mxc_uart_regs_t*) uart, 8)) != E_NO_ERROR) {         // Set Datasize to 8 bits
         return err;
     }
 
-    if((err = MXC_UART_SetParity(uart, MXC_UART_PARITY_DISABLE)) != E_NO_ERROR) {
+    if((err = MXC_UART_SetParity ((mxc_uart_regs_t*) uart, MXC_UART_PARITY_DISABLE)) != E_NO_ERROR) {
+	    return err;
+    }
+
+    if((err = MXC_UART_SetStopBits ((mxc_uart_regs_t*) uart, MXC_UART_STOP_1)) != E_NO_ERROR) {
         return err;
     }
 
-    if((err = MXC_UART_SetStopBits(uart, MXC_UART_STOP_1)) != E_NO_ERROR) {
-        return err;
+    if((err = MXC_UART_SetFrequency ((mxc_uart_regs_t*) uart, baud, clock)) < E_NO_ERROR) {
+        return err; 
     }
 
-    MXC_UART_SetFrequency(uart, baud, clock);
-    
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_ReadyForSleep(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_ReadyForSleep (mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
-
-    if (AsyncTxRequests[MXC_UART_GET_IDX(uart)] != NULL) {
+    
+    if (AsyncTxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t*) uart)] != NULL) {
         return E_BUSY;
     }
 
-    if (AsyncRxRequests[MXC_UART_GET_IDX(uart)] != NULL) {
+    if (AsyncRxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t*) uart)] != NULL) {
         return E_BUSY;
     }
 
-    return MXC_UART_GetActive(uart);
+    return MXC_UART_GetActive ((mxc_uart_regs_t*) uart);
 }
 
-int MXC_UART_RevB_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clock_t clock)
-{
-    if (MXC_UART_GET_IDX(uart) < 0) {
+int MXC_UART_RevB_SetFrequency (mxc_uart_revb_regs_t* uart, unsigned int baud, mxc_uart_revb_clock_t clock)
+{  
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
     // Enable baud clock and wait for it to become ready.
-    uart->ctrl |= MXC_F_UART_CTRL_BCLKEN;
-
-    while (((uart->ctrl & MXC_F_UART_CTRL_BCLKRDY) >> MXC_F_UART_CTRL_BCLKRDY_POS) == 0);
+    uart->ctrl |= MXC_F_UART_REVB_CTRL_BCLKEN;
+    while(((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKRDY) >> MXC_F_UART_REVB_CTRL_BCLKRDY_POS) == 0);
 
     // OSR default value
     uart->osr = 5;
 
-    // Check if the UART is LPUART
-    if (uart == MXC_UART3) {
+    // check if the uart is LPUART
+    if(uart == (mxc_uart_revb_regs_t*) MXC_UART3) {
         switch (clock) {
-        case MXC_UART_APB_CLK:
+            case MXC_UART_REVB_APB_CLK:
             uart->clkdiv = ((IBRO_FREQ) / baud);
             break;
 
-        case MXC_UART_32K_CLK:
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
-            uart->ctrl |= MXC_F_UART_CTRL_FDM;
+            case MXC_UART_REVB_EXT_CLK:
+            uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK;
+            break;
 
-            if (baud == 9600) {
+            //case MXC_UART_32K_CLK:
+            case MXC_UART_REVB_LPCLK2:
+            case MXC_UART_REVB_CLK2:
+            uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2;
+            uart->ctrl |= MXC_F_UART_REVB_CTRL_FDM;
+            if(baud == 9600) {
                 uart->clkdiv = 7;
             }
             else {
@@ -151,54 +158,77 @@ int MXC_UART_RevB_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uar
 
             break;
 
-        default:
+            default:
             return E_BAD_PARAM;
         }
     }
     else {
         switch (clock) {
-        case MXC_UART_APB_CLK:
+            case MXC_UART_REVB_APB_CLK:
             uart->clkdiv = (PeripheralClock / baud);
             break;
 
-        case MXC_UART_8M_CLK:
-            uart->clkdiv = (IBRO_FREQ / baud);
-            uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
+            case MXC_UART_REVB_EXT_CLK:
+            uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK;
             break;
 
-        default:
+            //case MXC_UART_IBRO_CLK:
+            case MXC_UART_REVB_CLK2:
+            uart->clkdiv = (7372800 / baud);
+            uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2;
+            break;
+
+            //case MXC_UART_ERFO:
+            case MXC_UART_REVB_CLK3:
+            uart->clkdiv = (16000000 / baud);
+            uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3;
+            break;
+
+            default:
             return E_BAD_PARAM;
         }
     }
-
-    return MXC_UART_GetFrequency(uart);
+    
+    return MXC_UART_GetFrequency ((mxc_uart_regs_t*) uart);
 }
 
-int MXC_UART_RevB_GetFrequency(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_GetFrequency (mxc_uart_revb_regs_t* uart)
 {
     int periphClock = 0;
-
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    if (uart == MXC_UART3) {
-        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-            periphClock = ERTCO_FREQ * 2;
+    if(uart == (mxc_uart_revb_regs_t*) MXC_UART3) {
+        if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+            return E_NOT_SUPPORTED;
         }
-        else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
-            periphClock = IBRO_FREQ;
+        else if((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+            periphClock = 7372800;
+        }
+        else if((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2) {
+            periphClock = 32768 * 2;
+        }
+        else if((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3) {
+            periphClock = 80000 * 2;
         }
         else {
             return E_BAD_PARAM;
         }
     }
     else {
-        if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-            periphClock = IBRO_FREQ;
+        if ((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
+            return E_NOT_SUPPORTED;
         }
-        else if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
+        else if((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = PeripheralClock;
+        }
+        else if((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2) {
+            periphClock = 7372800;
+        }
+        else if((uart->ctrl & MXC_F_UART_REVB_CTRL_BCLKSRC) == MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3) {
+            periphClock = 16000000;
         }
         else {
             return E_BAD_PARAM;
@@ -208,36 +238,36 @@ int MXC_UART_RevB_GetFrequency(mxc_uart_regs_t* uart)
     return (periphClock / uart->clkdiv);
 }
 
-int MXC_UART_RevB_SetDataSize(mxc_uart_regs_t* uart, int dataSize)
+int MXC_UART_RevB_SetDataSize (mxc_uart_revb_regs_t* uart, int dataSize)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
     if (dataSize < 5 || dataSize > 8) {
         return E_BAD_PARAM;
     }
-
-    dataSize = (dataSize - 5) << MXC_F_UART_CTRL_CHAR_SIZE_POS;
-
-    MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_CHAR_SIZE, dataSize);
-
+    
+    dataSize = (dataSize-5) << MXC_F_UART_REVB_CTRL_CHAR_SIZE_POS;
+    
+    MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_CHAR_SIZE, dataSize);
+    
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_SetStopBits(mxc_uart_regs_t* uart, mxc_uart_stop_t stopBits)
+int MXC_UART_RevB_SetStopBits (mxc_uart_revb_regs_t* uart, mxc_uart_stop_t stopBits)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
     switch (stopBits) {
     case MXC_UART_STOP_1:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_STOPBITS, 0 << MXC_F_UART_CTRL_STOPBITS_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_STOPBITS, 0 << MXC_F_UART_REVB_CTRL_STOPBITS_POS);
         break;
-
+        
     case MXC_UART_STOP_2:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_STOPBITS, 1 << MXC_F_UART_CTRL_STOPBITS_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_STOPBITS, 1 << MXC_F_UART_REVB_CTRL_STOPBITS_POS);
         break;
 
     default:
@@ -248,39 +278,39 @@ int MXC_UART_RevB_SetStopBits(mxc_uart_regs_t* uart, mxc_uart_stop_t stopBits)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_SetParity(mxc_uart_regs_t* uart, mxc_uart_parity_t parity)
+int MXC_UART_RevB_SetParity (mxc_uart_revb_regs_t* uart, mxc_uart_parity_t parity)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
     switch (parity) {
     case MXC_UART_PARITY_DISABLE:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EN, 0 << MXC_F_UART_CTRL_PAR_EN_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EN, 0 << MXC_F_UART_REVB_CTRL_PAR_EN_POS);
         break;
 
     case MXC_UART_PARITY_EVEN_0:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EN, 1 << MXC_F_UART_CTRL_PAR_EN_POS);
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EO, 0 << MXC_F_UART_CTRL_PAR_EO_POS);
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_MD, 0 << MXC_F_UART_CTRL_PAR_MD_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EN, 1 << MXC_F_UART_REVB_CTRL_PAR_EN_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EO, 0 << MXC_F_UART_REVB_CTRL_PAR_EO_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_MD, 0 << MXC_F_UART_REVB_CTRL_PAR_MD_POS);
         break;
-
+        
     case MXC_UART_PARITY_EVEN_1:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EN, 1 << MXC_F_UART_CTRL_PAR_EN_POS);
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EO, 0 << MXC_F_UART_CTRL_PAR_EO_POS);
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_MD, 1 << MXC_F_UART_CTRL_PAR_MD_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EN, 1 << MXC_F_UART_REVB_CTRL_PAR_EN_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EO, 0 << MXC_F_UART_REVB_CTRL_PAR_EO_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_MD, 1 << MXC_F_UART_REVB_CTRL_PAR_MD_POS);
         break;
-
+ 
     case MXC_UART_PARITY_ODD_0:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EN, 1 << MXC_F_UART_CTRL_PAR_EN_POS);
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EO, 1 << MXC_F_UART_CTRL_PAR_EO_POS);
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_MD, 0 << MXC_F_UART_CTRL_PAR_MD_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EN, 1 << MXC_F_UART_REVB_CTRL_PAR_EN_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EO, 1 << MXC_F_UART_REVB_CTRL_PAR_EO_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_MD, 0 << MXC_F_UART_REVB_CTRL_PAR_MD_POS);
         break;
-
+        
     case MXC_UART_PARITY_ODD_1:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EN, 1 << MXC_F_UART_CTRL_PAR_EN_POS);
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_EO, 1 << MXC_F_UART_CTRL_PAR_EO_POS);
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_PAR_MD, 1 << MXC_F_UART_CTRL_PAR_MD_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EN, 1 << MXC_F_UART_REVB_CTRL_PAR_EN_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_EO, 1 << MXC_F_UART_REVB_CTRL_PAR_EO_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_PAR_MD, 1 << MXC_F_UART_REVB_CTRL_PAR_MD_POS);
         break;
 
     default:
@@ -291,19 +321,19 @@ int MXC_UART_RevB_SetParity(mxc_uart_regs_t* uart, mxc_uart_parity_t parity)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_SetFlowCtrl(mxc_uart_regs_t* uart, mxc_uart_flow_t flowCtrl, int rtsThreshold)
+int MXC_UART_RevB_SetFlowCtrl (mxc_uart_revb_regs_t* uart, mxc_uart_flow_t flowCtrl, int rtsThreshold)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
     switch (flowCtrl) {
     case MXC_UART_FLOW_DIS:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_HFC_EN, 0 << MXC_F_UART_CTRL_HFC_EN_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_HFC_EN, 0 << MXC_F_UART_REVB_CTRL_HFC_EN_POS);
         break;
-
+        
     case MXC_UART_FLOW_EN:
-        MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_HFC_EN, 1 << MXC_F_UART_CTRL_HFC_EN_POS);
+        MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_HFC_EN, 1 << MXC_F_UART_REVB_CTRL_HFC_EN_POS);
         break;
 
     default:
@@ -316,72 +346,76 @@ int MXC_UART_RevB_SetFlowCtrl(mxc_uart_regs_t* uart, mxc_uart_flow_t flowCtrl, i
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_SetClockSource(mxc_uart_regs_t* uart, mxc_uart_clock_t clock)
+int MXC_UART_RevB_SetClockSource (mxc_uart_revb_regs_t* uart, mxc_uart_revb_clock_t clock)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
-
+    
     switch (clock) {
-    case MXC_UART_APB_CLK:
+        case MXC_UART_REVB_APB_CLK:
         break;
 
-    case MXC_UART_8M_CLK:
-        uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
+        case MXC_UART_REVB_EXT_CLK:
+        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_EXTERNAL_CLOCK;
         break;
 
-    case MXC_UART_32K_CLK:
-        uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
+        case MXC_UART_REVB_CLK2:
+        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2;
         break;
 
-    default:
+        case MXC_UART_REVB_CLK3:
+        uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3;
+        break;
+
+        default:
         return E_BAD_PARAM;
     }
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_GetActive(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_GetActive (mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
-
-    if (uart->status & (MXC_F_UART_STATUS_TX_BUSY | MXC_F_UART_STATUS_RX_BUSY)) {
+    
+    if (uart->status & (MXC_F_UART_REVB_STATUS_TX_BUSY | MXC_F_UART_REVB_STATUS_RX_BUSY)) {
         return E_BUSY;
     }
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AbortTransmission(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_AbortTransmission (mxc_uart_revb_regs_t* uart)
 {
-    MXC_UART_ClearTXFIFO(uart);
+    MXC_UART_ClearTXFIFO ((mxc_uart_regs_t*) uart);
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_ReadCharacterRaw(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_ReadCharacterRaw(mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    if (uart->status & MXC_F_UART_STATUS_RX_EM) {
+    if (uart->status & MXC_F_UART_REVB_STATUS_RX_EM) {
         return E_UNDERFLOW;
     }
 
     return uart->fifo;
 }
 
-int MXC_UART_RevB_WriteCharacterRaw(mxc_uart_regs_t* uart, uint8_t character)
+int MXC_UART_RevB_WriteCharacterRaw(mxc_uart_revb_regs_t* uart, uint8_t character)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX((mxc_uart_regs_t*)uart) < 0) {
         return E_BAD_PARAM;
     }
 
     // Require the TX FIFO to be empty, so that we write out the expected character
     // Return error if the FIFO is full
-    if (uart->status & MXC_F_UART_STATUS_TX_FULL) {
+    if (uart->status & MXC_F_UART_REVB_STATUS_TX_FULL) {
         return E_OVERFLOW;
     }
 
@@ -390,12 +424,42 @@ int MXC_UART_RevB_WriteCharacterRaw(mxc_uart_regs_t* uart, uint8_t character)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_Read(mxc_uart_regs_t* uart, uint8_t* buffer, int* len)
+int MXC_UART_RevB_ReadCharacter (mxc_uart_revb_regs_t* uart)
+{
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
+        return E_BAD_PARAM;
+    }
+    
+    if (uart->status & MXC_F_UART_REVB_STATUS_RX_EM) {
+        return E_UNDERFLOW;
+    }
+
+    return uart->fifo;
+}
+
+int MXC_UART_RevB_WriteCharacter (mxc_uart_revb_regs_t* uart, uint8_t character)
+{
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
+        return E_BAD_PARAM;
+    }
+
+    // Require the TX FIFO to be empty, so that we write out the expected character
+    // Return error if the FIFO is full
+    if (uart->status & MXC_F_UART_REVB_STATUS_TX_FULL) {
+        return E_OVERFLOW;
+    }
+
+    uart->fifo = character;
+
+    return E_NO_ERROR;
+}
+
+int MXC_UART_RevB_Read (mxc_uart_revb_regs_t* uart, uint8_t* buffer, int* len)
 {
     int read = 0;
     int retVal;
 
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
@@ -408,8 +472,8 @@ int MXC_UART_RevB_Read(mxc_uart_regs_t* uart, uint8_t* buffer, int* len)
     }
 
     for (; read < *len; read++) {
-        retVal = MXC_UART_ReadCharacter(uart);
-
+        retVal = MXC_UART_ReadCharacter ((mxc_uart_regs_t*) uart);
+        
         if (retVal < 0) {
             *len = read;
             return retVal;
@@ -423,12 +487,12 @@ int MXC_UART_RevB_Read(mxc_uart_regs_t* uart, uint8_t* buffer, int* len)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_Write(mxc_uart_regs_t* uart, const uint8_t* byte, int* len)
+int MXC_UART_RevB_Write (mxc_uart_revb_regs_t* uart, const uint8_t* byte, int* len)
 {
     int written = 0;
     int retVal;
 
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
@@ -441,8 +505,8 @@ int MXC_UART_RevB_Write(mxc_uart_regs_t* uart, const uint8_t* byte, int* len)
     }
 
     for (; written < *len; written++) {
-        retVal = MXC_UART_WriteCharacter(uart, byte[written]);
-
+        retVal = MXC_UART_WriteCharacter ((mxc_uart_regs_t*) uart, byte[written]);
+        
         if (retVal != E_NO_ERROR) {
             *len = written;
             return retVal;
@@ -453,12 +517,12 @@ int MXC_UART_RevB_Write(mxc_uart_regs_t* uart, const uint8_t* byte, int* len)
     return E_NO_ERROR;
 }
 
-unsigned int MXC_UART_RevB_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len)
+unsigned int MXC_UART_RevB_ReadRXFIFO (mxc_uart_revb_regs_t* uart, unsigned char* bytes, unsigned int len)
 {
     unsigned read = 0;
 
     for (; read < len; read++) {
-        if (uart->status & MXC_F_UART_STATUS_RX_EM) {
+        if (uart->status & MXC_F_UART_REVB_STATUS_RX_EM) {
             break;
         }
 
@@ -468,17 +532,17 @@ unsigned int MXC_UART_RevB_ReadRXFIFO(mxc_uart_regs_t* uart, unsigned char* byte
     return read;
 }
 
-unsigned int MXC_UART_RevB_GetRXFIFOAvailable(mxc_uart_regs_t* uart)
+unsigned int MXC_UART_RevB_GetRXFIFOAvailable (mxc_uart_revb_regs_t* uart)
 {
-    return (uart->status & MXC_F_UART_STATUS_RX_LVL) >> MXC_F_UART_STATUS_RX_LVL_POS;
+    return (uart->status & MXC_F_UART_REVB_STATUS_RX_LVL) >> MXC_F_UART_REVB_STATUS_RX_LVL_POS;
 }
 
-unsigned int MXC_UART_RevB_WriteTXFIFO(mxc_uart_regs_t* uart, const unsigned char* bytes, unsigned int len)
+unsigned int MXC_UART_RevB_WriteTXFIFO (mxc_uart_revb_regs_t* uart, const unsigned char* bytes, unsigned int len)
 {
     unsigned written = 0;
 
     for (; written < len; written++) {
-        if (uart->status & MXC_F_UART_STATUS_TX_FULL) {
+        if (uart->status & MXC_F_UART_REVB_STATUS_TX_FULL) {
             break;
         }
 
@@ -488,68 +552,65 @@ unsigned int MXC_UART_RevB_WriteTXFIFO(mxc_uart_regs_t* uart, const unsigned cha
     return written;
 }
 
-unsigned int MXC_UART_RevB_GetTXFIFOAvailable(mxc_uart_regs_t* uart)
+unsigned int MXC_UART_RevB_GetTXFIFOAvailable (mxc_uart_revb_regs_t* uart)
 {
-    int txCnt = (uart->status & MXC_F_UART_STATUS_TX_LVL) >> MXC_F_UART_STATUS_TX_LVL_POS;
+    int txCnt = (uart->status & MXC_F_UART_REVB_STATUS_TX_LVL) >> MXC_F_UART_REVB_STATUS_TX_LVL_POS;
     return MXC_UART_FIFO_DEPTH - txCnt;
 }
 
-int MXC_UART_RevB_ClearRXFIFO(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_ClearRXFIFO (mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    uart->ctrl |= MXC_F_UART_CTRL_RX_FLUSH;
-
-    while ((uart->status & MXC_F_UART_STATUS_RX_EM) == 0);
+    uart->ctrl |= MXC_F_UART_REVB_CTRL_RX_FLUSH;
+    while (!(uart->status & MXC_F_UART_REVB_STATUS_RX_EM));
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_ClearTXFIFO(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_ClearTXFIFO (mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    uart->ctrl |= MXC_F_UART_CTRL_TX_FLUSH;
-
-    while ((uart->status & MXC_F_UART_STATUS_TX_EM) == 0);
+    uart->ctrl |= MXC_F_UART_REVB_CTRL_TX_FLUSH;
+    while (uart->ctrl & MXC_F_UART_REVB_CTRL_TX_FLUSH);
 
     return E_NO_ERROR;
 }
 
-
-int MXC_UART_RevB_SetRXThreshold(mxc_uart_regs_t* uart, unsigned int numBytes)
+int MXC_UART_RevB_SetRXThreshold (mxc_uart_revb_regs_t* uart, unsigned int numBytes)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
     if (numBytes < 1 || numBytes > MXC_UART_FIFO_DEPTH) {
         return E_BAD_PARAM;
     }
-
-    numBytes <<= MXC_F_UART_CTRL_RX_THD_VAL_POS;
-    MXC_SETFIELD(uart->ctrl, MXC_F_UART_CTRL_RX_THD_VAL, numBytes);
-
+    
+    numBytes <<= MXC_F_UART_REVB_CTRL_RX_THD_VAL_POS;
+    MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVB_CTRL_RX_THD_VAL, numBytes);
+    
     return E_NO_ERROR;
 }
 
-unsigned int MXC_UART_RevB_GetRXThreshold(mxc_uart_regs_t* uart)
+unsigned int MXC_UART_RevB_GetRXThreshold (mxc_uart_revb_regs_t* uart)
 {
-    return ((uart->ctrl & MXC_F_UART_CTRL_RX_THD_VAL) >> MXC_F_UART_CTRL_RX_THD_VAL_POS);
+    return ((uart->ctrl & MXC_F_UART_REVB_CTRL_RX_THD_VAL) >> MXC_F_UART_REVB_CTRL_RX_THD_VAL_POS);
 }
 
-unsigned int MXC_UART_RevB_GetFlags(mxc_uart_regs_t* uart)
+unsigned int MXC_UART_RevB_GetFlags (mxc_uart_revb_regs_t* uart)
 {
     return uart->int_fl;
 }
 
-int MXC_UART_RevB_ClearFlags(mxc_uart_regs_t* uart, int flags)
+int MXC_UART_RevB_ClearFlags (mxc_uart_revb_regs_t* uart, unsigned int flags)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
@@ -558,9 +619,9 @@ int MXC_UART_RevB_ClearFlags(mxc_uart_regs_t* uart, int flags)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_EnableInt(mxc_uart_regs_t* uart, unsigned int intEn)
+int MXC_UART_RevB_EnableInt (mxc_uart_revb_regs_t* uart, unsigned int intEn)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
@@ -569,9 +630,9 @@ int MXC_UART_RevB_EnableInt(mxc_uart_regs_t* uart, unsigned int intEn)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_DisableInt(mxc_uart_regs_t* uart, unsigned int intDis)
+int MXC_UART_RevB_DisableInt (mxc_uart_revb_regs_t* uart, unsigned int intDis)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
 
@@ -580,22 +641,22 @@ int MXC_UART_RevB_DisableInt(mxc_uart_regs_t* uart, unsigned int intDis)
     return E_NO_ERROR;
 }
 
-unsigned int MXC_UART_RevB_GetStatus(mxc_uart_regs_t* uart)
+unsigned int MXC_UART_RevB_GetStatus (mxc_uart_revb_regs_t* uart)
 {
     return uart->status;
 }
 
-int MXC_UART_RevB_Transaction(mxc_uart_req_t* req)
+int MXC_UART_RevB_Transaction (mxc_uart_revb_req_t* req)
 {
     uint32_t numToWrite, numToRead;
 
-    if (MXC_UART_GET_IDX(req->uart) < 0) {
+    if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) (req->uart)) < 0) {
         return E_BAD_PARAM;
     }
-
-    MXC_UART_DisableInt(req->uart, 0xFFFFFFFF);
-    MXC_UART_ClearFlags(req->uart, 0xFFFFFFFF);
-
+    
+    MXC_UART_DisableInt ((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
+    MXC_UART_ClearFlags ((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
+    
     req->txCnt = 0;
     req->rxCnt = 0;
 
@@ -609,43 +670,43 @@ int MXC_UART_RevB_Transaction(mxc_uart_req_t* req)
         if (req->txData == NULL) {
             return E_BAD_PARAM;
         }
-
-        numToWrite = MXC_UART_GetTXFIFOAvailable(req->uart);
-        numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
-        req->txCnt += MXC_UART_WriteTXFIFO(req->uart, &req->txData[req->txCnt], numToWrite);
-
+        
+        numToWrite = MXC_UART_GetTXFIFOAvailable ((mxc_uart_regs_t*) (req->uart));
+        numToWrite = numToWrite > (req->txLen-req->txCnt) ? req->txLen-req->txCnt : numToWrite;
+        req->txCnt += MXC_UART_WriteTXFIFO ((mxc_uart_regs_t*) (req->uart), &req->txData[req->txCnt], numToWrite);
+        
         while (req->txCnt < req->txLen) {
-            while (!(MXC_UART_GetFlags(req->uart) & MXC_F_UART_INT_FL_TX_HE));
-
-            numToWrite = MXC_UART_GetTXFIFOAvailable(req->uart);
-            numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
-            req->txCnt += MXC_UART_WriteTXFIFO(req->uart, &req->txData[req->txCnt], numToWrite);
-            MXC_UART_ClearFlags(req->uart, MXC_F_UART_INT_FL_TX_HE);
+            while (! (MXC_UART_GetFlags ((mxc_uart_regs_t*) (req->uart)) & MXC_F_UART_REVB_INT_FL_TX_HE));
+            
+            numToWrite = MXC_UART_GetTXFIFOAvailable ((mxc_uart_regs_t*) (req->uart));
+            numToWrite = numToWrite > (req->txLen-req->txCnt) ? req->txLen-req->txCnt : numToWrite;
+            req->txCnt += MXC_UART_WriteTXFIFO ((mxc_uart_regs_t*) (req->uart), &req->txData[req->txCnt], numToWrite);
+            MXC_UART_ClearFlags ((mxc_uart_regs_t*) (req->uart), MXC_F_UART_REVB_INT_FL_TX_HE);
         }
     }
 
     if (req->rxLen) {
-        numToRead = MXC_UART_GetRXFIFOAvailable(req->uart);
-        numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
-        req->rxCnt += MXC_UART_ReadRXFIFO(req->uart, &req->rxData[req->rxCnt], numToRead);
-
+        numToRead = MXC_UART_GetRXFIFOAvailable ((mxc_uart_regs_t*) (req->uart));
+        numToRead = numToRead > (req->rxLen-req->rxCnt) ? req->rxLen-req->rxCnt : numToRead;
+        req->rxCnt += MXC_UART_ReadRXFIFO ((mxc_uart_regs_t*) (req->uart), &req->rxData[req->rxCnt], numToRead);
+        
         while (req->rxCnt < req->rxLen) {
-            while (!(MXC_UART_GetFlags(req->uart) & MXC_F_UART_INT_FL_RX_THD));
-
-            numToRead = MXC_UART_GetRXFIFOAvailable(req->uart);
-            numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
-            req->rxCnt += MXC_UART_ReadRXFIFO(req->uart, &req->rxData[req->rxCnt], numToRead);
-            MXC_UART_ClearFlags(req->uart, MXC_F_UART_INT_FL_RX_THD);
+            while (! (MXC_UART_GetFlags ((mxc_uart_regs_t*) (req->uart)) & MXC_F_UART_REVB_INT_FL_RX_THD));
+            
+            numToRead = MXC_UART_GetRXFIFOAvailable ((mxc_uart_regs_t*) (req->uart));
+            numToRead = numToRead > (req->rxLen-req->rxCnt) ? req->rxLen-req->rxCnt : numToRead;
+            req->rxCnt += MXC_UART_ReadRXFIFO ((mxc_uart_regs_t*) (req->uart), &req->rxData[req->rxCnt], numToRead);
+            MXC_UART_ClearFlags ((mxc_uart_regs_t*) (req->uart), MXC_F_UART_REVB_INT_FL_RX_THD);
         }
     }
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_TransactionAsync(mxc_uart_req_t* req)
+int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t* req)
 {
     uint32_t numToWrite, numToRead;
-    int uartNum = MXC_UART_GET_IDX(req->uart);
+    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t*)(req->uart));
 
     if (uartNum < 0) {
         return E_INVALID;
@@ -653,8 +714,8 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_req_t* req)
 
     if(!AsyncTxRequests[uartNum] && !AsyncRxRequests[uartNum]) {
         /* No requests pending, clear the interrupt state */
-        MXC_UART_DisableInt(req->uart, 0xFFFFFFFF);
-        MXC_UART_ClearFlags(req->uart, 0xFFFFFFFF);
+        MXC_UART_DisableInt((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
+        MXC_UART_ClearFlags((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
 
     } else if (AsyncRxRequests[uartNum] && req->rxLen) {
         /* RX request pending */
@@ -672,45 +733,45 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_req_t* req)
             return E_BAD_PARAM;
         }
 
-        MXC_UART_EnableInt(req->uart, MXC_F_UART_INT_EN_TX_HE);
-        numToWrite = MXC_UART_GetTXFIFOAvailable(req->uart);
+        MXC_UART_EnableInt((mxc_uart_regs_t*)(req->uart), MXC_F_UART_REVB_INT_EN_TX_HE);
+        numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t*) (req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
-        req->txCnt += MXC_UART_WriteTXFIFO(req->uart, &req->txData[req->txCnt], numToWrite);
+        req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t*) (req->uart), &req->txData[req->txCnt], numToWrite);
 
         /* If we're finished writing to the TX FIFO and it's less than half+1 full, pend the interrupt */
-        if((MXC_UART_GetTXFIFOAvailable(req->uart) >= (MXC_UART_FIFO_DEPTH/2))
+        if((MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t*) (req->uart)) >= (MXC_UART_FIFO_DEPTH/2))
          && (req->txCnt == req->txLen)) {
             NVIC_SetPendingIRQ(MXC_UART_GET_IRQ(uartNum));
         }
 
-        AsyncTxRequests[MXC_UART_GET_IDX(req->uart)] = (void*) req;
+        AsyncTxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t*) (req->uart))] = (void*) req;
     }
 
     if (req->rxLen) {
         // All error interrupts are related to RX
-        MXC_UART_EnableInt(req->uart, MXC_UART_ERRINT_EN);
+        MXC_UART_EnableInt((mxc_uart_regs_t*) (req->uart), MXC_UART_REVB_ERRINT_EN);
 
         if (req->rxData == NULL) {
-            MXC_UART_DisableInt(req->uart, 0xFFFFFFFF);
-            MXC_UART_ClearTXFIFO(req->uart);
+            MXC_UART_DisableInt((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
+            MXC_UART_ClearTXFIFO((mxc_uart_regs_t*) (req->uart));
             return E_BAD_PARAM;
         }
 
-        MXC_UART_EnableInt(req->uart, MXC_F_UART_INT_EN_RX_THD);
-        numToRead = MXC_UART_GetRXFIFOAvailable(req->uart);
+        MXC_UART_EnableInt((mxc_uart_regs_t*) (req->uart), MXC_F_UART_REVB_INT_EN_RX_THD);
+        numToRead = MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t*) (req->uart));
         numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
-        req->rxCnt += MXC_UART_ReadRXFIFO(req->uart, &req->rxData[req->rxCnt], numToRead);
-        MXC_UART_ClearFlags(req->uart, MXC_F_UART_INT_FL_RX_THD);
+        req->rxCnt += MXC_UART_ReadRXFIFO((mxc_uart_regs_t*) (req->uart), &req->rxData[req->rxCnt], numToRead);
+        MXC_UART_ClearFlags((mxc_uart_regs_t*) (req->uart), MXC_F_UART_REVB_INT_FL_RX_THD);
 
-        AsyncRxRequests[MXC_UART_GET_IDX(req->uart)] = (void*) req;
+        AsyncRxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t*) (req->uart))] = (void*) req;
     }
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AsyncTxCallback(mxc_uart_regs_t* uart, int retVal)
+int MXC_UART_RevB_AsyncTxCallback(mxc_uart_revb_regs_t* uart, int retVal)
 {
-    int uartNum = MXC_UART_GET_IDX(uart);
+    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t*)uart);
     if (uartNum < 0) {
         return E_BAD_PARAM;
     }
@@ -724,9 +785,9 @@ int MXC_UART_RevB_AsyncTxCallback(mxc_uart_regs_t* uart, int retVal)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AsyncRxCallback(mxc_uart_regs_t* uart, int retVal)
+int MXC_UART_RevB_AsyncRxCallback(mxc_uart_revb_regs_t* uart, int retVal)
 {
-    int uartNum = MXC_UART_GET_IDX(uart);
+    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t*)uart);
     if (uartNum < 0) {
         return E_BAD_PARAM;
     }
@@ -740,9 +801,9 @@ int MXC_UART_RevB_AsyncRxCallback(mxc_uart_regs_t* uart, int retVal)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AsyncCallback(mxc_uart_regs_t* uart, int retVal)
+int MXC_UART_RevB_AsyncCallback(mxc_uart_revb_regs_t* uart, int retVal)
 {
-    int uartNum = MXC_UART_GET_IDX(uart);
+    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t*)uart);
     if (uartNum < 0) {
         return E_BAD_PARAM;
     }
@@ -757,101 +818,101 @@ int MXC_UART_RevB_AsyncCallback(mxc_uart_regs_t* uart, int retVal)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AsyncStopTx(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_AsyncStopTx(mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX((mxc_uart_regs_t*)uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    MXC_UART_DisableInt(uart, MXC_F_UART_INT_EN_TX_HE);
+    MXC_UART_DisableInt((mxc_uart_regs_t*)uart, MXC_F_UART_REVB_INT_EN_TX_HE);
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AsyncStopRx(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_AsyncStopRx(mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX((mxc_uart_regs_t*)uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    MXC_UART_DisableInt(uart, MXC_UART_ERRINT_EN);
+    MXC_UART_DisableInt((mxc_uart_regs_t*)uart, MXC_UART_REVB_ERRINT_EN);
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AsyncStop(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_AsyncStop(mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX((mxc_uart_regs_t*)uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    MXC_UART_DisableInt(uart, 0xFFFFFFFF);
+    MXC_UART_DisableInt((mxc_uart_regs_t*)uart, 0xFFFFFFFF);
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AbortAsync(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_AbortAsync(mxc_uart_revb_regs_t* uart)
 {
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (MXC_UART_GET_IDX((mxc_uart_regs_t*)uart) < 0) {
         return E_BAD_PARAM;
     }
 
-    MXC_UART_AsyncStop(uart);
-    MXC_UART_AsyncCallback(uart, E_ABORT);
+    MXC_UART_AsyncStop((mxc_uart_regs_t*)uart);
+    MXC_UART_AsyncCallback((mxc_uart_regs_t*)uart, E_ABORT);
 
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_AsyncHandler(mxc_uart_regs_t* uart)
+int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t* uart)
 {
     uint32_t numToWrite, numToRead, flags;
     mxc_uart_req_t* req;
 
-    int uartNum = MXC_UART_GET_IDX(uart);
+    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t*)uart);
 
     if (uartNum < 0) {
         return E_INVALID;
     }
 
-    flags = MXC_UART_GetFlags(uart);
+    flags = MXC_UART_GetFlags((mxc_uart_regs_t*)uart);
 
     /* Unexpected interrupt */
     if (!AsyncTxRequests[uartNum] && !AsyncRxRequests[uartNum]) {
-        MXC_UART_ClearFlags(uart, uart->int_fl);
+        MXC_UART_ClearFlags((mxc_uart_regs_t*)uart, uart->int_fl);
         return E_INVALID;
     }
 
-    if (flags & MXC_UART_ERRINT_FL & uart->int_en) {
-        MXC_UART_AsyncStop(uart);
-        MXC_UART_AsyncCallback(uart, E_COMM_ERR);
+    if (flags & MXC_UART_REVB_ERRINT_FL & uart->int_en) {
+        MXC_UART_AsyncStop((mxc_uart_regs_t*)uart);
+        MXC_UART_AsyncCallback((mxc_uart_regs_t*)uart, E_COMM_ERR);
         return E_INVALID;
     }
 
     req = (mxc_uart_req_t*) AsyncTxRequests[uartNum];
     if ((req != NULL) && (req->txLen)) {
-        numToWrite = MXC_UART_GetTXFIFOAvailable(req->uart);
+        numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t*)(req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
-        req->txCnt += MXC_UART_WriteTXFIFO(req->uart, &req->txData[req->txCnt], numToWrite);
-        MXC_UART_ClearFlags(req->uart, MXC_F_UART_INT_FL_TX_HE);
+        req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t*)(req->uart), &req->txData[req->txCnt], numToWrite);
+        MXC_UART_ClearFlags(req->uart, MXC_F_UART_REVB_INT_FL_TX_HE);
     }
 
     req = (mxc_uart_req_t*) AsyncRxRequests[uartNum];
-    if ((req != NULL) && (flags & MXC_F_UART_INT_FL_RX_THD) && (req->rxLen)) {
-        numToRead = MXC_UART_GetRXFIFOAvailable(req->uart);
+    if ((req != NULL) && (flags & MXC_F_UART_REVB_INT_FL_RX_THD) && (req->rxLen)) {
+        numToRead = MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t*)(req->uart));
         numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
-        req->rxCnt += MXC_UART_ReadRXFIFO(req->uart, &req->rxData[req->rxCnt], numToRead);
+        req->rxCnt += MXC_UART_ReadRXFIFO((mxc_uart_regs_t*)(req->uart), &req->rxData[req->rxCnt], numToRead);
 
-        if ((req->rxLen - req->rxCnt) < MXC_UART_GetRXThreshold(req->uart)) {
-            MXC_UART_SetRXThreshold(req->uart, req->rxLen - req->rxCnt);
+        if ((req->rxLen - req->rxCnt) < MXC_UART_GetRXThreshold((mxc_uart_regs_t*)(req->uart))) {
+            MXC_UART_SetRXThreshold((mxc_uart_regs_t*)(req->uart), req->rxLen - req->rxCnt);
         }
 
-        MXC_UART_ClearFlags(req->uart, MXC_F_UART_INT_FL_RX_THD);
+        MXC_UART_ClearFlags((mxc_uart_regs_t*)(req->uart), MXC_F_UART_REVB_INT_FL_RX_THD);
     }
 
     if(AsyncRxRequests[uartNum] == AsyncTxRequests[uartNum]) {
         if ((req != NULL) && (req->rxCnt == req->rxLen) && (req->txCnt == req->txLen)) {
-            MXC_UART_AsyncStop(uart);
-            MXC_UART_AsyncCallback(uart, E_NO_ERROR);
+            MXC_UART_AsyncStop((mxc_uart_regs_t*)uart);
+            MXC_UART_AsyncCallback((mxc_uart_regs_t*)uart, E_NO_ERROR);
         }
         return E_NO_ERROR;
     }
@@ -873,13 +934,13 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_regs_t* uart)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, unsigned int len,
-                                mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
+int MXC_UART_RevB_ReadRXFIFODMA (mxc_uart_revb_regs_t* uart, unsigned char* bytes, unsigned int len,
+                                    mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
 {
     uint8_t channel;
     mxc_dma_srcdst_t srcdst;
-
-    int uart_num = MXC_UART_GET_IDX(uart);
+    
+    int uart_num = MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart);
 
     if (uart_num < 0) {
         return E_INVALID;
@@ -909,20 +970,20 @@ int MXC_UART_RevB_ReadRXFIFODMA(mxc_uart_regs_t* uart, unsigned char* bytes, uns
     MXC_DMA_SetCallback(channel, NULL);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
-    MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
-
-    uart->dma |= MXC_F_UART_DMA_RX_EN;
-
+    //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
+    MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
+    uart->dma |= MXC_F_UART_REVB_DMA_RX_EN;
+    
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* bytes, unsigned int len,
-                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
+int MXC_UART_RevB_WriteTXFIFODMA (mxc_uart_revb_regs_t* uart, const unsigned char* bytes, unsigned int len,
+                                    mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
 {
     uint8_t channel;
     mxc_dma_srcdst_t srcdst;
-
-    int uart_num = MXC_UART_GET_IDX(uart);
+    
+    int uart_num = MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart);
 
     if (uart_num < 0) {
         return E_INVALID;
@@ -952,17 +1013,17 @@ int MXC_UART_RevB_WriteTXFIFODMA(mxc_uart_regs_t* uart, const unsigned char* byt
     MXC_DMA_SetCallback(channel, NULL);
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
-    MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
-
-    uart->dma |= MXC_F_UART_DMA_TX_EN;
-
+    //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
+    MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
+    uart->dma |= MXC_F_UART_REVB_DMA_TX_EN;
+    
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevB_TransactionDMA(mxc_uart_req_t* req)
+int MXC_UART_RevB_TransactionDMA (mxc_uart_revb_req_t* req)
 {
-    int uart_num = MXC_UART_GET_IDX(req->uart);
-
+    int uart_num = MXC_UART_GET_IDX ((mxc_uart_regs_t*) (req->uart));
+    
     if (uart_num < 0) {
         return E_BAD_PARAM;
     }
@@ -978,26 +1039,26 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_req_t* req)
             return E_BAD_PARAM;
         }
     }
-
-    MXC_UART_DisableInt(req->uart, 0xFFFFFFFF);
-    MXC_UART_ClearFlags(req->uart, 0xFFFFFFFF);
-
+    
+    MXC_UART_DisableInt ((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
+    MXC_UART_ClearFlags ((mxc_uart_regs_t*) (req->uart), 0xFFFFFFFF);
+    
     //Set DMA FIFO threshold
-    (req->uart)->dma |= (1 << MXC_F_UART_DMA_RX_THD_VAL_POS);
-    (req->uart)->dma |= (2 << MXC_F_UART_DMA_TX_THD_VAL_POS);
-
+    (req->uart)->dma |= (1 << MXC_F_UART_REVB_DMA_RX_THD_VAL_POS);
+    (req->uart)->dma |= (2 << MXC_F_UART_REVB_DMA_TX_THD_VAL_POS);
+    
     MXC_DMA_Init();
 
     //tx
-    if ((req->txData != NULL) && (req->txLen)) {
-        if (MXC_UART_WriteTXFIFODMA(req->uart, req->txData, req->txLen, NULL) != E_NO_ERROR) {
+    if ( (req->txData != NULL) && (req->txLen)) {
+        if (MXC_UART_WriteTXFIFODMA ((mxc_uart_regs_t*) (req->uart), req->txData, req->txLen, NULL) != E_NO_ERROR) {
             return E_BAD_PARAM;
         }
     }
 
     //rx
-    if ((req->rxData != NULL) && (req->rxLen)) {
-        if (MXC_UART_ReadRXFIFODMA(req->uart, req->rxData, req->rxLen, NULL) != E_NO_ERROR) {
+    if ( (req->rxData != NULL) && (req->rxLen)) {
+        if (MXC_UART_ReadRXFIFODMA ((mxc_uart_regs_t*) (req->uart), req->rxData, req->rxLen, NULL) != E_NO_ERROR) {
             return E_BAD_PARAM;
         }
     }

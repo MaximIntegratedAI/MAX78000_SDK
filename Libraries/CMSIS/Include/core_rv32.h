@@ -223,6 +223,40 @@
 
 /*@} end of group Cortex_M4 */
 
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_mstatus(void)
+{
+  uint32_t retval;
+  __asm volatile("csrr %0, mstatus": "=r" (retval));
+  return retval;
+}
+
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_mtvec(void)
+{
+  uint32_t retval;
+  __asm volatile("csrr %0, mtvec": "=r" (retval));
+  return retval;
+}
+
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_mepc(void)
+{
+  uint32_t retval;
+  __asm volatile("csrr %0, mepc": "=r" (retval));
+  return retval;
+}
+
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_mcause(void)
+{
+  uint32_t retval;
+  __asm volatile("csrr %0, mcause": "=r" (retval));
+  return retval;
+}
+
+__attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t get_uepc(void)
+{
+  uint32_t retval;
+  __asm volatile("csrr %0, uepc": "=r" (retval));
+  return retval;
+}
 
 /** \brief  No Operation
 
@@ -230,7 +264,7 @@
  */
 __attribute__( ( always_inline ) ) __STATIC_INLINE void __NOP(void)
 {
-  asm volatile ("nop");
+  __asm volatile ("nop");
 }
 
 
@@ -340,10 +374,14 @@ __STATIC_INLINE void NVIC_EnableIRQ(IRQn_Type IRQn)
 {
   // MLB - Moved global enable into __enable_irq
   // handled event specific enable here
-  if(IRQn<32)
+  if(IRQn<32) {
     MXC_INTR->irq0_enable |= (1 << IRQn);
-  else
+    MXC_EVENT->event0_enable |= (1 << IRQn);
+  } else {
     MXC_INTR->irq1_enable |= (1 << (IRQn-32));
+    MXC_EVENT->event1_enable |= (1 << (IRQn-32));
+}
+
 }
 
 
@@ -357,10 +395,13 @@ __STATIC_INLINE void NVIC_DisableIRQ(IRQn_Type IRQn)
 {
   // MLB - Moved Global Disable into __disable_irq
   // handled event specific interrupt here
-  if(IRQn<32)
+  if(IRQn<32){
     MXC_INTR->irq0_enable &= ~(1 << IRQn);
-  else
+    MXC_EVENT->event0_enable &= ~(1 << IRQn);
+  } else {
     MXC_INTR->irq1_enable &= ~(1 << (IRQn-32));
+    MXC_EVENT->event1_enable &= ~(1 << (IRQn-32));
+}
 }
 
 __STATIC_INLINE void NVIC_EnableEVENT(IRQn_Type EVENT)
@@ -387,22 +428,17 @@ __STATIC_INLINE void NVIC_ClearPendingEVENT(IRQn_Type EVENT)
     MXC_EVENT->event1_clear_pending |= (1 << (EVENT-32));
 }
 
-__STATIC_INLINE void __enable_irq() 
-{
-  // MLB - Moved global interrupt enable from NVIC_EnableIRQ
-  int mstatus;
-  asm volatile("csrr %0, mstatus": "=r" (mstatus));
-  mstatus |= 0x08;
-  asm volatile("csrw mstatus, %0" : /* no output */ : "r" (mstatus));
-}
+// Implemented in system_riscv_max32655.c
+void __enable_irq(void);
 
-__STATIC_INLINE void __disable_irq() 
+__STATIC_INLINE void __disable_irq(void)
 {
-  // MLB - Moved global interrupt enable from NVIC_DisableIRQ
-  int mstatus;
-  asm volatile("csrr %0, mstatus": "=r" (mstatus));
-  mstatus &= ~0x08;
-  asm volatile("csrw mstatus, %0" : /* no output */ : "r" (mstatus));
+  // Atomic disable
+  __asm volatile("csrw mstatus, 0x0");
+
+  // Set the MPIE bit
+  int mstatus = 0x80;
+  __asm volatile("csrw mstatus, %0" : /* no output */ : "r" (mstatus));
 }
 
 /** \brief  Get Pending Interrupt
@@ -417,7 +453,10 @@ __STATIC_INLINE void __disable_irq()
  */
 __STATIC_INLINE uint32_t NVIC_GetPendingIRQ(IRQn_Type IRQn)
 {
-  return(0);//((uint32_t) ((NVIC->ISPR[(uint32_t)(IRQn) >> 5] & (1 << ((uint32_t)(IRQn) & 0x1F)))?1:0)); /* Return 1 if pending else 0 */
+  if(IRQn<32)
+    return (MXC_INTR->irq0_pending & (1 << IRQn));
+  else
+    return (MXC_INTR->irq1_pending & (1 << (IRQn-32)));
 }
 
 
@@ -442,10 +481,13 @@ __STATIC_INLINE void NVIC_SetPendingIRQ(IRQn_Type IRQn)
 __STATIC_INLINE void NVIC_ClearPendingIRQ(IRQn_Type IRQn)
 {
   //NVIC->ICPR[((uint32_t)(IRQn) >> 5)] = (1 << ((uint32_t)(IRQn) & 0x1F)); /* Clear pending interrupt */
-  if(IRQn<32)
+  if(IRQn<32) {
     MXC_INTR->irq0_clear_pending |= (1 << IRQn);
-  else
+    MXC_EVENT->event0_clear_pending |= (1 << IRQn);
+  } else{
     MXC_INTR->irq1_clear_pending |= (1 << (IRQn-32));
+    MXC_EVENT->event1_clear_pending |= (1 << (IRQn-32));
+}
 }
 
 
@@ -478,6 +520,60 @@ __STATIC_INLINE void NVIC_SystemReset(void)
   while(1);                                                    /* wait until reset */
 }
 
+/**
+  This function returns the content of the Performance Counter Mode Register (PCMR). 
+ */
+__STATIC_INLINE uint32_t CSR_GetPCMR(void)
+{
+  uint32_t reg;
+  asm volatile ("csrr %0, 0x7A1": "=r" (reg));
+  return reg;
+}
+
+/**
+  This function sets the content of the Performance Counter Mode Register (PCMR). 
+ */
+__STATIC_INLINE void CSR_SetPCMR(uint32_t reg)
+{
+  asm volatile("csrw 0x7A1, %0" : /* no output */ : "r" (reg));
+}
+
+/**
+  This function returns the content of the Performance Counter Event Register (PCER). 
+ */
+__STATIC_INLINE uint32_t CSR_GetPCER(void)
+{
+  uint32_t reg;
+  asm volatile ("csrr %0, 0x7A0": "=r" (reg));
+  return reg;
+}
+
+/**
+  This function sets the content of the Performance Counter Event Register (PCER). 
+ */
+__STATIC_INLINE void CSR_SetPCER(uint32_t reg)
+{
+  asm volatile("csrw 0x7A0, %0" : /* no output */ : "r" (reg));
+}
+
+/**
+  This function returns the content of the Performance Counter Counter Register (PCCR). 
+ */
+__STATIC_INLINE uint32_t CSR_GetPCCR(void)
+{
+  uint32_t reg;
+  asm volatile ("csrr %0, 0x780": "=r" (reg));
+  return reg;
+}
+
+/**
+  This function sets the content of the Performance Counter Counter Register (PCCR). 
+ */
+__STATIC_INLINE void CSR_SetPCCR(uint32_t reg)
+{
+  asm volatile("csrw 0x780, %0" : /* no output */ : "r" (reg));
+}
+
 /*@} end of CMSIS_Core_NVICFunctions */
 
 /*@} end of CMSIS_core_DebugFunctions */
@@ -489,3 +585,4 @@ __STATIC_INLINE void NVIC_SystemReset(void)
 #ifdef __cplusplus
 }
 #endif
+

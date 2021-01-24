@@ -11,7 +11,7 @@ The CNN model is trained with the VGGFace-2 dataset using MTCNN and FaceNet mode
 
 ## FaceID Demo Software
 
-### Building firmware:
+### Building firmware
 
 Navigate directory where FaceID demo software is located and build the project:
 
@@ -26,7 +26,27 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make distclean
 ```
 
-### Load firmware image to target:
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+
+```bash
+# Specify the board used
+ifeq "$(BOARD)" ""
+BOARD=EvKit_V1
+#BOARD=FTHR_RevA
+endif
+```
+
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile:
+
+```bash
+# Specify the board used
+ifeq "$(BOARD)" ""
+#BOARD=EvKit_V1
+BOARD=FTHR_RevA
+endif
+```
+
+### Load firmware image to MAX78000 EVKIT
 
 Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1). Note the COM port (COM_PORT) of this connection from your system configuration.
 
@@ -38,7 +58,63 @@ Load firmware image using Openocd. **Make sure to remove PICO adapter once firmw
 ./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
 ```
 
-### Face Database Generation:
+### Load firmware image to MAX78000 Feather
+
+Connect USB cable to CN1 USB connector.
+
+Load firmware image using Openocd.
+
+```bash
+./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+```
+
+### MAX78000 EVKIT operations
+
+After loading FaceID firmware press "**Start_DEMO**" button on TFT screen to capture a face image. Make sure that captured face image should be inside blue rectangle. 
+
+![](Resources\evkit_tft.jpg)
+
+### MAX78000 Feather operations
+
+The TFT display is optional and not supplied with the MAX78000 Feather board.
+
+The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered from here:
+
+https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
+
+This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
+
+To compile code with enabled TFT feature use following setting in Makefile:
+
+```bash
+ifeq "$(BOARD)" "FTHR_RevA"
+PROJ_CFLAGS+=-DTFT_ENABLE
+endif
+```
+
+While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
+
+![](Resources\feather_tft.jpg)
+
+### Using Debug Terminal
+
+Debug terminal shows more information on status and detected faces. 
+
+The USB cable connected to CN1 (USB/PWR) provides power and serial communication to MAX78000 EVKIT or MAX78000 Feather board.
+
+To configure PC terminal program select correct COM port and settings as follow:
+
+![](Resources\terminal_setup.jpg)
+
+
+
+Following message will appear in terminal window:
+
+![](Resources\terminal.jpg)
+
+
+
+### Face Database Generation
 
 This section describes how to add new pictures to the data base.
 
@@ -143,3 +219,5 @@ The CNN model synthesized for MAX78000 is 9 layer sequential [model](db_gen/ai85
 [1] MTCNN: https://arxiv.org/ftp/arxiv/papers/1604/1604.02878.pdf
 
 [2] FaceNet: https://arxiv.org/pdf/1503.03832.pdf
+
+[3] https://github.com/MaximIntegratedAI/MaximAI_Documentation

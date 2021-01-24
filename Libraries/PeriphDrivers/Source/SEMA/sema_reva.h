@@ -36,9 +36,9 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "sema.h"
+#include "sema_reva_regs.h"
 
-
-int MXC_SEMA_RevA_GetSema (unsigned sema);
-int MXC_SEMA_RevA_CheckSema (unsigned sema);
-uint32_t MXC_SEMA_RevA_Status (void);
-void MXC_SEMA_RevA_FreeSema (unsigned sema);
+int MXC_SEMA_RevA_GetSema (mxc_sema_reva_regs_t *sema_regs, unsigned sema);
+int MXC_SEMA_RevA_CheckSema (mxc_sema_reva_regs_t *sema_regs, unsigned sema);
+uint32_t MXC_SEMA_RevA_Status (mxc_sema_reva_regs_t *sema_regs);
+void MXC_SEMA_RevA_FreeSema (mxc_sema_reva_regs_t *sema_regs, unsigned sema);

@@ -52,6 +52,12 @@
 extern "C" {
 #endif
 
+/**
+ * @defgroup adc Analog to Digital Converter (ADC)
+ * @ingroup periphlibs
+ * @{
+ */
+
 // Macros to select ADC channels
 #define MXC_V_ADC_CTRL_ADC_CHSEL_AIN0                       ((uint32_t)(0x00000000UL))
 #define MXC_V_ADC_CTRL_ADC_CHSEL_AIN1                       ((uint32_t)(0x00000001UL))
@@ -224,7 +230,7 @@ void MXC_ADC_ClearFlags (uint32_t flags);
 /**
  * @brief   Sets the ADC conversion speed
  *
- * @param   hz
+ * @param   hz   Desired clock speed for ADC conversions.
  *
  * @return  Actual conversion speed, or \ref MXC_Error_Codes for Error.
  */

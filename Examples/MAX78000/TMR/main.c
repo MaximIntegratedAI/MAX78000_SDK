@@ -59,17 +59,17 @@
 #define PB2     1
 
 // Parameters for PWM output
-#define OST_CLOCK_SOURCE    MXC_TMR_32K_CLK      // \ref mxc_tmr_clock_t
+#define OST_CLOCK_SOURCE    MXC_TMR_8K_CLK      // \ref mxc_tmr_clock_t
 #define PWM_CLOCK_SOURCE    MXC_TMR_APB_CLK      // \ref mxc_tmr_clock_t
 #define CONT_CLOCK_SOURCE   MXC_TMR_8M_CLK       // \ref mxc_tmr_clock_t
 
 // Parameters for Continuous timer
 #define OST_FREQ        1                   // (Hz)
-#define OST_TIMER       MXC_TMR4            // Can be MXC_TMR0 through MXC_TMR5
+#define OST_TIMER       MXC_TMR5            // Can be MXC_TMR0 through MXC_TMR5
 
 #define FREQ            1000                // (Hz)
 #define DUTY_CYCLE      50                  // (%)
-#define PWM_TIMER       MXC_TMR2            // must change PWM_PORT and PWM_PIN if changed
+#define PWM_TIMER       MXC_TMR4            // must change PWM_PORT and PWM_PIN if changed
 
 // Parameters for Continuous timer
 #define CONT_FREQ       2                   // (Hz)
@@ -175,12 +175,12 @@ void OneshotTimerHandler()
     MXC_TMR_ClearFlags(OST_TIMER);
     
     // Clear interrupt
-    if (MXC_TMR4->wkfl & MXC_F_TMR_WKFL_A) {
-        MXC_TMR4->wkfl = MXC_F_TMR_WKFL_A;
+    if (MXC_TMR5->wkfl & MXC_F_TMR_WKFL_A) {
+        MXC_TMR5->wkfl = MXC_F_TMR_WKFL_A;
 #ifdef BOARD_EVKIT_V1
         LED_Toggle(LED2);
 #endif
-        printf("One Shot Timer Expired!\n");
+        printf("Oneshot timer expired!\n");
     }
 }
 
@@ -190,7 +190,7 @@ void OneshotTimer()
 
     // Declare variables
     mxc_tmr_cfg_t tmr;
-    uint32_t periodTicks = MXC_TMR_GetPeriod(OST_TIMER, OST_CLOCK_SOURCE, 128, OST_FREQ);
+    uint32_t periodTicks = MXC_TMR_GetPeriod(OST_TIMER, OST_CLOCK_SOURCE, 1, OST_FREQ);
     /*
     Steps for configuring a timer for PWM mode:
     1. Disable the timer
@@ -202,15 +202,15 @@ void OneshotTimer()
     
     MXC_TMR_Shutdown(OST_TIMER);
     
-    tmr.pres = TMR_PRES_128;
+    tmr.pres = TMR_PRES_1;
     tmr.mode = TMR_MODE_ONESHOT;
-    tmr.bitMode = TMR_BIT_MODE_32;    
+    tmr.bitMode = TMR_BIT_MODE_32;
     tmr.clock = OST_CLOCK_SOURCE;
     tmr.cmp_cnt = periodTicks;      //SystemCoreClock*(1/interval_time);
     tmr.pol = 0;
     
     if (MXC_TMR_Init(OST_TIMER, &tmr, true) != E_NO_ERROR) {
-        printf("Failed Continuous timer Initialization.\n");
+        printf("Failed one-shot timer Initialization.\n");
         return;
     }
     
@@ -241,10 +241,10 @@ int main(void)
     //Exact timer operations can be found in tmr_utils.c
     
     printf("\n************************** Timer Example **************************\n\n");
-    printf("1. A oneshot mode timer, Timer 4 (low-power timer) is used to create an\n");
+    printf("1. A oneshot mode timer, Timer 5 (low-power timer) is used to create an\n");
     printf("   interrupt at a freq of %d Hz. If running the example on the Standard\n", OST_FREQ);
     printf("   EV Kit, LED2 will toggle when the interrupt occurs.\n\n");
-    printf("2. Timer 0 is used to output a PWM signal on Port 0.5.\n");
+    printf("2. Timer 4 is used to output a PWM signal on Port 2.4.\n");
     printf("   The PWM frequency is %d Hz and the duty cycle is %d%%.\n\n", FREQ, DUTY_CYCLE);
     printf("3. Timer 1 is configured as 16-bit timer used in continuous mode\n");
     printf("   which is used to create an interrupt at freq of %d Hz.\n", CONT_FREQ);
@@ -255,11 +255,12 @@ int main(void)
     
     while (1) {
         if (PB_Get(1) == 1) {
-            NVIC_SetVector(TMR4_IRQn, OneshotTimerHandler);
-            NVIC_EnableIRQ(TMR4_IRQn);
+            NVIC_SetVector(TMR5_IRQn, OneshotTimerHandler);
+            NVIC_EnableIRQ(TMR5_IRQn);
             
             OneshotTimer();
-            
+
+
 #ifdef SLEEP_MODE
             MXC_LP_EnterSleepMode();
             

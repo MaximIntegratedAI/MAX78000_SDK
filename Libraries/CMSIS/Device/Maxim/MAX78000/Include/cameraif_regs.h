@@ -4,7 +4,7 @@
  */
 
 /* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -241,8 +241,8 @@ typedef struct {
  * @brief    FIFO DATA Register.
  * @{
  */
- #define MXC_F_CAMERAIF_FIFO_DATA_FIFO_DATA_POS         0 /**< FIFO_DATA_FIFO_DATA Position */
- #define MXC_F_CAMERAIF_FIFO_DATA_FIFO_DATA             ((uint32_t)(0xFFFFFFFFUL << MXC_F_CAMERAIF_FIFO_DATA_FIFO_DATA_POS)) /**< FIFO_DATA_FIFO_DATA Mask */
+ #define MXC_F_CAMERAIF_FIFO_DATA_DATA_POS              0 /**< FIFO_DATA_DATA Position */
+ #define MXC_F_CAMERAIF_FIFO_DATA_DATA                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_CAMERAIF_FIFO_DATA_DATA_POS)) /**< FIFO_DATA_DATA Mask */
 
 /**@} end of group CAMERAIF_FIFO_DATA_Register */
 

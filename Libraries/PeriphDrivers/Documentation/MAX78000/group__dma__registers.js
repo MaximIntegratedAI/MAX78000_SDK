@@ -20,5 +20,10 @@ var group__dma__registers =
       [ "src", "group__dma__registers.html#a5890dac9c6bb3a6c532b52c63ca1713e", null ],
       [ "srcrld", "group__dma__registers.html#a8e3b5b049c0a0fc0b9fd285475b18b33", null ],
       [ "status", "group__dma__registers.html#af65ae05bcce5786d892c6a2bd1141292", null ]
+    ] ],
+    [ "mxc_dma_regs_t", "group__dma__registers.html#structmxc__dma__regs__t", [
+      [ "ch", "group__dma__registers.html#a33727ab2ec9f533e781165a5e86006e8", null ],
+      [ "inten", "group__dma__registers.html#ac739c97e3dfed1c05d96249bc00d2578", null ],
+      [ "intfl", "group__dma__registers.html#a38388abd15fd46b45d84831288805aa7", null ]
     ] ]
 ];

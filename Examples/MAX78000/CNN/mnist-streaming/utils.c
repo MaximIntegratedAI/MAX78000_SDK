@@ -43,7 +43,7 @@
 
 #pragma GCC optimize ("-O0")
 
-#define DEBUG_COMPORT   MXC_UART0
+#define DEBUG_COMPORT   MXC_UART1
 
 uint32_t utils_get_time_ms(void)
 {

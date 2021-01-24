@@ -1,20 +1,29 @@
 var group__spi =
 [
-    [ "The members needed for all spi Inits", "group__init__required.html", "group__init__required" ],
     [ "SPI_Registers", "group__spi__registers.html", "group__spi__registers" ],
-    [ "mxc_spi_req_t", "group__spi.html#struct__mxc__spi__req__t", [
-      [ "completeCB", "group__async.html#ga6ef5121902ea8d565b41d54fbe93b600", null ],
-      [ "rxCnt", "group__required.html#ga1bf34bc0d63b8e4a68fa9fb295b03f34", null ],
-      [ "rxData", "group__required.html#gab83c0e07099df7beb8e491cb91914de0", null ],
-      [ "rxLen", "group__required.html#ga043f0f3e53b8233dca0b9446b9c36ccd", null ],
-      [ "spi", "group__required.html#ga43bd328124d967686e9583453c3ac8e9", null ],
-      [ "ssDeassert", "group__required.html#gadb4142c0e7b81c866fb886ca32811d59", null ],
-      [ "ssIdx", "group__required.html#ga265582641e03d3e8aab76429d632d7bd", null ],
-      [ "txCnt", "group__required.html#gab08c6d802a1534b503d57b1cfb785bbf", null ],
-      [ "txData", "group__required.html#ga03c054bb486fb65133eb9f6849266fb1", null ],
-      [ "txLen", "group__required.html#gabaa4e72af025cc3c53b626f14cb40c1d", null ]
+    [ "mxc_spi_pins_t", "group__spi.html#struct__mxc__spi__pins__t", [
+      [ "clock", "group__spi.html#a70d6f71b7cf474783ee1f626512d6171", null ],
+      [ "miso", "group__spi.html#a54488f6d73bac4372deb6e00a76dffcb", null ],
+      [ "mosi", "group__spi.html#a857cb5b3e163adad91aac814ffd744d5", null ],
+      [ "sdio2", "group__spi.html#a0c3cc9266bffc176d54f8c3832a885d7", null ],
+      [ "sdio3", "group__spi.html#a30a8ab3e6edc716ca0208480a7d66feb", null ],
+      [ "ss0", "group__spi.html#a0e86807e6243d99edd55956830b13f44", null ],
+      [ "ss1", "group__spi.html#afb2c08203a0e7e5d91cd3c0cbfbc2a97", null ],
+      [ "ss2", "group__spi.html#ae8afa47a3641b1bc2fe6f9501607d1af", null ]
     ] ],
-    [ "spi_complete_t", "group__spi.html#gacb51d88c5075706d05148f100a2126b3", null ],
+    [ "mxc_spi_req_t", "group__spi.html#struct__mxc__spi__req__t", [
+      [ "completeCB", "group__spi.html#a9dbc802d61ebc798f973339cc603ded7", null ],
+      [ "rxCnt", "group__spi.html#a1bf34bc0d63b8e4a68fa9fb295b03f34", null ],
+      [ "rxData", "group__spi.html#ab83c0e07099df7beb8e491cb91914de0", null ],
+      [ "rxLen", "group__spi.html#a043f0f3e53b8233dca0b9446b9c36ccd", null ],
+      [ "spi", "group__spi.html#a43bd328124d967686e9583453c3ac8e9", null ],
+      [ "ssDeassert", "group__spi.html#adb4142c0e7b81c866fb886ca32811d59", null ],
+      [ "ssIdx", "group__spi.html#a265582641e03d3e8aab76429d632d7bd", null ],
+      [ "txCnt", "group__spi.html#ab08c6d802a1534b503d57b1cfb785bbf", null ],
+      [ "txData", "group__spi.html#a03c054bb486fb65133eb9f6849266fb1", null ],
+      [ "txLen", "group__spi.html#abaa4e72af025cc3c53b626f14cb40c1d", null ]
+    ] ],
+    [ "spi_complete_cb_t", "group__spi.html#gaf0559c6b177fe18d021f00ceca2b0f5b", null ],
     [ "mxc_spi_width_t", "group__spi.html#ga7a218a6e76f22dccdd5680b1eca14409", [
       [ "SPI_WIDTH_3WIRE", "group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409af81d265e20049a145b1b62a36bee2928", null ],
       [ "SPI_WIDTH_STANDARD", "group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409af55a2ccb187d2d7b4ba3015ca0a34271", null ],

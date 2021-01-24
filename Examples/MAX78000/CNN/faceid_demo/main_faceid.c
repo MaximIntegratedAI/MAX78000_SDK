@@ -51,7 +51,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "mxc_sys.h"
-#include "bbfc_regs.h"
+#include "gcfr_regs.h"
 #include "fcr_regs.h"
 #include "icc.h"
 #include "led.h"
@@ -1793,11 +1793,11 @@ int main(void)
   SystemCoreClockUpdate();
 
   // Reset all domains, restore power to CNN
-  MXC_BBFC->reg3 = 0xf; // Reset
-  MXC_BBFC->reg1 = 0xf; // Mask
-  MXC_BBFC->reg0 = 0xf; // Power
-  MXC_BBFC->reg2 = 0x0; // Iso
-  MXC_BBFC->reg3 = 0x0; // Reset
+  MXC_GCFR->reg3 = 0xf; // Reset
+  MXC_GCFR->reg1 = 0xf; // Mask
+  MXC_GCFR->reg0 = 0xf; // Power
+  MXC_GCFR->reg2 = 0x0; // Iso
+  MXC_GCFR->reg3 = 0x0; // Reset
 
   MXC_GCR->pclkdiv &= ~(MXC_F_GCR_PCLKDIV_CNNCLKDIV | MXC_F_GCR_PCLKDIV_CNNCLKSEL);
   MXC_GCR->pclkdiv |= MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1; // CNN clock: 100 MHz div 2

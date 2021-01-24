@@ -152,6 +152,17 @@ typedef struct {
 
 /**@} end of group ICC_CTRL_Register */
 
+/**
+ * @ingroup  icc_registers
+ * @defgroup ICC_INVALIDATE ICC_INVALIDATE
+ * @brief    Invalidate All Registers.
+ * @{
+ */
+ #define MXC_F_ICC_INVALIDATE_INVALID_POS               0 /**< INVALIDATE_INVALID Position */
+ #define MXC_F_ICC_INVALIDATE_INVALID                   ((uint32_t)(0xFFFFFFFFUL << MXC_F_ICC_INVALIDATE_INVALID_POS)) /**< INVALIDATE_INVALID Mask */
+
+/**@} end of group ICC_INVALIDATE_Register */
+
 #ifdef __cplusplus
 }
 #endif

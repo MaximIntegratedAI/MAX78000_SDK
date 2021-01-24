@@ -31,7 +31,21 @@
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
 *******************************************************************************/
-
+/**
+ * @file    main_riscv.c
+ * @brief   MNIST streaming example with the OV7692.
+ *
+ * @details This example uses MNIST dataset. UART1 is used to stream out the image captured from the camera.
+ *          The image is prepended with a header that is interpreted by the grab_image.py
+ *          python script.  The data from this example through the UART is in a binary format.
+ *          Instructions: 1) Load and execute this example. The example will initialize the camera
+ *                        and start capturing binary output of camera frame data on PB1 press.
+ *                        2) To display image run 'sudo python3 grab_image.py /dev/ttyUSB0 115200'
+ *                           Substitute the /dev/ttyUSB0 string for the serial port on your system.
+ *                           The python program will read in the binary data from this example and
+ *                           output a png image.
+ */
+ 
 // mnist-stream_0
 // Created using ./ai8xize.py -e --verbose --top-level cnn -L --test-dir demos --prefix mnist-stream_0 --checkpoint-file trained/ai85-mnist.pth.tar --config-file networks/mnist-chw-ai85.yaml --device MAX78000 --compact-data --mexpress --softmax --display-checkpoint --riscv --riscv-flash --riscv-cache --riscv-debug --fast-fifo --streaming-layer 0
 
@@ -49,7 +63,7 @@
 #include "mxc_device.h"
 #include "mxc_sys.h"
 #include "mxc_delay.h"
-#include "bbfc_regs.h"
+#include "gcfr_regs.h"
 #include "fcr_regs.h"
 #include "icc.h"
 #include "led.h"
@@ -70,6 +84,7 @@
 
 #define IMAGE_SIZE_X  (28)
 #define IMAGE_SIZE_Y  (28)
+#define CAMERA_FREQ   (10 * 1000 * 1000)
 
 uint32_t camera_sampledata[196];
 uint32_t cnn_time; // Stopwatch
@@ -716,7 +731,7 @@ void start_streaming(void)
   NVIC_DisableIRQ(PCIF_IRQn);
   MXC_PCIF_DisableInt(0xf);
   // Set camera fifo threshold
-  MXC_PCIF_SetThreshhold(8);
+  MXC_PCIF_SetThreshold(8);
   camera_start_capture_image();
 
   CNN_START; // Allow capture of processing time
@@ -772,11 +787,11 @@ int main(void)
   MXC_ICC_Enable(MXC_ICC1); // Enable cache
 
   // Reset all domains, restore power to CNN
-  MXC_BBFC->reg3 = 0xf; // Reset
-  MXC_BBFC->reg1 = 0xf; // Mask memory
-  MXC_BBFC->reg0 = 0xf; // Power
-  MXC_BBFC->reg2 = 0x0; // Iso
-  MXC_BBFC->reg3 = 0x0; // Reset
+  MXC_GCFR->reg3 = 0xf; // Reset
+  MXC_GCFR->reg1 = 0xf; // Mask memory
+  MXC_GCFR->reg0 = 0xf; // Power
+  MXC_GCFR->reg2 = 0x0; // Iso
+  MXC_GCFR->reg3 = 0x0; // Reset
 
   printf("\n*** CNN Test ***\n");
 
@@ -790,7 +805,7 @@ int main(void)
 	  while(1);
   }
 
-  camera_init();
+  camera_init(CAMERA_FREQ);
   // Set camera clock prescaler
   camera_write_reg(0x11, 2);
   // Obtain the I2C slave address of the camera.
@@ -806,13 +821,13 @@ int main(void)
   }
   
   printf("Camera Product ID is %04x\n", id);
-  ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, NO_DMA);
+  ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, NO_DMA, 0);
   if (ret != STATUS_OK) {
       printf("Error returned from setting up camera. Error %d\n", ret);
       return -1;
   }
 
-  if ((ret = MXC_UART_Init(MXC_UART0, CONSOLE_BAUD, MXC_UART_8M_CLK)) < E_NO_ERROR) {
+  if ((ret = MXC_UART_Init(MXC_UART1, CONSOLE_BAUD, MXC_UART_8M_CLK)) < E_NO_ERROR) {
     return ret;
   }
 

@@ -37,6 +37,7 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "icc.h"
+#include "icc_reva.h"
 
 void MXC_ICC_Com_Flush(void)
 {

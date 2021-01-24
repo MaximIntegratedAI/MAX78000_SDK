@@ -56,6 +56,11 @@ extern "C" {
 #define CONSOLE_BAUD    115200  /// Console baud rate
 #endif
 
+#define SCCB_SCL_PORT   MXC_GPIO0        /// SCCB clock port
+#define SCCB_SCL_PIN    MXC_GPIO_PIN_30  /// SCCB clock pin
+#define SCCB_SDA_PORT   MXC_GPIO0        /// SCCB data port
+#define SCCB_SDA_PIN    MXC_GPIO_PIN_31  /// SCCB data pin
+
 #define LED_OFF         1       /// Inactive state of LEDs
 #define LED_ON          0       /// Active state of LEDs
 

@@ -110,6 +110,9 @@ void MXC_WDT_Setup()
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_ResetTimer(MXC_WDT0);
+    cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
+    cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
+    MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
     MXC_WDT_Enable(MXC_WDT0);
 }
 

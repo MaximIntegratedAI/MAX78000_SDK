@@ -1,8 +1,8 @@
 /* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright(C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
+ * copy of this software and associated documentation files(the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
@@ -41,69 +41,69 @@
 
 /* **** Functions **** */
 
-void MXC_WDT_RevA_SetIntPeriod(mxc_wdt_regs_t* wdt, mxc_wdt_period_t period)
+void MXC_WDT_RevA_SetIntPeriod(mxc_wdt_reva_regs_t* wdt, mxc_wdt_period_t period)
 {
-    MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_CTRL_INT_PERIOD, period);
+    MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVA_CTRL_INT_PERIOD, period);
 }
 
-void MXC_WDT_RevA_SetResetPeriod(mxc_wdt_regs_t* wdt, mxc_wdt_period_t period)
+void MXC_WDT_RevA_SetResetPeriod(mxc_wdt_reva_regs_t* wdt, mxc_wdt_period_t period)
 {
-    MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_CTRL_RST_PERIOD, (period << (MXC_F_WDT_CTRL_RST_PERIOD_POS - MXC_F_WDT_CTRL_INT_PERIOD_POS)));
+    MXC_SETFIELD(wdt->ctrl, MXC_F_WDT_REVA_CTRL_RST_PERIOD, (period << (MXC_F_WDT_REVA_CTRL_RST_PERIOD_POS - MXC_F_WDT_REVA_CTRL_INT_PERIOD_POS)));
 }
 
-void MXC_WDT_RevA_Enable(mxc_wdt_regs_t* wdt)
+void MXC_WDT_RevA_Enable(mxc_wdt_reva_regs_t* wdt)
 {
-    wdt->ctrl |= MXC_F_WDT_CTRL_WDT_EN;
+    wdt->ctrl |= MXC_F_WDT_REVA_CTRL_WDT_EN;
 }
 
-void MXC_WDT_RevA_Disable(mxc_wdt_regs_t* wdt)
+void MXC_WDT_RevA_Disable(mxc_wdt_reva_regs_t* wdt)
 {
-    wdt->ctrl &= ~(MXC_F_WDT_CTRL_WDT_EN);
+    wdt->ctrl &= ~(MXC_F_WDT_REVA_CTRL_WDT_EN);
     
 }
 
-void MXC_WDT_RevA_EnableInt(mxc_wdt_regs_t* wdt, mxc_wdt_en_t enable)
+void MXC_WDT_RevA_EnableInt(mxc_wdt_reva_regs_t* wdt, mxc_wdt_reva_en_t enable)
 {
-    if (enable) {
-        wdt->ctrl |= MXC_F_WDT_CTRL_INT_EN;
+    if(enable) {
+        wdt->ctrl |= MXC_F_WDT_REVA_CTRL_INT_EN;
     }
     else {
-        wdt->ctrl &= ~(MXC_F_WDT_CTRL_INT_EN);
+        wdt->ctrl &= ~(MXC_F_WDT_REVA_CTRL_INT_EN);
     }
 }
 
-void MXC_WDT_RevA_EnableReset(mxc_wdt_regs_t* wdt, mxc_wdt_en_t enable)
+void MXC_WDT_RevA_EnableReset(mxc_wdt_reva_regs_t* wdt, mxc_wdt_reva_en_t enable)
 {
-    if (enable) {
-        wdt->ctrl |= MXC_F_WDT_CTRL_RST_EN;
+    if(enable) {
+        wdt->ctrl |= MXC_F_WDT_REVA_CTRL_RST_EN;
     }
     else {
-        wdt->ctrl &= ~(MXC_F_WDT_CTRL_RST_EN);
+        wdt->ctrl &= ~(MXC_F_WDT_REVA_CTRL_RST_EN);
     }
 }
 
-void MXC_WDT_RevA_ResetTimer(mxc_wdt_regs_t* wdt)
+void MXC_WDT_RevA_ResetTimer(mxc_wdt_reva_regs_t* wdt)
 {
     wdt->rst = 0x00A5;
     wdt->rst = 0x005A;
 }
 
-int MXC_WDT_RevA_GetResetFlag(mxc_wdt_regs_t* wdt)
+int MXC_WDT_RevA_GetResetFlag(mxc_wdt_reva_regs_t* wdt)
 {
-    return !!(wdt->ctrl & MXC_F_WDT_CTRL_RST_FLAG);
+    return !!(wdt->ctrl & MXC_F_WDT_REVA_CTRL_RST_FLAG);
 }
 
-void MXC_WDT_RevA_ClearResetFlag(mxc_wdt_regs_t* wdt)
+void MXC_WDT_RevA_ClearResetFlag(mxc_wdt_reva_regs_t* wdt)
 {
-    wdt->ctrl &= ~(MXC_F_WDT_CTRL_RST_FLAG);
+    wdt->ctrl &= ~(MXC_F_WDT_REVA_CTRL_RST_FLAG);
 }
 
-int MXC_WDT_RevA_GetIntFlag(mxc_wdt_regs_t* wdt)
+int MXC_WDT_RevA_GetIntFlag(mxc_wdt_reva_regs_t* wdt)
 {
-    return !!(wdt->ctrl & MXC_F_WDT_CTRL_INT_FLAG);
+    return !!(wdt->ctrl & MXC_F_WDT_REVA_CTRL_INT_FLAG);
 }
 
-void MXC_WDT_RevA_ClearIntFlag(mxc_wdt_regs_t* wdt)
+void MXC_WDT_RevA_ClearIntFlag(mxc_wdt_reva_regs_t* wdt)
 {
-    wdt->ctrl &= ~(MXC_F_WDT_CTRL_INT_FLAG);
+    wdt->ctrl &= ~(MXC_F_WDT_REVA_CTRL_INT_FLAG);
 }

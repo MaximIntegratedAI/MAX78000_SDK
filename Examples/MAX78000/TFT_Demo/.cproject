@@ -43,7 +43,7 @@
 							<option id="ilg.gnumcueclipse.managedbuild.cross.option.addtools.createflash.1529750846" name="Create flash image" superClass="ilg.gnumcueclipse.managedbuild.cross.option.addtools.createflash" value="true" valueType="boolean"/>
 							<option id="ilg.gnumcueclipse.managedbuild.cross.option.addtools.printsize.667765305" name="Print size" superClass="ilg.gnumcueclipse.managedbuild.cross.option.addtools.printsize" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnumcueclipse.managedbuild.cross.targetPlatform.786533016" isAbstract="false" osList="all"/>
-							<builder arguments="ECLIPSE=1 -j 8" buildPath="${workspace_loc:/TFT_Demo}" command="make" id="ilg.gnumcueclipse.managedbuild.cross.builder.592880777" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder"/>
+							<builder arguments="ECLIPSE=1 MAXIM_PATH=&quot;&quot; -j 8" buildPath="${workspace_loc:/TFT_Demo}" command="make" id="ilg.gnumcueclipse.managedbuild.cross.builder.592880777" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder"/>
 							<tool id="ilg.gnumcueclipse.managedbuild.cross.tool.assembler.1648672385" name="Cross ARM GNU Assembler" superClass="ilg.gnumcueclipse.managedbuild.cross.tool.assembler">
 								<option id="ilg.gnumcueclipse.managedbuild.cross.option.assembler.usepreprocessor.1969112665" name="Use preprocessor" superClass="ilg.gnumcueclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
 								<inputType id="ilg.gnumcueclipse.managedbuild.cross.tool.assembler.input.507854261"/>
@@ -109,4 +109,5 @@
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

@@ -81,6 +81,7 @@ include ${CMSIS_ROOT}/../PeriphDrivers/$(TARGET_LC)_files.mk
 # # Where to find header files for this project
 IPATH += $(PERIPH_DRIVER_INCLUDE_DIR)
 SRCS  += $(PERIPH_DRIVER_C_FILES)
+SRCS  += $(PERIPH_DRIVER_A_FILES)
 VPATH += $(dir $(SRCS))
 
 # Use absolute paths if building within eclipse environment.

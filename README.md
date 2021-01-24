@@ -4,6 +4,18 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+January 24, 2020
+* Modified Camera driver to accept a DMA channel to use.
+* Added support for the MAX78000 feather board's optional add-on display.
+* Changed some examples to extract the CNN functionality into its own source file.
+* Renamed the BBFC block to GCFR to match the User Guide contents.
+* Renamed wakeup timer CN register to CTRL to match the User Guide contents.
+* Minor updates to OV7692 camera driver.
+* Reduced the number of DMA channels supported to 4, matching the hardware.
+* Added access functions for certain RISC-V core registers.
+* Added initial implementation of RISC-V MXC_Delay() function.
+* Adjusted internal peripheral driver functions to allow better compatibility with other Maxim microcontrollers.
+
 November 6, 2020
 * Added missing GCR registers and fields.
 * Cleaned up PWRSEQ registers.

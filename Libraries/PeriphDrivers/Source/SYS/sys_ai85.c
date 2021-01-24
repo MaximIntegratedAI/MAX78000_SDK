@@ -50,6 +50,7 @@
 #include "gcr_regs.h"
 #include "fcr_regs.h"
 #include "mcr_regs.h"
+#include "pwrseq_regs.h"
 
 /**
  * @ingroup mxc_sys
@@ -418,5 +419,18 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
         MXC_GCR->rst0  = (0x1 << reset);
     }
 }
+
+/* ************************************************************************** */
+uint32_t MXC_SYS_RiscVClockRate(void)
+{
+    // If in LPM mode and the PCLK is selected as the RV32 clock source,
+    if(((MXC_GCR->pm & MXC_F_GCR_PM_MODE) == MXC_S_GCR_PM_MODE_LPM) && 
+       ((MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LPMCLKSEL) == 0)) {
+        return SystemCoreClock / 2;
+    } else {
+        return ISO_FREQ;
+    }
+}
+
 /**@} end of mxc_sys */
 

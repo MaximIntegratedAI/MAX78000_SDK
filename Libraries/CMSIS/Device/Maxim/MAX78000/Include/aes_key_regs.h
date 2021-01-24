@@ -4,7 +4,7 @@
  */
 
 /* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -86,13 +86,14 @@ extern "C" {
  * Structure type to access the AES_KEY Registers.
  */
 typedef struct {
-    __IO uint32_t aes_key0;             /**< <tt>\b 0x000:</tt> AES_KEY AES_KEY0 Register */
-    __R  uint32_t rsv_0x4_0x7f[31];
-    __IO uint32_t aes_key1;             /**< <tt>\b 0x080:</tt> AES_KEY AES_KEY1 Register */
-    __R  uint32_t rsv_0x84_0xff[31];
-    __IO uint32_t aes_key2;             /**< <tt>\b 0x100:</tt> AES_KEY AES_KEY2 Register */
-    __R  uint32_t rsv_0x104_0x17f[31];
-    __IO uint32_t aes_key3;             /**< <tt>\b 0x180:</tt> AES_KEY AES_KEY3 Register */
+    __IO uint32_t aes_key0;             /**< <tt>\b 0x00:</tt> AES_KEY AES_KEY0 Register */
+    __IO uint32_t aes_key1;             /**< <tt>\b 0x04:</tt> AES_KEY AES_KEY1 Register */
+    __IO uint32_t aes_key2;             /**< <tt>\b 0x08:</tt> AES_KEY AES_KEY2 Register */
+    __IO uint32_t aes_key3;             /**< <tt>\b 0x0C:</tt> AES_KEY AES_KEY3 Register */
+    __IO uint32_t aes_key4;             /**< <tt>\b 0x10:</tt> AES_KEY AES_KEY4 Register */
+    __IO uint32_t aes_key5;             /**< <tt>\b 0x14:</tt> AES_KEY AES_KEY5 Register */
+    __IO uint32_t aes_key6;             /**< <tt>\b 0x18:</tt> AES_KEY AES_KEY6 Register */
+    __IO uint32_t aes_key7;             /**< <tt>\b 0x1C:</tt> AES_KEY AES_KEY7 Register */
 } mxc_aes_key_regs_t;
 
 /* Register offsets for module AES_KEY */
@@ -103,9 +104,13 @@ typedef struct {
  * @{
  */
  #define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000080UL) /**< Offset from AES_KEY Base Address: <tt> 0x0080</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000100UL) /**< Offset from AES_KEY Base Address: <tt> 0x0100</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x00000180UL) /**< Offset from AES_KEY Base Address: <tt> 0x0180</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000004UL) /**< Offset from AES_KEY Base Address: <tt> 0x0004</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000008UL) /**< Offset from AES_KEY Base Address: <tt> 0x0008</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x0000000CUL) /**< Offset from AES_KEY Base Address: <tt> 0x000C</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY4             ((uint32_t)0x00000010UL) /**< Offset from AES_KEY Base Address: <tt> 0x0010</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY5             ((uint32_t)0x00000014UL) /**< Offset from AES_KEY Base Address: <tt> 0x0014</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY6             ((uint32_t)0x00000018UL) /**< Offset from AES_KEY Base Address: <tt> 0x0018</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY7             ((uint32_t)0x0000001CUL) /**< Offset from AES_KEY Base Address: <tt> 0x001C</tt> */ 
 /**@} end of group aes_key_registers */
 
 #ifdef __cplusplus

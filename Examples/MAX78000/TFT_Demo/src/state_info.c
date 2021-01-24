@@ -86,105 +86,112 @@ static void screen_info(void)
 {
     MXC_TFT_SetPalette(logo_white_bg_darkgrey_bmp);
     MXC_TFT_SetBackGroundColor(4);
-    
+
     MXC_TFT_ShowImage(11,   7,      logo_white_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   80,     check_success_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   110,    check_success_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   140,    check_success_bg_darkgrey_bmp);
-    
+
     MXC_TFT_PrintFont(110, 12, urw_gothic_16_white_bg_grey, &screen_msg[0],  NULL);  // information
     MXC_TFT_PrintFont(50, 50, urw_gothic_12_white_bg_grey, &screen_msg[1],  NULL);  // scroll through pages
     // texts
     MXC_TFT_PrintFont(46, 80,  urw_gothic_16_white_bg_grey, &screen_msg[2],  NULL);  // text 1
     MXC_TFT_PrintFont(46, 110, urw_gothic_16_white_bg_grey, &screen_msg[3],  NULL);  // text 2
     MXC_TFT_PrintFont(46, 140, urw_gothic_16_white_bg_grey, &screen_msg[4],  NULL);  // text 3
-    
+
     MXC_TFT_ShowImage(12,   191,  left_arrow_bmp);
     MXC_TFT_ShowImage(135,  191,  home_bmp);
     MXC_TFT_ShowImage(259,  191,  right_arrow_bmp);
-    
+
+#ifdef ENABLE_TS
     MXC_TS_RemoveAllButton();
     MXC_TS_AddButton(12,  191,   12 + 48,  191 + 39,    KEY_1);
     MXC_TS_AddButton(135, 191,  135 + 48,  191 + 39,    KEY_2);
     MXC_TS_AddButton(259, 191,  259 + 48,  191 + 39,    KEY_3);
+#endif
 }
 
 static void screen_info1(void)
 {
     MXC_TFT_SetBackGroundColor(4);
-    
+
     MXC_TFT_ShowImage(11,   7,      logo_white_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   80,     check_success_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   110,    check_success_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   140,    check_success_bg_darkgrey_bmp);
-    
+
     MXC_TFT_PrintFont(110, 12, urw_gothic_16_white_bg_grey, &screen_msg[0],  NULL);  // information
     MXC_TFT_PrintFont(50, 50, urw_gothic_12_white_bg_grey, &screen_msg[1],  NULL);  // scroll through pages
     // texts
     MXC_TFT_PrintFont(46, 80,  urw_gothic_12_white_bg_grey, &screen_msg[5],  NULL);  // text 1
     MXC_TFT_PrintFont(46, 110, urw_gothic_12_white_bg_grey, &screen_msg[6],  NULL);  // text 2
     MXC_TFT_PrintFont(46, 140, urw_gothic_12_white_bg_grey, &screen_msg[7],  NULL);  // text 3
-    
+
     MXC_TFT_ShowImage(12,   191,    left_arrow_bmp);
     MXC_TFT_ShowImage(135,  191,    home_bmp);
     MXC_TFT_ShowImage(259,  191,    right_arrow_bmp);
-    
+#ifdef ENABLE_TS
     MXC_TS_RemoveAllButton();
     MXC_TS_AddButton(12,  191,   12 + 48,  191 + 39,    KEY_1);
     MXC_TS_AddButton(135, 191,  135 + 48,  191 + 39,    KEY_2);
     MXC_TS_AddButton(259, 191,  259 + 48,  191 + 39,    KEY_3);
+#endif
 }
 
 static void screen_info2(void)
 {
     MXC_TFT_SetBackGroundColor(4);
-    
+
     MXC_TFT_ShowImage(11,   7,      logo_white_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   80,     check_success_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   110,    check_success_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   140,    check_success_bg_darkgrey_bmp);
-    
+
     MXC_TFT_PrintFont(110, 12, urw_gothic_16_white_bg_grey, &screen_msg[0],  NULL);  // information
     MXC_TFT_PrintFont(50, 50, urw_gothic_12_white_bg_grey, &screen_msg[1],  NULL);  // scroll through pages
     // texts
     MXC_TFT_PrintFont(46, 80,  urw_gothic_12_white_bg_grey, &screen_msg[8],  NULL);  // text 1
     MXC_TFT_PrintFont(46, 110, urw_gothic_12_white_bg_grey, &screen_msg[9],  NULL);  // text 2
     MXC_TFT_PrintFont(46, 140, urw_gothic_12_white_bg_grey, &screen_msg[10],  NULL);  // text 3
-    
+
     MXC_TFT_ShowImage(12,   191,    left_arrow_bmp);
     MXC_TFT_ShowImage(135,  191,    home_bmp);
     MXC_TFT_ShowImage(259,  191,    right_arrow_bmp);
-    
+
+#ifdef ENABLE_TS
     MXC_TS_RemoveAllButton();
     MXC_TS_AddButton(12,  191,   12 + 48,  191 + 39,    KEY_1);
     MXC_TS_AddButton(135, 191,  135 + 48,  191 + 39,    KEY_2);
     MXC_TS_AddButton(259, 191,  259 + 48,  191 + 39,    KEY_3);
+#endif
 }
 
 static void screen_info3(void)
 {
     MXC_TFT_SetBackGroundColor(4);
-    
+
     MXC_TFT_ShowImage(11,   7,      logo_white_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   80,     check_success_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   110,    check_success_bg_darkgrey_bmp);
     MXC_TFT_ShowImage(16,   140,    check_success_bg_darkgrey_bmp);
-    
+
     MXC_TFT_PrintFont(110, 12, urw_gothic_16_white_bg_grey, &screen_msg[0],  NULL);  // information
     MXC_TFT_PrintFont(50, 50, urw_gothic_12_white_bg_grey, &screen_msg[1],  NULL);  // scroll through pages
     // texts
     MXC_TFT_PrintFont(46, 80,  urw_gothic_12_white_bg_grey, &screen_msg[11],  NULL);  // text 1
     MXC_TFT_PrintFont(46, 110, urw_gothic_12_white_bg_grey, &screen_msg[12],  NULL);  // text 2
     MXC_TFT_PrintFont(46, 140, urw_gothic_12_white_bg_grey, &screen_msg[13],  NULL);  // text 3
-    
+
     MXC_TFT_ShowImage(12,   191,    left_arrow_bmp);
     MXC_TFT_ShowImage(135,  191,    home_bmp);
     MXC_TFT_ShowImage(259,  191,    right_arrow_bmp);
-    
+
+#ifdef ENABLE_TS
     MXC_TS_RemoveAllButton();
     MXC_TS_AddButton(12,  191,   12 + 48,  191 + 39,    KEY_1);
     MXC_TS_AddButton(135, 191,  135 + 48,  191 + 39,    KEY_2);
     MXC_TS_AddButton(259, 191,  259 + 48,  191 + 39,    KEY_3);
+#endif
 }
 
 static int init(void)
@@ -202,44 +209,44 @@ static int key_process(int key)
             --screen_index;
             info_screens[screen_index]();
         }
-        
+
         break;
-        
+
     case KEY_2:
         state_set_current(get_home_state());
         break;
-        
+
     case KEY_3:
         if (screen_index < (ARRAY_SIZE(info_screens) - 1)) {
             ++screen_index;
             info_screens[screen_index]();
         }
-        
+
         break;
-        
+
     case KEY_A:
         break;
-        
+
     case KEY_B:
         break;
-        
+
     case KEY_C:
         state_set_current(get_home_state());
         break;
-        
+
     case KEY_D:
         break;
-        
+
     case KEY_E:
         break;
-        
+
     case KEY_F:
         break;
-        
+
     default:
         break;
     }
-    
+
     return 0;
 }
 
@@ -250,4 +257,3 @@ State* get_info_state(void)
 {
     return &g_state;
 }
-

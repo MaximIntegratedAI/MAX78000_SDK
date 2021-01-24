@@ -195,6 +195,20 @@ typedef int (*mxc_i2c_slave_handler_t) (mxc_i2c_regs_t* i2c,
 int MXC_I2C_Init (mxc_i2c_regs_t* i2c, int masterMode, unsigned int slaveAddr);
 
 /**
+ * @brief   Set slave address for I2C instances acting as slaves on the bus.
+ * @note    Set idx to zero, multiple I2C instances acting as slaves on the
+ *          bus is not yet supported.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
+ * @param   slaveAddr   7-bit or 10-bit address to use when in slave mode.
+ *                      This parameter is ignored when masterMode is non-zero.
+ * @param   idx         Index of the I2C slave. 
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t* i2c, unsigned int slaveAddr, int idx);
+
+/**
  * @brief   Disable and shutdown I2C peripheral.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
@@ -481,6 +495,8 @@ void MXC_I2C_ClearTXFIFO (mxc_i2c_regs_t* i2c);
  * @brief   Get the presently set interrupt flags.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
+ * @param   flags0      Pointer to the variable to store status of the interrupt flags in intfl0.
+ * @param   flags1      Pointer to the variable to store status of the interrupt flags in intfl1.
  */
 int MXC_I2C_GetFlags (mxc_i2c_regs_t* i2c, unsigned int *flags0, unsigned int *flags1);
 
@@ -488,6 +504,8 @@ int MXC_I2C_GetFlags (mxc_i2c_regs_t* i2c, unsigned int *flags0, unsigned int *f
  * @brief   Clears the Interrupt Flags.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
+ * @param   flags0      Flags to clear in interrupt register intfl0.
+ * @param   flags1      Flags to clear in interrupt register intfl1.
  */
 void MXC_I2C_ClearFlags (mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int flags1);
 
@@ -516,8 +534,6 @@ void MXC_I2C_DisableInt (mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int 
  * the slave is addressed for a read operation without software intervention.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void MXC_I2C_EnablePreload (mxc_i2c_regs_t* i2c);
 
@@ -525,8 +541,6 @@ void MXC_I2C_EnablePreload (mxc_i2c_regs_t* i2c);
  * @brief   Disable the slave preload mode
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void MXC_I2C_DisablePreload (mxc_i2c_regs_t* i2c);
 
@@ -534,8 +548,6 @@ void MXC_I2C_DisablePreload (mxc_i2c_regs_t* i2c);
  * @brief   Enables the slave to respond to the general call address
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void MXC_I2C_EnableGeneralCall (mxc_i2c_regs_t* i2c);
 
@@ -543,8 +555,6 @@ void MXC_I2C_EnableGeneralCall (mxc_i2c_regs_t* i2c);
  * @brief   Prevents the slave from responding to the general call address
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void MXC_I2C_DisableGeneralCall (mxc_i2c_regs_t* i2c);
 
@@ -557,8 +567,6 @@ void MXC_I2C_DisableGeneralCall (mxc_i2c_regs_t* i2c);
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   timeout     Timeout in uS
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void MXC_I2C_SetTimeout (mxc_i2c_regs_t* i2c, unsigned int timeout);
 

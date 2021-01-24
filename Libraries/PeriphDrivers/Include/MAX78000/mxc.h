@@ -54,7 +54,12 @@
 #include "board.h"
 #include "led.h"
 #include "pb.h"
+#ifdef BOARD_FTHR_REVA
+#include "tft_fthr.h"
+#endif
+#ifdef BOARD_EVKIT_V1
 #include "tft.h"
+#endif
 #include "touchscreen.h"
 
 /*

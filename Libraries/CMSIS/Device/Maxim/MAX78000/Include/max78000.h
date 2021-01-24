@@ -328,12 +328,8 @@ typedef enum {
 
 /******************************************************************************/
 /*                                               Global CNN Function Register */
-//Get rid of these 
-#define MXC_BASE_BBFC                   ((uint32_t)0x40005800UL)
-#define MXC_BBFC                        ((mxc_bbfc_regs_t*)MXC_BASE_BBFC)
-
 #define MXC_BASE_GCFR                   ((uint32_t)0x40005800UL)
-#define MXC_GCFR                        ((mxc_bbfc_regs_t*)MXC_BASE_GCFR)
+#define MXC_GCFR                        ((mxc_gcfr_regs_t*)MXC_BASE_GCFR)
 
 /******************************************************************************/
 /*                                                    Windowed Watchdog Timer */

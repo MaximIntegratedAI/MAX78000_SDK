@@ -72,7 +72,13 @@ export CMSIS_ROOT
 SRCS  = main.c
 SRCS += softmax.c
 SRCS += cnn.c
-SRCS += TFT/all_imgs.c
+ifeq "$(BOARD)" "EvKit_V1"
+SRCS += TFT/evkit/all_imgs.c
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+SRCS += TFT/fthr/img_1_rgb565.c
+SRCS += TFT/fthr/SansSerif16x16.c
+endif
 
 # Where to find source files for this test
 VPATH  = .
@@ -82,7 +88,12 @@ else
 VPATH += /$(subst \,/,$(subst :,,$(MAXIM_PATH))/Examples/$(TARGET)/CNN/Common/)
 endif
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
-VPATH += ./TFT
+ifeq "$(BOARD)" "EvKit_V1"
+VPATH += ./TFT/evkit/
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+VPATH += TFT/fthr/
+endif
 # Where to find header files for this test
 IPATH  = .
 ifeq "$(MAXIM_PATH)" ""
@@ -90,7 +101,7 @@ IPATH += ../Common/
 else
 IPATH += /$(subst \,/,$(subst :,,$(MAXIM_PATH))/Examples/$(TARGET)/CNN/Common/)
 endif
-IPATH += TFT
+IPATH += TFT/evkit/
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
@@ -99,6 +110,15 @@ PROJ_CFLAGS+=-DARM_MATH_CM4
 
 # Enable all warnings
 PROJ_CFLAGS+=-Wall
+
+ifeq "$(BOARD)" "EvKit_V1"
+PROJ_CFLAGS += -DENABLE_TFT
+endif
+
+ifeq "$(BOARD)" "FTHR_RevA"
+# Only Enable if 2.4" TFT is connected to Feather
+#PROJ_CFLAGS += -DENABLE_TFT
+endif
 
 # Specify the target revision to override default
 # "A2" in ASCII
@@ -115,7 +135,7 @@ PROJ_CFLAGS+=-Wall
 #STARTUPFILE=start.S
 
 # Override the default optimization level using this variable
-MXC_OPTIMIZE_CFLAGS=-O1
+MXC_OPTIMIZE_CFLAGS=-O2
 
 ################################################################################
 # Include external library makefiles here

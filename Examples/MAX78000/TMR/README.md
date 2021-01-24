@@ -2,8 +2,8 @@
 
 Three timers are used to demonstrate three different modes of the general purpose timers.
 
-1. A oneshot mode timer, Timer 4 (low-power timer) is used to create an interrupt at a freq of 1 Hz. If the example is being run on the standard EV Kit, LED2 will toggle when the interrupt occurs.
-2. Timer 0 is used to output a PWM signal on Port 0.5. The PWM frequency is 1000 Hz and the duty cycle is 50%.
+1. A oneshot mode timer, Timer 5 (low-power timer) is used to create an interrupt at a freq of 1 Hz. If the example is being run on the standard EV Kit, LED2 will toggle when the interrupt occurs.
+2. Timer 4 is used to output a PWM signal on Port 2.5 (AIN1 pin on featherboard). The PWM frequency is 1000 Hz and the duty cycle is 50%.
 3. Timer 1 is configured as 16-bit timer used in continuous mode which is used to create an interrupt at freq of 2 Hz. LED1 will toggle when the interrupt occurs. 
 
 Push PB1/SW1 to start the PWM and continuous timers and PB2/SW2 to start the oneshot timer.
@@ -39,11 +39,11 @@ The Console UART of the device will output these messages:
 ```
 ************************** Timer Example **************************
 
-1. A oneshot mode timer, Timer 4 (low-power timer) is used to create an
+1. A oneshot mode timer, Timer 5 (low-power timer) is used to create an
    interrupt at a freq of 1 Hz. If running the example on the Standard
    EV Kit, LED2 will toggle when the interrupt occurs.
 
-2. Timer 0 is used to output a PWM signal on Port 0.5.
+2. Timer 4 is used to output a PWM signal on Port 2.4.
    The PWM frequency is 1000 Hz and the duty cycle is 50%.
 
 3. Timer 1 is configured as 16-bit timer used in continuous mode
@@ -58,7 +58,8 @@ Continuous timer started.
 
 Oneshot timer started.
 
-One Shot Timer Expired!
+Oneshot timer expired!
+
 ```
 
 You will also observe the LED behavior given in the Description section above.

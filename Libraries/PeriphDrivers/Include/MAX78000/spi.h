@@ -91,12 +91,14 @@ typedef enum {
 
 typedef struct _mxc_spi_pins_t mxc_spi_pins_t;
 
+/**
+ * @brief Structure used to initialize SPI pins.
+ *
+ * @note All values must be initialized.
+ *
+ * @note True equals pin is set for the spi function false the pin is left to its latest state.
+ */
 struct _mxc_spi_pins_t {
-    /** @defgroup init_required The members needed for all spi Inits
-        @note True equals pin is set for the spi function false the pin is left to its latest state.
-     *  @ingroup spi
-     *  @{
-     */
     bool             clock;     ///<Clock pin
     bool             ss0;       ///< Slave select pin 0
     bool             ss1;       ///< Slave select pin 1
@@ -105,7 +107,6 @@ struct _mxc_spi_pins_t {
     bool             mosi;      ///< mosi pin
     bool             sdio2;     ///< SDIO2 pin
     bool             sdio3;     ///< SDIO3 pin
-    /*** @} */ // end of required group
 };
 
 typedef struct _mxc_spi_req_t mxc_spi_req_t;
@@ -115,18 +116,15 @@ typedef struct _mxc_spi_req_t mxc_spi_req_t;
  * @param   req         The details of the transaction.
  * @param   result      See \ref MXC_Error_Codes for the list of error codes.
  */
-typedef void (*spi_complete_t) (void * req, int result);
+typedef void (*spi_complete_cb_t) (void * req, int result);
 
 /**
  * @brief   The information required to perform a complete SPI transaction
  *
  * This structure is used by blocking, async, and DMA based transactions.
+ * @note   "completeCB" only needs to be initialized for interrupt driven (Async) and DMA transactions.
  */
 struct _mxc_spi_req_t {
-    /** @defgroup required The members needed for all types of transactions
-     *  @ingroup spi
-     *  @{
-     */
     mxc_spi_regs_t* spi;        ///<Point to SPI registers
     int             ssIdx;      ///< Slave select line to use (Master only, ignored in slave mode)
     int             ssDeassert; ///< 1 - Deassert SS at end of transaction, 0 - leave SS asserted
@@ -142,13 +140,8 @@ struct _mxc_spi_req_t {
     uint32_t        rxLen;      ///< Number of bytes to be stored in rxData
     uint32_t        txCnt;      ///< Number of bytes actually transmitted from txData
     uint32_t        rxCnt;      ///< Number of bytes stored in rxData
-    /*** @} */ // end of required group
-    
-    /** @defgroup async The members required for Interrupt or DMA driven transactions
-     *  @{
-     */
-    spi_complete_t  completeCB;  ///< Pointer to function called when transaction is complete
-    /*** @} */ // end of async group
+
+    spi_complete_cb_t  completeCB;  ///< Pointer to function called when transaction is complete
 };
 
 /* ************************************************************************* */
@@ -180,6 +173,8 @@ struct _mxc_spi_req_t {
  * @param   hz              The requested clock frequency. The actual clock frequency
  *                          will be returned by the function if successful. Used in
  *                          master mode only.
+ * @param   pins            SPI pin structure. Pins selected as true will be initialized 
+ *                          for the requested SPI block.            
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
@@ -478,8 +473,6 @@ void MXC_SPI_ClearFlags (mxc_spi_regs_t* spi);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  * @param   intEn       The interrupts to be enabled
- *
- * @return The interrupt flags
  */
 void MXC_SPI_EnableInt (mxc_spi_regs_t* spi, unsigned int intEn);
 
@@ -491,8 +484,6 @@ void MXC_SPI_EnableInt (mxc_spi_regs_t* spi, unsigned int intEn);
  *
  * @param   spi         Pointer to SPI registers (selects the SPI block used.)
  * @param   intDis      The interrupts to be disabled
- *
- * @return The interrupt flags
  */
 void MXC_SPI_DisableInt (mxc_spi_regs_t* spi, unsigned int intDis);
 

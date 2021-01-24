@@ -37,13 +37,13 @@
 #include "mxc_sys.h"
 #include "sema_reva.h"
 
-int MXC_SEMA_RevA_GetSema(unsigned sema)
+int MXC_SEMA_RevA_GetSema(mxc_sema_reva_regs_t *sema_regs, unsigned sema)
 {
     uint32_t sema_val;
     MXC_ASSERT(sema < MXC_CFG_SEMA_INSTANCES);
     
     // Reading the register does an atomic test and set, returns previous value
-    sema_val = MXC_SEMA->semaphores[sema];
+    sema_val = sema_regs->semaphores[sema];
     
     if (sema_val == 0) {
         return E_NO_ERROR;
@@ -53,11 +53,11 @@ int MXC_SEMA_RevA_GetSema(unsigned sema)
     }
 }
 
-int MXC_SEMA_RevA_CheckSema(unsigned sema)
+int MXC_SEMA_RevA_CheckSema(mxc_sema_reva_regs_t *sema_regs, unsigned sema)
 {
     MXC_ASSERT(sema < MXC_CFG_SEMA_INSTANCES);
     
-    if (MXC_SEMA->status & (0x1 << sema)) {
+    if (sema_regs->status & (0x1 << sema)) {
         return E_BUSY;
     }
     else {
@@ -65,15 +65,15 @@ int MXC_SEMA_RevA_CheckSema(unsigned sema)
     }
 }
 
-uint32_t MXC_SEMA_RevA_Status(void)
+uint32_t MXC_SEMA_RevA_Status(mxc_sema_reva_regs_t *sema_regs)
 {
-    return MXC_SEMA->status;
+    return sema_regs->status;
 }
 
-void MXC_SEMA_RevA_FreeSema(unsigned sema)
+void MXC_SEMA_RevA_FreeSema(mxc_sema_reva_regs_t *sema_regs, unsigned sema)
 {
     MXC_ASSERT(sema < MXC_CFG_SEMA_INSTANCES);
     
-    MXC_SEMA->semaphores[sema] = 0x0;
+    sema_regs->semaphores[sema] = 0x0;
 }
 

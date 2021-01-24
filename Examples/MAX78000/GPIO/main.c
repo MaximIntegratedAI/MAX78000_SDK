@@ -102,8 +102,8 @@ int main(void)
     printf("\n\n***** GPIO Example *****\n\n");
     printf("1. This example reads P1.7 (SW2 input) and outputs the same state onto\n");
     printf("   P2.0 (LED1).\n");
-    printf("2. An interrupt is set to occur when SW1 (P0.2) is pressed. P0.9 and\n");
-    printf("   LED1 toggles when that interrupt occurs.\n\n");
+    printf("2. An interrupt is set to occur when SW1 (P0.2) is pressed. P0.9\n");
+    printf("   toggles when that interrupt occurs.\n\n");
     #endif
     
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */

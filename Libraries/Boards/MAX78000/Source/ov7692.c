@@ -40,6 +40,8 @@
 #include "ov7692_regs.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"
+#include "tmr_regs.h"
+#include "tmr.h"
 
 #define cambus_writeb(addr, x)      sccb_write_byt(g_slv_addr, addr, x)
 #define cambus_readb(addr, x)       sccb_read_byt(g_slv_addr, addr, x)
@@ -170,11 +172,11 @@ static int reset(void)
     int ret = 0;
     uint8_t value;
     ret |= cambus_writeb(REG12, REG12_RESET);
-	// Read from the register, when the reset bit is cleared then reset is done.
-	for (value = 0xff; value != 0;) {
-		ret |= cambus_readb(REG12, &value);
-		MXC_Delay(MSEC(10));
-	}
+    // Read from the register, when the reset bit is cleared then reset is done.
+    for (value = 0xff; value != 0;) {
+        ret |= cambus_readb(REG12, &value);
+        MXC_TMR_Delay(MXC_TMR1,MSEC(10));
+    }
     // Write default registers
     for (int i = 0; (default_regs[i][0] != 0xee); i++) {
         ret |= cambus_writeb(default_regs[i][0], default_regs[i][1]);
@@ -185,22 +187,21 @@ static int reset(void)
 static int sleep(int enable)
 {
     int ret = 0;
-#if 0
-    ret = cambus_readb(REG_COM2, &reg);
+	uint8_t reg;
+
+    ret = cambus_readb(REG0E, &reg);
     
     if (ret == 0) {
         if (enable) {
-            reg |= COM2_SOFT_SLEEP_MODE;
+            reg |= SLEEP_MODE_ENABLE;
         }
         else {
-            reg &= ~COM2_SOFT_SLEEP_MODE;
+            reg &= ~SLEEP_MODE_ENABLE;
         }
         
         // Write back register
-        ret |= cambus_writeb(REG_COM2, reg);
+        ret |= cambus_writeb(REG0E, reg);
     }
-    
-#endif
     return ret;
 }
 
@@ -256,30 +257,18 @@ static int get_pixformat(pixformat_t *pixformat)
 static int set_framesize(int width, int height)
 {
     int ret = 0;
-    uint8_t input_factor_large[4] = { 0 };
-    // Default input factor for large images
-    if ((width < 320) || (height < 240)) { // check if size is QVGA or less
-        input_factor_large[0] = 0x02;
-        input_factor_large[1] = 0x80;
-        input_factor_large[2] = 0x00;
-        input_factor_large[3] = 0xf0;
-        uint8_t value;
-        ret |= cambus_readb(REG12, &value);
-        ret |= cambus_writeb(REG12, (value | 0x40)); // enable skip mode
-        ret |= cambus_writeb(0x17, 0x65); // Horizontal Window Start Point Control (LSBs), default is 0x69
-        ret |= cambus_writeb(0x18, 0xa4); // Horizontal sensor size (default)
-        ret |= cambus_writeb(0x19, 0x06); // Vertical Window Start Line Control
-        ret |= cambus_writeb(0x1a, 0x7b); // Vertical sensor size
-    } else {
-        input_factor_large[0] = 0x02;
-        input_factor_large[1] = 0x80;
-        input_factor_large[2] = 0x01;
-        input_factor_large[3] = 0xe0;
+    uint8_t input_factor_4_3[] = { 0x02, 0x80, 0x01, 0xe0 }; // 640 x 480
+    uint8_t input_factor_1_1[] = { 0x01, 0xe0, 0x01, 0xe0 }; // 480 x 480
+//    uint8_t input_factor_small[] = { 0x01, 0xbf, 0x01, 0xbf }; // 447 x 447
+    uint8_t *input_factor_ptr = input_factor_4_3;
+
+    // Check and see if the target resolution is very small
+    // that is less than 42 x 42, if so then apply and
+    // x and y scaling factor.
+    if ((width == height) || (width < 42) || (height < 42)) {
+        input_factor_ptr = input_factor_1_1;
     }
 
-    uint8_t input_factor_small[] = { 0x01, 0xbf, 0x00, 0xf0 };
-    uint8_t *input_factor_ptr = input_factor_large;
-    
     // Image typically outputs one line short, add a line to account.
     height = height + 1;
     // Apply passed in resolution as output resolution.
@@ -287,12 +276,7 @@ static int set_framesize(int width, int height)
     ret |= cambus_writeb(OH_LOW, (width >> 0) & 0xff);
     ret |= cambus_writeb(OV_HIGH, (height >> 8) & 0xff);
     ret |= cambus_writeb(OV_LOW, (height >> 0) & 0xff);
-    // Check and see if the target resolution is very small
-    // that is less than 42 x 42, if so then apply and
-    // x and y scaling factor.
-    if ((width < 42) || (height < 42)) {
-        input_factor_ptr = input_factor_small;
-    }
+
     // Apply the appropriate input image factor.
     ret |= cambus_writeb(0xc8, input_factor_ptr[0]);
     ret |= cambus_writeb(0xc9, input_factor_ptr[1]);

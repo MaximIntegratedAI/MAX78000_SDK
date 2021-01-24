@@ -15,18 +15,93 @@ The game has 4 levels and is selected using keywords 1 to 4.
 
 Here are the instructions to play this game using speech command:  
 
-*	'one', 'two', 'three' or 'four' command is used to select the game level
-*	'go' command is used to start the game
-*	'up', 'down', 'left' and 'right' command will move the snake in a direction as indicated in name
-*	'stop' command will exit the game
-*	The game is over if *stop* command is encountered or if the snake collides with itself
+1. 'one', 'two', 'three' or 'four' command is used to select the game level
 
-## Required Connections
+2. 'go' command is used to start the game
+
+3. 'up', 'down', 'left' and 'right' command will move the snake in a direction as indicated in name
+
+4. 'stop' command will exit the game
+
+5. The game is over if *stop* command is encountered or if the snake collides with itself
+
+## Building firmware:
+
+Navigate directory where **snake_game_demo** software is located and build the project:
+
+```bash
+$ cd /Examples/MAX78000/CNN/snake_game_demo
+$ make
+```
+
+If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+
+```bash
+$ make distclean
+```
+
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+
+```bash
+# Specify the board used
+ifeq "$(BOARD)" ""
+BOARD=EvKit_V1
+#BOARD=FTHR_RevA
+endif
+```
+
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile:
+
+```bash
+# Specify the board used
+ifeq "$(BOARD)" ""
+#BOARD=EvKit_V1
+BOARD=FTHR_RevA
+endif
+```
+
+## Load firmware image to MAX78000 EVKIT
+Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
+
+Connect PICO adapter to JH5 SWD header. 
+
+Load firmware image using Openocd.
+
+```bash
+./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+```
+## MAX78000 EVKIT operations
 
 *   Place TFT display on the display header.
 *   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 *   Place jumper P0\_0 and P0\_1 on UART\_0\_EN header JH1.
 *   Open a serial port application on the PC and connect to Ev-Kit's console UART at 115200, 8-N-1 configuration.
+*   Follow instructions on TFT display
+
+## Load firmware image to MAX78000 Feather
+
+Connect USB cable to CN1 USB connector.
+
+Load firmware image using Openocd.
+
+```bash
+./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+```
+
+## MAX78000 Feather operations
+
+The TFT display is not supplied with the MAX78000 Feather board.
+
+**To run this demo application you need TFT display.**
+
+The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
+
+https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
+
+This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
+While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset. 
+
+Press PB1 (SW1) button to start demo.
 
 ## Expected Output
 The instructions about how to set level and start the game are displayed on TFT LCD.  
@@ -63,3 +138,6 @@ Detected word: GO (100.0%)
 ----------------------------------------- 
 ```
 
+## References
+
+https://github.com/MaximIntegratedAI/MaximAI_Documentation

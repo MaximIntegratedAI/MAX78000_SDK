@@ -33,7 +33,6 @@
 
 #include <stddef.h>
 #include "mxc_device.h"
-#include "rtc_regs.h"
 #include "rtc.h"
 #include "mxc_sys.h"
 #include "mxc_delay.h"
@@ -46,7 +45,7 @@ int MXC_RTC_CheckBusy(void)
     // Time-out transfer if it takes > BUSY_TIMEOUT microseconds
     MXC_DelayAsync(MXC_DELAY_USEC(MXC_BUSY_TIMEOUT), NULL);
     
-    while (MXC_RTC_IS_BUSY) {
+    while (MXC_RTC_REVA_IS_BUSY) {
         if (MXC_DelayCheck() != E_BUSY) {
             return E_BUSY;
         }
@@ -56,7 +55,7 @@ int MXC_RTC_CheckBusy(void)
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_EnableInt(mxc_rtc_regs_t* rtc, uint32_t mask)
+int MXC_RTC_RevA_EnableInt (mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 {
     mask &= (MXC_RTC_INT_EN_LONG |  MXC_RTC_INT_EN_SHORT | MXC_RTC_INT_EN_READY);
     
@@ -74,7 +73,7 @@ int MXC_RTC_RevA_EnableInt(mxc_rtc_regs_t* rtc, uint32_t mask)
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_DisableInt(mxc_rtc_regs_t* rtc, uint32_t mask)
+int MXC_RTC_RevA_DisableInt (mxc_rtc_reva_regs_t *rtc, uint32_t mask)
 {
     mask &= (MXC_RTC_INT_EN_LONG |  MXC_RTC_INT_EN_SHORT | MXC_RTC_INT_EN_READY);
     
@@ -92,97 +91,97 @@ int MXC_RTC_RevA_DisableInt(mxc_rtc_regs_t* rtc, uint32_t mask)
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_SetTimeofdayAlarm(mxc_rtc_regs_t* rtc, uint32_t ras)
+int MXC_RTC_RevA_SetTimeofdayAlarm (mxc_rtc_reva_regs_t *rtc, uint32_t ras)
 {
     // ras can only be written if BUSY = 0 & (RTCE = 0 or ADE = 0);
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->toda = (ras << MXC_F_RTC_TODA_TOD_ALARM_POS) & MXC_F_RTC_TODA_TOD_ALARM;
+    rtc->toda = (ras << MXC_F_RTC_REVA_TODA_TOD_ALARM_POS) & MXC_F_RTC_REVA_TODA_TOD_ALARM;
     
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_SetSubsecondAlarm(mxc_rtc_regs_t* rtc, uint32_t rssa)
+int MXC_RTC_RevA_SetSubsecondAlarm (mxc_rtc_reva_regs_t *rtc, uint32_t rssa)
 {
     // ras can only be written if BUSY = 0 & (RTCE = 0 or ASE = 0);
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->sseca = (rssa << MXC_F_RTC_SSECA_SSEC_ALARM_POS) & MXC_F_RTC_SSECA_SSEC_ALARM;
+    rtc->sseca = (rssa << MXC_F_RTC_REVA_SSECA_SSEC_ALARM_POS) & MXC_F_RTC_REVA_SSECA_SSEC_ALARM;
     
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_Start(mxc_rtc_regs_t* rtc)
+int MXC_RTC_RevA_Start (mxc_rtc_reva_regs_t *rtc)
 {
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl |= MXC_F_RTC_CTRL_WR_EN;       // Allow writing to registers
+    rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN;       // Allow writing to registers
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
     // Can only write if WE=1 and BUSY=0
-    rtc->ctrl |= MXC_F_RTC_CTRL_EN;    // setting RTCE = 1
+    rtc->ctrl |= MXC_F_RTC_REVA_CTRL_EN;    // setting RTCE = 1
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl &= ~MXC_F_RTC_CTRL_WR_EN;       // Prevent Writing...
+    rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN;       // Prevent Writing...
     
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_Stop(mxc_rtc_regs_t* rtc)
+int MXC_RTC_RevA_Stop (mxc_rtc_reva_regs_t *rtc)
 {
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl |= MXC_F_RTC_CTRL_WR_EN;      // Allow writing to registers
+    rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN;      // Allow writing to registers
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
     // Can only write if WE=1 and BUSY=0
-    rtc->ctrl &= ~MXC_F_RTC_CTRL_EN;  // setting RTCE = 0
+    rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_EN;  // setting RTCE = 0
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl &= ~MXC_F_RTC_CTRL_WR_EN;       // Prevent Writing...
+    rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN;       // Prevent Writing...
     
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_Init(mxc_rtc_regs_t* rtc, uint32_t sec, uint8_t ssec)
+int MXC_RTC_RevA_Init (mxc_rtc_reva_regs_t *rtc, uint32_t sec, uint8_t ssec)
 {
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl = MXC_F_RTC_CTRL_WR_EN;        //  Allow Writes
+    rtc->ctrl = MXC_F_RTC_REVA_CTRL_WR_EN;        //  Allow Writes
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl = MXC_RTC_CTRL_RESET_DEFAULT;  // Start with a Clean Register
+    rtc->ctrl = MXC_RTC_REVA_CTRL_RESET_DEFAULT;  // Start with a Clean Register
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl |= MXC_F_RTC_CTRL_WR_EN;      // Set Write Enable, allow writing to reg.
+    rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN;      // Set Write Enable, allow writing to reg.
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
@@ -200,96 +199,96 @@ int MXC_RTC_RevA_Init(mxc_rtc_regs_t* rtc, uint32_t sec, uint8_t ssec)
         return E_BUSY;
     }
     
-    rtc->ctrl &= ~MXC_F_RTC_CTRL_WR_EN;       // Prevent Writing...
+    rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN;       // Prevent Writing...
     
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_SquareWave(mxc_rtc_regs_t* rtc, mxc_rtc_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)
+int MXC_RTC_RevA_SquareWave (mxc_rtc_reva_regs_t *rtc, mxc_rtc_reva_sqwave_en_t sqe, mxc_rtc_freq_sel_t ft)
 {
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl |= MXC_F_RTC_CTRL_WR_EN;   // Allow writing to registers
+    rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN;   // Allow writing to registers
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    if (sqe == MXC_RTC_SQUARE_WAVE_ENABLED) {
+    if (sqe == MXC_RTC_REVA_SQUARE_WAVE_ENABLED) {
         if (ft == MXC_RTC_F_32KHZ) {       // if 32KHz output is selected...
-            rtc->oscctrl |= MXC_F_RTC_OSCCTRL_SQW_32K;   // Enable 32KHz wave
+            rtc->oscctrl |= MXC_F_RTC_REVA_OSCCTRL_SQW_32K;   // Enable 32KHz wave
             
             if (MXC_RTC_CheckBusy()) {
                 return E_BUSY;
             }
             
-            rtc->ctrl |= MXC_F_RTC_CTRL_SQW_EN;                  // Enable output on the pin
+            rtc->ctrl |= MXC_F_RTC_REVA_CTRL_SQW_EN;                  // Enable output on the pin
         }
         else {                    // if 1Hz, 512Hz, 4KHz output is selected
         
-            rtc->oscctrl &= ~MXC_F_RTC_OSCCTRL_SQW_32K;  // Must make sure that the 32KHz is disabled
+            rtc->oscctrl &= ~MXC_F_RTC_REVA_OSCCTRL_SQW_32K;  // Must make sure that the 32KHz is disabled
             
             if (MXC_RTC_CheckBusy()) {
                 return E_BUSY;
             }
             
-            rtc->ctrl &= ~ MXC_F_RTC_CTRL_SQW_SEL;
+            rtc->ctrl &= ~ MXC_F_RTC_REVA_CTRL_SQW_SEL;
             
             if (MXC_RTC_CheckBusy()) {
                 return E_BUSY;
             }
             
-            rtc->ctrl |= (MXC_F_RTC_CTRL_SQW_EN | ft);  // Enable Sq. wave,
+            rtc->ctrl |= (MXC_F_RTC_REVA_CTRL_SQW_EN | ft);  // Enable Sq. wave,
         }
         
         if (MXC_RTC_CheckBusy()) {
             return E_BUSY;
         }
         
-        rtc->ctrl |= MXC_F_RTC_CTRL_EN;     // Enable Real Time Clock
+        rtc->ctrl |= MXC_F_RTC_REVA_CTRL_EN;     // Enable Real Time Clock
     }
     else {   // Turn off the square wave output on the pin
     
-        rtc->oscctrl &= ~MXC_F_RTC_OSCCTRL_SQW_32K;     // Must make sure that the 32KHz is disabled
+        rtc->oscctrl &= ~MXC_F_RTC_REVA_OSCCTRL_SQW_32K;     // Must make sure that the 32KHz is disabled
         
         if (MXC_RTC_CheckBusy()) {
             return E_BUSY;
         }
         
-        rtc->ctrl &= ~MXC_F_RTC_CTRL_SQW_EN;  // No sq. wave output
+        rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_SQW_EN;  // No sq. wave output
     }
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl &= ~MXC_F_RTC_CTRL_WR_EN;       // Disable Writing to register
+    rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN;       // Disable Writing to register
     
     return E_SUCCESS;
 }
 
-int MXC_RTC_RevA_Trim(mxc_rtc_regs_t* rtc, int8_t trim)
+int MXC_RTC_RevA_Trim (mxc_rtc_reva_regs_t *rtc, int8_t trim)
 {
 
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl |= MXC_F_RTC_CTRL_WR_EN;
+    rtc->ctrl |= MXC_F_RTC_REVA_CTRL_WR_EN;
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    MXC_SETFIELD(rtc->trim, MXC_F_RTC_TRIM_TRIM, trim << MXC_F_RTC_TRIM_TRIM_POS);
+    MXC_SETFIELD (rtc->trim, MXC_F_RTC_REVA_TRIM_TRIM, trim << MXC_F_RTC_REVA_TRIM_TRIM_POS);
     
     if (MXC_RTC_CheckBusy()) {
         return E_BUSY;
     }
     
-    rtc->ctrl &= ~MXC_F_RTC_CTRL_WR_EN;       // Disable Writing to register
+    rtc->ctrl &= ~MXC_F_RTC_REVA_CTRL_WR_EN;       // Disable Writing to register
     
     return E_SUCCESS;
 }
@@ -330,7 +329,7 @@ int MXC_RTC_RevA_GetTime(uint32_t* sec, uint32_t* subsec)
     
     do {
         // Check if an update is about to happen.
-        if (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) {
+        if (!(MXC_RTC->ctrl & MXC_F_RTC_REVA_CTRL_RDY)) {
             return E_BUSY;
         }
         
@@ -338,7 +337,7 @@ int MXC_RTC_RevA_GetTime(uint32_t* sec, uint32_t* subsec)
         temp_sec = MXC_RTC_RevA_GetSecond();
         
         // Check if an update is about to happen.
-        if (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) {
+        if (!(MXC_RTC->ctrl & MXC_F_RTC_REVA_CTRL_RDY)) {
             return E_BUSY;
         }
         
@@ -346,7 +345,7 @@ int MXC_RTC_RevA_GetTime(uint32_t* sec, uint32_t* subsec)
         *subsec = MXC_RTC_RevA_GetSubSecond();
         
         // Check if an update is about to happen.
-        if (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) {
+        if (!(MXC_RTC->ctrl & MXC_F_RTC_REVA_CTRL_RDY)) {
             return E_BUSY;
         }
         

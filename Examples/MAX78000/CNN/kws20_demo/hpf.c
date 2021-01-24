@@ -32,43 +32,43 @@
 * ownership rights.
 *******************************************************************************/
 
-#include	"hpf.h"
+#include    "hpf.h"
 
-static INT16	x, Prev_x, R;
-static INT32	y, Prev_y;
+static INT16    x, Prev_x, R;
+static INT32    y, Prev_y;
 
 /*********************************************************************************
 *
 *   Prototype:      void HPF_init()
 *
-*   Description:    The function initializes states of high pass filter 
+*   Description:    The function initializes states of high pass filter
 *
-*   Parameters:    
+*   Parameters:
 *
 *   Return:         None
 *
-*   Globals:    	None
+*   Globals:        None
 *
 *   Limitations:    None
 *
 ************************************************************************************/
 void HPF_init(void)
 {
- 	R = 32604; //.995
-	x = 0;
-	y = 0;
-	Prev_y = y;
-	Prev_x = x;
-} 
+    R = 32604; //.995
+    x = 0;
+    y = 0;
+    Prev_y = y;
+    Prev_x = x;
+}
 
 /*********************************************************************************
 *
 *   Prototype:      INT16 HPF( INT16 input)
 *
 *   Description:    The function is a 1-d order IIR high pass filter (cutoff frequency - 100 Hz)
-*					input and output are 10 bits each
+*                   input and output are 10 bits each
 *   Parameters:    INT16 input samples
-*				
+*
 *    filter is  y(n)=x(n)-x(n-1)+Ay(n-1) and A =.995*2^15
 *   Return:         output
 *
@@ -76,37 +76,41 @@ void HPF_init(void)
 ************************************************************************************/
 INT16 HPF(INT16 input)
 {
-	INT16 A;
-	INT16 output;
-	INT32 tmp;
+    INT16 A;
+    INT16 output;
+    INT32 tmp;
 
-//	x = input << 8;	// shift by 8 if i/p = 8 bits
-//	x = input<<6;	// shift by 6 if i/p = 10 bits  OLD
-//	x = input<<5;	// shift by 6 if i/p = 10 bits  NEW
-	x=input;
+//  x = input << 8; // shift by 8 if i/p = 8 bits
+//  x = input<<6;   // shift by 6 if i/p = 10 bits  OLD
+//  x = input<<5;   // shift by 6 if i/p = 10 bits  NEW
+    x = input;
 
-	tmp = (R * Prev_y);
-	A = (INT16)((tmp + (1 << 14)) >> 15);
-	y = x - Prev_x + A;
+    tmp = (R * Prev_y);
+    A = (INT16)((tmp + (1 << 14)) >> 15);
+    y = x - Prev_x + A;
 
-	// Flow control
-	if(y>32767)  //NEW
-	y = 32767;    //NEW
-	if(y< -32768)  //NEW
-	y = -32768;    //NEW
-	Prev_y = y;
-	Prev_x = x;
+    // Flow control
+    if (y > 32767) { //NEW
+        y = 32767;    //NEW
+    }
 
-//	output = (INT8)((y + (1 << 7)) >> 8);	// want o/p = 8 bits
-//	output = (INT16)((y + (1 << 5)) >> 6);	// want o/p = 10 bits  OLD
-//   	output = (INT16)((y + (1 << 4)) >> 5);	// want o/p = 10 bits  NEW
+    if (y < -32768) { //NEW
+        y = -32768;    //NEW
+    }
 
-	output = (INT16)y;
-	// clipping: Note for RTL: make sure output is clipped to 10 bits
-//	if(output > 511)
-//		output = 511;
-//	else if(output < -512)
-//		output = -512;
+    Prev_y = y;
+    Prev_x = x;
 
-	return	(output);		
+//  output = (INT8)((y + (1 << 7)) >> 8);   // want o/p = 8 bits
+//  output = (INT16)((y + (1 << 5)) >> 6);  // want o/p = 10 bits  OLD
+//      output = (INT16)((y + (1 << 4)) >> 5);  // want o/p = 10 bits  NEW
+
+    output = (INT16)y;
+    // clipping: Note for RTL: make sure output is clipped to 10 bits
+//  if(output > 511)
+//      output = 511;
+//  else if(output < -512)
+//      output = -512;
+
+    return (output);
 }

@@ -45,21 +45,26 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "board.h"
+#include "mxc.h"
 #include "mxc_delay.h"
 #include "camera.h"
 #include "state.h"
-#include "tft.h"
-#include <mxc.h>
 #include "icc.h"
 #include "rtc.h"
-
+#include "cnn.h"
+#ifdef BOARD_FTHR_REVA
+#include "tft_fthr.h"
+#endif
+#ifdef BOARD_EVKIT_V1
+#include "tft.h"
+#include "bitmap.h"
+#endif
 #include "MAXCAM_Debug.h"
 #include "faceID.h"
 #include "weights.h"
 #include "embedding_process.h"
-
-#define IMAGE_XRES  200
-#define IMAGE_YRES  150
+#include "keypad.h"
+#define CAMERA_FREQ (10 * 1000 * 1000)
 
 static const uint8_t camera_settings[][2] = {
 	{0x0e, 0x08}, // Sleep mode
@@ -153,11 +158,11 @@ static const uint8_t camera_settings[][2] = {
 	{0x8e, 0x92},
 	{0x96, 0xff},
 	{0x97, 0x00},
-	{0x14, 0x3b}, 	// AGC value, manual, set banding (default is 0x30)
+	{0x14, 0x3b},	// AGC value, manual, set banding (default is 0x30)
 	{0x0e, 0x00},
 	{0x0c, 0xd6},
 	{0x82, 0x3},
-	{0x11, 0x00},  	// Set clock prescaler
+	{0x11, 0x00},	// Set clock prescaler
     {0x12, 0x6},
     {0x61, 0x0},
     {0x64, 0x11},
@@ -176,9 +181,9 @@ static const uint8_t camera_settings[][2] = {
     {0xca, 0x1},
     {0xcb, 0xe0},
     {0xcc, 0x0},
-    {0xcd, 0x40}, 	// Default to 64 line width
+    {0xcd, 0x40},	// Default to 64 line width
     {0xce, 0x0},
-    {0xcf, 0x40}, 	// Default to 64 lines high
+    {0xcf, 0x40},	// Default to 64 lines high
     {0x1c, 0x7f},
     {0x1d, 0xa2},
 	{0xee, 0xee}  // End of register list marker 0xee
@@ -195,14 +200,12 @@ int main(void)
     int ret = 0;
     int slaveAddress;
     int id;
+    int dma_channel;
 
-	/* Touch screen controller interrupt signal */
-	mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-	/* Touch screen controller busy signal */
-	mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-
-	printf("\n\nFaceID EvKit Demo\n");
-
+#ifdef BOARD_FTHR_REVA
+	// Wait for PMIC 1.8V to become available, about 180ms after power up.
+	MXC_Delay(200000);
+#endif
 	/* Enable cache */
 	MXC_ICC_Enable(MXC_ICC0);
 
@@ -210,10 +213,12 @@ int main(void)
 	MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 	SystemCoreClockUpdate();
 
-	if (initCNN() < 0 ) {
-		PR_ERR("Could not initialize the CNN accelerator");
-		return -1;
-	}
+	// Enable peripheral, enable CNN interrupt, turn on CNN clock
+	// CNN clock: 50 MHz div 1
+	cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+	cnn_init(); // Bring CNN state machine into consistent state
+	cnn_load_weights(); // Load CNN kernels
+	cnn_configure(); // Configure CNN state machine
 
 	if (init_database() < 0 ) {
 		PR_ERR("Could not initialize the database");
@@ -224,9 +229,20 @@ int main(void)
 	MXC_RTC_Init(0, 0);
 	MXC_RTC_Start();
 
-	// Initialize the camera driver.
-	camera_init();
+	// Initialize DMA for camera interface
+	MXC_DMA_Init();
+	dma_channel = MXC_DMA_AcquireChannel();
 
+#ifdef BOARD_FTHR_REVA
+	/* Enable camera power */
+	Camera_Power(POWER_ON);
+	MXC_Delay(300000);
+	PR_DEBUG("\n\nFaceID Feather Demo\n");
+#else
+	PR_DEBUG("\n\nFaceID Evkit Demo\n");
+#endif
+	// Initialize the camera driver.
+	camera_init(CAMERA_FREQ);
 
 	// Obtain the I2C slave address of the camera.
 	slaveAddress = camera_get_slave_address();
@@ -254,36 +270,55 @@ int main(void)
 	}
 
 	// Setup the camera image dimensions, pixel format and data acquiring details.
-	ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA);
+	ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
 	if (ret != STATUS_OK) {
 		printf("Error returned from setting up camera. Error %d\n", ret);
 		return -1;
 	}
 
+#ifdef TFT_ENABLE
+#ifdef BOARD_EVKIT_V1
 	/* Initialize TFT display */
 	MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-
 	/* Set the screen rotation */
 	MXC_TFT_SetRotation(SCREEN_ROTATE);
-
 	/* Change entry mode settings */
 	MXC_TFT_WriteReg(0x0011, 0x6858);
+#endif
+#ifdef BOARD_FTHR_REVA
+    /* Initialize TFT display */
+    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+	MXC_TFT_SetRotation(ROTATE_180);
+	MXC_TFT_SetBackGroundColor(4);
+    MXC_TFT_SetForeGroundColor(WHITE);   // set font color to white
+#endif
+#endif
 
+#ifdef TS_ENABLE
+	/* Touch screen controller interrupt signal */
+	mxc_gpio_cfg_t int_pin = {MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+	/* Touch screen controller busy signal */
+	mxc_gpio_cfg_t busy_pin = {MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
 	/* Initialize Touch Screen controller */
 	MXC_TS_Init(MXC_SPI0, 2, &int_pin, &busy_pin);
 	MXC_TS_Start();
+#endif
 
 	/* Display Home page */
 	state_init();
 
-
+#ifndef TS_ENABLE
+	key = KEY_1;
+#endif
     while (1) { //TFT Demo
 		/* Get current screen state */
         state = state_get_current();
-
+#ifdef TS_ENABLE
 		/* Check pressed touch screen key */
         key = MXC_TS_GetKey();
-        if (key > 0) {
+#endif
+
+		if (key > 0) {
             state->prcss_key(key);
         }
     }

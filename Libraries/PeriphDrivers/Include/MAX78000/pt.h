@@ -106,9 +106,6 @@ void MXC_PT_Init (mxc_clk_scale_t clk_scale);
  * @note       Shutdown pulse train channel/channels and delete config.
  *
  * @param      pts Pulse train channel to operate on.
- *
- * @return     #E_NO_ERROR if everything is successful, @ref MXC_Error_Codes
- *             "error" if unsuccessful.
  */
 void MXC_PT_Shutdown (uint32_t pts);
 
@@ -203,7 +200,7 @@ uint32_t MXC_PT_GetFlags (void);
 /**
  * @brief      Clears the pulse train's interrupt flag.
  *
- * @param      mask  bits to clear, see \ref MXC_PT_INTFL_Register Register for details.
+ * @param      flags  Interrupt flags to clear, see \ref MXC_PT_INTFL_Register Register for details.
  */
 void MXC_PT_ClearFlags (uint32_t flags);
 
@@ -221,6 +218,7 @@ void MXC_PT_EnableRestart (unsigned start, unsigned stop, uint8_t restartIndex);
 /**
  * @brief      Disable the restart for the specified pulse train
  *
+ * @param      channel       Pulse Train channel
  * @param      restartIndex  selects which restart trigger to disable (0 or 1)
  */
 void MXC_PT_DisableRestart (unsigned channel, uint8_t restartIndex);

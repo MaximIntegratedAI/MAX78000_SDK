@@ -101,22 +101,68 @@ typedef enum {
 
 /* **** Function Prototypes **** */
 
+/**
+ * @brief Initialize the Parallel Camera Interface.
+ *
+ * @param gpioDataWidth   Desired datawidth for the camera interface (8, 10 or 12 bits).
+ *
+ * @return E_NO_ERROR if successful, otherwise E_BAD_PARAM.
+ */
 int MXC_PCIF_Init(mxc_pcif_gpio_datawidth_t gpioDataWidth);
 
+/**
+ * @brief   Set data width for the camera interface.
+ *
+ * @param  datawidth 8/10/12 bit
+ */
 void MXC_PCIF_SetDataWidth(mxc_pcif_datawidth_t  datawidth);
 
+/**
+ * @brief   Set the desired timing mode for the camera interface.
+ *
+ * @param  timingsel There are two different timing modes. HSYNC/VSYNC and Data Stream.
+ */
 void MXC_PCIF_SetTimingSel(mxc_pcif_timingsel_t timingsel);
 
-void MXC_PCIF_SetThreshhold(int fifo_thrsh);
+/**
+ * @brief  Set camera FIFO threshold.
+ *
+ * @param  fifo_thrsh Desired FIFO threshold.
+ */
+void MXC_PCIF_SetThreshold(int fifo_thrsh);
 
+/**
+ * @brief   Enable camera interrupts.
+ *
+ * @param  flags Interrupt flags
+ */
 void MXC_PCIF_EnableInt(uint32_t flags);
 
+/**
+ * @brief  Disable camera interrupts.
+ *
+ * @param  flags Interrupt flags
+ */
 void MXC_PCIF_DisableInt(uint32_t flags);
 
+/**
+ * @brief  Start to capture image from camera interface
+ *
+ * @param  readmode Single mode or Continues mode
+ */
 void MXC_PCIF_Start(mxc_pcif_readmode_t  readmode);
 
+/**
+ * @brief  Stop capture, disable Parallel camera interface
+ *
+ */
 void MXC_PCIF_Stop(void);
 
+/**
+ * @brief   Read fifo of PCIF
+ *
+ * @return  Value of fifo
+ */
 unsigned int MXC_PCIF_GetData(void);
 
 /**@} end of group cameraif */

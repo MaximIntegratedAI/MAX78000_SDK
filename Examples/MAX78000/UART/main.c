@@ -53,7 +53,7 @@
 #include "nvic_table.h"
 
 /***** Definitions *****/
-#define DMA
+// #define DMA
 
 #define UART_BAUD           115200
 #define BUFF_SIZE           1024

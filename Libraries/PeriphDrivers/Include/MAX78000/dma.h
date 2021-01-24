@@ -40,6 +40,7 @@
 #define _DMA_H_
 
 /* **** Includes **** */
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "dma_regs.h"
 
@@ -298,6 +299,18 @@ int MXC_DMA_GetSrcReload (mxc_dma_srcdst_t* srcdstReload);
  *             #E_NO_ERROR otherwise, \ref MXC_Error_Codes
  */
 int MXC_DMA_SetCallback (int ch, void (*callback) (int, int));
+
+/**
+ * @brief      Set channel interrupt
+ * @note       Each channel has two interrupts (complete, and count to zero).
+ *             To enable complete, pass true for chdis. To enable count to zero,
+ *             pass true for ctz.
+ * @param      ch Channel Handle
+ * @param      chdis Enable channel complete interrupt
+ * @param      ctz Enable channel count to zero interrupt.
+ * @return     #E_BAD_PARAM if an unused or invalid channel handle, #E_NO_ERROR otherwise
+ */
+int MXC_DMA_SetChannelInterruptEn (int ch, bool chdis, bool ctz);
 
 /**
  * @brief      Enable channel interrupt

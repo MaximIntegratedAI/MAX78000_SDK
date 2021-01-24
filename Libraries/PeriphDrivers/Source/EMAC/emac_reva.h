@@ -36,6 +36,8 @@
 
 /* **** Includes **** */
 #include <stddef.h>
+#include "emac.h"
+#include "emac_reva_regs.h"
 
 /* **** Definitions **** */
 #define MAX_SYS_EMAC_RX_BUFFER_SIZE             16384
@@ -110,9 +112,9 @@
 
 /* **** Macros **** */
 /* Bit Manipulation */
-#define EMAC_BIT(reg, name)                     (1 << MXC_F_EMAC_##reg##_##name##_POS)
-#define EMAC_BF(reg, name, value)               (((value) & (MXC_F_EMAC_##reg##_##name >> MXC_F_EMAC_##reg##_##name##_POS)) << MXC_F_EMAC_##reg##_##name##_POS)
-#define EMAC_BFEXT(reg, name, value)            (((value) >> MXC_F_EMAC_##reg##_##name##_POS) & (MXC_F_EMAC_##reg##_##name >> MXC_F_EMAC_##reg##_##name##_POS))
+#define EMAC_BIT(reg, name)                     (1 << MXC_F_EMAC_REVA_##reg##_##name##_POS)
+#define EMAC_BF(reg, name, value)               (((value) & (MXC_F_EMAC_REVA_##reg##_##name >> MXC_F_EMAC_REVA_##reg##_##name##_POS)) << MXC_F_EMAC_REVA_##reg##_##name##_POS)
+#define EMAC_BFEXT(reg, name, value)            (((value) >> MXC_F_EMAC_REVA_##reg##_##name##_POS) & (MXC_F_EMAC_REVA_##reg##_##name >> MXC_F_EMAC_REVA_##reg##_##name##_POS))
 
 /* Register Access */
 #define REG_READL(a)                            (*(volatile uint32_t *)(a))
@@ -123,12 +125,89 @@
 /* Misc */
 #define barrier()                               asm volatile("" ::: "memory")
 
+/** @brief   Enumeration for the EMAC interrupt events */
+typedef enum {
+    MXC_EMAC_REVA_EVENT_MPS      = MXC_F_EMAC_REVA_INT_EN_MPS,        /**! Management Packet Sent Interrupt                   */
+    MXC_EMAC_REVA_EVENT_RXCMPL   = MXC_F_EMAC_REVA_INT_EN_RXCMPL,     /**! Receive Complete Interrupt                         */
+    MXC_EMAC_REVA_EVENT_RXUBR    = MXC_F_EMAC_REVA_INT_EN_RXUBR,      /**! RX Used Bit Read Interrupt                         */
+    MXC_EMAC_REVA_EVENT_TXUBR    = MXC_F_EMAC_REVA_INT_EN_TXUBR,      /**! TX Used Bit Read Interrupt                         */
+    MXC_EMAC_REVA_EVENT_TXUR     = MXC_F_EMAC_REVA_INT_EN_TXUR,       /**! Ethernet Transmit Underrun Interrupt               */
+    MXC_EMAC_REVA_EVENT_RLE      = MXC_F_EMAC_REVA_INT_EN_RLE,        /**! Retry Limit Exceeded Interrupt                     */
+    MXC_EMAC_REVA_EVENT_TXERR    = MXC_F_EMAC_REVA_INT_EN_TXERR,      /**! Transmit Buffers Exhausted In Mid-Frame Interrupt  */
+    MXC_EMAC_REVA_EVENT_TXCMPL   = MXC_F_EMAC_REVA_INT_EN_TXCMPL,     /**! Transmit Complete Interrupt                        */
+    MXC_EMAC_REVA_EVENT_LC       = MXC_F_EMAC_REVA_INT_EN_LC,         /**! Link Change Interrupt                              */
+    MXC_EMAC_REVA_EVENT_RXOR     = MXC_F_EMAC_REVA_INT_EN_RXOR,       /**! Receive Overrun Interrupt                          */
+    MXC_EMAC_REVA_EVENT_HRESPNO  = MXC_F_EMAC_REVA_INT_EN_HRESPNO,    /**! HRESP Not OK Interrupt                             */
+    MXC_EMAC_REVA_EVENT_PPR      = MXC_F_EMAC_REVA_INT_EN_PPR,        /**! Pause Packet Received Interrupt                    */
+    MXC_EMAC_REVA_EVENT_PTZ      = MXC_F_EMAC_REVA_INT_EN_PTZ         /**! Pause Time Zero Interrupt                          */
+} mxc_emac_reva_events_t;
+
+
+/* **** Structures **** */
+
+/**
+ * @brief   The information needed for an EMAC buffer descriptor
+ *
+ */
+typedef struct {
+    unsigned int                                addr;
+    unsigned int                                ctrl;
+} mxc_emac_reva_dma_desc_t;
+
+
+/**
+ * @brief   The information needed by the EMAC driver to operate
+ *
+ */
+typedef struct {
+    mxc_emac_reva_regs_t                             *regs;
+    unsigned int                                rx_tail;
+    unsigned int                                tx_head;
+    unsigned int                                tx_tail;
+    void                                        *rx_buffer;
+    void                                        *tx_buffer;
+    mxc_emac_reva_dma_desc_t                    *rx_ring;
+    mxc_emac_reva_dma_desc_t                    *tx_ring;
+    unsigned int                                rx_buffer_dma;
+    unsigned int                                rx_ring_dma;
+    unsigned int                                tx_ring_dma;
+    unsigned short                              phy_addr;
+    
+    unsigned int                                first_init;
+    unsigned int                                rx_buffer_size;
+    unsigned int                                rx_ring_size;
+    unsigned int                                tx_ring_size;
+    mxc_emac_delay_func_t                       delay_us;
+    mxc_emac_cb_funcs_tbl_t                     cb_funcs;
+} mxc_emac_reva_device_t;
+
+/**
+ * @brief   The basic configuration information to set up EMAC module
+ *
+ */
+typedef struct {
+    unsigned char                               *rx_buff;
+    unsigned char                               *rx_ring_buff;
+    unsigned char                               *tx_ring_buff;
+    unsigned int                                rx_buff_size;
+    unsigned int                                rx_ring_buff_size;
+    unsigned int                                tx_ring_buff_size;
+    unsigned short                              phy_addr;
+    unsigned int                                interrupt_mode;
+    unsigned int                                interrupt_events;
+    mxc_emac_delay_func_t                       delay_us;
+    mxc_emac_cb_funcs_tbl_t                     conf_cb_funcs;
+} mxc_emac_reva_config_t;
+
+
+
+
 /* **** Function Prototypes **** */
 /* ************************************************************************* */
 /* Control/Configuration Functions                                           */
 /* ************************************************************************* */
-int MXC_EMAC_RevA_Init (mxc_emac_config_t *config);
-int MXC_EMAC_RevA_SetConfiguration (mxc_emac_config_t *config);
+int MXC_EMAC_RevA_Init (mxc_emac_reva_config_t *config);
+int MXC_EMAC_RevA_SetConfiguration (mxc_emac_reva_config_t *config);
 int MXC_EMAC_RevA_SetHwAddr (unsigned char *enetaddr);
 int MXC_EMAC_RevA_EnableInterruptEvents (unsigned int events);
 int MXC_EMAC_RevA_DisableInterruptEvents (unsigned int events);

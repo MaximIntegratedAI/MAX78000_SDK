@@ -75,7 +75,7 @@ extern "C" {
 /* **** Definitions **** */
 
 /**
- * @ingroup     pt
+ * @ingroup     pulsetrain
  * @defgroup    pt_registers PT_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the PT Peripheral Module.
  * @details Pulse Train

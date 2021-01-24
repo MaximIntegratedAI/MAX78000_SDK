@@ -68,23 +68,30 @@ typedef enum {
 
 /**
  * @brief   Reads the data from the Cache Id Register.
- * @param   cid Enumeration type for Cache Id Register.
+ * @param   icc  Pointer to the Instuction Cache Controller registers.
+ * @param   cid  Enumeration type for Cache Id Register.
  * @retval  Returns the contents of Cache Id Register.
  */
 int MXC_ICC_ID (mxc_icc_regs_t* icc, mxc_icc_info_t cid);
 
 /**
  * @brief   Enable the instruction cache controller.
+ *
+ * @param icc  Pointer to the Instuction Cache Controller registers.
  */
 void MXC_ICC_Enable (mxc_icc_regs_t* icc);
 
 /**
  * @brief   Disable the instruction cache controller.
+ *
+ * @param icc  Pointer to the Instuction Cache Controller registers.
  */
 void MXC_ICC_Disable (mxc_icc_regs_t* icc);
 
 /**
  * @brief   Flush the instruction cache controller.
+ *
+ * @param icc  Pointer to the Instuction Cache Controller registers.
  */
 void MXC_ICC_Flush (mxc_icc_regs_t* icc);
 

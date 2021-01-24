@@ -69,8 +69,8 @@ export CMSIS_ROOT
 # LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/max78000_arm.ld
 
 # Source files for this test (add path to VPATH below)
-SRCS  = main.c
-SRCS += softmax.c
+SRCS  = main.c 
+SRCS += cnn.c
 
 # Where to find source files for this test
 VPATH  = .
@@ -94,7 +94,7 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 PROJ_CFLAGS+=-DARM_MATH_CM4
 
 # Enable all warnings
-PROJ_CFLAGS+=-Wall
+PROJ_CFLAGS+=-Wall -Wcast-align
 
 # Specify the target revision to override default
 # "A2" in ASCII

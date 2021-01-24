@@ -2,7 +2,7 @@
 typora-root-url: Resources
 ---
 
-# MAX78000 Keyword Spotting Demo
+# MAX78000 Keyword Spotting Demo v.3
 
 
 
@@ -99,7 +99,7 @@ Following words can be detected:
 
  The MAX78000 KWS20 demo firmware recognizes keywords and reports result and confidence level.
 
-The microphone (U15) is located between JH4 and JH5 headers on EVKIT or between J5 and J7 audio connectors on MAX78000 Feather board.
+The microphone (U15) is located between JH4 and JH5 headers on EVKIT, (MK1) between J5 and J7 audio connectors on MAX78000 Feather board.
 
 
 
@@ -120,8 +120,33 @@ Load firmware image using Openocd.
 ### MAX78000 Feather operations
 
 The KWS20 demo starts automatically after power-up or pressing reset button (SW4).
+The TFT display is optional and not supplied with the MAX78000 Feather board.
+User should use PC terminal program to observe KWS20 demo result as described in "Using Debug Terminal" section.
 
-The MAX78000 Feather board is shipped without TFT display.  User should use PC terminal program to observe KWS20 demo result as described below.
+The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
+
+https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
+
+This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
+
+To compile code with enabled TFT feature use following setting in Makefile:
+
+```bash
+ifeq "$(BOARD)" "FTHR_RevA"
+PROJ_CFLAGS += -DENABLE_TFT
+endif
+```
+
+While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
+Press PB1 (SW1) button to start demo.
+
+![](/feather_tft.jpg)
+
+The PB1 (SW1) button is located as shown in picture bellow:
+
+![](/pb1_button.jpg)
+
+
 
 ### Using Debug Terminal
 
@@ -153,75 +178,79 @@ The software components of KWS20 demo are shown in diagram below:
 
 ## CNN Model
 
-The KWS20 Convolutional Neural Network (CNN) model consists of two connected networks: **Conv1D** and **Conv2D**. The **1D** CNN with 4 layers is used to extract speech parameters and second **2D** CNN with 5 layers and one fully connected layer to recognize keyword from 20 words dictionary used for training.
+The KWS20 v.3 Convolutional Neural Network (CNN) model consists of **1D** CNN with 8 layers and one fully connected layer to recognize keyword from 20 words dictionary used for training.
 
 ```python
-class AI85KWS20Net(nn.Module):
+class AI85KWS20Netv3(nn.Module):
     """
-    Compound KWS20 Audio net, starting with Conv1Ds with kernel_size=1
-    and then switching to Conv2Ds
+    Compound KWS20 v3 Audio net, all with Conv1Ds
     """
+
     # num_classes = n keywords + 1 unknown
     def __init__(
             self,
             num_classes=21,
             num_channels=128,
             dimensions=(128, 1),  # pylint: disable=unused-argument
-            fc_inputs=7,
-            bias=False
+            bias=False,
+            **kwargs
+
     ):
-        super(AI85KWS20Net, self).__init__()
-
-        self.voice_conv1 = ai8x.FusedConv1dReLU(num_channels, 100, 1, stride=1, padding=0,
-                                               bias=bias)
-
-        self.voice_conv2 = ai8x.FusedConv1dReLU(100, 100, 1, stride=1, padding=0,
-                                               bias=bias)
-
-        self.voice_conv3 = ai8x.FusedConv1dReLU(100, 50, 1, stride=1, padding=0,
-                                               bias=bias)
-
-        self.voice_conv4 = ai8x.FusedConv1dReLU(50, 16, 1, stride=1, padding=0,
-                                               bias=bias)
-
-        self.kws_conv1 = ai8x.FusedConv2dReLU(16, 32, 3, stride=1, padding=1,
-                                              bias=bias)
-
-        self.kws_conv2 = ai8x.FusedConv2dReLU(32, 64, 3, stride=1, padding=1,
-                                              bias=bias)
-
-        self.kws_conv3 = ai8x.FusedConv2dReLU(64, 64, 3, stride=1,
-                                              padding=1, bias=bias)
-
-        self.kws_conv4 = ai8x.FusedConv2dReLU(64, 30, 3, stride=1,
-                                              padding=1, bias=bias)
-
-        self.kws_conv5 = ai8x.FusedConv2dReLU(30, fc_inputs, 3, stride=1,
-                                              padding=1, bias=bias)
-
-        self.fc = ai8x.Linear(fc_inputs*128, num_classes, bias=bias)
-
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+        super().__init__()
+        self.drop = nn.Dropout(p=0.2)
+        # Time: 128 Feature :128
+        self.voice_conv1 = ai8x.FusedConv1dReLU(num_channels, 100, 1, 
+                                                stride=1, padding=0,
+                                                bias=bias, **kwargs)
+        # T: 128 F: 100
+        self.voice_conv2 = ai8x.FusedConv1dReLU(100, 96, 3, 
+                                                stride=1, padding=0,
+                                                bias=bias, **kwargs)
+        # T: 126 F : 96
+        self.voice_conv3 = ai8x.FusedMaxPoolConv1dReLU(96, 64, 3, 
+                                                       stride=1, padding=1,
+                                                       bias=bias, **kwargs)
+        # T: 62 F : 64
+        self.voice_conv4 = ai8x.FusedConv1dReLU(64, 48, 3, 
+                                                stride=1, padding=0,
+                                                bias=bias, **kwargs)
+        # T : 60 F : 48
+        self.kws_conv1 = ai8x.FusedMaxPoolConv1dReLU(48, 64, 3, 
+                                                     stride=1, padding=1,
+                                                     bias=bias, **kwargs)
+        # T: 30 F : 64
+        self.kws_conv2 = ai8x.FusedConv1dReLU(64, 96, 3, 
+                                              stride=1, padding=0,
+                                              bias=bias, **kwargs)
+        # T: 28 F : 96
+        self.kws_conv3 = ai8x.FusedAvgPoolConv1dReLU(96, 100, 3, 
+                                                     stride=1, padding=1,
+                                                     bias=bias, **kwargs)
+        # T : 14 F: 100
+        self.kws_conv4 = ai8x.FusedMaxPoolConv1dReLU(100, 64, 6, 
+                                                     stride=1, padding=1,
+                                                     bias=bias, **kwargs)
+        # T : 2 F: 128
+        self.fc = ai8x.Linear(256, num_classes, bias=bias, wide=True, **kwargs)
 
     def forward(self, x):  # pylint: disable=arguments-differ
+        """Forward prop"""
         # Run CNN
         x = self.voice_conv1(x)
         x = self.voice_conv2(x)
+        x = self.drop(x)
         x = self.voice_conv3(x)
         x = self.voice_conv4(x)
-        x = x.view(x.shape[0], x.shape[1], 16, -1)
+        x = self.drop(x)
         x = self.kws_conv1(x)
         x = self.kws_conv2(x)
+        x = self.drop(x)
         x = self.kws_conv3(x)
         x = self.kws_conv4(x)
-        x = self.kws_conv5(x)
         x = x.view(x.size(0), -1)
         x = self.fc(x)
 
         return x
-
 ```
 
 The CNN input is 128x128=16384 8-bit signed speech samples.
@@ -231,7 +260,7 @@ The CNN input is 128x128=16384 8-bit signed speech samples.
 To invoke network training execute the script:
 
 ```bash
-(ai8x-training) $ ./train_kws20.sh
+(ai8x-training) $ ./scripts/train_kws20_v3.sh
 ```
 
 If this is the first time, and the dataset does not exist locally, the scrip will automatically download Google speech commands dataset (1 second keyword .wav files , sampled at 16KHz, 16-bit) into /data/KWS/raw, and process it to make appropriate training, test and validation dataset integrated in /data/KWS/process/dataset.pt. The processing step expands training dataset by using augmentation techniques like adding white noise, random time shift and stretch to improve training results. In addition, each 16000 sample word example is padded with zeros to make it 128x128=16384 speech samples. The augmentation process triples the size of dataset and could take 30min to complete.
@@ -241,7 +270,7 @@ Details of network training methodology are described in [AI8X Model Training an
 After training unquantized network can be evaluated by executing script:
 
 ```bash
-(ai8x-training) $ ./evaluate_kws20.sh
+(ai8x-training) $ ./scripts/evaluate_kws20_v3.sh
 ```
 
 
@@ -251,36 +280,20 @@ After training unquantized network can be evaluated by executing script:
 The CNN weights generated during training need to be quantized:
 
 ```bash
-(ai8x-synthesis) $ ./quantize_kws20.sh
+(ai8x-synthesis) $ ./scripts/quantize_kws20_v3.sh
 ```
-
-
-
-The weight scale parameter 0.97 is selected to achieve best performance for 8-bit quantization.
-
-![](/CalibrationScale.png)
-
-
 
 Details of quantization are described in [AI8X Model Training and Quantization](https://github.com/MaximIntegratedAI/ai8x-synthesis/blob/master/README.md)
 
-Effect of quantization is shown in confusion matrix below.
-
-​    [   up       down     left     right    stop      go         yes     no       on       off         one       two     three    four     five       six     seven   eight    nine   zero  unknown]
-
-![](/image2020-6-2_13-44-21.png)
-
-
-
 ## Network Synthesis
 
-The network synthesis script generates a pass/fail C example code which includes necessary functions to initialize MAX78000 CNN accelerator, to load quantized CNN weights and input samples and to unload classification results. A sample input with the expected result is part of this automatically generated code to verify.  Following script generates all example projects including ai85-kws20:
+The network synthesis script generates a pass/fail C example code which includes necessary functions to initialize MAX78000 CNN accelerator, to load quantized CNN weights and input samples and to unload classification results. A sample input with the expected result is part of this automatically generated code to verify.  Following script generates all example projects including **kws20_v3**:
 
 ```bash
 (ai8x-synthesis) $ ./gen-demos-max78000.sh
 ```
 
-The ai85-kws20 bare-bone C code is partially used in KWS20 Demo. In particular, CNN initialization, weights (kernels) and helper functions to load/unload weights and samples are ported from ai85-kws20 to KWS20 Demo.
+The **kws20_v3** bare-bone C code is partially used in KWS20 Demo. In particular, CNN initialization, weights (kernels) and helper functions to load/unload weights and samples are ported from **kws20_v3** to KWS20 Demo.
 
 
 
@@ -334,7 +347,7 @@ The CNN requires 1sec worth of samples (128*128) to start processing. This windo
 
 The CNN related API functions are in **cnn.c**. They are used to load weights and data, start CNN, wait for CNN to complete processing and unload the result. 
 
-If a new network is developed and synthesized, the new weight file and related API functions are needed to be ported from automatically generated ai85-kws20 example project. Furthermore, if the input layer or organization of 128x128 sample sets in the trained network is changed, **AddTranspose()** function should be changed to reflect the new sample data arrangement in CNN memory.
+If a new network is developed and synthesized, the new weight file and related API functions are needed to be ported from automatically generated kws20 example project. Furthermore, if the input layer or organization of 128x128 sample sets in the trained network is changed, **AddTranspose()** function should be changed to reflect the new sample data arrangement in CNN memory.
 
 ### References
 

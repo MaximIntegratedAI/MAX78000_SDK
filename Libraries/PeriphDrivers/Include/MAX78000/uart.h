@@ -118,11 +118,9 @@ typedef void (*mxc_uart_dma_complete_cb_t)(mxc_uart_req_t* req, int num, int res
  * @brief   The information required to perform a complete UART transaction
  *
  * @note    This structure is used by blocking, async, and DMA based transactions.
+ * @note    "callback" only needs to be initialized for interrupt driven (Async) or DMA transactions.
  */
 struct _mxc_uart_req_t {
-    /** @defgroup required The members needed for all types of transactions
-     *  @{
-     */
     mxc_uart_regs_t* uart;      ///<Point to UART registers
     const uint8_t  *txData;     ///< Buffer containing transmit data. For character sizes
                                 ///< < 8 bits, pad the MSB of each byte with zeros. For 
@@ -136,13 +134,8 @@ struct _mxc_uart_req_t {
     uint32_t        rxLen;      ///< Number of bytes to be stored in rxData
     uint32_t        txCnt;      ///< Number of bytes actually transmitted from txData
     uint32_t        rxCnt;      ///< Number of bytes stored in rxData
-    /*** @} */ // end of required group
 
-    /** @defgroup async The members required for Interrupt or DMA driven transactions
-     *  @{
-     */
     mxc_uart_complete_cb_t callback;  ///< Pointer to function called when transaction is complete
-    /*** @} */ // end of async group
 };
 
 /***** Function Prototypes *****/
@@ -168,8 +161,7 @@ struct _mxc_uart_req_t {
  *                       will be returned by the function if successful.
  * @param   clock        Clock source
  *
- * @return  If successful, the actual clock frequency is returned. Otherwise, see 
- *          \ref MXC_Error_Codes for a list of return codes.
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_UART_Init(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clock_t clock);
 

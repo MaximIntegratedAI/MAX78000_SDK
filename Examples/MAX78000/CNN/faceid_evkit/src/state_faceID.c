@@ -34,49 +34,53 @@
 */
 #include <string.h>
 
-#include "bitmap.h"
+#include "board.h"
 #include "keypad.h"
 #include "state.h"
 #include "utils.h"
-#include "tft.h"
 #include "camera.h"
 #include "touchscreen.h"
 #include "faceID.h"
 #include "utils.h"
 #include "embedding_process.h"
 #include "MAXCAM_Debug.h"
+#include "cnn.h"
+#ifdef BOARD_FTHR_REVA
+#include "tft_fthr.h"
+#endif
+#ifdef BOARD_EVKIT_V1
+#include "tft.h"
+#include "bitmap.h"
+#endif
 
-#define S_MODULE_NAME	"Run_c"
-
-//
-#define urw_gothic_16_white_bg_grey 0
-
-#define CAPTURE_X	70
-#define CAPTURE_Y	290
-#define	SKIP_X		60
-#define SKIP_Y		290
-#define RUN_X		160
-#define RUN_Y		290
-#define BACK_X		0
-#define BACK_Y		280
-
+#define S_MODULE_NAME	"FACEID"
 
 /********************************** Type Defines  *****************************/
 typedef void (*ScreenFunc)(void);
 
 /************************************ VARIABLES ******************************/
-static void screen_faceID(void);
+volatile uint32_t cnn_time; // Stopwatch
+
 static void process_img(void);
 static void run_cnn(int x_offset, int y_offset);
 static int init(void);
 static int key_process(int key);
 
-
+#ifdef TFT_ENABLE
 static text_t screen_msg[] = {
     // info
     { (char*) "FACEID DEMO", strlen("FACEID DEMO")},
 	{ (char *) "Process Time:",  strlen("Process Time:")},
 };
+#ifdef BOARD_EVKIT_V1
+static int bitmap = logo_white_bg_darkgrey_bmp;
+static int font = urw_gothic_12_grey_bg_white;
+#endif
+#ifdef BOARD_FTHR_REVA
+static int bitmap = (int)&logo_rgb565[0];
+static int font = (int)&SansSerif16x16[0];
+#endif
+#endif //#ifdef TFT_ENABLE
 
 static int8_t prev_decision = -2;
 static int8_t decision = -2;
@@ -84,26 +88,32 @@ static int8_t decision = -2;
 static State g_state = {"faceID", init, key_process, NULL, 0 };
 
 /********************************* Static Functions **************************/
+#ifdef TFT_ENABLE
 static void screen_faceID(void)
 {
-	MXC_TFT_SetPalette(logo_white_bg_darkgrey_bmp);
+
+	MXC_TFT_SetPalette(bitmap);
 	MXC_TFT_SetBackGroundColor(4);
-
-	MXC_TFT_ShowImage(3, 5, logo_white_bg_darkgrey_bmp);
-
-	MXC_TFT_PrintFont(98, 5, urw_gothic_12_grey_bg_white, &screen_msg[0], NULL);  // FACEID DEMO
+	MXC_TFT_ShowImage(3, 5, bitmap);
+#ifdef BOARD_EVKIT_V1
 	MXC_TFT_ShowImage(BACK_X, BACK_Y, left_arrow_bmp); // back button icon
-	MXC_TFT_PrintFont(12, 240, urw_gothic_12_grey_bg_white, &screen_msg[1], NULL);  // Process Time:
+#endif
+	MXC_TFT_PrintFont(98, 5, font, &screen_msg[0], NULL);  // FACEID DEMO
+	MXC_TFT_PrintFont(12, 240, font, &screen_msg[1], NULL);  // Process Time:
 	// texts
-
+#ifdef TS_ENABLE
 	MXC_TS_RemoveAllButton();
 	MXC_TS_AddButton(BACK_X, BACK_Y, BACK_X + 48, BACK_Y + 39, KEY_1); // Back
+#endif
 }
+#endif //#ifdef TFT_ENABLE
 
 static int init(void)
 {
 	uint32_t run_count = 0;
+#ifdef TFT_ENABLE
 	screen_faceID();
+#endif
 
 	camera_start_capture_image();
 
@@ -115,18 +125,18 @@ static int init(void)
 #endif
 
     while (1) { //Capture image and run CNN
-
+#ifdef TS_ENABLE
 		/* Check pressed touch screen key */
         int key = MXC_TS_GetKey();
         if (key > 0) {
-        	key_process(key);
+		key_process(key);
 
         }
 
 		if (state_get_current() != &g_state){
 			break;
 		}
-
+#endif
 		/* Check pressed touch screen key */
 		if (camera_is_image_rcv()) {
 
@@ -144,7 +154,7 @@ static int init(void)
 				run_cnn(10, -10);
 			}
 			run_count++;
-			
+
 #if (PRINT_TIME==1)
 
 			printf("\n\n\n");
@@ -174,15 +184,17 @@ static int key_process(int key)
     default:
         break;
     }
-    
+
     return 0;
 }
 
 static void process_img(void)
 {
-	uint8_t   *raw;
-	uint32_t  imgLen;
-	uint32_t  w, h;
+	uint32_t pass_time = 0;
+	uint32_t imgLen;
+	uint32_t w, h;
+	uint16_t *image;
+	uint8_t  *raw;
 
     // Get the details of the image from the camera driver.
 	camera_get_image(&raw, &imgLen, &w, &h);
@@ -191,18 +203,9 @@ static void process_img(void)
     // A python program will read from the console and write to an image file.
 //	utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
 
-	uint16_t *image = (uint16_t*)raw;	// 2bytes per pixel RGB565
-
-#define HEIGHT 		160
-#define WIDTH		120
-#define THICKNESS	4
-#define IMAGE_H		150
-#define IMAGE_W		200
-#define FRAME_COLOR	0x535A
-
-	uint32_t pass_time = 0;
-
 	pass_time = utils_get_time_ms();
+
+	image = (uint16_t*)raw; // 2bytes per pixel RGB565
 
 	// left line
 	image+=((IMAGE_H - (WIDTH+2*THICKNESS))/2)*IMAGE_W;
@@ -240,42 +243,44 @@ static void process_img(void)
 
 	PR_INFO("Frame drawing time : %d", utils_get_time_ms() - pass_time);
 
-#define X_START	45
-#define Y_START	30
-
 	pass_time = utils_get_time_ms();
 
+#ifdef TFT_ENABLE
+#ifdef BOARD_EVKIT_V1
 	MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, h, w);
+#endif
+#ifdef BOARD_FTHR_REVA
+	MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
+#endif
+#endif //#ifdef TFT_ENABLE
 
 	PR_INFO("Screen print time : %d", utils_get_time_ms() - pass_time);
 }
 
 static void run_cnn(int x_offset, int y_offset)
 {
-	uint8_t   *raw;
 	uint32_t  imgLen;
 	uint32_t  w, h;
-
+	static uint32_t noface_count=0;
 	/* Get current time */
 	uint32_t pass_time = 0;
-
+	uint8_t   *raw;
 
 	// Get the details of the image from the camera driver.
 	camera_get_image(&raw, &imgLen, &w, &h);
 
 	pass_time = utils_get_time_ms();
 
-	cnn_load();
+	// Enable CNN clock
+	MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN);
+
+	cnn_init(); // Bring state machine into consistent state
+	//cnn_load_weights(); // No need to reload kernels
+	cnn_configure(); // Configure state machine
 
 	cnn_start();
 
 	PR_INFO("CNN initialization time : %d", utils_get_time_ms() - pass_time);
-
-#define HEIGHT 			160
-#define WIDTH			120
-#define IMAGE_H			150
-#define IMAGE_W			200
-#define BYTE_PER_PIXEL	2
 
 	uint8_t * data = raw;
 
@@ -308,8 +313,9 @@ static void run_cnn(int x_offset, int y_offset)
 
 	int  cnn_load_time = utils_get_time_ms() - pass_time;
 
-	PR_INFO("CNN load data time : %d", cnn_load_time);
+	PR_DEBUG("CNN load data time : %d", cnn_load_time);
 
+#ifdef TFT_ENABLE
 	text_t cnn_load_time_string;
 	char string_time[7];
 
@@ -320,18 +326,23 @@ static void run_cnn(int x_offset, int y_offset)
 	area_t area = {150, 240, 50, 30};
 	MXC_TFT_ClearArea(&area, 4);
 
-	MXC_TFT_PrintFont(150, 240, urw_gothic_12_grey_bg_white, &cnn_load_time_string,  NULL);  // RunCNN
-
+	MXC_TFT_PrintFont(150, 240, font, &cnn_load_time_string,  NULL);  // RunCNN
+#endif
 
 	pass_time = utils_get_time_ms();
 
-	cnn_wait();
+	while (cnn_time == 0)
+		__WFI(); // Wait for CNN done
 
 	PR_INFO("CNN wait time : %d", utils_get_time_ms() - pass_time);
 
 	pass_time = utils_get_time_ms();
 
-	cnn_unload((uint8_t*)(raw));
+	cnn_unload((uint32_t*)(raw));
+
+	cnn_stop();
+	// Disable CNN clock to save power
+	MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CNN);
 
 	PR_INFO("CNN unload time : %d", utils_get_time_ms() - pass_time);
 
@@ -340,18 +351,64 @@ static void run_cnn(int x_offset, int y_offset)
 	int pResult = calculate_minDistance((uint8_t*)(raw));
 
 	PR_INFO("Embedding time : %d", utils_get_time_ms() - pass_time);
+	PR_INFO("Result = %d \n",pResult);
 
 	if ( pResult == 0 ) {
-		text_t printResult;
 		char *name;
 
 		uint8_t *counter;
 		uint8_t counter_len;
 		get_min_dist_counter(&counter, &counter_len);
-		
+
 		name = "";
 		prev_decision = decision;
-		decision = -3;
+		decision = -5;
+
+		PR_INFO("counter_len: %d,  %d,%d,%d\n",counter_len,counter[0],counter[1],counter[2]);
+#if 1
+		for(uint8_t id=0; id<counter_len; ++id){
+			if (counter[id] >= (uint8_t)(closest_sub_buffer_size*0.8)){   // >80%  detection
+				name = get_subject(id);
+				decision = id;
+				noface_count = 0;
+				PR_DEBUG("Status: %s \n", name);
+				PR_INFO("Detection: %s: %d", name, counter[id]);
+				break;
+			} else if (counter[id] >= (uint8_t)(closest_sub_buffer_size*0.4)){ // >%40 adjust
+				name = "Adjust Face";
+				decision = -2;
+				noface_count = 0;
+				PR_DEBUG("Status: %s \n", name);
+				PR_INFO("Detection: %s: %d", name, counter[id]);
+				break;
+			} else if (counter[id] > closest_sub_buffer_size*0.2){   //>>20% unknown
+				name = "Unknown";
+				decision = -1;
+				noface_count = 0;
+				PR_DEBUG("Status: %s \n", name);
+				PR_INFO("Detection: %s: %d", name, counter[id]);
+				break;
+			}
+			else if (counter[id] > closest_sub_buffer_size*0.1){   //>> 10% transition
+				name = "";
+				decision = -3;
+				noface_count = 0;
+				PR_DEBUG("Status: %s \n", name);
+				PR_INFO("Detection: %s: %d", name, counter[id]);
+			}
+			else
+			{
+				noface_count ++;
+				if (noface_count > 10)
+				{
+					name = "No face";
+					decision = -4;
+					noface_count --;
+					PR_INFO("Detection: %s: %d", name, counter[id]);
+				}
+			}
+		}
+#else
 		for(uint8_t id=0; id<counter_len; ++id){
 			if (counter[id] >= (closest_sub_buffer_size-4)){
 				name = get_subject(id);
@@ -367,16 +424,23 @@ static void run_cnn(int x_offset, int y_offset)
 				break;
 			}
 		}
+#endif
 
+		PR_DEBUG("Decision: %d Name:%s \n",decision, name);
+
+#ifdef TFT_ENABLE
 		if(decision != prev_decision){
+			text_t printResult;
+
 			printResult.data = name;
 			printResult.len = strlen(name);
 
-			area_t area = {60, 290, 180, 30};
+			area_t area = {50, 290, 180, 30};
 			MXC_TFT_ClearArea(&area, 4);
+			MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult,  NULL);  // RunCNN
 
-			MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, urw_gothic_12_grey_bg_white, &printResult,  NULL);  // RunCNN
 		}
+#endif
 	}
 }
 
@@ -385,4 +449,3 @@ State* get_faceID_state(void)
 {
     return &g_state;
 }
-

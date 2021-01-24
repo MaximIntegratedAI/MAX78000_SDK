@@ -45,7 +45,8 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "flc.h"
-#include "flc_reva.h"   
+#include "flc_revb.h"   
+#include "flc_reva.h"
 
 /**
  * @ingroup flc
@@ -75,9 +76,9 @@ int MXC_FLC_RevB_Busy(void)
 #else
 __attribute__((section(".flashprog")))
 #endif
-int MXC_FLC_RevB_MassErase(mxc_flc_regs_t* flc)
+int MXC_FLC_RevB_MassErase(mxc_flc_revb_regs_t* flc)
 {
-    return MXC_FLC_RevA_MassErase(flc);
+    return MXC_FLC_RevA_MassErase((mxc_flc_reva_regs_t*)flc);
 }
 
 //******************************************************************************
@@ -86,9 +87,9 @@ int MXC_FLC_RevB_MassErase(mxc_flc_regs_t* flc)
 #else
 __attribute__((section(".flashprog")))
 #endif
-int MXC_FLC_RevB_PageErase(mxc_flc_regs_t* flc, uint32_t addr)
+int MXC_FLC_RevB_PageErase(mxc_flc_revb_regs_t* flc, uint32_t addr)
 {    
-    return MXC_FLC_RevA_PageErase(flc,addr);
+    return MXC_FLC_RevA_PageErase((mxc_flc_reva_regs_t*)flc,addr);
 }
 
 
@@ -100,9 +101,9 @@ int MXC_FLC_RevB_PageErase(mxc_flc_regs_t* flc, uint32_t addr)
 __attribute__((section(".flashprog")))
 #endif
 // make sure to disable ICC with ICC_Disable(); before Running this function
-int MXC_FLC_RevB_Write32(mxc_flc_regs_t* flc, uint32_t logicAddr, uint32_t data, uint32_t physicalAddr)
+int MXC_FLC_RevB_Write32(mxc_flc_revb_regs_t* flc, uint32_t logicAddr, uint32_t data, uint32_t physicalAddr)
 {
-    return MXC_FLC_RevA_Write32(flc, logicAddr, data, physicalAddr);
+    return MXC_FLC_RevA_Write32((mxc_flc_reva_regs_t*)flc, logicAddr, data, physicalAddr);
 }
 
 //******************************************************************************
@@ -112,9 +113,9 @@ int MXC_FLC_RevB_Write32(mxc_flc_regs_t* flc, uint32_t logicAddr, uint32_t data,
 __attribute__((section(".flashprog")))
 #endif
 // make sure to disable ICC with ICC_Disable(); before Running this function
-int MXC_FLC_RevB_Write128(mxc_flc_regs_t* flc, uint32_t addr, uint32_t* data)
+int MXC_FLC_RevB_Write128(mxc_flc_revb_regs_t* flc, uint32_t addr, uint32_t* data)
 {
-    return MXC_FLC_RevA_Write128(flc, addr, data);
+    return MXC_FLC_RevA_Write128((mxc_flc_reva_regs_t*)flc, addr, data);
 }
 
 //******************************************************************************
@@ -142,15 +143,14 @@ int MXC_FLC_RevB_ClearFlags(uint32_t mask)
 }
 
 //******************************************************************************
-int MXC_FLC_RevB_UnlockInfoBlock(mxc_flc_regs_t* flc, uint32_t address)
+int MXC_FLC_RevB_UnlockInfoBlock(mxc_flc_revb_regs_t* flc, uint32_t address)
 {
-    return MXC_FLC_RevA_UnlockInfoBlock(flc, address);
+    return MXC_FLC_RevA_UnlockInfoBlock((mxc_flc_reva_regs_t*)flc, address);
 }
 
 //******************************************************************************
-int MXC_FLC_RevB_LockInfoBlock(mxc_flc_regs_t* flc, uint32_t address)
+int MXC_FLC_RevB_LockInfoBlock(mxc_flc_revb_regs_t* flc, uint32_t address)
 {
-    return MXC_FLC_RevA_LockInfoBlock(flc, address);
+    return MXC_FLC_RevA_LockInfoBlock((mxc_flc_reva_regs_t*)flc, address);
 }
 /**@} end of group flc */
-

@@ -62,12 +62,12 @@ int MXC_I2S_Init(mxc_i2s_req_t* req)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2S);
     MXC_GPIO_Config(&gpio_cfg_i2s0);
     
-    return MXC_I2S_RevA_Init(req);
+    return MXC_I2S_RevA_Init((mxc_i2s_reva_regs_t*) MXC_I2S, req);
 }
 
 int MXC_I2S_Shutdown(void)
 {
-    MXC_I2S_RevA_Shutdown();
+    MXC_I2S_RevA_Shutdown((mxc_i2s_reva_regs_t*) MXC_I2S);
     
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_I2S);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2S);
@@ -77,70 +77,70 @@ int MXC_I2S_Shutdown(void)
 
 int MXC_I2S_ConfigData(mxc_i2s_req_t* req)
 {
-    return MXC_I2S_RevA_ConfigData(req);
+    return MXC_I2S_RevA_ConfigData((mxc_i2s_reva_regs_t*) MXC_I2S, req);
 }
 
 void MXC_I2S_TXEnable()
 {
-    MXC_I2S_RevA_TXEnable();
+    MXC_I2S_RevA_TXEnable((mxc_i2s_reva_regs_t*) MXC_I2S);
 }
 
 void MXC_I2S_TXDisable()
 {
-    MXC_I2S_RevA_TXDisable();
+    MXC_I2S_RevA_TXDisable((mxc_i2s_reva_regs_t*) MXC_I2S);
 }
 
 void MXC_I2S_RXEnable()
 {
-    MXC_I2S_RevA_RXEnable();
+    MXC_I2S_RevA_RXEnable((mxc_i2s_reva_regs_t*) MXC_I2S);
 }
 
 void MXC_I2S_RXDisable()
 {
-    MXC_I2S_RevA_RXDisable();
+    MXC_I2S_RevA_RXDisable((mxc_i2s_reva_regs_t*) MXC_I2S);
 }
 
 int MXC_I2S_SetRXThreshold(uint8_t threshold)
 {
-    return MXC_I2S_RevA_SetRXThreshold(threshold);
+    return MXC_I2S_RevA_SetRXThreshold((mxc_i2s_reva_regs_t*) MXC_I2S, threshold);
 }
 
 int MXC_I2S_SetFrequency(mxc_i2s_ch_mode_t mode, uint16_t clkdiv)
 {
-    return MXC_I2S_RevA_SetFrequency(mode, clkdiv);
+    return MXC_I2S_RevA_SetFrequency((mxc_i2s_reva_regs_t*) MXC_I2S, mode, clkdiv);
 }
 
 void MXC_I2S_Flush(void)
 {
-    MXC_I2S_RevA_Flush();
+    MXC_I2S_RevA_Flush((mxc_i2s_reva_regs_t*) MXC_I2S);
 }
 
 void MXC_I2S_EnableInt(uint32_t flags)
 {
-    MXC_I2S_RevA_EnableInt(flags);
+    MXC_I2S_RevA_EnableInt((mxc_i2s_reva_regs_t*) MXC_I2S, flags);
 }
 
 void MXC_I2S_DisableInt(uint32_t flags)
 {
-    MXC_I2S_RevA_DisableInt(flags);
+    MXC_I2S_RevA_DisableInt((mxc_i2s_reva_regs_t*) MXC_I2S, flags);
 }
 
 int MXC_I2S_GetFlags()
 {
-    return MXC_I2S_RevA_GetFlags();
+    return MXC_I2S_RevA_GetFlags((mxc_i2s_reva_regs_t*) MXC_I2S);
 }
 
 void MXC_I2S_ClearFlags(uint32_t flags)
 {
-    MXC_I2S_RevA_ClearFlags(flags);
+    MXC_I2S_RevA_ClearFlags((mxc_i2s_reva_regs_t*) MXC_I2S, flags);
 }
 
 void MXC_I2S_TXDMAConfig(void* src_addr, int len)
 {
-    MXC_I2S_RevA_TXDMAConfig(src_addr, len);
+    MXC_I2S_RevA_TXDMAConfig((mxc_i2s_reva_regs_t*) MXC_I2S, src_addr, len);
 }
 
 void MXC_I2S_RXDMAConfig(void* dest_addr, int len)
 {
-    MXC_I2S_RevA_RXDMAConfig(dest_addr, len);
+    MXC_I2S_RevA_RXDMAConfig((mxc_i2s_reva_regs_t*) MXC_I2S, dest_addr, len);
 }

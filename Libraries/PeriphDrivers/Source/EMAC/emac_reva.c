@@ -37,8 +37,8 @@
 #include "emac_reva.h"
 
 /*******   Variables     *******/
-mxc_emac_device_t mxc_emac_context;
-static mxc_emac_device_t* emac = &mxc_emac_context;
+mxc_emac_reva_device_t mxc_emac_context;
+static mxc_emac_reva_device_t *emac = &mxc_emac_context;
 
 /*******   Functions     *******/
 /* ************************************************************************* */
@@ -267,7 +267,7 @@ static int emac_phy_init(void)
 /* ************************************************************************* */
 /* Control/Configuration Functions                                           */
 /* ************************************************************************* */
-int MXC_EMAC_RevA_Init(mxc_emac_config_t* config)
+int MXC_EMAC_RevA_Init (mxc_emac_reva_config_t *config)
 {
     int                 result = E_UNKNOWN;
     unsigned int        ncfgr, emac_pclk_rate, clk_div;
@@ -278,7 +278,7 @@ int MXC_EMAC_RevA_Init(mxc_emac_config_t* config)
     
     if (!emac->first_init) {
         /* Assign interface base address */
-        emac->regs = MXC_EMAC;
+        emac->regs = (mxc_emac_reva_regs_t*)MXC_EMAC;
         
         /* Clock configuration */
         emac_pclk_rate = PeripheralClock;
@@ -309,7 +309,7 @@ int MXC_EMAC_RevA_Init(mxc_emac_config_t* config)
     return result;
 }
 
-int MXC_EMAC_RevA_SetConfiguration(mxc_emac_config_t* config)
+int MXC_EMAC_RevA_SetConfiguration (mxc_emac_reva_config_t *config)
 {
     if (!emac->first_init) {
         return E_UNINITIALIZED;
@@ -339,13 +339,13 @@ int MXC_EMAC_RevA_SetConfiguration(mxc_emac_config_t* config)
     emac->rx_buffer_dma  = (unsigned int)(config->rx_buff);
     emac->rx_buffer_size = config->rx_buff_size;
     
-    emac->rx_ring        = (mxc_emac_dma_desc_t*)(config->rx_ring_buff);
-    emac->rx_ring_dma    = (unsigned int)(config->rx_ring_buff);
-    emac->rx_ring_size   = (config->rx_ring_buff_size / sizeof(mxc_emac_dma_desc_t));
+    emac->rx_ring        = (mxc_emac_reva_dma_desc_t *) (config->rx_ring_buff);
+    emac->rx_ring_dma    = (unsigned int) (config->rx_ring_buff);
+    emac->rx_ring_size   = (config->rx_ring_buff_size / sizeof (mxc_emac_dma_desc_t));
     
-    emac->tx_ring        = (mxc_emac_dma_desc_t*)(config->tx_ring_buff);
-    emac->tx_ring_dma    = (unsigned int)(config->tx_ring_buff);
-    emac->tx_ring_size   = (config->tx_ring_buff_size / sizeof(mxc_emac_dma_desc_t));
+    emac->tx_ring        = (mxc_emac_reva_dma_desc_t *) (config->tx_ring_buff);
+    emac->tx_ring_dma    = (unsigned int) (config->tx_ring_buff);
+    emac->tx_ring_size   = (config->tx_ring_buff_size / sizeof (mxc_emac_dma_desc_t));
     
     emac->phy_addr       = config->phy_addr;
     emac->delay_us       = config->delay_us;
@@ -741,55 +741,55 @@ void MXC_EMAC_RevA_IrqHandler(void)
     
     isr = EMAC_READL(emac, int_st);
     
-    if ((isr & MXC_EMAC_EVENT_MPS) && emac->cb_funcs.mps_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_MPS) && emac->cb_funcs.mps_handler) {
         emac->cb_funcs.mps_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_RXCMPL) && emac->cb_funcs.rxcmpl_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_RXCMPL) && emac->cb_funcs.rxcmpl_handler) {
         emac->cb_funcs.rxcmpl_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_RXUBR) && emac->cb_funcs.rxubr_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_RXUBR) && emac->cb_funcs.rxubr_handler) {
         emac->cb_funcs.rxubr_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_TXUBR) && emac->cb_funcs.txubr_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_TXUBR) && emac->cb_funcs.txubr_handler) {
         emac->cb_funcs.txubr_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_TXUR) && emac->cb_funcs.txur_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_TXUR) && emac->cb_funcs.txur_handler) {
         emac->cb_funcs.txur_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_RLE) && emac->cb_funcs.rle_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_RLE) && emac->cb_funcs.rle_handler) {
         emac->cb_funcs.rle_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_TXERR) && emac->cb_funcs.txerr_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_TXERR) && emac->cb_funcs.txerr_handler) {
         emac->cb_funcs.txerr_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_TXCMPL) && emac->cb_funcs.txcmpl_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_TXCMPL) && emac->cb_funcs.txcmpl_handler) {
         emac->cb_funcs.txcmpl_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_LC) && emac->cb_funcs.lc_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_LC) && emac->cb_funcs.lc_handler) {
         emac->cb_funcs.lc_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_RXOR) && emac->cb_funcs.rxor_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_RXOR) && emac->cb_funcs.rxor_handler) {
         emac->cb_funcs.rxor_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_HRESPNO) && emac->cb_funcs.hrespno_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_HRESPNO) && emac->cb_funcs.hrespno_handler) {
         emac->cb_funcs.hrespno_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_PPR) && emac->cb_funcs.ppr_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_PPR) && emac->cb_funcs.ppr_handler) {
         emac->cb_funcs.ppr_handler();
     }
     
-    if ((isr & MXC_EMAC_EVENT_PTZ) && emac->cb_funcs.ptz_handler) {
+    if ( (isr & MXC_EMAC_REVA_EVENT_PTZ) && emac->cb_funcs.ptz_handler) {
         emac->cb_funcs.ptz_handler();
     }
 }

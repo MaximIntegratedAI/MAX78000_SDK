@@ -1,5 +1,7 @@
 var group__pulsetrain =
 [
+    [ "PT_Registers", "group__pt__registers.html", "group__pt__registers" ],
+    [ "PTG_Registers", "group__ptg__registers.html", "group__ptg__registers" ],
     [ "mxc_pt_cfg_t", "group__pulsetrain.html#structmxc__pt__cfg__t", [
       [ "bps", "group__pulsetrain.html#a7238449ff58879d18eafd440c61594fe", null ],
       [ "channel", "group__pulsetrain.html#aaf864fd022be01981832e97a6120437f", null ],

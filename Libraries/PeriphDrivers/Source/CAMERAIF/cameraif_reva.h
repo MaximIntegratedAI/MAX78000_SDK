@@ -33,18 +33,48 @@
 
 
 /****** Includes *******/
+#include <stdint.h>
+#include "cameraif_reva_regs.h"
 
 /***** Definitions *****/
+
+/**
+ * @brief   The list of Camera Interface Datawith options supported
+ *
+ */
+typedef enum {
+    MXC_PCIF_REVA_DATAWITH_8_BIT = 0,      ///<
+    MXC_PCIF_REVA_DATAWITH_10_BIT,         ///<
+    MXC_PCIF_REVA_DATAWITH_12_BIT,         ///<
+} mxc_pcif_reva_datawith_t;
+
+/**
+ * @brief   The list of Camera Interface ReadMode options supported
+ *
+ */
+typedef enum {
+    MXC_PCIF_REVA_READMODE_SINGLE_MODE = 1,      ///<
+    MXC_PCIF_REVA_READMODE_CONTINUES_MODE,       ///<
+} mxc_pcif_reva_readmode_t;
+
+/**
+ * @brief   The list of Camera Interface TimingSel options supported
+ *
+ */
+typedef enum {
+    MXC_PCIF_REVA_TIMINGSEL_HSYNC_and_VSYNC = 0,     ///<
+    MXC_PCIF_REVA_TIMINGSEL_SAV_and_EAV,             ///<
+} mxc_pcif_reva_timingsel_t;
 
 /******* Globals *******/
 
 /****** Functions ******/
-int MXC_PCIF_RevA_Init(void);
-void MXC_PCIF_RevA_SetDataWidth(mxc_pcif_datawidth_t  datawidth);
-void MXC_PCIF_RevA_SetTimingSel(mxc_pcif_timingsel_t timingsel);
-void MXC_PCIF_RevA_SetThreshhold(int fifo_thrsh);
-void MXC_PCIF_RevA_EnableInt(uint32_t flags);
-void MXC_PCIF_RevA_DisableInt(uint32_t flags);
-void MXC_PCIF_RevA_Start(mxc_pcif_readmode_t  readmode);
-void MXC_PCIF_RevA_Stop(void);
-unsigned int MXC_PCIF_RevA_GetData(void);
+int MXC_PCIF_RevA_Init (void);
+void MXC_PCIF_RevA_SetDatawidth (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_datawith_t  datawith);
+void MXC_PCIF_RevA_SetTimingSel (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_timingsel_t timingsel);
+void MXC_PCIF_RevA_SetThreshold (mxc_cameraif_reva_regs_t *cameraif, int fifo_thrsh);
+void MXC_PCIF_RevA_EnableInt (mxc_cameraif_reva_regs_t *cameraif, uint32_t flags);
+void MXC_PCIF_RevA_DisableInt (mxc_cameraif_reva_regs_t *cameraif, uint32_t flags);
+void MXC_PCIF_RevA_Start (mxc_cameraif_reva_regs_t *cameraif, mxc_pcif_reva_readmode_t  readmode);
+void MXC_PCIF_RevA_Stop (mxc_cameraif_reva_regs_t *cameraif);
+unsigned int MXC_PCIF_RevA_GetData (mxc_cameraif_reva_regs_t *cameraif);

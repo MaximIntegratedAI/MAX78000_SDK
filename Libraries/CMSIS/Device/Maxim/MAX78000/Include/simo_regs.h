@@ -34,6 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
+ *
  *************************************************************************** */
 
 #ifndef _SIMO_REGS_H_
@@ -326,16 +327,16 @@ typedef struct {
  * @brief    Buck Regulator Output Ready Register
  * @{
  */
- #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA_POS      3 /**< BUCK_OUT_READY_BUCKOUTRDYA Position */
+ #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA_POS      0 /**< BUCK_OUT_READY_BUCKOUTRDYA Position */
  #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA          ((uint32_t)(0x1UL << MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYA_POS)) /**< BUCK_OUT_READY_BUCKOUTRDYA Mask */
 
- #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB_POS      2 /**< BUCK_OUT_READY_BUCKOUTRDYB Position */
+ #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB_POS      1 /**< BUCK_OUT_READY_BUCKOUTRDYB Position */
  #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB          ((uint32_t)(0x1UL << MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB_POS)) /**< BUCK_OUT_READY_BUCKOUTRDYB Mask */
 
- #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC_POS      1 /**< BUCK_OUT_READY_BUCKOUTRDYC Position */
+ #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC_POS      2 /**< BUCK_OUT_READY_BUCKOUTRDYC Position */
  #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC          ((uint32_t)(0x1UL << MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC_POS)) /**< BUCK_OUT_READY_BUCKOUTRDYC Mask */
 
- #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD_POS      0 /**< BUCK_OUT_READY_BUCKOUTRDYD Position */
+ #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD_POS      3 /**< BUCK_OUT_READY_BUCKOUTRDYD Position */
  #define MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD          ((uint32_t)(0x1UL << MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD_POS)) /**< BUCK_OUT_READY_BUCKOUTRDYD Mask */
 
 /**@} end of group SIMO_BUCK_OUT_READY_Register */
@@ -346,8 +347,8 @@ typedef struct {
  * @brief    Zero Cross Calibration VERGO_A Register
  * @{
  */
- #define MXC_F_SIMO_ZERO_CROSS_CAL_A_ZXCLA_POS          0 /**< ZERO_CROSS_CAL_A_ZXCLA Position */
- #define MXC_F_SIMO_ZERO_CROSS_CAL_A_ZXCLA              ((uint32_t)(0xFUL << MXC_F_SIMO_ZERO_CROSS_CAL_A_ZXCLA_POS)) /**< ZERO_CROSS_CAL_A_ZXCLA Mask */
+ #define MXC_F_SIMO_ZERO_CROSS_CAL_A_ZXCALA_POS         0 /**< ZERO_CROSS_CAL_A_ZXCALA Position */
+ #define MXC_F_SIMO_ZERO_CROSS_CAL_A_ZXCALA             ((uint32_t)(0xFUL << MXC_F_SIMO_ZERO_CROSS_CAL_A_ZXCALA_POS)) /**< ZERO_CROSS_CAL_A_ZXCALA Mask */
 
 /**@} end of group SIMO_ZERO_CROSS_CAL_A_Register */
 
@@ -357,8 +358,8 @@ typedef struct {
  * @brief    Zero Cross Calibration VERGO_B Register
  * @{
  */
- #define MXC_F_SIMO_ZERO_CROSS_CAL_B_ZXCLB_POS          0 /**< ZERO_CROSS_CAL_B_ZXCLB Position */
- #define MXC_F_SIMO_ZERO_CROSS_CAL_B_ZXCLB              ((uint32_t)(0xFUL << MXC_F_SIMO_ZERO_CROSS_CAL_B_ZXCLB_POS)) /**< ZERO_CROSS_CAL_B_ZXCLB Mask */
+ #define MXC_F_SIMO_ZERO_CROSS_CAL_B_ZXCALB_POS         0 /**< ZERO_CROSS_CAL_B_ZXCALB Position */
+ #define MXC_F_SIMO_ZERO_CROSS_CAL_B_ZXCALB             ((uint32_t)(0xFUL << MXC_F_SIMO_ZERO_CROSS_CAL_B_ZXCALB_POS)) /**< ZERO_CROSS_CAL_B_ZXCALB Mask */
 
 /**@} end of group SIMO_ZERO_CROSS_CAL_B_Register */
 
@@ -368,8 +369,8 @@ typedef struct {
  * @brief    Zero Cross Calibration VERGO_C Register
  * @{
  */
- #define MXC_F_SIMO_ZERO_CROSS_CAL_C_ZXCLC_POS          0 /**< ZERO_CROSS_CAL_C_ZXCLC Position */
- #define MXC_F_SIMO_ZERO_CROSS_CAL_C_ZXCLC              ((uint32_t)(0xFUL << MXC_F_SIMO_ZERO_CROSS_CAL_C_ZXCLC_POS)) /**< ZERO_CROSS_CAL_C_ZXCLC Mask */
+ #define MXC_F_SIMO_ZERO_CROSS_CAL_C_ZXCALC_POS         0 /**< ZERO_CROSS_CAL_C_ZXCALC Position */
+ #define MXC_F_SIMO_ZERO_CROSS_CAL_C_ZXCALC             ((uint32_t)(0xFUL << MXC_F_SIMO_ZERO_CROSS_CAL_C_ZXCALC_POS)) /**< ZERO_CROSS_CAL_C_ZXCALC Mask */
 
 /**@} end of group SIMO_ZERO_CROSS_CAL_C_Register */
 
@@ -379,8 +380,8 @@ typedef struct {
  * @brief    Zero Cross Calibration VERGO_D Register
  * @{
  */
- #define MXC_F_SIMO_ZERO_CROSS_CAL_D_ZXCLD_POS          0 /**< ZERO_CROSS_CAL_D_ZXCLD Position */
- #define MXC_F_SIMO_ZERO_CROSS_CAL_D_ZXCLD              ((uint32_t)(0xFUL << MXC_F_SIMO_ZERO_CROSS_CAL_D_ZXCLD_POS)) /**< ZERO_CROSS_CAL_D_ZXCLD Mask */
+ #define MXC_F_SIMO_ZERO_CROSS_CAL_D_ZXCALD_POS         0 /**< ZERO_CROSS_CAL_D_ZXCALD Position */
+ #define MXC_F_SIMO_ZERO_CROSS_CAL_D_ZXCALD             ((uint32_t)(0xFUL << MXC_F_SIMO_ZERO_CROSS_CAL_D_ZXCALD_POS)) /**< ZERO_CROSS_CAL_D_ZXCALD Mask */
 
 /**@} end of group SIMO_ZERO_CROSS_CAL_D_Register */
 

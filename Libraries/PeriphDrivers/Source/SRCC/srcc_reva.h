@@ -32,18 +32,30 @@
  *************************************************************************** */
 
 /***** Includes *****/
-#include "srcc_regs.h"
+#include "srcc_reva_regs.h"
 #include "srcc.h"
 #include "mxc_device.h"
 
+/***** Definitions *****/
 
-uint32_t MXC_SRCC_RevA_ID (mxc_srcc_cache_id_t id);
-uint32_t MXC_SRCC_RevA_CacheSize();
-uint32_t MXC_SRCC_RevA_MemSize();
-void MXC_SRCC_RevA_Enable();
-void MXC_SRCC_RevA_Disable();
-void MXC_SRCC_RevA_WriteAllocateEnable();
-void MXC_SRCC_RevA_WriteAllocateDisable();
-void MXC_SRCC_RevA_CriticalWordFirstEnable();
-void MXC_SRCC_RevA_CriticalWordFirstDisable();
-uint32_t MXC_SRCC_RevA_Ready();
+/**
+ * @brief   Enumeration type for the SRCC Cache ID Register
+ */
+typedef enum {
+    SRCC_REVA_CACHE_ID_RELNUM,    ///< Release Number
+    SRCC_REVA_CACHE_ID_PARTNUM,   ///< Part Number
+    SRCC_REVA_CACHE_ID_CCHID      ///< Cache ID
+}
+mxc_srcc_reva_cache_id_t;
+
+/***** Function Prototypes *****/
+uint32_t MXC_SRCC_RevA_ID (mxc_srcc_reva_regs_t *srcc, mxc_srcc_cache_id_t id);
+uint32_t MXC_SRCC_RevA_CacheSize(mxc_srcc_reva_regs_t *srcc);
+uint32_t MXC_SRCC_RevA_MemSize(mxc_srcc_reva_regs_t *srcc);
+void MXC_SRCC_RevA_Enable(mxc_srcc_reva_regs_t *srcc);
+void MXC_SRCC_RevA_Disable(mxc_srcc_reva_regs_t *srcc);
+void MXC_SRCC_RevA_WriteAllocateEnable(mxc_srcc_reva_regs_t *srcc);
+void MXC_SRCC_RevA_WriteAllocateDisable(mxc_srcc_reva_regs_t *srcc);
+void MXC_SRCC_RevA_CriticalWordFirstEnable(mxc_srcc_reva_regs_t *srcc);
+void MXC_SRCC_RevA_CriticalWordFirstDisable(mxc_srcc_reva_regs_t *srcc);
+uint32_t MXC_SRCC_RevA_Ready(mxc_srcc_reva_regs_t *srcc);

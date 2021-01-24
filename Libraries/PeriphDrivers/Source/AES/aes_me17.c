@@ -41,7 +41,7 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "aes_revb.h"
-#include "trng.h"
+#include "trng_revb.h"
 
 
 /* ************************************************************************* */
@@ -53,29 +53,27 @@ int MXC_AES_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_AES);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TRNG);
     
-    MXC_AES_RevB_Init();
-    
-    return E_NO_ERROR;
+    return MXC_AES_RevB_Init((mxc_aes_revb_regs_t*) MXC_AES);
 }
 
 void MXC_AES_EnableInt(uint32_t interrupt)
 {
-    MXC_AES_RevB_EnableInt(interrupt);
+    MXC_AES_RevB_EnableInt((mxc_aes_revb_regs_t*) MXC_AES, interrupt);
 }
 
 void MXC_AES_DisableInt(uint32_t interrupt)
 {
-    MXC_AES_RevB_DisableInt(interrupt);
+    MXC_AES_RevB_DisableInt((mxc_aes_revb_regs_t*) MXC_AES, interrupt);
 }
 
 int MXC_AES_IsBusy(void)
 {
-    return MXC_AES_RevB_IsBusy();
+    return MXC_AES_RevB_IsBusy((mxc_aes_revb_regs_t*) MXC_AES);
 }
 
 int MXC_AES_Shutdown(void)
 {
-    int error = MXC_AES_RevB_Shutdown();
+    int error = MXC_AES_RevB_Shutdown((mxc_aes_revb_regs_t*) MXC_AES);
     
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_AES);
     
@@ -90,57 +88,57 @@ void MXC_AES_DMACallback(int ch, int error)
 void MXC_AES_GenerateKey(void)
 {
     // Generating a random key is part of the TRNG block.
-    MXC_TRNG_GenerateKey();
+    MXC_TRNG_RevB_GenerateKey((mxc_trng_revb_regs_t*) MXC_TRNG);
 }
 
 void MXC_AES_SetKeySize(mxc_aes_keys_t key)
 {
-    MXC_AES_RevB_SetKeySize(key);
+    MXC_AES_RevB_SetKeySize((mxc_aes_revb_regs_t*) MXC_AES, (mxc_aes_revb_keys_t) key);
 }
 
 mxc_aes_keys_t MXC_AES_GetKeySize(void)
 {
-    return MXC_AES_RevB_GetKeySize();
+    return MXC_AES_RevB_GetKeySize((mxc_aes_revb_regs_t*) MXC_AES);
 }
 
 void MXC_AES_FlushInputFIFO(void)
 {
-    MXC_AES_RevB_FlushInputFIFO();
+    MXC_AES_RevB_FlushInputFIFO((mxc_aes_revb_regs_t*) MXC_AES);
 }
 
 void MXC_AES_FlushOutputFIFO(void)
 {
-    MXC_AES_RevB_FlushOutputFIFO();
+    MXC_AES_RevB_FlushOutputFIFO((mxc_aes_revb_regs_t*) MXC_AES);
 }
 
 void MXC_AES_Start(void)
 {
-    MXC_AES_RevB_Start();
+    MXC_AES_RevB_Start((mxc_aes_revb_regs_t*) MXC_AES);
 }
 
 uint32_t MXC_AES_GetFlags(void)
 {
-    return MXC_AES_RevB_GetFlags();
+    return MXC_AES_RevB_GetFlags((mxc_aes_revb_regs_t*) MXC_AES);
 }
 
 void MXC_AES_ClearFlags(uint32_t flags)
 {
-    MXC_AES_RevB_ClearFlags(flags);
+    MXC_AES_RevB_ClearFlags((mxc_aes_revb_regs_t*) MXC_AES, flags);
 }
 
 int MXC_AES_Generic(mxc_aes_req_t* req)
 {
-    return MXC_AES_RevB_Generic(req);
+    return MXC_AES_RevB_Generic((mxc_aes_revb_regs_t*) MXC_AES, (mxc_aes_revb_req_t*) req);
 }
 
 int MXC_AES_Encrypt(mxc_aes_req_t* req)
 {
-    return MXC_AES_RevB_Encrypt(req);
+    return MXC_AES_RevB_Encrypt((mxc_aes_revb_regs_t*) MXC_AES, (mxc_aes_revb_req_t*) req);
 }
 
 int MXC_AES_Decrypt(mxc_aes_req_t* req)
 {
-    return MXC_AES_RevB_Decrypt(req);
+    return MXC_AES_RevB_Decrypt((mxc_aes_revb_regs_t*) MXC_AES, (mxc_aes_revb_req_t*) req);
 }
 
 int MXC_AES_TXDMAConfig(void* src_addr, int len)
@@ -155,21 +153,21 @@ int MXC_AES_RXDMAConfig(void* dest_addr, int len)
 
 int MXC_AES_GenericAsync(mxc_aes_req_t* req, uint8_t enc)
 {
-    return MXC_AES_RevB_GenericAsync(req, enc);
+    return MXC_AES_RevB_GenericAsync((mxc_aes_revb_regs_t*) MXC_AES, (mxc_aes_revb_req_t*) req, enc);
 }
 
 int MXC_AES_EncryptAsync(mxc_aes_req_t* req)
 {
-    return MXC_AES_RevB_EncryptAsync(req);
+    return MXC_AES_RevB_EncryptAsync((mxc_aes_revb_regs_t*) MXC_AES, (mxc_aes_revb_req_t*) req);
 }
 
 int MXC_AES_DecryptAsync(mxc_aes_req_t* req)
 {
-    return MXC_AES_RevB_DecryptAsync(req);
+    return MXC_AES_RevB_DecryptAsync((mxc_aes_revb_regs_t*) MXC_AES, (mxc_aes_revb_req_t*) req);
 }
 
 void MXC_AES_SetExtKey(const void* key, mxc_aes_keys_t len)
 {
-    return MXC_AES_RevB_SetExtKey(key, len);
+    return MXC_AES_RevB_SetExtKey((mxc_aes_key_revb_regs_t*) MXC_AESKEY, key, len);
 }
 

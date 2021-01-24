@@ -32,5 +32,10 @@ This example is to show how the Wakeup timer is used and configured.
 Press SW1 to continue.
 Entering SLEEP mode.
 Waking up from SLEEP mode.
+
+Press the button again to trigger another sleep-wake cycle.
+Entering SLEEP mode.
+Waking up from SLEEP mode.
+
 ```
 

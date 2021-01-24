@@ -36,7 +36,7 @@
 // Register address definitions.
 #define REG0C       (0x0C)
 #define REG12       (0x12)
-
+#define REG0E       (0x0E)
 #define PIDH        (0x0a)
 #define PIDL        (0x0b)
 
@@ -77,4 +77,5 @@
 #define VERTICAL_FLIP       (0X80)
 #define HORIZONTAL_FLIP     (0X40)
 
+#define SLEEP_MODE_ENABLE   (0x08)
 #endif //__OV7692_REGS_H__

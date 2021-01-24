@@ -45,7 +45,7 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "flc.h"
-#include "mcr_regs.h" // For ECCEN registers.
+#include "stdlib.h"
 
 //******************************************************************************
 #if IAR_PRAGMAS
@@ -78,10 +78,13 @@ __attribute__((section(".flashprog")))
 int MXC_FLC_Com_Write(uint32_t address, uint32_t length, uint32_t* buffer)
 {
     int err;
+    int i;
+    int local_buff_used = 0;
     uint32_t bytes_written;
-    uint8_t current_data[4];
-    uint32_t* current_data_32 = (uint32_t*) current_data;
-    
+
+    uint32_t current_data_32;
+    uint8_t* current_data = (uint8_t*) &current_data_32;
+
     // Align the address to a word boundary and read/write if we have to
     if (address & 0x3) {
     
@@ -95,22 +98,31 @@ int MXC_FLC_Com_Write(uint32_t address, uint32_t length, uint32_t* buffer)
         memcpy(&current_data[4 - bytes_written], buffer, bytes_written);
         
         // Write the modified data
-        if ((err = MXC_FLC_Write32(address - (address % 4), *current_data_32)) != E_NO_ERROR) {
+        if ((err = MXC_FLC_Write32(address - (address % 4), current_data_32)) != E_NO_ERROR) {
             return err;
         }
         
         address += bytes_written;
         length -= bytes_written;
-        
-        //Align the uint32_t buffer with the new address
-        uint8_t* buffer_unaligned = (uint8_t*) buffer;
-        buffer_unaligned += bytes_written;
-        buffer = (uint32_t*) buffer_unaligned;
+
+        // Move remaining bytes into a 32 bit aligned buffer.        
+        uint32_t* local_buff = (uint32_t*)malloc((length + 3) & ~0x3);
+        if(!local_buff) {
+            return E_UNKNOWN;
+        }
+        for(i = 0; i < length; i++) {
+            ((uint8_t*)local_buff)[i] = ((uint8_t*)buffer)[bytes_written + i];
+        }
+        local_buff_used = 1;
+        buffer = local_buff;
     }
     
     // Align the address to a 4-word (128bit) boundary
     while ((length >= 4) && ((address & 0xF) != 0)) {
         if ((err = MXC_FLC_Write32(address, *buffer)) != E_NO_ERROR) {
+            if(local_buff_used) {
+                free(buffer);
+            }
             return err;
         }
         
@@ -122,6 +134,9 @@ int MXC_FLC_Com_Write(uint32_t address, uint32_t length, uint32_t* buffer)
     if (length >= 16) {
         while (length >= 16) {
             if ((err = MXC_FLC_Write128(address, buffer)) != E_NO_ERROR) {
+                if(local_buff_used) {
+                    free(buffer);
+                }
                 return err;
             }
             
@@ -134,6 +149,9 @@ int MXC_FLC_Com_Write(uint32_t address, uint32_t length, uint32_t* buffer)
     
     while (length >= 4) {
         if ((err = MXC_FLC_Write32(address, *buffer)) != E_NO_ERROR) {
+            if(local_buff_used) {
+                free(buffer);
+            }
             return err;
         }
         
@@ -149,12 +167,17 @@ int MXC_FLC_Com_Write(uint32_t address, uint32_t length, uint32_t* buffer)
         // Modify current_data to insert the data from buffer
         memcpy(current_data, buffer, length);
         
-        if ((err = MXC_FLC_Write32(address, *current_data_32)) != E_NO_ERROR) {
+        if ((err = MXC_FLC_Write32(address, current_data_32)) != E_NO_ERROR) {
+            if(local_buff_used) {
+                free(buffer);
+            }
             return err;
         }
     }
     
-    
+    if(local_buff_used) {
+        free(buffer);
+    }
     return E_NO_ERROR;
 }
 
@@ -168,3 +191,4 @@ void MXC_FLC_Com_Read(int address, void* buffer, int len)
 {
     memcpy(buffer, (void*) address, len);
 }
+

@@ -180,5 +180,8 @@ int main(void)
     printf("\n# Passed: %u, # Failed: %u, Test %s\n", test_pass, test_fail, test_fail ? "FAIL!" : "Ok");
     printf("Example Complete\n");
     
+    // Return the ECC back to its POR state (disabled)
+    MXC_MCR->eccen &= ~MXC_F_MCR_ECCEN_RAM0;
+
     while (1);
 }

@@ -52,6 +52,7 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
+#BOARD=FTHR_RevA
 endif
 
 # This is the path to the CMSIS root directory
@@ -62,28 +63,40 @@ CNN_ROOT=../../../../Examples/$(TARGET)/CNN
 #Use this for other library make files so they are all based off the same as root as the project
 export CMSIS_ROOT
 
-
-
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
-SRCS += TFT/resources/all_imgs.c
+ifeq "$(BOARD)" "EvKit_V1"
+SRCS += TFT/evkit/resources/all_imgs.c
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+SRCS += TFT/fthr/logo_rg565.c
+SRCS += TFT/fthr/SansSerif16x16.c
+SRCS += TFT/fthr/SansSerif19x19.c
+endif
 SRCS += src/utils.c
 SRCS += src/state.c
 SRCS += src/state_home.c
 SRCS += src/state_faceID.c
-SRCS += src/faceID.c
+SRCS += src/cnn.c
 SRCS += src/embedding_process.c
 
 # Where to find source files for this test
 VPATH=.
-VPATH += ./TFT/resources
+ifeq "$(BOARD)" "EvKit_V1"
+VPATH += ./TFT/evkit/resources
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+VPATH += TFT/fthr/
+endif
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 VPATH += $(CNN_ROOT)/Common
 VPATH += ./src
-# Where to find header files for this test
+
 # Where to find header files for this test
 IPATH = .
-IPATH += ./TFT/resources
+ifeq "$(BOARD)" "EvKit_V1"
+IPATH += ./TFT/evkit/resources
+endif
 IPATH += ./include
 IPATH += $(CNN_ROOT)/Common
 
@@ -92,7 +105,16 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 PROJ_CFLAGS+=-DARM_MATH_CM4
 
+ifeq "$(BOARD)" "EvKit_V1"
 PROJ_CFLAGS+=-DROTATE_SCREEN=1
+PROJ_CFLAGS+=-DTFT_ENABLE
+PROJ_CFLAGS+=-DTS_ENABLE
+endif
+
+ifeq "$(BOARD)" "FTHR_RevA"
+# Only enable if 2.4" TFT is connected to Feather
+#PROJ_CFLAGS+=-DTFT_ENABLE
+endif
 
 # Enable all warnings
 PROJ_CFLAGS+=-Wall
@@ -112,7 +134,7 @@ PROJ_CFLAGS+=-Wall
 #STARTUPFILE=start.S
 
 # Set MXC_OPTIMIZE to override the default optimization level
-MXC_OPTIMIZE_CFLAGS=-O0
+MXC_OPTIMIZE_CFLAGS=-O2
 
 # Point this variable to a linker file to override the default file
 LINKER=$(TARGET_LC).ld

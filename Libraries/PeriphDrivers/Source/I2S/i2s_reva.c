@@ -51,7 +51,7 @@
 #define DATALENGTH_THIRTYTWO    (32 - 1)
 
 /* ****** Functions ****** */
-int MXC_I2S_RevA_Init(mxc_i2s_req_t* req)
+int MXC_I2S_RevA_Init(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t* req)
 {
     if (((req->txData == NULL) || (req->rawData == NULL)) && (req->rxData == NULL)) {
         return E_NULL_PTR;
@@ -62,16 +62,16 @@ int MXC_I2S_RevA_Init(mxc_i2s_req_t* req)
     }
     
     if (req->stereoMode) {
-        MXC_I2S->ctrl0ch0 |= (req->stereoMode << MXC_F_I2S_CTRL0CH0_STEREO_POS);
+        i2s->ctrl0ch0 |= (req->stereoMode << MXC_F_I2S_REVA_CTRL0CH0_STEREO_POS);
     }
     
     //Set RX Threshold 2 (default)
-    MXC_I2S->ctrl0ch0 |= (2 << MXC_F_I2S_CTRL0CH0_RX_THD_VAL_POS);
+    i2s->ctrl0ch0 |= (2 << MXC_F_I2S_REVA_CTRL0CH0_RX_THD_VAL_POS);
     
     //Set justify
-    MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_ALIGN, (req->justify) << MXC_F_I2S_CTRL0CH0_ALIGN_POS);
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_ALIGN, (req->justify) << MXC_F_I2S_REVA_CTRL0CH0_ALIGN_POS);
     
-    if (MXC_I2S_ConfigData(req) != E_NO_ERROR) {
+    if (MXC_I2S_ConfigData((mxc_i2s_req_t*) req) != E_NO_ERROR) {
         return E_BAD_PARAM;
     }
     
@@ -80,7 +80,7 @@ int MXC_I2S_RevA_Init(mxc_i2s_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_I2S_RevA_Shutdown(void)
+int MXC_I2S_RevA_Shutdown(mxc_i2s_reva_regs_t *i2s)
 {
     MXC_I2S_DisableInt(0xFF);
     
@@ -91,16 +91,16 @@ int MXC_I2S_RevA_Shutdown(void)
     MXC_I2S_Flush();
     
     //Clear all the registers. Not cleared on reset
-    MXC_I2S->ctrl0ch0 = 0x00;
-    MXC_I2S->dmach0   = 0x00;
-    MXC_I2S->ctrl1ch0 = 0x00;
+    i2s->ctrl0ch0 = 0x00;
+    i2s->dmach0   = 0x00;
+    i2s->ctrl1ch0 = 0x00;
     
-    MXC_I2S->ctrl0ch0 |= MXC_F_I2S_CTRL0CH0_RST;             //Reset channel
+    i2s->ctrl0ch0 |= MXC_F_I2S_REVA_CTRL0CH0_RST;             //Reset channel
     
     return E_NO_ERROR;
 }
 
-int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
+int MXC_I2S_RevA_ConfigData(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t* req)
 {
     uint32_t dataMask;
     
@@ -121,30 +121,30 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
     }
     
     // Clear configuration bits
-    MXC_I2S->ctrl0ch0 &= ~MXC_F_I2S_CTRL0CH0_WSIZE;
-    MXC_I2S->ctrl1ch0 &= ~MXC_F_I2S_CTRL1CH0_BITS_WORD;
-    MXC_I2S->ctrl1ch0 &= ~MXC_F_I2S_CTRL1CH0_SMP_SIZE;
+    i2s->ctrl0ch0 &= ~MXC_F_I2S_REVA_CTRL0CH0_WSIZE;
+    i2s->ctrl1ch0 &= ~MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD;
+    i2s->ctrl1ch0 &= ~MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE;
     
     switch (req->sampleSize) {
     case MXC_I2S_SAMPLESIZE_EIGTH:
         if (req->wordSize == MXC_I2S_DATASIZE_WORD) {
             //Set word length
-            MXC_I2S->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_CTRL1CH0_BITS_WORD_POS);
+            i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
         }
         else if (req->wordSize == MXC_I2S_DATASIZE_HALFWORD) {
             //Set word length
-            MXC_I2S->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_CTRL1CH0_BITS_WORD_POS);
+            i2s->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
         }
         else {
             //Set word length
-            MXC_I2S->ctrl1ch0 |= (DATALENGTH_EIGHT << MXC_F_I2S_CTRL1CH0_BITS_WORD_POS);
+            i2s->ctrl1ch0 |= (DATALENGTH_EIGHT << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
         }
         
         //Set sample length
-        MXC_I2S->ctrl1ch0 |= (DATALENGTH_EIGHT << MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS);
+        i2s->ctrl1ch0 |= (DATALENGTH_EIGHT << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
         
         //Set datasize to load in FIFO
-        MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_BYTE) << MXC_F_I2S_CTRL0CH0_WSIZE_POS);
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_BYTE) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
         
         dataMask =  0x000000ff;
         
@@ -159,18 +159,18 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
     case MXC_I2S_SAMPLESIZE_SIXTEEN:
         if (req->wordSize == MXC_I2S_DATASIZE_WORD) {
             //Set word length
-            MXC_I2S->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_CTRL1CH0_BITS_WORD_POS);
+            i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
         }
         else {
             //Set word length
-            MXC_I2S->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_CTRL1CH0_BITS_WORD_POS);
+            i2s->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
         }
         
         //Set sample length
-        MXC_I2S->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS);
+        i2s->ctrl1ch0 |= (DATALENGTH_SIXTEEN << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
         
         //Set datasize
-        MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_HALFWORD) << MXC_F_I2S_CTRL0CH0_WSIZE_POS);
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_HALFWORD) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
         
         dataMask = 0x0000ffff;
         
@@ -184,13 +184,13 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         
     case MXC_I2S_SAMPLESIZE_TWENTY:
         //Set word length
-        MXC_I2S->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_CTRL1CH0_BITS_WORD_POS);
+        i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
         
         //Set sample length
-        MXC_I2S->ctrl1ch0 |= (DATALENGTH_TWENTY << MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS);
+        i2s->ctrl1ch0 |= (DATALENGTH_TWENTY << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
         
         //Set datasize
-        MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_CTRL0CH0_WSIZE_POS);
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
         
         dataMask = 0x00fffff;
         
@@ -204,13 +204,13 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         
     case MXC_I2S_SAMPLESIZE_TWENTYFOUR:
         //Set word length
-        MXC_I2S->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_CTRL1CH0_BITS_WORD_POS);
+        i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
         
         //Set sample length
-        MXC_I2S->ctrl1ch0 |= (DATALENGTH_TWENTYFOUR << MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS);
+        i2s->ctrl1ch0 |= (DATALENGTH_TWENTYFOUR << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
         
         //Set datasize
-        MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_CTRL0CH0_WSIZE_POS);
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
         
         dataMask = 0x00ffffff;
         
@@ -224,13 +224,13 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
         
     case MXC_I2S_SAMPLESIZE_THIRTYTWO:
         //Set word length
-        MXC_I2S->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_CTRL1CH0_BITS_WORD_POS);
+        i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_BITS_WORD_POS);
         
         //Set sample length
-        MXC_I2S->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS);
+        i2s->ctrl1ch0 |= (DATALENGTH_THIRTYTWO << MXC_F_I2S_REVA_CTRL1CH0_SMP_SIZE_POS);
         
         //Set datasize
-        MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_CTRL0CH0_WSIZE_POS);
+        MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_WSIZE, (MXC_I2S_DATASIZE_WORD) << MXC_F_I2S_REVA_CTRL0CH0_WSIZE_POS);
         
         dataMask = 0xffffffff;
         
@@ -250,78 +250,78 @@ int MXC_I2S_RevA_ConfigData(mxc_i2s_req_t* req)
     return E_NO_ERROR;
 }
 
-void MXC_I2S_RevA_TXEnable(void)
+void MXC_I2S_RevA_TXEnable(mxc_i2s_reva_regs_t *i2s)
 {
-    MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_TX_EN, 1 << MXC_F_I2S_CTRL0CH0_TX_EN_POS);
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_TX_EN, 1 << MXC_F_I2S_REVA_CTRL0CH0_TX_EN_POS);
 }
 
-void MXC_I2S_RevA_TXDisable(void)
+void MXC_I2S_RevA_TXDisable(mxc_i2s_reva_regs_t *i2s)
 {
-    MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_TX_EN, 0 << MXC_F_I2S_CTRL0CH0_TX_EN_POS);
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_TX_EN, 0 << MXC_F_I2S_REVA_CTRL0CH0_TX_EN_POS);
 }
 
-void MXC_I2S_RevA_RXEnable(void)
+void MXC_I2S_RevA_RXEnable(mxc_i2s_reva_regs_t *i2s)
 {
-    MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_RX_EN, 1 << MXC_F_I2S_CTRL0CH0_RX_EN_POS);
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_RX_EN, 1 << MXC_F_I2S_REVA_CTRL0CH0_RX_EN_POS);
 }
 
-void MXC_I2S_RevA_RXDisable(void)
+void MXC_I2S_RevA_RXDisable(mxc_i2s_reva_regs_t *i2s)
 {
-    MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_RX_EN, 0 << MXC_F_I2S_CTRL0CH0_RX_EN_POS);
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_RX_EN, 0 << MXC_F_I2S_REVA_CTRL0CH0_RX_EN_POS);
 }
 
-int MXC_I2S_RevA_SetRXThreshold(uint8_t threshold)
+int MXC_I2S_RevA_SetRXThreshold(mxc_i2s_reva_regs_t *i2s, uint8_t threshold)
 {
     if ((threshold == 0) || (threshold > 8)) {
         return E_NOT_SUPPORTED;
     }
     
-    MXC_I2S->ctrl0ch0 |= (threshold << MXC_F_I2S_CTRL0CH0_RX_THD_VAL_POS);
+    i2s->ctrl0ch0 |= (threshold << MXC_F_I2S_REVA_CTRL0CH0_RX_THD_VAL_POS);
     
     return E_NO_ERROR;
 }
 
-int MXC_I2S_RevA_SetFrequency(mxc_i2s_ch_mode_t mode, uint16_t clkdiv)
+int MXC_I2S_RevA_SetFrequency(mxc_i2s_reva_regs_t *i2s, mxc_i2s_ch_mode_t mode, uint16_t clkdiv)
 {
-    MXC_I2S->ctrl1ch0 &= ~MXC_F_I2S_CTRL1CH0_EN;
+    i2s->ctrl1ch0 &= ~MXC_F_I2S_REVA_CTRL1CH0_EN;
     
-    MXC_SETFIELD(MXC_I2S->ctrl0ch0, MXC_F_I2S_CTRL0CH0_CH_MODE, (mode) << MXC_F_I2S_CTRL0CH0_CH_MODE_POS);
+    MXC_SETFIELD(i2s->ctrl0ch0, MXC_F_I2S_REVA_CTRL0CH0_CH_MODE, (mode) << MXC_F_I2S_REVA_CTRL0CH0_CH_MODE_POS);
     
-    MXC_I2S->ctrl1ch0 |= ((uint32_t) clkdiv) << MXC_F_I2S_CTRL1CH0_CLKDIV_POS;
+    i2s->ctrl1ch0 |= ((uint32_t) clkdiv) << MXC_F_I2S_REVA_CTRL1CH0_CLKDIV_POS;
     
-    MXC_I2S->ctrl1ch0 |= MXC_F_I2S_CTRL1CH0_EN;
+    i2s->ctrl1ch0 |= MXC_F_I2S_REVA_CTRL1CH0_EN;
     
     return E_NO_ERROR;
 }
 
-void MXC_I2S_RevA_Flush(void)
+void MXC_I2S_RevA_Flush(mxc_i2s_reva_regs_t *i2s)
 {
-    MXC_I2S->ctrl0ch0 |= MXC_F_I2S_CTRL0CH0_FLUSH;
+    i2s->ctrl0ch0 |= MXC_F_I2S_REVA_CTRL0CH0_FLUSH;
     
-    while (MXC_I2S->ctrl0ch0 & MXC_F_I2S_CTRL0CH0_FLUSH);
+    while (i2s->ctrl0ch0 & MXC_F_I2S_REVA_CTRL0CH0_FLUSH);
 }
 
-void MXC_I2S_RevA_EnableInt(uint32_t flags)
+void MXC_I2S_RevA_EnableInt(mxc_i2s_reva_regs_t *i2s, uint32_t flags)
 {
-    MXC_I2S->inten |= flags;
+    i2s->inten |= flags;
 }
 
-void MXC_I2S_RevA_DisableInt(uint32_t flags)
+void MXC_I2S_RevA_DisableInt(mxc_i2s_reva_regs_t *i2s, uint32_t flags)
 {
-    MXC_I2S->inten &= ~flags;
+    i2s->inten &= ~flags;
 }
 
-int MXC_I2S_RevA_GetFlags(void)
+int MXC_I2S_RevA_GetFlags(mxc_i2s_reva_regs_t *i2s)
 {
-    return (MXC_I2S->intfl & 0xF);
+    return (i2s->intfl & 0xF);
 }
 
-void MXC_I2S_RevA_ClearFlags(uint32_t flags)
+void MXC_I2S_RevA_ClearFlags(mxc_i2s_reva_regs_t *i2s, uint32_t flags)
 {
-    MXC_I2S->intfl |= flags;
+    i2s->intfl |= flags;
 }
 
-void MXC_I2S_RevA_TXDMAConfig(void* src_addr, int len)
+void MXC_I2S_RevA_TXDMAConfig(mxc_i2s_reva_regs_t *i2s, void* src_addr, int len)
 {
     uint8_t channel;
     mxc_dma_config_t config;
@@ -329,7 +329,7 @@ void MXC_I2S_RevA_TXDMAConfig(void* src_addr, int len)
     
     MXC_DMA_Init();
     
-    MXC_I2S->dmach0 |= (2 << MXC_F_I2S_DMACH0_DMA_TX_THD_VAL_POS);     //TX DMA Threshold
+    i2s->dmach0 |= (2 << MXC_F_I2S_REVA_DMACH0_DMA_TX_THD_VAL_POS);     //TX DMA Threshold
     
     channel = MXC_DMA_AcquireChannel();
     
@@ -351,14 +351,14 @@ void MXC_I2S_RevA_TXDMAConfig(void* src_addr, int len)
     MXC_DMA_SetCallback(channel, NULL);
     
     MXC_I2S_TXEnable();                                 //Enable I2S TX
-    MXC_I2S->dmach0 |= MXC_F_I2S_DMACH0_DMA_TX_EN;      //Enable I2S DMA
+    i2s->dmach0 |= MXC_F_I2S_REVA_DMACH0_DMA_TX_EN;      //Enable I2S DMA
     
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);
     MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
 }
 
-void MXC_I2S_RevA_RXDMAConfig(void* dest_addr, int len)
+void MXC_I2S_RevA_RXDMAConfig(mxc_i2s_reva_regs_t *i2s, void* dest_addr, int len)
 {
     uint8_t channel;
     mxc_dma_config_t config;
@@ -366,7 +366,7 @@ void MXC_I2S_RevA_RXDMAConfig(void* dest_addr, int len)
     
     MXC_DMA_Init();
     
-    MXC_I2S->dmach0 |= (6 << MXC_F_I2S_DMACH0_DMA_RX_THD_VAL_POS);     //RX DMA Threshold
+    i2s->dmach0 |= (6 << MXC_F_I2S_REVA_DMACH0_DMA_RX_THD_VAL_POS);     //RX DMA Threshold
     
     channel = MXC_DMA_AcquireChannel();
     
@@ -388,7 +388,7 @@ void MXC_I2S_RevA_RXDMAConfig(void* dest_addr, int len)
     MXC_DMA_SetCallback(channel, NULL);
     
     MXC_I2S_RXEnable();                                 //Enable I2S RX
-    MXC_I2S->dmach0 |= MXC_F_I2S_DMACH0_DMA_RX_EN;      //Enable I2S DMA
+    i2s->dmach0 |= MXC_F_I2S_REVA_DMACH0_DMA_RX_EN;      //Enable I2S DMA
     
     MXC_DMA_EnableInt(channel);
     MXC_DMA_Start(channel);

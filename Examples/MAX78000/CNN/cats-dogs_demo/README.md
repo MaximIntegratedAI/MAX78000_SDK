@@ -1,3 +1,12 @@
+---
+typora-root-url: Resources
+
+---
+
+# MAX78000 Cats vs Dogs Demo
+
+
+
 Description
 -----------
 
@@ -5,20 +14,103 @@ The model trained in this demo is used to classify images of cats and dogs. 2500
 
 The code uses a sampledata header (sampledata.h) file to test a pre-defined input sample. The example also supports live capture from camera module and displays the image on the TFT LCD.
 
-Required Connections
---------------------
+### Building firmware:
+
+Navigate directory where **cats-dogs_demo** software is located and build the project:
+
+```bash
+$ cd /Examples/MAX78000/CNN/cats-dogs_demo
+$ make
+```
+
+If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+
+```bash
+$ make distclean
+```
+
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in Makefile:
+
+```bash
+# Specify the board used
+ifeq "$(BOARD)" ""
+BOARD=EvKit_V1
+#BOARD=FTHR_RevA
+endif
+```
+
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in Makefile:
+
+```bash
+# Specify the board used
+ifeq "$(BOARD)" ""
+#BOARD=EvKit_V1
+BOARD=FTHR_RevA
+endif
+```
+
+### Load firmware image to MAX78000 EVKIT
+
+Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
+
+Connect PICO adapter to JH5 SWD header. 
+
+Load firmware image using Openocd.
+
+```bash
+./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+```
+
+### MAX78000 EVKIT operations
 
 *   If using camera and TFT LCD, place OVM7692 camera module on 'J4 Camera' header. Place TFT display on the display header.
 *   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 *   Place jumper P0\_0 and P0\_1 on UART\_0\_EN header JH1.
 *   Open a serial port application on the PC and connect to Ev-Kit's console UART at 115200, 8-N-1 configuration.
 
-Cats vs Dogs Demo Code
-----------------------
-
 This demo is operated in two modes: Real-time data using Camera module or using sample image header file in offline mode.
 
-In either mode, pushbutton trigger PB1(SW2) is used to capture and load an image into cnn engine. User is prompted to press PB1 to load an image
+In either mode, pushbutton trigger PB1(SW2) is used to capture and load an image into CNN engine. User is prompted to press PB1 to load an image
+
+### Load firmware image to MAX78000 Feather
+
+Connect USB cable to CN1 USB connector.
+
+Load firmware image using Openocd.
+
+```bash
+./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+```
+
+### MAX78000 Feather operations
+
+The TFT display is optional and not supplied with the MAX78000 Feather board.
+User should use PC terminal program to observe **cats-dogs_demo** result as described in "Terminal output" section.
+
+The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
+
+https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
+
+This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
+
+To compile code with enabled TFT feature use following setting in Makefile:
+
+```bash
+ifeq "$(BOARD)" "FTHR_RevA"
+PROJ_CFLAGS += -DENABLE_TFT
+endif
+```
+
+While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
+Press PB1 (SW1) button to start demo.
+
+<img src="/fthr_tft.png" style="zoom: 50%;" />
+
+The PB1 (SW1) button is located as shown in picture bellow:
+
+<img src="/pb1_button.jpg" alt="pb1_button" style="zoom:67%;" />
+
+
 
 ### Camera Mode 
 
@@ -42,25 +134,13 @@ To create your own header file follow these steps:
 4.  Now generate a header file using this command: python3 rgb.py
 5.  Use this header file in your main.c
 
-Expected output
+Terminal output
 ---------------
 
 The Console UART of the device will output these messages:
 
-\`\`\`
-
-\*\*\* CNN Test \*\*\*
-
-Init Camera.  
-Init LCD.  
-\*\*\*\*\*\*\*\*\*\* Press PB1 to capture an image \*\*\*\*\*\*\*\*\*\*  
+![](/terminal.png)
   
-Capturing sampledata 1 times  
-Show camera frame on LCD.  
-Time for CNN: 2529 us  
-  
-Classification results:  
-\[ -34610\] -> Class 0      Cat: 5.9%  
-\[  35999\] -> Class 1      Dog: 94.1%
+### References
 
-\`\`\`
+https://github.com/MaximIntegratedAI/MaximAI_Documentation

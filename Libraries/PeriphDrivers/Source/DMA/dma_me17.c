@@ -52,10 +52,12 @@
 
 int MXC_DMA_Init(void)
 {
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA);
-    MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA);
+    if(!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA)) {
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_DMA);
+    }
     
-    return MXC_DMA_RevA_Init();
+    return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t*) MXC_DMA);
 }
 
 int MXC_DMA_AcquireChannel(void)
@@ -103,6 +105,11 @@ int MXC_DMA_SetCallback(int ch, void (*callback)(int, int))
     return MXC_DMA_RevA_SetCallback(ch, callback);
 }
 
+int MXC_DMA_SetChannelInterruptEn(int ch, bool chdis, bool ctz)
+{
+	return MXC_DMA_RevA_SetChannelInterruptEn(ch, chdis, ctz);
+}
+
 int MXC_DMA_ChannelEnableInt(int ch, int flags)
 {
     return MXC_DMA_RevA_ChannelEnableInt(ch, flags);
@@ -125,12 +132,12 @@ int MXC_DMA_ChannelClearFlags(int ch, int flags)
 
 int MXC_DMA_EnableInt(int ch)
 {
-    return MXC_DMA_RevA_EnableInt(ch);
+    return MXC_DMA_RevA_EnableInt((mxc_dma_reva_regs_t*) MXC_DMA, ch);
 }
 
 int MXC_DMA_DisableInt(int ch)
 {
-    return MXC_DMA_RevA_DisableInt(ch);
+    return MXC_DMA_RevA_DisableInt((mxc_dma_reva_regs_t*) MXC_DMA, ch);
 }
 
 int MXC_DMA_Start(int ch)
@@ -148,9 +155,9 @@ mxc_dma_ch_regs_t* MXC_DMA_GetCHRegs(int ch)
     return MXC_DMA_RevA_GetCHRegs(ch);
 }
 
-void MXC_DMA_Handler()
+void MXC_DMA_Handler(void)
 {
-    return MXC_DMA_RevA_Handler();
+    return MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t*) MXC_DMA);
 }
 
 int MXC_DMA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callback)

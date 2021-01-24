@@ -48,39 +48,39 @@ int MXC_SFE_RevA_Shutdown(void)
     return E_NO_ERROR;
 }
 
-int MXC_SFE_RevA_ReadEnable(void)
+int MXC_SFE_RevA_ReadEnable(mxc_sfe_reva_regs_t *sfe)
 {
-    MXC_SFE->cfg |= MXC_F_SFE_CFG_RD_EN;
+    sfe->cfg |= MXC_F_SFE_REVA_CFG_RD_EN;
     return E_NO_ERROR;
 }
 
-int MXC_SFE_RevA_WriteEnable(void)
+int MXC_SFE_RevA_WriteEnable(mxc_sfe_reva_regs_t *sfe)
 {
-    MXC_SFE->cfg |= MXC_F_SFE_CFG_WR_EN;
+    sfe->cfg |= MXC_F_SFE_REVA_CFG_WR_EN;
     return E_NO_ERROR;
 }
 
-int MXC_SFE_RevA_SetFlashAddress(uint32_t lowerAdd, uint32_t upperAdd)
+int MXC_SFE_RevA_SetFlashAddress(mxc_sfe_reva_regs_t *sfe, uint32_t lowerAdd, uint32_t upperAdd)
 {
-    MXC_SFE->flash_sba = lowerAdd;
-    MXC_SFE->flash_sta = upperAdd;
-    MXC_SFE->sfdp_sba  = 0x10008000;        // FLash base address
-    
+    sfe->flash_sba = lowerAdd;
+    sfe->flash_sta = upperAdd;
+    sfe->sfdp_sba  = 0x10008000;        // FLash base address
+
     return E_NO_ERROR;
 }
 
-int MXC_SFE_RevA_SetRAMAddress(uint32_t lowerAdd, uint32_t upperAdd)
+int MXC_SFE_RevA_SetRAMAddress(mxc_sfe_reva_regs_t *sfe, uint32_t lowerAdd, uint32_t upperAdd)
 {
-    MXC_SFE->ram_sba = lowerAdd;
-    MXC_SFE->ram_sta = upperAdd;
-    
+    sfe->ram_sba = lowerAdd;
+    sfe->ram_sta = upperAdd;
+
     return E_NO_ERROR;
 }
 
-int MXC_SFE_RevA_SetHostAddress(uint32_t RAMAdd, uint32_t FLASHAdd)
+int MXC_SFE_RevA_SetHostAddress(mxc_sfe_reva_regs_t *sfe, uint32_t RAMAdd, uint32_t FLASHAdd)
 {
-    MXC_SFE->hfsa = FLASHAdd;
-    MXC_SFE->hrsa = RAMAdd;
-    
+    sfe->hfsa = FLASHAdd;
+    sfe->hrsa = RAMAdd;
+
     return E_NO_ERROR;
 }

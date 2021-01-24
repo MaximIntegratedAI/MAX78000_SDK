@@ -38,13 +38,13 @@
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "mxc_delay.h"
-#include "sfe_regs.h"
 #include "sfe.h"
+#include "sfe_reva_regs.h"
 
 int MXC_SFE_RevA_Init(void);
 int MXC_SFE_RevA_Shutdown(void);
-int MXC_SFE_RevA_ReadEnable(void);
-int MXC_SFE_RevA_WriteEnable(void);
-int MXC_SFE_RevA_SetFlashAddress(uint32_t baseAdd, uint32_t topAdd);
-int MXC_SFE_RevA_SetRAMAddress(uint32_t baseAdd, uint32_t topAdd);
-int MXC_SFE_RevA_SetHostAddress(uint32_t RAMAdd, uint32_t FLASHAdd);
+int MXC_SFE_RevA_ReadEnable(mxc_sfe_reva_regs_t *sfe);
+int MXC_SFE_RevA_WriteEnable(mxc_sfe_reva_regs_t *sfe);
+int MXC_SFE_RevA_SetFlashAddress(mxc_sfe_reva_regs_t *sfe, uint32_t baseAdd, uint32_t topAdd);
+int MXC_SFE_RevA_SetRAMAddress(mxc_sfe_reva_regs_t *sfe, uint32_t baseAdd, uint32_t topAdd);
+int MXC_SFE_RevA_SetHostAddress(mxc_sfe_reva_regs_t *sfe, uint32_t RAMAdd, uint32_t FLASHAdd);

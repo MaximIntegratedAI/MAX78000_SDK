@@ -32,113 +32,115 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <string.h>
+#include <stdio.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "simo.h"
 #include "simo_reva.h"
-#include "simo_regs.h"
 
 /* **** Functions **** */
-void MXC_SIMO_setVregO_A(uint32_t voltage)
+void MXC_SIMO_SetVregO_A(uint32_t voltage)
 {
-    MXC_SIMO_RevA_setVregO_A(voltage);
+    MXC_SIMO_RevA_SetVregO_A((mxc_simo_reva_regs_t*) MXC_SIMO, voltage);
 }
 
-void MXC_SIMO_setVregO_B(uint32_t voltage)
+void MXC_SIMO_SetVregO_B(uint32_t voltage)
 {
-    MXC_SIMO_RevA_setVregO_B(voltage);
+    MXC_SIMO_RevA_SetVregO_B((mxc_simo_reva_regs_t*) MXC_SIMO, voltage);
 }
 
-void MXC_SIMO_setVregO_C(uint32_t voltage)
+void MXC_SIMO_SetVregO_C(uint32_t voltage)
 {
-    MXC_SIMO_RevA_setVregO_C(voltage);
+    MXC_SIMO_RevA_SetVregO_C((mxc_simo_reva_regs_t*) MXC_SIMO, voltage);
 }
 
-void MXC_SIMO_setVregO_D(uint32_t voltage)
+void MXC_SIMO_SetVregO_D(uint32_t voltage)
 {
-    MXC_SIMO_RevA_setVregO_D(voltage);
+    MXC_SIMO_RevA_SetVregO_D((mxc_simo_reva_regs_t*) MXC_SIMO, voltage);
 }
 
-void MXC_SIMO_setIpkA(uint32_t peak_current)
+// void MXC_SIMO_setIpkA(uint32_t peak_current)
+// {
+//     MXC_SIMO_RevA_setIpkA(peak_current);
+// }
+
+// void MXC_SIMO_setIpkB(uint32_t peak_current)
+// {
+//     MXC_SIMO_RevA_setIpkB(peak_current);
+// }
+
+// void MXC_SIMO_setIpkC(uint32_t peak_current)
+// {
+//     MXC_SIMO_RevA_setIpkC(peak_current);
+// }
+
+// void MXC_SIMO_setIpkD(uint32_t peak_current)
+// {
+//     MXC_SIMO_RevA_setIpkD(peak_current);
+// }
+
+// void MXC_SIMO_setMaxTon(uint32_t ontime)
+// {
+//     MXC_SIMO_RevA_setMaxTon(ontime);
+// }
+
+// void MXC_SIMO_setAlertThresholdA(uint32_t threshold)
+// {
+//     MXC_SIMO_RevA_setAlertThresholdA(threshold);
+// }
+
+// void MXC_SIMO_setAlertThresholdB(uint32_t threshold)
+// {
+//     MXC_SIMO_RevA_setAlertThresholdB(threshold);
+// }
+
+// void MXC_SIMO_setAlertThresholdC(uint32_t threshold)
+// {
+//     MXC_SIMO_RevA_setAlertThresholdC(threshold);
+// }
+
+// void MXC_SIMO_setAlertThresholdD(uint32_t threshold)
+// {
+//     MXC_SIMO_RevA_setAlertThresholdD(threshold);
+// }
+
+// void MXC_SIMO_setZeroCrossCalA(uint32_t zerocross)
+// {
+//     MXC_SIMO_RevA_setZeroCrossCalA(zerocross);
+// }
+
+// void MXC_SIMO_setZeroCrossCalB(uint32_t zerocross)
+// {
+//     MXC_SIMO_RevA_setZeroCrossCalB(zerocross);
+// }
+
+// void MXC_SIMO_setZeroCrossCalC(uint32_t zerocross)
+// {
+//     MXC_SIMO_RevA_setZeroCrossCalC(zerocross);
+// }
+
+// void MXC_SIMO_setZeroCrossCalD(uint32_t zerocross)
+// {
+//     MXC_SIMO_RevA_setZeroCrossCalD(zerocross);
+// }
+
+uint32_t MXC_SIMO_GetOutReadyA(void)
 {
-    MXC_SIMO_RevA_setIpkA(peak_current);
+    return MXC_SIMO_RevA_GetOutReadyA((mxc_simo_reva_regs_t*) MXC_SIMO);
 }
 
-void MXC_SIMO_setIpkB(uint32_t peak_current)
+uint32_t MXC_SIMO_GetOutReadyB(void)
 {
-    MXC_SIMO_RevA_setIpkB(peak_current);
+    return MXC_SIMO_RevA_GetOutReadyB((mxc_simo_reva_regs_t*) MXC_SIMO);
 }
 
-void MXC_SIMO_setIpkC(uint32_t peak_current)
+uint32_t MXC_SIMO_GetOutReadyC(void)
 {
-    MXC_SIMO_RevA_setIpkC(peak_current);
+    return MXC_SIMO_RevA_GetOutReadyC((mxc_simo_reva_regs_t*) MXC_SIMO);
 }
 
-void MXC_SIMO_setIpkD(uint32_t peak_current)
+uint32_t MXC_SIMO_GetOutReadyD(void)
 {
-    MXC_SIMO_RevA_setIpkD(peak_current);
-}
-
-void MXC_SIMO_setMaxTon(uint32_t ontime)
-{
-    MXC_SIMO_RevA_setMaxTon(ontime);
-}
-
-void MXC_SIMO_setAlertThresholdA(uint32_t threshold)
-{
-    MXC_SIMO_RevA_setAlertThresholdA(threshold);
-}
-
-void MXC_SIMO_setAlertThresholdB(uint32_t threshold)
-{
-    MXC_SIMO_RevA_setAlertThresholdB(threshold);
-}
-
-void MXC_SIMO_setAlertThresholdC(uint32_t threshold)
-{
-    MXC_SIMO_RevA_setAlertThresholdC(threshold);
-}
-
-void MXC_SIMO_setAlertThresholdD(uint32_t threshold)
-{
-    MXC_SIMO_RevA_setAlertThresholdD(threshold);
-}
-
-void MXC_SIMO_setZeroCrossCalA(uint32_t zerocross)
-{
-    MXC_SIMO_RevA_setZeroCrossCalA(zerocross);
-}
-
-void MXC_SIMO_setZeroCrossCalB(uint32_t zerocross)
-{
-    MXC_SIMO_RevA_setZeroCrossCalB(zerocross);
-}
-
-void MXC_SIMO_setZeroCrossCalC(uint32_t zerocross)
-{
-    MXC_SIMO_RevA_setZeroCrossCalC(zerocross);
-}
-
-void MXC_SIMO_setZeroCrossCalD(uint32_t zerocross)
-{
-    MXC_SIMO_RevA_setZeroCrossCalD(zerocross);
-}
-
-uint32_t MXC_SIMO_getOutReadyA(void)
-{
-    return MXC_SIMO_RevA_getOutReadyA();
-}
-
-uint32_t MXC_SIMO_getOutReadyB(void)
-{
-    return MXC_SIMO_RevA_getOutReadyB();
-}
-
-uint32_t MXC_SIMO_getOutReadyC(void)
-{
-    return MXC_SIMO_RevA_getOutReadyC();
-}
-
-uint32_t MXC_SIMO_getOutReadyD(void)
-{
-    return MXC_SIMO_RevA_getOutReadyD();
+    return MXC_SIMO_RevA_GetOutReadyD((mxc_simo_reva_regs_t*) MXC_SIMO);
 }

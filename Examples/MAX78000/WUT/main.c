@@ -48,7 +48,7 @@
 #include "mxc.h"
 
 /***** Definitions *****/
-#define SLEEP_MODE           // Select between SLEEP_MODE and DEEPSLEEP_MODE
+//#define SLEEP_MODE           // Select between SLEEP_MODE and DEEPSLEEP_MODE
 
 #define MILLISECONDS_WUT 5000
 
@@ -100,7 +100,7 @@ int main(void)
 #else
     printf("Press SW1 to continue.\n");
 #endif
-    
+
     PB_RegisterCallback(0, buttonHandler);
     
     // Get ticks based off of milliseconds
@@ -133,5 +133,6 @@ int main(void)
         MXC_LP_EnterDeepSleepMode();
         printf("Waking up from DEEP SLEEP mode.\n");
 #endif
+        printf("\nPress the button again to trigger another sleep-wake cycle.\n");
     }
 }

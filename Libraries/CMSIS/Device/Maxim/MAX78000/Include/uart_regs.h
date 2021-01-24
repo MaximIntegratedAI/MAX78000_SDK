@@ -377,8 +377,8 @@ typedef struct {
  #define MXC_F_UART_WKEN_RX_FULL_POS                    1 /**< WKEN_RX_FULL Position */
  #define MXC_F_UART_WKEN_RX_FULL                        ((uint32_t)(0x1UL << MXC_F_UART_WKEN_RX_FULL_POS)) /**< WKEN_RX_FULL Mask */
 
- #define MXC_F_UART_WKEN_RX_THD_POS                     1 /**< WKEN_RX_THD Position */
- #define MXC_F_UART_WKEN_RX_THD                         ((uint32_t)(0x3UL << MXC_F_UART_WKEN_RX_THD_POS)) /**< WKEN_RX_THD Mask */
+ #define MXC_F_UART_WKEN_RX_THD_POS                     2 /**< WKEN_RX_THD Position */
+ #define MXC_F_UART_WKEN_RX_THD                         ((uint32_t)(0x1UL << MXC_F_UART_WKEN_RX_THD_POS)) /**< WKEN_RX_THD Mask */
 
 /**@} end of group UART_WKEN_Register */
 

@@ -33,15 +33,37 @@
  *
  *************************************************************************** */
 
-#ifdef __riscv
-    #error "The MXC_Delay functions are not currently supported on the RISC-V core."
-#else
-
 /* **** Includes **** */
 #include <stdint.h>
 #include <stddef.h>
 #include "mxc_device.h"
 #include "mxc_delay.h"
+#include "mxc_sys.h"
+
+#ifdef __riscv
+
+int MXC_Delay(unsigned long us)
+{
+    // Check if there is nothing to do
+    if (us == 0) {
+        return E_NO_ERROR;
+    }
+
+    // Calculate number of cycles needed.
+    uint32_t ticks = (MXC_SYS_RiscVClockRate() / 1000000) * us;
+
+    CSR_SetPCMR(0);         // Turn off counter
+    CSR_SetPCCR(0);         // Clear counter register
+    CSR_SetPCER(1);         // Enable counting of cycles
+    CSR_SetPCMR(3);         // Turn on counter
+
+    while(CSR_GetPCCR() < ticks) {
+        // Wait for counter to reach the tick count.
+    }
+    return E_NO_ERROR;
+}
+
+#else
 
 /* **** File Scope Variables **** */
 static volatile int overflows = -1;

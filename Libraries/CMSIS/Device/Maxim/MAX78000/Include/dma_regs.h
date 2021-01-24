@@ -83,7 +83,7 @@ extern "C" {
 
 /**
  * @ingroup dma_registers
- * Structure type to access the DMA Registers.
+ * Structure type to access the DMA Channel Registers.
  */
 typedef struct {
     __IO uint32_t ctrl;                 /**< <tt>\b 0x100:</tt> DMA CTRL Register */
@@ -96,11 +96,15 @@ typedef struct {
     __IO uint32_t cntrld;               /**< <tt>\b 0x11C:</tt> DMA CNTRLD Register */
 } mxc_dma_ch_regs_t;
 
+/**
+ * @ingroup dma_registers
+ * Structure type to access the DMA Registers.
+ */
 typedef struct {
     __IO uint32_t inten;                /**< <tt>\b 0x000:</tt> DMA INTEN Register */
     __I  uint32_t intfl;                /**< <tt>\b 0x004:</tt> DMA INTFL Register */
     __R  uint32_t rsv_0x8_0xff[62];
-    __IO mxc_dma_ch_regs_t    ch[8];    /**< <tt>\b 0x100:</tt> DMA CH Register */
+    __IO mxc_dma_ch_regs_t    ch[4];    /**< <tt>\b 0x100:</tt> DMA CH Register */
 } mxc_dma_regs_t;
 
 /* Register offsets for module DMA */
@@ -141,18 +145,6 @@ typedef struct {
  #define MXC_F_DMA_INTEN_CH3_POS                        3 /**< INTEN_CH3 Position */
  #define MXC_F_DMA_INTEN_CH3                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH3_POS)) /**< INTEN_CH3 Mask */
 
- #define MXC_F_DMA_INTEN_CH4_POS                        4 /**< INTEN_CH4 Position */
- #define MXC_F_DMA_INTEN_CH4                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH4_POS)) /**< INTEN_CH4 Mask */
-
- #define MXC_F_DMA_INTEN_CH5_POS                        5 /**< INTEN_CH5 Position */
- #define MXC_F_DMA_INTEN_CH5                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH5_POS)) /**< INTEN_CH5 Mask */
-
- #define MXC_F_DMA_INTEN_CH6_POS                        6 /**< INTEN_CH6 Position */
- #define MXC_F_DMA_INTEN_CH6                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH6_POS)) /**< INTEN_CH6 Mask */
-
- #define MXC_F_DMA_INTEN_CH7_POS                        7 /**< INTEN_CH7 Position */
- #define MXC_F_DMA_INTEN_CH7                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH7_POS)) /**< INTEN_CH7 Mask */
-
 /**@} end of group DMA_INTEN_Register */
 
 /**
@@ -172,18 +164,6 @@ typedef struct {
 
  #define MXC_F_DMA_INTFL_CH3_POS                        3 /**< INTFL_CH3 Position */
  #define MXC_F_DMA_INTFL_CH3                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH3_POS)) /**< INTFL_CH3 Mask */
-
- #define MXC_F_DMA_INTFL_CH4_POS                        4 /**< INTFL_CH4 Position */
- #define MXC_F_DMA_INTFL_CH4                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH4_POS)) /**< INTFL_CH4 Mask */
-
- #define MXC_F_DMA_INTFL_CH5_POS                        5 /**< INTFL_CH5 Position */
- #define MXC_F_DMA_INTFL_CH5                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH5_POS)) /**< INTFL_CH5 Mask */
-
- #define MXC_F_DMA_INTFL_CH6_POS                        6 /**< INTFL_CH6 Position */
- #define MXC_F_DMA_INTFL_CH6                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH6_POS)) /**< INTFL_CH6 Mask */
-
- #define MXC_F_DMA_INTFL_CH7_POS                        7 /**< INTFL_CH7 Position */
- #define MXC_F_DMA_INTFL_CH7                            ((uint32_t)(0x1UL << MXC_F_DMA_INTFL_CH7_POS)) /**< INTFL_CH7 Mask */
 
 /**@} end of group DMA_INTFL_Register */
 
@@ -234,6 +214,8 @@ typedef struct {
  #define MXC_S_DMA_CTRL_REQUEST_SPI0RX                  (MXC_V_DMA_CTRL_REQUEST_SPI0RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI0RX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_AESRX                   ((uint32_t)0x10UL) /**< CTRL_REQUEST_AESRX Value */
  #define MXC_S_DMA_CTRL_REQUEST_AESRX                   (MXC_V_DMA_CTRL_REQUEST_AESRX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_AESRX Setting */
+ #define MXC_V_DMA_CTRL_REQUEST_UART3RX                 ((uint32_t)0x1CUL) /**< CTRL_REQUEST_UART3RX Value */
+ #define MXC_S_DMA_CTRL_REQUEST_UART3RX                 (MXC_V_DMA_CTRL_REQUEST_UART3RX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART3RX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_I2SRX                   ((uint32_t)0x1EUL) /**< CTRL_REQUEST_I2SRX Value */
  #define MXC_S_DMA_CTRL_REQUEST_I2SRX                   (MXC_V_DMA_CTRL_REQUEST_I2SRX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2SRX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_SPI1TX                  ((uint32_t)0x21UL) /**< CTRL_REQUEST_SPI1TX Value */
@@ -250,12 +232,16 @@ typedef struct {
  #define MXC_S_DMA_CTRL_REQUEST_I2C2TX                  (MXC_V_DMA_CTRL_REQUEST_I2C2TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2C2TX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_CRCTX                   ((uint32_t)0x2CUL) /**< CTRL_REQUEST_CRCTX Value */
  #define MXC_S_DMA_CTRL_REQUEST_CRCTX                   (MXC_V_DMA_CTRL_REQUEST_CRCTX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_CRCTX Setting */
+ #define MXC_V_DMA_CTRL_REQUEST_PCIFTX                  ((uint32_t)0x2DUL) /**< CTRL_REQUEST_PCIFTX Value */
+ #define MXC_S_DMA_CTRL_REQUEST_PCIFTX                  (MXC_V_DMA_CTRL_REQUEST_PCIFTX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_PCIFTX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_UART2TX                 ((uint32_t)0x2EUL) /**< CTRL_REQUEST_UART2TX Value */
  #define MXC_S_DMA_CTRL_REQUEST_UART2TX                 (MXC_V_DMA_CTRL_REQUEST_UART2TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART2TX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_SPI0TX                  ((uint32_t)0x2FUL) /**< CTRL_REQUEST_SPI0TX Value */
  #define MXC_S_DMA_CTRL_REQUEST_SPI0TX                  (MXC_V_DMA_CTRL_REQUEST_SPI0TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_SPI0TX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_AESTX                   ((uint32_t)0x30UL) /**< CTRL_REQUEST_AESTX Value */
  #define MXC_S_DMA_CTRL_REQUEST_AESTX                   (MXC_V_DMA_CTRL_REQUEST_AESTX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_AESTX Setting */
+ #define MXC_V_DMA_CTRL_REQUEST_UART3TX                 ((uint32_t)0x3CUL) /**< CTRL_REQUEST_UART3TX Value */
+ #define MXC_S_DMA_CTRL_REQUEST_UART3TX                 (MXC_V_DMA_CTRL_REQUEST_UART3TX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_UART3TX Setting */
  #define MXC_V_DMA_CTRL_REQUEST_I2STX                   ((uint32_t)0x3EUL) /**< CTRL_REQUEST_I2STX Value */
  #define MXC_S_DMA_CTRL_REQUEST_I2STX                   (MXC_V_DMA_CTRL_REQUEST_I2STX << MXC_F_DMA_CTRL_REQUEST_POS) /**< CTRL_REQUEST_I2STX Setting */
 

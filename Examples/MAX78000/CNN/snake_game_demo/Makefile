@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2020 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -52,11 +52,12 @@ COMPILER=GCC
 # Specify the board used
 ifeq "$(BOARD)" ""
 BOARD=EvKit_V1
+#BOARD=FTHR_RevA
 endif
 
 # This is the path to the CMSIS root directory
 ifeq "$(MAXIM_PATH)" ""
-LIBS_DIR= ../../../../Libraries
+LIBS_DIR=../../../../Libraries
 else
 LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
@@ -71,17 +72,37 @@ export CMSIS_ROOT
 SRCS  = main.c
 SRCS += softmax.c
 SRCS += cnn.c
-SRCS += TFT/all_imgs.c
+ifeq "$(BOARD)" "EvKit_V1"
+SRCS += TFT/evkit/all_imgs.c
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+SRCS += TFT/fthr/logo_rgb565.c
+SRCS += TFT/fthr/img_1_rgb565.c
+SRCS += TFT/fthr/SansSerif16x16.c
+endif
 
 # Where to find source files for this test
 VPATH  = .
-VPATH += ../Common
-VPATH += ./TFT
+ifeq "$(MAXIM_PATH)" ""
+VPATH += ../Common/
+else
+VPATH += /$(subst \,/,$(subst :,,$(MAXIM_PATH))/Examples/$(TARGET)/CNN/Common/)
+endif
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
+ifeq "$(BOARD)" "EvKit_V1"
+VPATH += ./TFT/evkit/
+endif
+ifeq "$(BOARD)" "FTHR_RevA"
+VPATH += TFT/fthr/
+endif
 # Where to find header files for this test
 IPATH  = .
-IPATH += ../Common
-IPATH += ./TFT
+ifeq "$(MAXIM_PATH)" ""
+IPATH += ../Common/
+else
+IPATH += /$(subst \,/,$(subst :,,$(MAXIM_PATH))/Examples/$(TARGET)/CNN/Common/)
+endif
+IPATH += TFT/evkit/
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
@@ -106,7 +127,7 @@ PROJ_CFLAGS+=-Wall
 #STARTUPFILE=start.S
 
 # Override the default optimization level using this variable
-MXC_OPTIMIZE_CFLAGS=-O0
+MXC_OPTIMIZE_CFLAGS=-O2
 
 ################################################################################
 # Include external library makefiles here
