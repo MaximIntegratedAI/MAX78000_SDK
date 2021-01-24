@@ -15,6 +15,8 @@ January 24, 2020
 * Added access functions for certain RISC-V core registers.
 * Added initial implementation of RISC-V MXC_Delay() function.
 * Adjusted internal peripheral driver functions to allow better compatibility with other Maxim microcontrollers.
+* Renamed cats-vs-dogs-chw example to cats-vs-dogs.
+* Renamed kws20 example to kws_v3.
 
 November 6, 2020
 * Added missing GCR registers and fields.
@@ -89,6 +91,7 @@ May 21, 2020
 * There will be more examples coming in a future release.
 * The Eclipse projects show errors and warnings indicating there are unresolved references.  However, the projects still build and run correctly.
 * When uninstalling the SDK using the maintenance tool, an error will occur referring to the fstab file.  This error can be ignored - the uninstall will still complete.
+* The MXC_Delay library is not complete when building for the RISC-V core.
 
 ## Example Status
 
@@ -96,33 +99,35 @@ May 21, 2020
 |----------------------|:-----------:|:---------------:|-------------------------------------------------------------------------------------------------|
 | ADC                  |   Complete  |       Yes       | The overflow, low limit, and high limit are not reported properly in the example.               |
 | AES                  |   Complete  |       Yes       |                                                                                                 |
-| CNN/cats-dogs_demo   |   Complete  |       Yes       |                                                                                                 |
-| CNN/cats-vs-dogs-chw |   Complete  |     Partial     |                                                                                                 |
-| CNN/cifar-10         |   Complete  |       Yes       |                                                                                                 |
-| CNN/cifar-100        |   Complete  |       Yes       |                                                                                                 |
-| CNN/faceid           |   Complete  |       Yes       |                                                                                                 |
-| CNN/faceid_demo      |   Complete  |     Partial     |                                                                                                 |
-| CNN/faceid_evkit     |   Complete  |       Yes       |                                                                                                 |
-| CNN/kws20            |   Complete  |       Yes       |                                                                                                 |
-| CNN/kws20_demo       |   Complete  |       Yes       |                                                                                                 |
-| CNN/mnist            |   Complete  |     Partial     |                                                                                                 |
-| CNN/mnist-riscv      |   Complete  |       Yes       |                                                                                                 |
-| CNN/snake_game_demo  |   Complete  |       Yes       |                                                                                                 |
+| CameraIF             |   Complete  |       Yes       |                                                                                                 |
+| CNN/cats-dogs_demo   |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/cats-vs-dogs     |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/cifar-10         |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/cifar-100        |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/faceid           |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/faceid_demo      |   Complete  |       No        |                                                                                                 |
+| CNN/faceid_evkit     |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/kws20_demo       |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/kws20_v3         |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/mnist            |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
+| CNN/mnist-riscv      |   Complete  |     Partial     | Debug support for code running on the RISC-V is not yet supported in Eclipse.                   |
+| CNN/mnist-streaming  |   Complete  |     Partial     | Debug support for code running on the RISC-V is not yet supported in Eclipse.                   |
+| CNN/snake_game_demo  |   Complete  |       Yes       | The project can be imported into Eclipse, but cannot be created using the New project wizard.   |
 | CRC                  |   Complete  |       Yes       |                                                                                                 |
 | DMA                  |   Complete  |       Yes       |                                                                                                 |
 | ECC                  |   Complete  |       Yes       |                                                                                                 |
 | Flash                |   Complete  |       Yes       |                                                                                                 |
 | GPIO                 |   Complete  |       Yes       |                                                                                                 |
 | Hello_World          |   Complete  |       Yes       |                                                                                                 |
-| I2C                  | In Progress |   In Progress   |                                                                                                 |
+| I2C                  |   Complete  |       Yes       |                                                                                                 |
 | I2S                  |   Complete  |       Yes       |                                                                                                 |
 | ICC                  |   Complete  |       Yes       |                                                                                                 |
 | LP                   | In Progress |   In Progress   |                                                                                                 |
 | Pulse_Train          |   Complete  |       Yes       |                                                                                                 |
 | RTC                  |   Complete  |       Yes       |                                                                                                 |
 | SPI                  |   Complete  |       Yes       |                                                                                                 |
-| TFT_Demo             |   Complete  |       Yes       | The Readme.md file needs to be completed.                                                       |
-| TMR                  |   Complete  |       Yes       | The PWM signal created by this example is not currently working.                                |
+| TFT_Demo             |   Complete  |       Yes       |                                                                                                 |
+| TMR                  |   Complete  |       Yes       |                                                                                                 |
 | TRNG                 |   Complete  |       Yes       |                                                                                                 |
 | UART                 |   Complete  |       Yes       |                                                                                                 |
 | Watchdog             |   Complete  |       Yes       |                                                                                                 |
