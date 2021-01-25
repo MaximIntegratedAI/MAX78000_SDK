@@ -62,7 +62,7 @@
 #endif
 
 typedef enum {
-#ifndef __riscv // not RISC-V
+#if !defined __riscv && !defined RV32 // not RISC-V
     NonMaskableInt_IRQn    = -14,
     HardFault_IRQn         = -13,
     MemoryManagement_IRQn  = -12,
@@ -184,6 +184,9 @@ typedef enum {
     RSV102_IRQn,            /* 0x76  0x01D8 118: Reserved */
     LPCMP_IRQn,             /* 0x77  0x01Dc 119: LP Comparator */
 #else // __riscv
+    #ifndef __riscv
+    #define __riscv
+    #endif
     PF_IRQn = 4,            /* 0x04,4 PFW | SYSFAULT | CM4 */
     WDT0_IRQn,              /* 0x05,5 Watchdog 0 */
     GPIOWake_IRQn = 6,      /* 0x06,6 GPIO Wakeup */

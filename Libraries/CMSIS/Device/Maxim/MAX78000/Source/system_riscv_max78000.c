@@ -40,6 +40,12 @@
 volatile uint32_t mailbox __attribute__ ((section (".mailbox")));
 uint32_t SystemCoreClock __attribute__ ((section (".shared")));
 
+void __enable_irq(void)
+{   
+    // Set the MIE bit if we're outside the interrupt context
+    __asm volatile("csrw mstatus, 0x8");
+}
+
 __weak void SystemCoreClockUpdate(void)
 {
     // uint32_t base_freq, div, clk_src;
