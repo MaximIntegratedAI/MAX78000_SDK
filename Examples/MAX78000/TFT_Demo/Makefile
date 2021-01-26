@@ -126,7 +126,7 @@ PROJ_CFLAGS += -DENABLE_TS
 endif
 
 ifeq "$(BOARD)" "FTHR_RevA"
-#PROJ_CFLAGS += -DENABLE_TFT
+PROJ_CFLAGS += -DENABLE_TFT
 endif
 
 #PROJ_CFLAGS+=--specs=nano.specs
