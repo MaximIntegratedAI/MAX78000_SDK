@@ -70,6 +70,7 @@ export CMSIS_ROOT
 
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
+SRCS += cnn.c
 SRCS += softmax.c
 
 # Where to find source files for this test
@@ -94,7 +95,7 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 PROJ_CFLAGS+=-DARM_MATH_CM4
 
 # Enable all warnings
-PROJ_CFLAGS+=-Wall
+PROJ_CFLAGS+=-Wall -Wcast-align
 
 # Specify the target revision to override default
 # "A2" in ASCII

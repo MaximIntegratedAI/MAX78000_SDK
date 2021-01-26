@@ -800,10 +800,12 @@ int main(void)
   // Initialize camera.
   printf("Init Camera.\n");
 
-  if(Camera_Power(1) != E_NO_ERROR) {
-	  printf("Failed to turn on microphone.\n");
+#ifdef BOARD_FTHR_REVA
+  if(Camera_Power(POWER_ON) != E_NO_ERROR) {
+	  printf("Failed to turn on camera.\n");
 	  while(1);
   }
+#endif
 
   camera_init(CAMERA_FREQ);
   // Set camera clock prescaler

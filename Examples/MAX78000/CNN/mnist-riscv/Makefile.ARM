@@ -89,7 +89,7 @@ PROJ_CFLAGS+=-DARM_MATH_CM4
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 # Enable all warnings
-PROJ_CFLAGS+=-Wall
+PROJ_CFLAGS+=-Wall -Wcast-align
 # Specify the target revision to override default
 # "A2" in ASCII
 # TARGET_REV=0x4132

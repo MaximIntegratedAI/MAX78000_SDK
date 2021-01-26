@@ -69,6 +69,7 @@ CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 export CMSIS_ROOT
 # Source files for this test (add path to VPATH below)
 SRCS  = main_riscv.c
+SRCS += cnn.c
 SRCS += softmax.c
 
 # Where to find source files for this test
@@ -102,7 +103,7 @@ STACK_SIZE=1024
 PROJ_CFLAGS+=-DRV32
 
 # Enable all warnings
-PROJ_CFLAGS+=-Wall
+PROJ_CFLAGS+=-Wall -Wcast-align
 # Specify the target revision to override default
 # "A2" in ASCII
 # TARGET_REV=0x4132

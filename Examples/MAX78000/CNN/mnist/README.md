@@ -34,22 +34,24 @@ If using the Featherboard (FTHR_RevA):
 The Console UART of the device will output these messages:
 
 ```
-*** CNN Test ***
+Waiting...
+
+*** CNN Inference Test ***
 
 *** PASS ***
 
-Time for CNN: 1386 us
+Approximate inference time: 1410 us
 
 Classification results:
-[ -29649] -> Class 0: 4.2%
-[ -25548] -> Class 1: 4.2%
-[ -27429] -> Class 2: 4.2%
-[ -25779] -> Class 3: 4.2%
-[ -25914] -> Class 4: 4.2%
-[ -38948] -> Class 5: 2.1%
-[ -68083] -> Class 6: 0.5%
-[  39323] -> Class 7: 67.7%
-[ -31039] -> Class 8: 4.2%
-[ -28505] -> Class 9: 4.2%
+[ -77992] -> Class 0: 0.0%
+[  93377] -> Class 1: 0.0%
+[  45484] -> Class 2: 0.0%
+[  29850] -> Class 3: 0.0%
+[ -36248] -> Class 4: 0.0%
+[-130974] -> Class 5: 0.0%
+[-272399] -> Class 6: 0.0%
+[ 416616] -> Class 7: 100.0%
+[-148783] -> Class 8: 0.0%
+[  25073] -> Class 9: 0.0%
 ```
 
