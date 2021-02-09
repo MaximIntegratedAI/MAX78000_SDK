@@ -719,6 +719,30 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int width, in
 }
 
 
+void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height){
+/* This write image data line by line, requiered for most UI librarys like lvgl */
+    unsigned int  x, y;
+
+    if(tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180){
+	window(x0, y0, height, width);
+    } else {
+	window(x0, y0, width, height);
+    }
+
+    write_command(0x2C);  // send pixel
+    for (x = 0; x < width*height; x += width) {     //height
+    	for (y = 0; y < width; y++) {         //width
+		//Byteswap, a 16Bit transfer would be better suited */
+       		write_data(*(image + ((x + y) * 2) + 1));
+       		write_data(*(image + ((x + y) * 2)));
+       	}
+     }
+
+     WindowMax();
+}
+
+
+
 void MXC_TFT_PrintPalette(void)
 {
     int i;

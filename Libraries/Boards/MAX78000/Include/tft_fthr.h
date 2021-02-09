@@ -161,6 +161,16 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
  */
 void MXC_TFT_ShowImage(int x0, int y0, int id);
 
+/**
+ * @brief      Draw a RGB565 buffer to a window location
+ *
+ * @param      x0           x location of image
+ * @param      y0           y location of image
+ * @param      image        RGB565 image buffer(pointer)
+ * @param      width        image height
+ * @param      height       image width
+ */
+void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height);
 
 void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
 
