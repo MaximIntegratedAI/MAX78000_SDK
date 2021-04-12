@@ -37,8 +37,6 @@
 #include "mxc_delay.h"
 #include "gpio.h"
 #include "mxc_device.h"
-#include "tmr_regs.h"
-#include "tmr.h"
 
 // serial clock
 #define SCL_PORT    SCCB_SCL_PORT
@@ -68,7 +66,7 @@
 #define SDA_GET()       GPIO_GET(SDA_PORT, SDA_PIN)
 
 #define WAIT_US         1
-#define DELAY_US(us)    MXC_TMR_Delay(MXC_TMR1, us)
+#define DELAY_US(us)    MXC_Delay(us)
 
 static const mxc_gpio_cfg_t gpio_cfg_scl =   { SCL_PORT, SCL_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
 static const mxc_gpio_cfg_t gpio_cfg_sda =   { SDA_PORT, SDA_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};

@@ -103,10 +103,7 @@ int Board_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
     
-    if ((err = Console_Init()) < E_NO_ERROR) {
-        // Cannot use this macro, sind it uses printf which won't work
-        // MXC_ASSERT_FAIL();
-        
+    if ((err = Console_Init()) < E_NO_ERROR) {        
         return err;
     }
     
@@ -134,7 +131,7 @@ int Console_Init(void)
 {
     int err;
     
-    if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_8M_CLK)) != E_NO_ERROR) {
+    if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         return err;
     }
     

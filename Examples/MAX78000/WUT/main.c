@@ -48,7 +48,7 @@
 #include "mxc.h"
 
 /***** Definitions *****/
-//#define SLEEP_MODE           // Select between SLEEP_MODE and DEEPSLEEP_MODE
+//#define SLEEP_MODE           // Select between SLEEP_MODE and LPM_MODE
 
 #define MILLISECONDS_WUT 5000
 
@@ -129,9 +129,9 @@ int main(void)
         printf("Waking up from SLEEP mode.\n");
         
 #else
-        printf("Entering DEEP SLEEP mode.\n");
-        MXC_LP_EnterDeepSleepMode();
-        printf("Waking up from DEEP SLEEP mode.\n");
+        printf("Entering LPM mode.\n");
+        MXC_LP_EnterLowPowerMode();
+        printf("Waking up from LPM mode.\n");
 #endif
         printf("\nPress the button again to trigger another sleep-wake cycle.\n");
     }

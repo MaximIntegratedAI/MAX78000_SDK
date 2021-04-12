@@ -73,6 +73,14 @@
  */
 #define MXC_DELAY_USEC(us)          (us)
 
+/**
+ * @brief   The callback routine used by MXC_DelayAsync() when the delay is complete
+ *          or aborted early.
+ *
+ * @param   result      See \ref MXC_Error_Codes for the list of error codes.
+ */
+typedef void (*mxc_delay_complete_t) (int result);
+
 #ifdef __riscv
 
 /**
@@ -84,15 +92,11 @@
  */
 int MXC_Delay (unsigned long us);
 
-#else
+int MXC_DelayAsync (unsigned long us, mxc_delay_complete_t callback);
+int MXC_DelayCheck (void);
+void MXC_DelayAbort (void);
 
-/**
- * @brief   The callback routine used by MXC_DelayAsync() when the delay is complete
- *          or aborted early.
- *
- * @param   result      See \ref MXC_Error_Codes for the list of error codes.
- */
-typedef void (*mxc_delay_complete_t) (int result);
+#else
 
 /***** Function Prototypes *****/
 

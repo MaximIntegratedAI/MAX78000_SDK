@@ -448,8 +448,8 @@ typedef struct {
  #define MXC_F_I2C_REVA_TXCTRL0_FLUSH_POS                    7 /**< TXCTRL0_FLUSH Position */
  #define MXC_F_I2C_REVA_TXCTRL0_FLUSH                        ((uint32_t)(0x1UL << MXC_F_I2C_REVA_TXCTRL0_FLUSH_POS)) /**< TXCTRL0_FLUSH Mask */
 
- #define MXC_F_I2C_REVA_TXCTRL0_THD_VAL_POS                  8 /**< TXCTRL0_THD_VAL Position */
- #define MXC_F_I2C_REVA_TXCTRL0_THD_VAL                      ((uint32_t)(0xFUL << MXC_F_I2C_REVA_TXCTRL0_THD_VAL_POS)) /**< TXCTRL0_THD_VAL Mask */
+ #define MXC_F_I2C_REVA_TXCTRL0_THD_LVL_POS                  8 /**< TXCTRL0_THD_LVL Position */
+ #define MXC_F_I2C_REVA_TXCTRL0_THD_LVL                      ((uint32_t)(0xFUL << MXC_F_I2C_REVA_TXCTRL0_THD_LVL_POS)) /**< TXCTRL0_THD_LVL Mask */
 
 /**@} end of group I2C_TXCTRL0_Register */
 

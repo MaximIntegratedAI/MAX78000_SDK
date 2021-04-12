@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-10-16 17:48:14 -0500 (Mon, 16 Oct 2017) $ 
- * $Revision: 31410 $
- *
  ******************************************************************************/
 
 #include <string.h>
@@ -43,6 +40,7 @@
 /***** File Scope Data *****/
 
 static uint8_t notify_ep;
+/* Interface # for Comm Class (to handle class-specific requests) */
 static uint8_t if_num;
 
 /* Idle is set to '0' for infinity. Changing Idle is not currently supported. */
@@ -289,11 +287,11 @@ int hidkbd_encode_report(uint8_t *rpt, uint8_t *ascii, int num)
 /******************************************************************************/
 static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
 {
-  int result = -1;
+  int result = -1;      /* Default response is to STALL */
   static MXC_USB_Req_t ep0req;
 
-  if ((((sud->bmRequestType & RT_RECIP_MASK) & RT_RECIP_IFACE) == 1) && (sud->wIndex == if_num)) {
-
+  if ((sud->bmRequestType & RT_RECIP_IFACE) && (sud->wIndex == if_num)) {
+    /* Directed to our interface */
     switch (sud->bRequest) {
       case HID_GET_REPORT:
         /* The host should not use this as a substitute for the Interrupt EP */
@@ -311,6 +309,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         result = MXC_USB_WriteEndpoint(&ep0req);
       	
         if (!result) {
+          /* Success, with data stage */
 	        result = 1;
 	      }
         break;
@@ -325,6 +324,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
           ep0req.cbdata = NULL;
           result = MXC_USB_WriteEndpoint(&ep0req);
 	        if (!result) {
+            /* Success, with data stage */
 	          result = 1;
 	        }
         }       
@@ -335,6 +335,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
       case HID_SET_REPORT:
         if (sud->wLength <= 64) {
           /* Accept and ignore */
+          /* Success, no data stage */
           result = 0;
         }
         break;
@@ -343,6 +344,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         if ((sud->wValue & 0xff) == 0)  {
           /* Idle is set to '0' for infinity. Changing Idle is not currently supported. */
           if ((sud->wValue >> 8) == 0) {
+            /* Success, no data stage */
             result = 0;
           }
         }
@@ -354,8 +356,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         /* Stall */
         break;
     }
-  }  
-  else {
+  } else {
     /* Not for this class, send to chained classes (if any) */
     if (chained_func != NULL) {
       result = chained_func(sud, chained_cbdata);
@@ -384,25 +385,21 @@ static void getdescriptor(MXC_USB_SetupPkt *sud, const uint8_t **desc, uint16_t 
       chained_getdesc_func(sud, desc, desclen);
     }
   } 
-  else 
-  {
+  else {
+    /* Belongs to our interface, so attempt to process it */
     *desc = NULL;
     *desclen = 0;
 
     switch (sud->wValue >> 8) {
       case DESC_HID:
-        if (sud->wIndex == 0) {
           /* Copy descriptor into aligned structure from hid_desc source pointer. */
           memcpy(&hid_descriptor, hid_desc, sizeof(hid_descriptor_t));
           *desc = (uint8_t*)&hid_descriptor;
           *desclen = hid_descriptor.bFunctionalLength;
-        }
         break;
       case DESC_REPORT:
-        if (sud->wIndex ==0) {
           *desc = report_desc;
           *desclen = hid_desc->wDescriptorLength;
-        }
         break;
       default:
         /* Stall */

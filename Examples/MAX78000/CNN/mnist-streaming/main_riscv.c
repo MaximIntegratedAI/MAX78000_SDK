@@ -45,7 +45,7 @@
  *                           The python program will read in the binary data from this example and
  *                           output a png image.
  */
- 
+
 // mnist-stream_0
 // Created using ./ai8xize.py -e --verbose --top-level cnn -L --test-dir demos --prefix mnist-stream_0 --checkpoint-file trained/ai85-mnist.pth.tar --config-file networks/mnist-chw-ai85.yaml --device MAX78000 --compact-data --mexpress --softmax --display-checkpoint --riscv --riscv-flash --riscv-cache --riscv-debug --fast-fifo --streaming-layer 0
 
@@ -110,7 +110,7 @@ void memcpy32(uint32_t *dst, const uint32_t *src, int n)
   }
 }
 
-#ifdef USE_SAMPLEDATA 
+#ifdef USE_SAMPLEDATA
 // Data input: CHW (big data): 1x28x28
 __attribute__ ((section(".rvflash_section")))
 static const uint32_t input_0[] = INPUT_0;
@@ -119,7 +119,7 @@ static const uint32_t input_0[] = INPUT_0;
 void load_input(void)
 {
   int i;
-#ifdef USE_SAMPLEDATA  
+#ifdef USE_SAMPLEDATA
   const uint32_t *in0 = input_0;
 #else
   const uint32_t *in0 = camera_sampledata;
@@ -722,7 +722,7 @@ void start_streaming(void)
   unsigned int fifocnt=0, i, word_cnt=0;
   uint32_t data, flags, rx_data_index=0;
   uint32_t  imgLen = IMAGE_SIZE_X*IMAGE_SIZE_Y*3;
-  
+
   uint8_t* rxbuf = rxdata;
   memset(rxdata, 0,imgLen);
   int8_t *ptr8;
@@ -813,15 +813,15 @@ int main(void)
   // Obtain the I2C slave address of the camera.
   slaveAddress = camera_get_slave_address();
   printf("Camera I2C slave address is %02x\n", slaveAddress);
-  
+
   // Obtain the product ID of the camera.
   ret = camera_get_product_id(&id);
-  
+
   if (ret != STATUS_OK) {
       printf("Error returned from reading camera id. Error %d\n", ret);
       return -1;
   }
-  
+
   printf("Camera Product ID is %04x\n", id);
   ret = camera_setup(IMAGE_SIZE_X, IMAGE_SIZE_Y, PIXFORMAT_RGB888, FIFO_THREE_BYTE, NO_DMA, 0);
   if (ret != STATUS_OK) {
@@ -829,13 +829,13 @@ int main(void)
       return -1;
   }
 
-  if ((ret = MXC_UART_Init(MXC_UART1, CONSOLE_BAUD, MXC_UART_8M_CLK)) < E_NO_ERROR) {
+  if ((ret = MXC_UART_Init(MXC_UART1, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) < E_NO_ERROR) {
     return ret;
   }
 
   rxdata = (uint8_t*)malloc(IMAGE_SIZE_X*IMAGE_SIZE_Y*3);
   int frame = 0;
-#else 
+#else
   memcpy32(camera_sampledata, input_0, 196);
 #endif
 
@@ -867,4 +867,3 @@ int main(void)
 
   return 0;
 }
-

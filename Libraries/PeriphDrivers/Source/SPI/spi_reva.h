@@ -50,6 +50,13 @@ typedef enum {
     SPI_REVA_WIDTH_QUAD,
 } mxc_spi_reva_width_t;
 
+typedef enum {
+    SPI_REVA_MODE_0, 
+    SPI_REVA_MODE_1,
+    SPI_REVA_MODE_2,
+    SPI_REVA_MODE_3,
+} mxc_spi_reva_mode_t;
+
 typedef struct _mxc_spi_reva_req_t mxc_spi_reva_req_t;
 
 struct _mxc_spi_reva_req_t {
@@ -77,6 +84,8 @@ int MXC_SPI_RevA_SetSlave (mxc_spi_reva_regs_t* spi, int ssIdx);
 int MXC_SPI_RevA_GetSlave (mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_SetWidth (mxc_spi_reva_regs_t* spi, mxc_spi_reva_width_t spiWidth);
 mxc_spi_reva_width_t MXC_SPI_RevA_GetWidth (mxc_spi_reva_regs_t* spi);
+int MXC_SPI_RevA_SetMode (mxc_spi_reva_regs_t* spi, mxc_spi_reva_mode_t spiMode);
+mxc_spi_reva_mode_t MXC_SPI_RevA_GetMode (mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_StartTransmission (mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_GetActive (mxc_spi_reva_regs_t* spi);
 int MXC_SPI_RevA_AbortTransmission (mxc_spi_reva_regs_t* spi);

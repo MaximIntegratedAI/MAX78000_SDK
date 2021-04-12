@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-12-12 10:32:14 -0600 (Wed, 12 Dec 2018) $ 
- * $Revision: 39790 $
- *
  ******************************************************************************/
 
 #include <stdint.h>
@@ -56,6 +53,9 @@
 #define CLS_DTR   (1 << 0)
 #define CLS_RTS   (1 << 1)
 
+/* Offset into the notify_data to set interface # */
+#define NOTIFY_IF_OFFS  4
+
 /***** File Scope Data *****/
 #ifdef MAXUSB_IGNORE_DTE
 #warning "NOTE: CDC-ACM class will ignore DTE"
@@ -70,6 +70,9 @@ static uint8_t out_ep;
 static uint8_t in_ep;
 static uint8_t notify_ep;
 static uint8_t if_num;
+
+/* Interface # for Comm Class (to handle class-specific requests) */
+static uint8_t if_num = 0;
 
 // Line Coding
 static MXC_USB_Req_t creq;
@@ -119,7 +122,7 @@ static uint8_t notify_data[] = {
   0xa1,           /* bmRequestType = Notification */
   0x20,           /* bNotification = SERIAL_STATE */
   0x00, 0x00,     /* wValue = 0 */
-  0x00, 0x00,     /* wIndex = 0 */
+  0x00, 0x00,     /* wIndex = Interface # inserted by acm_init() */
   0x02, 0x00,     /* wLength = 2 */
   0x02, 0x00      /* DSR active */
 };
@@ -152,9 +155,7 @@ int acm_init(const MXC_USB_interface_descriptor_t *if_desc)
   if_num = if_desc->bInterfaceNumber;
 
   /* Handle class-specific SETUP requests */
-  enum_register_callback(ENUM_CLASS_REQ, class_req, NULL);
-
-  return 0;
+  return enum_register_callback(ENUM_CLASS_REQ, class_req, NULL);
 }
 
 /******************************************************************************/
@@ -221,6 +222,7 @@ int acm_configure(const acm_cfg_t *cfg)
 
   memset(&nreq, 0, sizeof(MXC_USB_Req_t));
   nreq.ep = notify_ep;
+  notify_data[NOTIFY_IF_OFFS] = if_num;
   nreq.data = (uint8_t*)notify_data;
   nreq.reqlen = sizeof(notify_data);
   nreq.callback = NULL;
@@ -421,19 +423,22 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
 {
   int result = -1;
 
-  if ( ((sud->bmRequestType & RT_RECIP_MASK) == RT_RECIP_IFACE) && (sud->wIndex == if_num) ) {
+  if (((sud->bmRequestType & RT_RECIP_MASK) == RT_RECIP_IFACE) && (sud->wIndex == if_num)) {
+    /* Directed to our interface */
     switch (sud->bRequest) {
       case ACM_SET_LINE_CODING:
-	result = set_line_coding();
-	if (!result) {
-	  result = 1;
+	      result = set_line_coding();
+	      if (!result) {
+          /* Success, no data stage, but used to defer ACK/STALL to application */
+	        result = 1;
         }
         break;
       case ACM_GET_LINE_CODING:
         result = get_line_coding();
-	if (!result) {
-	  result = 1;
-	}
+      	if (!result) {
+          /* Success, with data stage */
+	        result = 1;
+	      }
         break;
       case ACM_SET_CONTROL_LINE_STATE:
 #ifndef MAXUSB_IGNORE_DTE
@@ -454,16 +459,15 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
             callback[ACM_CB_CONNECTED]();
           }
         } else {
-	  DTE_present = 0;
-
+	        DTE_present = 0;
           /* DTE disappeared */
-	  MXC_USB_RemoveRequest(&rreq);
-
+	        MXC_USB_RemoveRequest(&rreq);
           if (callback[ACM_CB_DISCONNECTED]) {
             callback[ACM_CB_DISCONNECTED]();
           }
         }
 #endif
+        /* Success, no data stage */
         result = 0;
         break;
       case ACM_SEND_BREAK:
@@ -472,10 +476,11 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         } else {
           BREAK_signal = 0;
         }
+        /* Success, no data stage */
         result = 0;
         break;
       default:
-        result = -1;
+        /* Unexpected message received -- stall */
         break;
     }
   }

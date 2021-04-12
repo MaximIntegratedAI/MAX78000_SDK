@@ -29,8 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-10-16 17:14:03 -0500 (Mon, 16 Oct 2017) $ 
- * $Revision: 31406 $
  *
  ******************************************************************************/
  
@@ -47,6 +45,14 @@
  */
 
 /******************************** Definitions *********************************/
+
+/* 
+ * Current status, as bit field, of physical layer. Note that some bits may 
+ * not be available on hardware which lacks detection of that specific condition.
+ *
+ */
+#define MAXUSB_STATUS_VBUS_ON    0x1
+#define MAXUSB_STATUS_HIGH_SPEED 0x2
 
 /*
  * Endpoint types, additional types may be supported in the future.
@@ -164,6 +170,13 @@ int MXC_USB_Connect(void);
  *
  */
 int MXC_USB_Disconnect(void);
+
+/** 
+ * @brief Get current USB status (VBUS, High Speed, etc.)
+ * @return This function returns a bit field of MAXUSB_STATUS_xxx
+ *
+ */
+unsigned int MXC_USB_GetStatus(void);
 
 /** 
  * @brief Endpoint configuration function
@@ -381,5 +394,14 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req);
  *
  */
 int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req);
+
+/** 
+ * @brief Instruct hardware to transmit test mode pattern (USB 2.0 High Speed only)
+ * @detail See Universal Serial Bus Specification Revision 2.0 Section 7.1.20 for details
+ * @param value Test mode selector
+ * @return -1 if selected test mode is not supported, 0 otherwise
+ *
+ */
+int MXC_USB_TestMode(unsigned int value);
 
 #endif /* _USB_H_ */

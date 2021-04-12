@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-10-17 15:36:13 -0500 (Tue, 17 Oct 2017) $
- * $Revision: 31422 $
- *
  ******************************************************************************/
 
 #ifndef _CDC_ACM_H_
@@ -42,7 +39,11 @@
  * @brief Communications Device Class ACM (Serial Port) over USB.
  */
 
+#ifdef MAXUSB_HS_CAPABLE
+#define ACM_MAX_PACKET	  MXC_USBHS_MAX_PACKET
+#else
 #define ACM_MAX_PACKET	  64
+#endif
 
 #define ACM_PARITY_NONE   0
 #define ACM_PARITY_ODD    1
@@ -88,6 +89,7 @@ typedef enum {
 /**
  *  \brief    Initialize the class driver
  *  \details  Initialize the class driver.
+ *  \param    if_desc  Pointer to the interface descriptor for the Comm Class
  *  \return   Zero (0) for success, non-zero for failure
  */
 int acm_init(const MXC_USB_interface_descriptor_t *if_desc);

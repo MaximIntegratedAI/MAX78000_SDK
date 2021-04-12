@@ -51,6 +51,7 @@
 #include "gcr_regs.h"
 #include "fcr_regs.h"
 #include "mcr_regs.h"
+#include "pwrseq_regs.h"
 #include "aes.h"
 #include "flc.h"
 
@@ -240,6 +241,20 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERFO:
+        /* Initialize kickstart circuit
+           Select Kick start circuit clock source- IPO/ISO 
+        */
+        MXC_FCR->erfoks = ((MXC_S_FCR_ERFOKS_KSCLKSEL_ISO)
+            /* Set Drive strengh - 0x1,0x2,0x3 */
+            | ((0x1)<<MXC_F_FCR_ERFOKS_KSERFODRIVER_POS)
+            /* Set kick count 1-127 */
+            | (0x8)
+            /* Set double pulse length  On/Off*/
+            | (0 & MXC_F_FCR_ERFOKS_KSERFO2X)
+            /* Enable On/Off */
+            | (MXC_F_FCR_ERFOKS_KSERFO_EN));
+
+        /* Enable ERFO */
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN;
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERFO_RDY);
         break;
@@ -507,6 +522,18 @@ void MXC_SYS_RISCVShutdown(void)
 {
     /* Disable the the RSCV */
     MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
+}
+
+/* ************************************************************************** */
+uint32_t MXC_SYS_RiscVClockRate(void)
+{
+    // If in LPM mode and the PCLK is selected as the RV32 clock source,
+    if(((MXC_GCR->pm & MXC_F_GCR_PM_MODE) == MXC_S_GCR_PM_MODE_LPM) && 
+       ((MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LPMCLKSEL) == 0)) {
+        return SystemCoreClock / 2;
+    } else {
+        return ISO_FREQ;
+    }
 }
 
 /**@} end of mxc_sys */

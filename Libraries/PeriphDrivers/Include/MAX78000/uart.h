@@ -89,12 +89,12 @@ typedef enum {
  * @brief      Clock settings */
 typedef enum {
     /*For UART3 APB clock source is the 8MHz clock*/
-    MXC_UART_APB_CLK = 0,
-    /*8MHz clock can only be used for UART 0, 1 & 2*/ 
-    MXC_UART_8M_CLK = 2,
-    /*32K & 80K clock can only be used for UART3*/
-    MXC_UART_32K_CLK = 1,
-    //MXC_UART_80K_CLK = 2,
+    MXC_UART_APB_CLK = 0,                                          
+    MXC_UART_EXT_CLK = 1,
+    /*IBRO clock can only be used for UART 0, 1 & 2*/ 
+    MXC_UART_IBRO_CLK = 2,
+    /*ERTCO clock can only be used for UART3*/
+    MXC_UART_ERTCO_CLK = 4,
 } mxc_uart_clock_t;
 
 /**
@@ -596,6 +596,17 @@ int MXC_UART_TransactionAsync(mxc_uart_req_t* req);
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_TransactionDMA(mxc_uart_req_t* req);
+
+/**
+ * @brief   The processing function for DMA transactions.
+ * 
+ * When using the DMA functions, the application must call this
+ * function periodically. This can be done from within the DMA Interrupt Handler.
+ *
+ * @param   ch          DMA channel
+ * @param   error       Error status
+ */
+void MXC_UART_DMACallback (int ch, int error);
 
 /**
  * @brief   Async callback 

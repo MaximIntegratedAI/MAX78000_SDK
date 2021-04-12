@@ -46,11 +46,13 @@
 #include <stdint.h>
 #include "board.h"
 #include "mxc.h"
+#include "mxc_device.h"
 #include "mxc_delay.h"
 #include "camera.h"
 #include "state.h"
 #include "icc.h"
 #include "rtc.h"
+#include "lp.h"
 #include "cnn.h"
 #ifdef BOARD_FTHR_REVA
 #include "tft_fthr.h"
@@ -61,11 +63,10 @@
 #endif
 #include "MAXCAM_Debug.h"
 #include "faceID.h"
-#include "weights.h"
 #include "embedding_process.h"
 #include "keypad.h"
-#define CAMERA_FREQ (10 * 1000 * 1000)
 
+#if 0 // Custom camera settings
 static const uint8_t camera_settings[][2] = {
 	{0x0e, 0x08}, // Sleep mode
 	{0x69, 0x52}, // BLC window selection, BLC enable (default is 0x12)
@@ -188,15 +189,23 @@ static const uint8_t camera_settings[][2] = {
     {0x1d, 0xa2},
 	{0xee, 0xee}  // End of register list marker 0xee
 };
+#endif
 
 // *****************************************************************************
+void WUT_IRQHandler()
+{
+    MXC_WUT_IntClear();
+}
+
+uint32_t ticks_1;
+uint32_t ticks_2;
+mxc_wut_cfg_t cfg;
 
 int main(void)
 {
 	/* TFT_Demo Example */
 	int key;
 	State *state;
-
     int ret = 0;
     int slaveAddress;
     int id;
@@ -218,6 +227,7 @@ int main(void)
 	cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
 	cnn_init(); // Bring CNN state machine into consistent state
 	cnn_load_weights(); // Load CNN kernels
+    cnn_load_bias(); // Load CNN bias
 	cnn_configure(); // Configure CNN state machine
 
 	if (init_database() < 0 ) {
@@ -241,38 +251,48 @@ int main(void)
 #else
 	PR_DEBUG("\n\nFaceID Evkit Demo\n");
 #endif
+
 	// Initialize the camera driver.
-	camera_init(CAMERA_FREQ);
+    camera_init(CAMERA_FREQ);
 
 	// Obtain the I2C slave address of the camera.
 	slaveAddress = camera_get_slave_address();
-	printf("Camera I2C slave address is %02x\n", slaveAddress);
+    PR_DEBUG("Camera I2C slave address is %02x\n", slaveAddress);
 
 	// Obtain the product ID of the camera.
 	ret = camera_get_product_id(&id);
+
 	if (ret != STATUS_OK) {
 		PR_ERR("Error returned from reading camera id. Error %d\n", ret);
 		return -1;
 	}
-	printf("Camera Product ID is %04x\n", id);
+
+    PR_DEBUG("Camera Product ID is %04x\n", id);
 
 	// Obtain the manufacture ID of the camera.
 	ret = camera_get_manufacture_id(&id);
+
 	if (ret != STATUS_OK) {
 		PR_ERR("Error returned from reading camera id. Error %d\n", ret);
 		return -1;
 	}
-	printf("Camera Manufacture ID is %04x\n", id);
 
-	// set camera registers with default values
+    PR_DEBUG("Camera Manufacture ID is %04x\n", id);
+
+#if 0
+
+    // set camera registers with custom values
 	for (int i = 0; (camera_settings[i][0] != 0xee); i++) {
 		camera_write_reg(camera_settings[i][0], camera_settings[i][1]);
 	}
 
+#endif
+
 	// Setup the camera image dimensions, pixel format and data acquiring details.
 	ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
+
 	if (ret != STATUS_OK) {
-		printf("Error returned from setting up camera. Error %d\n", ret);
+        PR_ERR("Error returned from setting up camera. Error %d\n", ret);
 		return -1;
 	}
 
@@ -286,6 +306,7 @@ int main(void)
 	MXC_TFT_WriteReg(0x0011, 0x6858);
 #endif
 #ifdef BOARD_FTHR_REVA
+    camera_write_reg(0x0c, 0x56); //camera vertical flip=0
     /* Initialize TFT display */
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
 	MXC_TFT_SetRotation(ROTATE_180);
@@ -307,9 +328,27 @@ int main(void)
 	/* Display Home page */
 	state_init();
 
+#ifdef LP_MODE_ENABLE
+    /* Get ticks based on milliseconds */
+    MXC_WUT_GetTicks(500, MXC_WUT_UNIT_MILLISEC, &ticks_1);
+    MXC_WUT_GetTicks(100, MXC_WUT_UNIT_MILLISEC, &ticks_2);
+    /* Configure structure for one shot timer to trigger in a number of ticks */
+    cfg.mode = MXC_WUT_MODE_ONESHOT;
+    cfg.cmp_cnt = ticks_1;
+    /* Init WakeUp Timer */
+    MXC_WUT_Init(MXC_WUT_PRES_1);
+    /* Config WakeUp Timer */
+    MXC_WUT_Config(&cfg);
+    /* Enable Alarm wakeup by WUT */
+    MXC_LP_EnableWUTAlarmWakeup();
+    /* Enable WakeUp Timer interrupt */
+    NVIC_EnableIRQ(WUT_IRQn);
+#endif
+
 #ifndef TS_ENABLE
 	key = KEY_1;
 #endif
+
     while (1) { //TFT Demo
 		/* Get current screen state */
         state = state_get_current();

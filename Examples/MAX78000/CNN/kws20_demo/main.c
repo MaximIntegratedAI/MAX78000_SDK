@@ -68,8 +68,19 @@
 #include "bitmap.h"
 #endif
 
-#define VERSION   "3.0.1 (01/21/21)"
+#define VERSION   "3.0.2 (02/08/21)" // Low power mode
 /* **** Definitions **** */
+#define CLOCK_SOURCE    0   // 0: IPO,  1: ISO, 2: IBRO
+#define SLEEP_MODE      2   // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
+#define WUT_ENABLE          // enables WUT timer
+#define WUT_USEC    380     // continuous WUT duration close to I2S polling time in usec
+//#define ENERGY            // if enabled, turn off LED2, toggle LED1 for 10sec for energy measurements on Power monitor (System Power)
+
+#if SLEEP_MODE == 2   // need WakeUp Timer (WUT) for deepsleep (LPM)
+#ifndef WUT_ENABLE
+#define WUT_ENABLE
+#endif
+#endif
 
 /* Enable/Disable Features */
 #define ENABLE_PRINT_ENVELOPE            // enables printing average waveform envelope for samples
@@ -109,6 +120,15 @@
 #define SILENCE_COUNTER_THRESHOLD   20      // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of a word
 #define PREAMBLE_SIZE               30*CHUNK// how many samples before beginning of a keyword to include
 #define INFERENCE_THRESHOLD         49      // min probability (0-100) to accept an inference
+#endif
+
+/* DEBUG Print */
+#ifdef ENERGY
+#define PR_DEBUG(fmt, args...)  if(0) printf(fmt, ##args )
+#define PR_INFO(fmt, args...)  if(1) printf(fmt, ##args )
+#else
+#define PR_DEBUG(fmt, args...)  if(1) printf(fmt, ##args )
+#define PR_INFO(fmt, args...)  if(1) printf(fmt, ##args )
 #endif
 
 /* **** Globals **** */
@@ -182,7 +202,21 @@ int image_bitmap = (int)& img_1_rgb565[0];
 int font_1 = (int)& SansSerif16x16[0];
 int font_2 = (int)& SansSerif16x16[0];
 #endif
+#endif  //#ifdef ENABLE_TFT
+
+int32_t tot_usec = -100000;
+#ifdef WUT_ENABLE
+void WUT_IRQHandler()
+{
+    i2s_flag = 1;
+    MXC_WUT_IntClear();
+
+    tot_usec += WUT_USEC ;
+    //LED_On(LED2);
+    //LED_Off(LED2);
+}
 #endif
+
 /* **************************************************************************** */
 
 int main(void)
@@ -208,8 +242,31 @@ int main(void)
     /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
 
-    /* Switch to 100 MHz clock */
-    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    switch (CLOCK_SOURCE) {
+    case 0:
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPO);
+        MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+        MXC_GCR->pm &= ~MXC_F_GCR_PM_IPO_PD;  // enable IPO during sleep
+        break;
+
+    case 1:
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
+        MXC_SYS_Clock_Select(MXC_SYS_CLOCK_ISO);
+        MXC_GCR->pm &= ~MXC_F_GCR_PM_ISO_PD;  // enable ISO during sleep
+        break;
+
+    case 2:
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IBRO);
+        MXC_GCR->pm &= ~MXC_F_GCR_PM_IBRO_PD;  // enable IBRO during sleep
+        break;
+
+    default:
+        printf("UNKNOWN CLOCK SOURCE \n");
+
+        while (1);
+    }
+
     SystemCoreClockUpdate();
 
 #ifdef ENABLE_MIC_PROCESSING
@@ -226,14 +283,14 @@ int main(void)
     /* Configure P2.5, turn on the CNN Boost */
     cnn_boost_enable(MXC_GPIO2, MXC_GPIO_PIN_5);
 
-    printf("Maxim Integrated \nKeyword Spotting Demo\nVer. %s \n", VERSION);
-    printf("\n***** Init *****\n");
+    PR_INFO("Maxim Integrated \nKeyword Spotting Demo\nVer. %s \n", VERSION);
+    PR_INFO("\n***** Init *****\n");
     memset(pAI85Buffer, 0x0, sizeof(pAI85Buffer));
     memset(pPreambleCircBuffer, 0x0, sizeof(pPreambleCircBuffer));
 
-    printf("pChunkBuff: %d\n", sizeof(pChunkBuff));
-    printf("pPreambleCircBuffer: %d\n", sizeof(pPreambleCircBuffer));
-    printf("pAI85Buffer: %d\n", sizeof(pAI85Buffer));
+    PR_DEBUG("pChunkBuff: %d\n", sizeof(pChunkBuff));
+    PR_DEBUG("pPreambleCircBuffer: %d\n", sizeof(pPreambleCircBuffer));
+    PR_DEBUG("pAI85Buffer: %d\n", sizeof(pAI85Buffer));
 
     /* Bring state machine into consistent state */
     cnn_init();
@@ -241,6 +298,31 @@ int main(void)
     cnn_load_weights();
     /* Configure state machine */
     cnn_configure();
+
+#if SLEEP_MODE == 1
+    NVIC_EnableIRQ(CNN_IRQn);
+#endif
+
+#ifdef WUT_ENABLE
+    // Get ticks based off of microseconds
+    mxc_wut_cfg_t cfg;
+    uint32_t ticks;
+
+    MXC_WUT_GetTicks(WUT_USEC, MXC_WUT_UNIT_MICROSEC, &ticks);
+    // config structure for one shot timer to trigger in a number of ticks
+    cfg.mode = MXC_WUT_MODE_CONTINUOUS;
+    cfg.cmp_cnt = ticks;
+    // Init WUT
+    MXC_WUT_Init(MXC_WUT_PRES_1);
+    //Config WUT
+    MXC_WUT_Config(&cfg);
+
+    MXC_LP_EnableWUTAlarmWakeup();
+    NVIC_EnableIRQ(WUT_IRQn);
+#endif
+
+    /* Disable CNN clock  */
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CNN);
 
     /* switch to silence state*/
     procState = SILENCE;
@@ -252,7 +334,7 @@ int main(void)
 
 #ifdef ENABLE_TFT
     MXC_Delay(500000);
-    printf("\n*** Init TFT ***\n");
+    PR_DEBUG("\n*** Init TFT ***\n");
 #ifdef BOARD_EVKIT_V1
     /* TFT reset signal */
     mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
@@ -265,7 +347,7 @@ int main(void)
 
     MXC_TFT_SetPalette(logo_white_bg_darkgrey_bmp);
     MXC_TFT_SetBackGroundColor(4);
-    printf("if RED LED is not on, disconnect PICO SWD and powercycle!\n");
+    PR_INFO("if RED LED is not on, disconnect PICO SWD and powercycle!\n");
 #endif
 #ifdef BOARD_FTHR_REVA
     /* Initialize TFT display */
@@ -277,11 +359,17 @@ int main(void)
     MXC_TFT_SetForeGroundColor(WHITE);   // set chars to white
 #endif
 
-    printf("Waiting for PB1 press\n");
+    PR_INFO("Waiting for PB1 press\n");
     TFT_Intro();
-#endif
+#else
 
-    printf("\n*** READY ***\n");
+    MXC_Delay(SEC(2)); // wait for debugger to connect
+#endif // #ifdef ENABLE_TFT
+
+    PR_INFO("\n*** READY ***\n");
+#ifdef WUT_ENABLE
+    MXC_WUT_Enable();  // Start WUT
+#endif
 
     /* Read samples */
     while (1) {
@@ -289,7 +377,7 @@ int main(void)
 
         /* end of test vectors */
         if (sampleCounter >= sizeof(voiceVector) / sizeof(voiceVector[0])) {
-            printf("End of test Vector\n");
+            PR_DEBUG("End of test Vector\n");
             break;
         }
 
@@ -297,6 +385,31 @@ int main(void)
 
         /* Read from Mic driver to get CHUNK worth of samples, otherwise next sample*/
         if (MicReadChunk(pChunkBuff, &avg) == 0) {
+
+#ifdef WUT_ENABLE
+#ifdef ENERGY
+
+            // keep LED on for about 10sec for energy measurement
+            if (tot_usec > 10 * 1000 * 1000) {
+                LED_Off(LED1);
+                tot_usec = -10000000; // wait for 10sec before measuring again
+            }
+            else if (tot_usec > 0) {
+                LED_On(LED1);
+            }
+
+#endif
+#endif
+
+#if SLEEP_MODE == 1
+            __WFI();
+#elif SLEEP_MODE == 2
+#ifdef WUT_ENABLE
+            MXC_LP_ClearWakeStatus();
+            SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=1
+            __WFI();
+#endif
+#endif // #if SLEEP_MODE == 1
             continue;
         }
 
@@ -314,17 +427,17 @@ int main(void)
 
         /* Display average envelope as a bar */
 #ifdef ENABLE_PRINT_ENVELOPE
-        printf("%.6d|", sampleCounter);
+        PR_DEBUG("%.6d|", sampleCounter);
 
         for (int i = 0; i < avg / 10; i++) {
-            printf("=");
+            PR_DEBUG("=");
         }
 
         if (avg >= thresholdHigh) {
-            printf("*");
+            PR_DEBUG("*");
         }
 
-        printf("[%d]\n", avg);
+        PR_DEBUG("[%d]\n", avg);
 #endif
 
         /* if we have not detected voice, check the average*/
@@ -334,16 +447,16 @@ int main(void)
             if (avg >= thresholdHigh) {
                 /* switch to keyword data collection*/
                 procState = KEYWORD;
-                printf("%.6d Word starts from index: %d, avg:%d > %d \n",
-                       sampleCounter, sampleCounter - PREAMBLE_SIZE - CHUNK,
-                       avg, thresholdHigh);
+                PR_DEBUG("%.6d Word starts from index: %d, avg:%d > %d \n",
+                         sampleCounter, sampleCounter - PREAMBLE_SIZE - CHUNK,
+                         avg, thresholdHigh);
 
                 /* reorder circular buffer according to time at the beginning of pAI85Buffer */
                 if (preambleCounter == 0) {
                     /* copy latest samples afterwards */
                     if (AddTranspose(&pPreambleCircBuffer[0], pAI85Buffer,
                                      PREAMBLE_SIZE, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
-                        printf("ERROR: Transpose ended early \n");
+                        PR_DEBUG("ERROR: Transpose ended early \n");
                     }
                 }
                 else {
@@ -351,13 +464,13 @@ int main(void)
                     if (AddTranspose(&pPreambleCircBuffer[preambleCounter],
                                      pAI85Buffer, PREAMBLE_SIZE - preambleCounter,
                                      SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
-                        printf("ERROR: Transpose ended early \n");
+                        PR_DEBUG("ERROR: Transpose ended early \n");
                     }
 
                     /* copy latest samples afterwards */
                     if (AddTranspose(&pPreambleCircBuffer[0], pAI85Buffer,
                                      preambleCounter, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
-                        printf("ERROR: Transpose ended early \n");
+                        PR_DEBUG("ERROR: Transpose ended early \n");
                     }
 
                 }
@@ -371,7 +484,6 @@ int main(void)
         /* if it is in data collection, add samples to buffer*/
         else if (procState == KEYWORD)
 #endif  //#ifdef ENABLE_SILENCE_DETECTION
-
         {
             uint8_t ret = 0;
 
@@ -390,7 +502,6 @@ int main(void)
                 avgSilenceCounter = 0;
             }
 
-
             /* if this is the last sample and there are not enough samples to
              * feed to CNN, or if it is long silence after keyword,  append with zero (for reading file)
              */
@@ -402,8 +513,8 @@ int main(void)
 #endif
             {
                 memset(pChunkBuff, 0, CHUNK);
-                printf("%.6d: Word ends, Appends %d zeros \n", sampleCounter,
-                       SAMPLE_SIZE - ai85Counter);
+                PR_DEBUG("%.6d: Word ends, Appends %d zeros \n", sampleCounter,
+                         SAMPLE_SIZE - ai85Counter);
                 ret = 0;
 
                 while (!ret) {
@@ -430,36 +541,61 @@ int main(void)
 
                 /* sanity check, last transpose should have returned 1, as enough samples should have already been added */
                 if (ret != 1) {
-                    printf("ERROR: Transpose incomplete!\n");
+                    PR_DEBUG("ERROR: Transpose incomplete!\n");
                     fail();
                 }
 
                 //----------------------------------  : invoke AI85 CNN
-                printf("%.6d: Starts CNN: %d\n", sampleCounter, wordCounter);
+                PR_DEBUG("%.6d: Starts CNN: %d\n", sampleCounter, wordCounter);
+                /* enable CNN clock */
+                MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN);
 
                 /* load to CNN */
                 if (!cnn_load_data(pAI85Buffer)) {
-                    printf("ERROR: Loading data to CNN! \n");
+                    PR_DEBUG("ERROR: Loading data to CNN! \n");
                     fail();
                 }
 
                 /* Start CNN */
                 if (!cnn_start()) {
-                    printf("ERROR: Starting CNN! \n");
+                    PR_DEBUG("ERROR: Starting CNN! \n");
                     fail();
                 }
+
+#if SLEEP_MODE == 0
 
                 /* Wait for CNN  to complete */
                 while (cnn_time == 0) {
                     __WFI();
                 }
 
-                /* read data */
-                cnn_unload((uint32_t*)ml_data);
+#elif SLEEP_MODE == 1
 
+                while (cnn_time == 0) {
+                    __WFI();
+                }
+
+#elif SLEEP_MODE == 2
+                SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=1
+
+                while (cnn_time == 0) {
+#ifdef WUT_ENABLE
+                    MXC_LP_ClearWakeStatus();
+                    __WFI();
+#endif
+                }
+
+#endif  // #if SLEEP_MODE==0
+
+                /* Read CNN result */
+                cnn_unload((uint32_t*)ml_data);
+                /* Stop CNN */
+                cnn_stop();
+                /* Disable CNN clock to save power */
+                MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_CNN);
                 /* Get time */
                 MXC_TMR_GetTime(MXC_TMR0, cnn_time, (void*) &cnn_time, &units);
-                printf("%.6d: Completes CNN: %d\n", sampleCounter, wordCounter);
+                PR_DEBUG("%.6d: Completes CNN: %d\n", sampleCounter, wordCounter);
 
                 switch (units) {
                 case TMR_UNIT_NANOSEC:
@@ -478,38 +614,38 @@ int main(void)
                     break;
                 }
 
-                printf("CNN Time: %d us\n", cnn_time);
+                PR_DEBUG("CNN Time: %d us\n", cnn_time);
 
                 /* run softmax */
                 softmax_q17p14_q15((const q31_t*) ml_data, NUM_OUTPUTS,
                                    ml_softmax);
 
 #ifdef ENABLE_CLASSIFICATION_DISPLAY
-                printf("\nClassification results:\n");
+                PR_DEBUG("\nClassification results:\n");
 
                 for (int i = 0; i < NUM_OUTPUTS; i++) {
                     int digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
                     int tens = digs % 10;
                     digs = digs / 10;
 
-                    printf("[%+.7d] -> Class %.2d %8s: %d.%d%%\n", ml_data[i],
-                           i, keywords[i], digs, tens);
+                    PR_DEBUG("[%+.7d] -> Class %.2d %8s: %d.%d%%\n", ml_data[i],
+                             i, keywords[i], digs, tens);
                 }
 
 #endif
                 /* find detected class with max probability */
                 ret = check_inference(ml_softmax, ml_data, &out_class, &probability);
 
-                printf("----------------------------------------- \n");
+                PR_DEBUG("----------------------------------------- \n");
 
                 if (!ret) {
-                    printf("LOW CONFIDENCE!: ");
+                    PR_DEBUG("LOW CONFIDENCE!: ");
                 }
 
-                printf("Detected word: %s (%0.1f%%)", keywords[out_class],
-                       probability);
+                PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class],
+                         probability);
 
-                printf("\n----------------------------------------- \n");
+                PR_DEBUG("\n----------------------------------------- \n");
 
                 Max = 0;
                 Min = 0;
@@ -519,24 +655,22 @@ int main(void)
 
         /* Stop demo if PB1 is pushed */
         if (PB_Get(0)) {
-            printf("Stop! \r\n");
-
+            PR_INFO("Stop! \r\n");
             procState = STOP;
-
             break;
         }
     }
 
     /* Turn off LED2 (Red) */
     LED_Off(LED2);
-    printf("Total Samples:%d, Total Words: %d \n", sampleCounter, wordCounter);
+    PR_DEBUG("Total Samples:%d, Total Words: %d \n", sampleCounter, wordCounter);
 
 #ifdef ENABLE_TFT
     TFT_End(wordCounter);
 #endif
 
-    while (1)
-        ;
+    while (1);
+
 }
 
 /* **************************************************************************** */
@@ -547,7 +681,7 @@ void I2SInit()
     mxc_i2s_req_t req;
     int32_t err;
 
-    printf("\n*** I2S & Mic Init ***\n");
+    PR_INFO("\n*** I2S & Mic Init ***\n");
     /* Initialize High Pass Filter */
     HPF_init();
     /* Initialize I2S RX buffer */
@@ -569,19 +703,22 @@ void I2SInit()
     req.rxData      = i2s_rx_buffer;
     req.length      = I2S_RX_BUFFER_SIZE;
 
-
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
-        printf("\nError in I2S_Init: %d\n", err);
+        PR_DEBUG("\nError in I2S_Init: %d\n", err);
 
         while (1);
     }
 
     /* Set I2S RX FIFO threshold to generate interrupt */
     MXC_I2S_SetRXThreshold(4);
+
+#ifndef WUT_ENABLE
     NVIC_SetVector(I2S_IRQn, i2s_isr);
     NVIC_EnableIRQ(I2S_IRQn);
     /* Enable RX FIFO Threshold Interrupt */
     MXC_I2S_EnableInt(MXC_F_I2S_INTEN_RX_THD_CH0);
+#endif
+
     MXC_I2S_RXEnable();
     __enable_irq();
 }
@@ -607,7 +744,6 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data,
         for (int i = 0; i < NUM_OUTPUTS; i++) {
             if ((int32_t) temp[i] > max_ml) {
                 max_ml = (int32_t) temp[i];
-
                 max = ml_soft[i];
                 max_index = i;
             }
@@ -615,7 +751,6 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data,
 
         /* print top 1 separately */
         if (top == 0) {
-
             *out_class = max_index;
             *out_prob = 100.0 * max / 32768.0;
 #ifndef ENABLE_TFT
@@ -647,7 +782,7 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data,
 #endif
     }
 
-    printf("Min: %d,   Max: %d \n", Min, Max);
+    PR_DEBUG("Min: %d,   Max: %d \n", Min, Max);
 
     /* check if probability is low */
     if (*out_prob > INFERENCE_THRESHOLD)
@@ -663,7 +798,7 @@ uint8_t check_inference(q15_t* ml_soft, int32_t* ml_data,
 /* **************************************************************************** */
 void fail(void)
 {
-    printf("\n*** FAIL ***\n\n");
+    PR_DEBUG("\n*** FAIL ***\n\n");
 
     while (1);
 }
@@ -677,7 +812,7 @@ uint8_t cnn_load_data(uint8_t* pIn)
     /* pIn is 16KB, each 1KB belongs to a memory group */
     for (mem = 0x50400000; mem <= 0x50418000; mem += 0x8000) {
         memcpy((uint8_t*)mem, &pIn[index], 1024);
-        //printf("%.10X \n",(uint8_t *)mem);
+        //PR_DEBUG("%.10X \n",(uint8_t *)mem);
         index += 1024;
     }
 
@@ -766,7 +901,7 @@ uint8_t AddTranspose(uint8_t* pIn, uint8_t* pOut, uint16_t inSize,
     if (total >= outSize) {
         /* sanity check */
         if (row != width) {
-            printf("ERROR: Rearranging!\n");
+            PR_DEBUG("ERROR: Rearranging!\n");
         }
 
         total = 0;
@@ -785,7 +920,6 @@ uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
 {
     static uint16_t chunkCount = 0;
     static uint16_t sum = 0;
-
     int16_t sample = 0;
     int16_t temp = 0;
     uint8_t ret = 0;
@@ -799,8 +933,10 @@ uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
         return 0;
     }
 
+#ifndef ENERGY
     /* Turn on LED2 (Red) */
     LED_On(LED2);
+#endif
 
     /* absolute for averaging */
     if (sample >= 0) {
@@ -850,7 +986,6 @@ uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
 int8_t MicReader(int16_t* sample)
 {
     static uint32_t micSampleCount = 0;
-
     int16_t temp;
 
     /* reads from Test Vector file and return one sample */
@@ -858,15 +993,13 @@ int8_t MicReader(int16_t* sample)
     *sample = temp;
     return (1);
 }
-#else
+#else  // #ifndef ENABLE_MIC_PROCESSING
 /* **************************************************************************** */
 uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
 {
     static uint16_t chunkCount = 0;
     static uint16_t sum = 0;
-
     static uint32_t index = 0;
-
     int32_t sample = 0;
     int16_t temp = 0;
     uint32_t rx_size = 0;
@@ -881,7 +1014,7 @@ uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
     i2s_flag = 0;
     /* Read number of samples in I2S RX FIFO */
     rx_size = MXC_I2S->dmach0 >> MXC_F_I2S_DMACH0_RX_LVL_POS;
-//  printf("%d ", rx_size);
+//  PR_DEBUG("%d ", rx_size);
 
     /* read until fifo is empty or enough samples are collected */
     while ((rx_size--) && (chunkCount < CHUNK)) {
@@ -898,8 +1031,10 @@ uint8_t MicReadChunk(uint8_t* pBuff, uint16_t* avg)
             continue;
         }
 
+#ifndef ENERGY
         /* Turn on LED2 (Red) */
         LED_On(LED2);
+#endif
 
         /* absolute for averaging */
         if (sample >= 0) {
@@ -986,8 +1121,8 @@ int16_t HPF(int16_t input)
 
     return (output);
 }
+#endif // #ifndef ENABLE_MIC_PROCESSING
 
-#endif
 /************************************************************************************/
 #ifdef ENABLE_TFT
 void TFT_Intro(void)
@@ -1038,4 +1173,3 @@ void TFT_End(uint16_t words)
     TFT_Print(buff, 20, 180, font_1, sprintf(buff, "PRESS RESET TO TRY AGAIN!"));
 }
 #endif
-

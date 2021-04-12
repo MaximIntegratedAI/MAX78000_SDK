@@ -40,7 +40,6 @@
 #include "mxc_assert.h"
 #include "mxc_lock.h"
 
-#include "trng_regs.h"
 #include "ctb.h"
 #include "ctb_reva.h"
 #include "ctb_common.h"
@@ -234,7 +233,7 @@ uint32_t MXC_CTB_RevA_GetEnabledFeatures(void)
     return enabled_features;
 }
 
-void MXC_CTB_RevA_Handler(void)
+void MXC_CTB_RevA_Handler(mxc_trng_reva_regs_t* trng)
 {
     void* req;
     uint32_t temp;
@@ -245,7 +244,7 @@ void MXC_CTB_RevA_Handler(void)
     if(features & MXC_CTB_REVA_FEATURE_HASH) {
         req = saved_requests[HSH_ID];
         MXC_CTB_DoneClear(MXC_CTB_REVA_FEATURE_HASH | MXC_CTB_REVA_FEATURE_DMA);
-        features &= ~MXC_CTB_REVA_FEATURE_DMA;
+        features &= ~MXC_CTB_REVA_FEATURE_HASH;
         
         async_i++;
         
@@ -307,10 +306,10 @@ void MXC_CTB_RevA_Handler(void)
     if(features == 0) { /* interrupt caused by TRNG */
         // if this is last block, disable interrupt before reading MXC_TRNG->data
         if(TRNG_maxLength <= TRNG_count+4) {
-            MXC_TRNG->cn &= ~MXC_F_TRNG_CN_RND_IRQ_EN;
+            trng->ctrl &= ~MXC_F_TRNG_REVA_CTRL_RND_IE;
         }
         
-        temp = MXC_TRNG->data;
+        temp = trng->data;
         
         if((TRNG_count+3) < TRNG_maxLength) {
             memcpy(& (TRNG_data[TRNG_count]),(uint8_t*)(&temp), 4);
@@ -407,11 +406,11 @@ int MXC_CTB_RevA_DMA_DoOperation(mxc_ctb_reva_dma_req_t* req)
 /* True Random Number Generator(TRNG) functions                             */
 /* ************************************************************************* */
 
-int MXC_CTB_RevA_TRNG_RandomInt(void)
+int MXC_CTB_RevA_TRNG_RandomInt(mxc_trng_reva_regs_t* trng)
 {
-    while(!(MXC_TRNG->st & MXC_F_TRNG_ST_RND_RDY));
+    while(!(trng->status & MXC_F_TRNG_REVA_STATUS_RDY));
     
-    return(int) MXC_TRNG->data;
+    return(int) trng->data;
 }
 
 int MXC_CTB_RevA_TRNG_Random(uint8_t* data, uint32_t len)
@@ -435,7 +434,7 @@ int MXC_CTB_RevA_TRNG_Random(uint8_t* data, uint32_t len)
     return E_NO_ERROR;
 }
 
-void MXC_CTB_RevA_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_ctb_reva_complete_cb_t callback)
+void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t* trng, uint8_t* data, uint32_t len, mxc_ctb_reva_complete_cb_t callback)
 {
     MXC_ASSERT(data && callback);
     
@@ -453,7 +452,7 @@ void MXC_CTB_RevA_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_ctb_reva_com
     MXC_CTB_Callbacks[RNG_ID] = callback;
     
     // Enable interrupts
-    MXC_TRNG->cn |= MXC_F_TRNG_CN_RND_IRQ_EN;
+    trng->ctrl |= MXC_F_TRNG_REVA_CTRL_RND_IE;
     NVIC_EnableIRQ(TRNG_IRQn);
 }
 

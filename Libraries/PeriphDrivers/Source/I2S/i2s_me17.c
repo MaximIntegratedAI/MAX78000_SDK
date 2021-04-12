@@ -56,9 +56,7 @@ int MXC_I2S_Init(mxc_i2s_req_t* req)
 {
     MXC_I2S_Shutdown();
     
-#ifdef MXC_SYS_CLOCK_ERFO // ME17 only
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-#endif
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_I2S);
     MXC_GPIO_Config(&gpio_cfg_i2s0);
     

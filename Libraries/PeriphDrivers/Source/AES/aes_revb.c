@@ -79,7 +79,7 @@ int MXC_AES_RevB_Init(mxc_aes_revb_regs_t* aes)
 
   while (MXC_AES_RevB_IsBusy(aes) != E_NO_ERROR);
 
-  aes->ctrl |= MXC_F_AES_CTRL_EN;
+  aes->ctrl |= MXC_F_AES_REVB_CTRL_EN;
 
   return E_NO_ERROR;
 }

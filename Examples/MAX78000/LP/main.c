@@ -45,9 +45,10 @@
  *            2. Active mode power with peripheral clocks disabled
  *            3. Active mode power with unused RAMs shut down
  *            4. SLEEP mode
- *            5. BACKGROUND mode
- *            6. DEEPSLEEP mode
+ *            5. LPM mode
+ *            6. UPM mode
  *            7. BACKUP mode
+ *            8. Standby mode
  */
 
 #include <stdio.h>
@@ -71,7 +72,8 @@
 #define USE_ALARM       0
 
 #define DO_SLEEP        1
-#define DO_DEEPSLEEP    1
+#define DO_LPM          1
+#define DO_UPM          0
 #define DO_BACKUP       0
 #define DO_STANDBY      0
 
@@ -209,17 +211,26 @@ int main(void)
         setTrigger(0);
         MXC_LP_EnterSleepMode();
         printf("Waking up from SLEEP mode.\n");
-        
 #endif // DO_SLEEP
-#if DO_DEEPSLEEP
+
+#if DO_LPM
 #if USE_CONSOLE
-        printf("Entering DEEPSLEEP mode.\n");
+        printf("Entering Low power mode.\n");
 #endif // USE_CONSOLE
         setTrigger(0);
-        MXC_LP_EnterDeepSleepMode();
-        printf("Waking up from DEEPSLEEP mode.\n");
-#endif // DO_DEEPSLEEP
-        
+        MXC_LP_EnterLowPowerMode();
+        printf("Waking up from Low power mode.\n");
+#endif // DO_LPM
+
+#if DO_UPM
+#if USE_CONSOLE
+        printf("Entering Micro power mode.\n");
+#endif // USE_CONSOLE
+        setTrigger(0);
+        MXC_LP_EnterMicroPowerMode();
+        printf("Waking up from Micro power mode.\n");
+#endif // DO_UPM
+
 #if DO_BACKUP
 #if USE_CONSOLE
         printf("Entering BACKUP mode.\n");

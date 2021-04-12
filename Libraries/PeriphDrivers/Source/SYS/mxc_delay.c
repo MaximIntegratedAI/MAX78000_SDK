@@ -63,6 +63,20 @@ int MXC_Delay(unsigned long us)
     return E_NO_ERROR;
 }
 
+int MXC_DelayAsync(unsigned long us, mxc_delay_complete_t callback)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_DelayCheck(void)
+{
+    return E_NOT_SUPPORTED;
+}
+
+void MXC_DelayAbort(void)
+{
+}
+
 #else
 
 /* **** File Scope Variables **** */

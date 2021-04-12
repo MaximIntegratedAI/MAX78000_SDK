@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-10-26 14:08:34 -0500 (Thu, 26 Oct 2017) $
- * $Revision: 31625 $
- *
  ******************************************************************************/
 
 #include <stdlib.h>

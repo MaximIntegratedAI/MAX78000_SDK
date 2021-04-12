@@ -31,18 +31,16 @@ CRC Sync and Async Example
 
 TEST CRC SYNC
 
-CRC Poly Result: 13b5a483
+Computed CRC: 13b5a483
 CRC Check Result: debb20e3
 **Test Passed**
 
 TEST CRC ASYNC
 
-CRC Poly Result: 13b5a483
+Computed CRC: 13b5a483
 CRC Check Result: debb20e3
 **Test Passed**
 
 
 Example Succeeded
 ```
-
-

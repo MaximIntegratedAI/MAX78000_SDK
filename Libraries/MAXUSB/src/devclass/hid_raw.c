@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-10-16 17:48:14 -0500 (Mon, 16 Oct 2017) $ 
- * $Revision: 31410 $
- *
  ******************************************************************************/
  
 #include <string.h>
@@ -46,6 +43,9 @@
 #define FIFO_SIZE         (HID_MAX_PACKET + 1)
 
 /***** File Scope Data *****/
+
+/* Interface # for Comm Class (to handle class-specific requests) */
+static uint8_t if_num = 0;
 
 // Endpoint configuration
 static hid_cfg_t hid_cfg;
@@ -78,6 +78,10 @@ static const uint8_t *report_desc;
 
 static int (*callback)(void);
 
+static int (*chained_func)(MXC_USB_SetupPkt *, void *);
+static void *chained_cbdata;
+static void (*chained_getdesc_func)(MXC_USB_SetupPkt *, const uint8_t **, uint16_t *);
+
 /***** Function Prototypes *****/
 static void getdescriptor(MXC_USB_SetupPkt *sud, const uint8_t **desc, uint16_t *desclen);
 static int class_req(MXC_USB_SetupPkt *sud, void *cbdata);
@@ -86,7 +90,7 @@ static void out_callback(void *cbdata);
 static void svc_in_to_host(void *cbdata);
 
 /******************************************************************************/
-int hidraw_init(const hid_descriptor_t *hid_descriptor, const uint8_t *report_descriptor)
+int hidraw_init(const MXC_USB_interface_descriptor_t *if_desc, const hid_descriptor_t *hid_descriptor, const uint8_t *report_descriptor)
 {
   memset(&hid_cfg, 0, sizeof(hid_cfg_t));
   callback = NULL;
@@ -95,11 +99,20 @@ int hidraw_init(const hid_descriptor_t *hid_descriptor, const uint8_t *report_de
   /* NOTE: report_descriptor must be 32-bit aligned on ARM platforms. */
   report_desc = report_descriptor;
 
+  /* Pull any existing class-specific callback, in case of multi-class devices */
+  enum_query_getdescriptor(&chained_getdesc_func);
+
   /* This callback handles class-specific GET_DESCRIPTOR requests */
   enum_register_getdescriptor(getdescriptor);
 
+  /* Pull any existing class-specific callback, in case of multi-class devices */
+  enum_query_callback(ENUM_CLASS_REQ, &chained_func, &chained_cbdata);
+
   /* Handle class-specific SETUP requests */
   enum_register_callback(ENUM_CLASS_REQ, class_req, NULL);
+
+  /* Store interface number */
+  if_num = if_desc->bInterfaceNumber;  
 
   return 0;
 }
@@ -178,10 +191,10 @@ void hidraw_register_callback(int (*func)(void))
 /******************************************************************************/
 static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
 {
-  int result = -1;
+  int result = -1;      /* Default response is to STALL */
   static MXC_USB_Req_t ep0req;
 
-  if ((((sud->bmRequestType & RT_RECIP_MASK) & RT_RECIP_IFACE) == 1) && (sud->wIndex == 0)) {
+  if ((sud->bmRequestType & RT_RECIP_IFACE) && (sud->wIndex == if_num)) {
 
     switch (sud->bRequest) {
       case HID_GET_REPORT:
@@ -193,7 +206,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         ep0req.cbdata = NULL;
         result = MXC_USB_WriteEndpoint(&ep0req);
 	if (!result) {
-	  /* Has data stage */
+	  /* Success, with data stage */
 	  result = 1;
 	}
         break;
@@ -206,6 +219,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
       case HID_SET_REPORT:
         if (sud->wLength <= 64) {
           /* Accept and ignore */
+          /* Success, no data stage */
           result = 0;
         }
         break;
@@ -214,6 +228,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         if ((sud->wValue & 0xff) == 0)  {
           /* Idle is set to '0' for infinity. Changing Idle is not currently supported. */
           if ((sud->wValue >> 8) == 0) {
+            /* Success, no data stage */
             result = 0;
           }
         }
@@ -225,6 +240,11 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         /* Stall */
         break;
     }
+  } else {
+    /* Not for this class, send to chained classes (if any) */
+    if (chained_func != NULL) {
+      result = chained_func(sud, chained_cbdata);
+    } 
   }  
 
   return result;
@@ -371,26 +391,31 @@ static void getdescriptor(MXC_USB_SetupPkt *sud, const uint8_t **desc, uint16_t 
   static hid_descriptor_t hid_descriptor;
 #endif
 
-  *desc = NULL;
-  *desclen = 0;
+  if (sud->wIndex != if_num) {
+    /* Pass this to the chained class that came before us (if any) */
+    if (chained_getdesc_func != NULL) {
+      chained_getdesc_func(sud, desc, desclen);
+    }
+  } else {
+    /* Belongs to our interface, so attempt to process it */
 
-  switch (sud->wValue >> 8) {
-    case DESC_HID:
-      if (sud->wIndex == 0) {
+    *desc = NULL;
+    *desclen = 0;
+
+    switch (sud->wValue >> 8) {
+      case DESC_HID:
         /* Copy descriptor into aligned structure from hid_desc source pointer. */
         memcpy(&hid_descriptor, hid_desc, sizeof(hid_descriptor_t));
         *desc = (uint8_t*)&hid_descriptor;
         *desclen = hid_descriptor.bFunctionalLength;
-      }
-      break;
-    case DESC_REPORT:
-      if (sud->wIndex ==0) {
+        break;
+      case DESC_REPORT:
         *desc = report_desc;
         *desclen = hid_desc->wDescriptorLength;
-      }
-      break;
-    default:
-      /* Stall */
-      break;
+        break;
+      default:
+        /* Stall */
+        break;
+    }
   }
 }

@@ -91,3 +91,4 @@ int MXC_UART_RevC_AbortAsync (mxc_uart_revc_regs_t* uart);
 int MXC_UART_RevC_AsyncHandler (mxc_uart_revc_regs_t* uart);
 int MXC_UART_RevC_AsyncStop (mxc_uart_revc_regs_t* uart);
 int MXC_UART_RevC_AsyncCallback (mxc_uart_revc_regs_t* uart, int retVal);
+void MXC_UART_RevC_DMACallback (int ch, int error);

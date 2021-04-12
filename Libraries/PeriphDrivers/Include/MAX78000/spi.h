@@ -89,6 +89,24 @@ typedef enum {
     SPI_WIDTH_QUAD,                 ///< 4 Data lines, half duplex
 } mxc_spi_width_t;
 
+/**
+ * @brief The list of SPI modes
+ * 
+ * SPI supports four combinations of clock and phase polarity
+ * 
+ * Clock polarity is controlled using the bit SPIn_CTRL2.cpol 
+ * and determines if the clock is active high or active low
+ * 
+ * Clock phase determines when the data must be stable for sampling
+ *  
+ */
+typedef enum {
+    SPI_MODE_0,                     ///< clock phase = 0, clock polarity = 0 
+    SPI_MODE_1,                     ///< clock phase = 0, clock polarity = 1
+    SPI_MODE_2,                     ///< clock phase = 1, clock polarity = 0
+    SPI_MODE_3,                     ///< clock phase = 1, clock polarity = 1
+} mxc_spi_mode_t;
+
 typedef struct _mxc_spi_pins_t mxc_spi_pins_t;
 
 /**
@@ -107,6 +125,7 @@ struct _mxc_spi_pins_t {
     bool             mosi;      ///< mosi pin
     bool             sdio2;     ///< SDIO2 pin
     bool             sdio3;     ///< SDIO3 pin
+    bool             vddioh;    ///< VDDIOH Select
 };
 
 typedef struct _mxc_spi_req_t mxc_spi_req_t;
@@ -294,6 +313,26 @@ int MXC_SPI_SetWidth (mxc_spi_regs_t* spi, mxc_spi_width_t spiWidth);
  * @return  Spi Width
  */
 mxc_spi_width_t MXC_SPI_GetWidth (mxc_spi_regs_t* spi);
+
+/**
+ * @brief   Sets the spi mode using clock polarity and clock phase
+ * 
+ * @param spi           Pointer to SPI registers (selects the SPI block used.)
+ * @param spiMode       \ref mxc_spi_mode_t
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
+ */
+int MXC_SPI_SetMode (mxc_spi_regs_t* spi, mxc_spi_mode_t spiMode);
+
+/**
+ * @brief   Gets the spi mode
+ * 
+ * @param spi           Pointer to SPI registers (selects the SPI block used.)
+ * 
+ * @return mxc_spi_mode_t   \ref mxc_spi_mode_t
+ */
+mxc_spi_mode_t MXC_SPI_GetMode (mxc_spi_regs_t* spi);
+
 /**
  * @brief   Starts a SPI Transmission
  *

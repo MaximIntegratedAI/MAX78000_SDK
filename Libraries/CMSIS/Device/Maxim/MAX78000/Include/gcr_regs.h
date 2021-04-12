@@ -328,8 +328,8 @@ typedef struct {
  #define MXC_F_GCR_PM_MODE                              ((uint32_t)(0xFUL << MXC_F_GCR_PM_MODE_POS)) /**< PM_MODE Mask */
  #define MXC_V_GCR_PM_MODE_ACTIVE                       ((uint32_t)0x0UL) /**< PM_MODE_ACTIVE Value */
  #define MXC_S_GCR_PM_MODE_ACTIVE                       (MXC_V_GCR_PM_MODE_ACTIVE << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_ACTIVE Setting */
- #define MXC_V_GCR_PM_MODE_CM4                          ((uint32_t)0x1UL) /**< PM_MODE_CM4 Value */
- #define MXC_S_GCR_PM_MODE_CM4                          (MXC_V_GCR_PM_MODE_CM4 << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_CM4 Setting */
+ #define MXC_V_GCR_PM_MODE_SLEEP                        ((uint32_t)0x1UL) /**< PM_MODE_SLEEP Value */
+ #define MXC_S_GCR_PM_MODE_SLEEP                        (MXC_V_GCR_PM_MODE_SLEEP << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_SLEEP Setting */
  #define MXC_V_GCR_PM_MODE_STANDBY                      ((uint32_t)0x2UL) /**< PM_MODE_STANDBY Value */
  #define MXC_S_GCR_PM_MODE_STANDBY                      (MXC_V_GCR_PM_MODE_STANDBY << MXC_F_GCR_PM_MODE_POS) /**< PM_MODE_STANDBY Setting */
  #define MXC_V_GCR_PM_MODE_BACKUP                       ((uint32_t)0x4UL) /**< PM_MODE_BACKUP Value */

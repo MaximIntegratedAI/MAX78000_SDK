@@ -150,7 +150,7 @@ int MXC_UART_RevA_SetFrequency (mxc_uart_reva_regs_t* uart, unsigned int baud)
     }
     
     uartDiv /= prescale;
-    decimalDiv = (int)((uartDiv - (int) uartDiv) * prescale);
+    decimalDiv = (int)((uartDiv - (int) uartDiv) * 128);
     
     // Work around for Jira Bug: ME10-650
     if (decimalDiv > 3) {
@@ -541,7 +541,7 @@ int MXC_UART_RevA_ReadRXFIFODMA (mxc_uart_reva_regs_t* uart, unsigned char* byte
     
     states[uart_num].channelRx = channel;
     MXC_DMA_ConfigChannel (config,srcdst);
-    MXC_DMA_SetCallback (channel, NULL);
+    MXC_DMA_SetCallback (channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt (channel);
     MXC_DMA_Start (channel);
     //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
@@ -604,7 +604,7 @@ unsigned int MXC_UART_RevA_WriteTXFIFODMA (mxc_uart_reva_regs_t* uart, unsigned 
     
     states[uart_num].channelTx = channel;
     MXC_DMA_ConfigChannel (config,srcdst);
-    MXC_DMA_SetCallback (channel, NULL);
+    MXC_DMA_SetCallback (channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt (channel);
     MXC_DMA_Start (channel);
     //MXC_DMA->ch[channel].ctrl |= MXC_F_DMA_CTRL_CTZ_IE;
@@ -903,6 +903,33 @@ int MXC_UART_RevA_TransactionDMA (mxc_uart_reva_req_t* req)
     }
     
     return E_NO_ERROR;
+}
+
+void MXC_UART_RevA_DMACallback (int ch, int error)
+{
+    mxc_uart_reva_req_t * temp_req;
+    
+    for (int i = 0; i < MXC_UART_INSTANCES; i ++) {
+        if (states[i].channelTx == ch) {
+            //save the request
+            temp_req = states[i].req;
+            // Callback if not NULL
+            if (temp_req->callback != NULL) {
+                temp_req->callback((mxc_uart_req_t*)temp_req, E_NO_ERROR);
+            }            
+            break;
+        }
+        
+        else if (states[i].channelRx == ch) {
+            //save the request
+            temp_req = states[i].req;
+            // Callback if not NULL
+            if (temp_req->callback != NULL) {
+                temp_req->callback((mxc_uart_req_t*)temp_req, E_NO_ERROR);
+            }              
+            break;
+        }
+    }
 }
 
 int MXC_UART_RevA_AsyncCallback (mxc_uart_reva_regs_t* uart, int retVal)

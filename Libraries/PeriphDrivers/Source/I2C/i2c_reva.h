@@ -124,6 +124,12 @@ int MXC_I2C_RevA_GetFlags (mxc_i2c_reva_regs_t* i2c, unsigned int *flags0, unsig
 void MXC_I2C_RevA_ClearFlags (mxc_i2c_reva_regs_t* i2c, unsigned int flags0, unsigned int flags1);
 void MXC_I2C_RevA_EnableInt (mxc_i2c_reva_regs_t* i2c, unsigned int flags0, unsigned int flags1);
 void MXC_I2C_RevA_DisableInt (mxc_i2c_reva_regs_t* i2c, unsigned int flags0, unsigned int flags1);
+void MXC_I2C_RevA_EnablePreload(mxc_i2c_reva_regs_t* i2c);
+void MXC_I2C_RevA_DisablePreload(mxc_i2c_reva_regs_t* i2c);
+void MXC_I2C_RevA_EnableGeneralCall (mxc_i2c_reva_regs_t* i2c);
+void MXC_I2C_RevA_DisableGeneralCall (mxc_i2c_reva_regs_t* i2c);
+void MXC_I2C_RevA_SetTimeout (mxc_i2c_reva_regs_t* i2c, unsigned int timeout);
+unsigned int MXC_I2C_RevA_GetTimeout (mxc_i2c_reva_regs_t* i2c);
 int MXC_I2C_RevA_Recover (mxc_i2c_reva_regs_t* i2c, unsigned int retries);
 
 /* ************************************************************************* */

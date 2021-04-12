@@ -36,29 +36,35 @@
 #ifndef _FACEID_H_
 #define _FACEID_H_
 
-#define CAPTURE_X	50
-#define CAPTURE_Y	290
-#define	SKIP_X		60
-#define SKIP_Y		290
-#define RUN_X		160
-#define RUN_Y		290
-#define BACK_X		0
-#define BACK_Y		280
+#define CAMERA_FREQ (10 * 1000 * 1000)
+#define LP_MODE_ENABLE
+#define LP_MODE     4   // 0:NO SLEEP, 1:SLEEP, 2:LPM, 3:UPM, 4:STANDBY, 5:BACKUP, 6:POWERDOWN
+
+#define CAPTURE_X   50
+#define CAPTURE_Y   290
+#define SKIP_X      60
+#define SKIP_Y      290
+#define RUN_X       160
+#define RUN_Y       290
+#define BACK_X      0
+#define BACK_Y      280
 
 #define IMAGE_XRES  200
 #define IMAGE_YRES  150
 
-#define HEIGHT		160
-#define WIDTH		120
-#define THICKNESS	4
-#define IMAGE_H		150
-#define IMAGE_W		200
-#define FRAME_COLOR	0x535A
+#define HEIGHT      160
+#define WIDTH       120
+#define THICKNESS   4
+#define IMAGE_H     150
+#define IMAGE_W     200
+#define FRAME_COLOR 0x535A
 
-#define X_START		45
-#define Y_START		30
+#define X_START     45
+#define Y_START     30
 
-#define BYTE_PER_PIXEL	2
+#define BYTE_PER_PIXEL  2
+
+#define LOW_LIGHT_THRESHOLD 20
 
 // Data input: HWC (little data): 160x120x3
 #define DATA_SIZE_IN (160*120*3)

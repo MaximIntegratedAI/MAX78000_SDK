@@ -53,7 +53,7 @@
 #define MXC_I2C_FASTPLUS_SPEED 1000000
 
 /* **** Variable Declaration **** */
-uint32_t interruptCheck = MXC_F_I2C_INTFL0_ADDR_MATCH;
+uint32_t interruptCheck = MXC_F_I2C_INTFL0_ADDR_MATCH | MXC_F_I2C_INTFL0_DNR_ERR;
 
 /* **** Function Prototypes **** */
 
@@ -112,6 +112,25 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t* i2c)
     }
     
     return E_NO_ERROR;
+}
+
+int MXC_I2C_Reset (mxc_i2c_regs_t* i2c)
+{
+    // Configure GPIO for I2C
+    if(i2c == MXC_I2C0) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_I2C0);
+    }
+    else if(i2c == MXC_I2C1) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C1);
+    }
+    else if(i2c == MXC_I2C2) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_I2C2);
+    }
+    else {
+        return E_NO_DEVICE;
+    }
+    
+    return E_NO_ERROR;    
 }
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t* i2c, unsigned int hz)
@@ -270,6 +289,36 @@ void MXC_I2C_EnableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int fl
 void MXC_I2C_DisableInt(mxc_i2c_regs_t* i2c, unsigned int flags0, unsigned int flags1)
 {
     MXC_I2C_RevA_DisableInt((mxc_i2c_reva_regs_t*) i2c, flags0, flags1);
+}
+
+void MXC_I2C_EnablePreload (mxc_i2c_regs_t* i2c)
+{
+    MXC_I2C_RevA_EnablePreload((mxc_i2c_reva_regs_t*) i2c);
+}
+
+void MXC_I2C_DisablePreload (mxc_i2c_regs_t* i2c)
+{
+    MXC_I2C_RevA_DisablePreload((mxc_i2c_reva_regs_t*) i2c);
+}
+
+void MXC_I2C_EnableGeneralCall (mxc_i2c_regs_t* i2c)
+{
+    MXC_I2C_RevA_EnableGeneralCall ((mxc_i2c_reva_regs_t*) i2c);
+}
+
+void MXC_I2C_DisableGeneralCall (mxc_i2c_regs_t* i2c)
+{
+    MXC_I2C_RevA_DisableGeneralCall ((mxc_i2c_reva_regs_t*) i2c);
+}
+
+void MXC_I2C_SetTimeout (mxc_i2c_regs_t* i2c, unsigned int timeout)
+{
+    MXC_I2C_RevA_SetTimeout ((mxc_i2c_reva_regs_t*) i2c, timeout);
+}
+
+unsigned int MXC_I2C_GetTimeout (mxc_i2c_regs_t* i2c)
+{
+    return MXC_I2C_RevA_GetTimeout ((mxc_i2c_reva_regs_t*) i2c);
 }
 
 int MXC_I2C_Recover(mxc_i2c_regs_t* i2c, unsigned int retries)

@@ -48,7 +48,20 @@ void MXC_LP_EnterSleepMode(void)
     __WFI();
 }
 
-void MXC_LP_EnterDeepSleepMode(void)
+void MXC_LP_EnterLowPowerMode(void)
+{
+    MXC_LP_ClearWakeStatus();
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
+    
+    /* Set SLEEPDEEP bit */
+    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+
+    /* Go into low power mode and wait for an interrupt to wake the processor */
+    MXC_GCR->pm |= MXC_S_GCR_PM_MODE_LPM; 
+    __WFI();
+}
+
+void MXC_LP_EnterMicroPowerMode(void)
 {
     MXC_LP_ClearWakeStatus();
     MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
@@ -85,25 +98,12 @@ void MXC_LP_EnterBackupMode(void)
     
 }
 
-void MXC_LP_EnterShutDownMode(void)
+void MXC_LP_EnterPowerDownMode(void)
 {
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_POWERDOWN;
     
     while (1); // Should never reach this line - device will reset on exit from shutdown mode.
-}
-
-void MXC_LP_EnterLPMode(void)
-{
-    MXC_LP_ClearWakeStatus();
-    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_ERTCO_EN;   // Enabled for deep sleep mode
-    
-    /* Set SLEEPDEEP bit */
-    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-
-    /* Go into low power mode and wait for an interrupt to wake the processor */
-    MXC_GCR->pm |= MXC_S_GCR_PM_MODE_LPM; 
-    __WFI();
 }
 
 void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)

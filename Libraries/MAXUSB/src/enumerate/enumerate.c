@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-05-10 18:10:40 -0500 (Thu, 10 May 2018) $ 
- * $Revision: 35016 $
- *
  ******************************************************************************/
 
 #include <string.h>
@@ -378,9 +375,9 @@ static int clearfeature(MXC_USB_SetupPkt *sud)
   if ((sud->bmRequestType & RT_DEV_TO_HOST) || 
       (sud->wLength != 0) ||
       ((sud->wValue == FEAT_ENDPOINT_HALT) && ((sud->bmRequestType & RT_RECIP_MASK) != RT_RECIP_ENDP)) ||
-      ((sud->wValue == FEAT_REMOTE_WAKE) && ((sud->bmRequestType & RT_RECIP_MASK) != RT_RECIP_DEVICE)) ||
-      ((sud->wValue == FEAT_TEST_MODE) && ((sud->bmRequestType & RT_RECIP_MASK) != RT_RECIP_DEVICE))) {
-    return -1;
+      ((sud->wValue == FEAT_REMOTE_WAKE) && ((sud->bmRequestType & RT_RECIP_MASK) != RT_RECIP_DEVICE))) {
+      
+      return -1;
   }
 
   if ((sud->wValue == FEAT_ENDPOINT_HALT) && (sud->wIndex > 0)) {
@@ -400,18 +397,9 @@ static int clearfeature(MXC_USB_SetupPkt *sud)
     } else {
       return -1;
     }
-  } else if ((sud->wValue == FEAT_TEST_MODE)) {
-    /* Clear the test mode feature */
-    if (callback[ENUM_CLRFEATURE].fnaddr != NULL) {
-      result = callback[ENUM_CLRFEATURE].fnaddr(sud, NULL);
-      if (result < 0) {
-        return result;
-      }
-    } else {
-      return -1;
-    }
   } else {
-    /* Unsupported */ 
+    /* Per USB 2.0: The Test_Mode feature cannot be cleared by the ClearFeature() request. */
+    /* Unsupported */
     return -1;
   }
 

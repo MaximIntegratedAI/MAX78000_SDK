@@ -29,8 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Id: dbg_log.h 31614 2017-10-26 17:06:25Z zach.metzinger $
- *
  *******************************************************************************
  */
 

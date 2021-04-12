@@ -35,6 +35,7 @@
 #define _CTB_REVA_H_
 
 #include "ctb_reva_regs.h"
+#include "trng_reva_regs.h"
 
 
 /* ************************************************************************* */
@@ -185,7 +186,7 @@ void MXC_CTB_RevA_Reset(uint32_t features);
 void MXC_CTB_RevA_CacheInvalidate(void);
 int MXC_CTB_RevA_Shutdown(uint32_t features);
 uint32_t MXC_CTB_RevA_GetEnabledFeatures(void);
-void MXC_CTB_RevA_Handler(void);
+void MXC_CTB_RevA_Handler(mxc_trng_reva_regs_t* trng);
 
 /************************************/
 /* CTB DMA - Used for all features  */
@@ -205,9 +206,9 @@ void MXC_CTB_RevA_DMA_StartTransfer(mxc_ctb_reva_regs_t* ctb_regs, uint32_t leng
 /* True Random Number Generator (TRNG) functions                             */
 /* ************************************************************************* */
 
-int MXC_CTB_RevA_TRNG_RandomInt(void);
+int MXC_CTB_RevA_TRNG_RandomInt(mxc_trng_reva_regs_t* trng);
 int MXC_CTB_RevA_TRNG_Random(uint8_t* data, uint32_t len);
-void MXC_CTB_RevA_TRNG_RandomAsync(uint8_t* data, uint32_t len, mxc_ctb_reva_complete_cb_t callback);
+void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t* trng, uint8_t* data, uint32_t len, mxc_ctb_reva_complete_cb_t callback);
 
 /* ************************************************************************* */
 /* Error Correction Code (ECC) functions                                     */

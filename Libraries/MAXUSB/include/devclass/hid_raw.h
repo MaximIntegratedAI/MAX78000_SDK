@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-03-11 11:46:37 -0600 (Fri, 11 Mar 2016) $ 
- * $Revision: 21839 $
- *
  ******************************************************************************/
  
 #ifndef _HID_RAW_H_
@@ -55,11 +52,12 @@ typedef struct {
 /** 
  *  \brief    Initialize the class driver
  *  \details  Initialize the class driver.
+ *  \param    if_desc             pointer to interface descriptor
  *  \param    hid_descriptor      pointer to the descriptor to be used in response to getdescriptor requests
  *  \param    report_descriptor   pointer to the descriptor to be used in response to getdescriptor requests
  *  \return   Zero (0) for success, non-zero for failure
  */
-int hidraw_init(const hid_descriptor_t *hid_descriptor, const uint8_t *report_descriptor);
+int hidraw_init(const MXC_USB_interface_descriptor_t *if_desc, const hid_descriptor_t *hid_descriptor, const uint8_t *report_descriptor);
 
 /** 
  *  \brief    Set the specified configuration

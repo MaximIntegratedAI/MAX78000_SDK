@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-12-14 15:20:20 -0600 (Fri, 14 Dec 2018) $
- * $Revision: 39946 $
- *
  ******************************************************************************/
 
 #include <stdlib.h>
@@ -73,42 +70,42 @@ static volatile uint8_t *get_fifo_ptr(unsigned int ep)
 
 static void load_fifo(volatile uint8_t *fifoptr, uint8_t *dataptr, unsigned int len)
 {
-  volatile uint32_t *fifoptr_32 = (uint32_t *)fifoptr;
-  uint32_t *dataptr_32 = (uint32_t *)dataptr;
-  unsigned int len_32;
+    volatile uint32_t *fifoptr_32 = (uint32_t *)fifoptr;
+    uint32_t *dataptr_32 = (uint32_t *)dataptr;
+    unsigned int len_32;
 
-  /* Calculate sizes to efficiently move data */
-  len_32 = len >> 2;
-  len &= 0x3;
+    /* Calculate sizes to efficiently move data */
+    len_32 = len >> 2;
+    len &= 0x3;
 
-  /* Load word-sized chunks */
-  while (len_32--) {
-    *fifoptr_32 = *dataptr_32++;
-  }
-  dataptr = (uint8_t *)dataptr_32;
-  /* Load remainder as bytes */
-  while (len--) {
-    *fifoptr = *dataptr++;
-  }
+    /* Load word-sized chunks */
+    while (len_32--) {
+        *fifoptr_32 = *dataptr_32++;
+    }
+    dataptr = (uint8_t *)dataptr_32;
+    /* Load remainder as bytes */
+    while (len--) {
+        *fifoptr = *dataptr++;
+    }
 }
 
 static void unload_fifo(uint8_t *dataptr, volatile uint8_t *fifoptr, unsigned int len)
 {
-  volatile uint32_t *fifoptr_32 = (uint32_t *)fifoptr;
-  uint32_t *dataptr_32 = (uint32_t *)dataptr;
-  unsigned int len_32;
+    volatile uint32_t *fifoptr_32 = (uint32_t *)fifoptr;
+    uint32_t *dataptr_32 = (uint32_t *)dataptr;
+    unsigned int len_32;
 
-  /* Calculate sizes to efficiently move data */
-  len_32 = len >> 2;
-  len &= 0x3;
+    /* Calculate sizes to efficiently move data */
+    len_32 = len >> 2;
+    len &= 0x3;
 
-  while (len_32--) {
-    *dataptr_32++ = *fifoptr_32;
-  }
-  dataptr = (uint8_t *)dataptr_32;
-  while (len--) {
-    *dataptr++ = *fifoptr;
-  }
+    while (len_32--) {
+        *dataptr_32++ = *fifoptr_32;
+    }
+    dataptr = (uint8_t *)dataptr_32;
+    while (len--) {
+        *dataptr++ = *fifoptr;
+    }
 }
 
 int MXC_USB_Init(maxusb_cfg_options_t *options)
@@ -225,6 +222,23 @@ int MXC_USB_Disconnect(void)
     setup_phase = SETUP_IDLE;
 
     return 0;
+}
+
+unsigned int MXC_USB_GetStatus(void)
+{
+    int status = 0;
+
+    /* VBUS */
+    if (MXC_USBHS->mxm_reg_a4 & MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A) {
+	status |= MAXUSB_STATUS_VBUS_ON;
+    }
+    
+    /* High-speed state */
+    if (MXC_USBHS->power & MXC_F_USBHS_POWER_HS_MODE) {
+	status |= MAXUSB_STATUS_HIGH_SPEED;
+    }
+
+    return status;
 }
 
 int MXC_USB_ConfigEp(unsigned int ep, maxusb_ep_type_t type, unsigned int size)
@@ -680,7 +694,7 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
 
     /* Map hardware-specific signals to generic stack events */
     evt->dpact  = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SOF_INT);
-    evt->rwudn  = 0;
+    evt->rwudn  = 0;        /* Not supported by this hardware */
     evt->bact   = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SOF_INT);
     evt->brst   = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_RESET_INT);
     evt->susp   = !!(MXC_USB_flags & MXC_F_USBHS_INTRUSB_SUSPEND_INT);
@@ -695,22 +709,22 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
         MXC_USBHS->index = 0;
         /* Process all error conditions */
         if (MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_SENT_STALL) {
-                /* Clear stall indication, go back to IDLE */
-                MXC_USBHS->csr0 &= ~(MXC_F_USBHS_CSR0_SENT_STALL);
-                /* Remove this from the IN flags so that it is not erroneously processed as data */
-                in_flags &= ~MXC_F_USBHS_INTRIN_EP0_IN_INT;
-                setup_phase = SETUP_IDLE;
-                aborted = 1;
+            /* Clear stall indication, go back to IDLE */
+            MXC_USBHS->csr0 &= ~(MXC_F_USBHS_CSR0_SENT_STALL);
+            /* Remove this from the IN flags so that it is not erroneously processed as data */
+            in_flags &= ~MXC_F_USBHS_INTRIN_EP0_IN_INT;
+            setup_phase = SETUP_IDLE;
+            aborted = 1;
         }
         if (MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_SETUP_END) {
-                /* Abort pending requests, clear early end-of-control-transaction bit, go back to IDLE */
-                MXC_USBHS->csr0 |= (MXC_F_USBHS_CSR0_SERV_SETUP_END);
-                setup_phase = SETUP_IDLE;
+            /* Abort pending requests, clear early end-of-control-transaction bit, go back to IDLE */
+            MXC_USBHS->csr0 |= (MXC_F_USBHS_CSR0_SERV_SETUP_END);
+            setup_phase = SETUP_IDLE;
 
-                /* Remove this from the IN flags so that it is not erroneously processed as data */
-                in_flags &= ~MXC_F_USBHS_INTRIN_EP0_IN_INT;
-                MXC_USB_ResetEp(0);
-                aborted = 1;
+            /* Remove this from the IN flags so that it is not erroneously processed as data */
+            in_flags &= ~MXC_F_USBHS_INTRIN_EP0_IN_INT;
+            MXC_USB_ResetEp(0);
+            aborted = 1;
         }
         /* Now, check for a SETUP packet */
         if (!aborted) {
@@ -999,7 +1013,7 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
 {
     unsigned int ep  = req->ep;
     uint32_t reqsize;
-    unsigned int armed = 0;
+    unsigned int armed;
 
     if (ep >= MXC_USBHS_NUM_EP) {
         return -1;
@@ -1010,6 +1024,7 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
 
     /* EP must be enabled (configured) and not stalled */
     if (!MXC_USB_IsConfigured(ep)) {
+        MAXUSB_EXIT_CRITICAL();
         return -1;
     }
 
@@ -1058,32 +1073,27 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
                 /* Signal to H/W that FIFO has been read */
                 MXC_USBHS->outcsrl &= ~MXC_F_USBHS_OUTCSRL_OUTPKTRDY;
             
-
                 if ((req->type == MAXUSB_TYPE_PKT) || (req->actlen == req->reqlen)) {
-                    /* Done */
-                    MAXUSB_EXIT_CRITICAL();
-                    
                     MXC_USB_Request[ep] = NULL;
                   
                     if (req->callback) {
                         req->callback(req->cbdata);
                     }
-                    
-                } else {
-		    /* Not done, more data requested */
-                    MXC_USBHS->introuten |= (1 << ep);
-
+                    /* Done */
                     MAXUSB_EXIT_CRITICAL();
+                    return 0;
+                } else {
+		            /* Not done, more data requested */
+                    MXC_USBHS->introuten |= (1 << ep);
                 }
             } else {
                 /* No data, will need an interrupt to service later */
                 MXC_USBHS->introuten |= (1 << ep);
-
-                MAXUSB_EXIT_CRITICAL();
             }
         }
     }
 
+    MAXUSB_EXIT_CRITICAL();
     return 0;
 }
 
@@ -1094,4 +1104,43 @@ void MXC_USB_RemoteWakeup(void)
         driver_opts.delay_us(10000);
         MXC_USBHS->power &= ~MXC_F_USBHS_POWER_RESUME;
     }
+}
+
+int MXC_USB_TestMode(unsigned int value)
+{
+    const uint8_t test_packet[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+				   0x00, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA,
+				   0xAA, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
+				   0xEE, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+				   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xBF, 0xDF,
+				   0xEF, 0xF7, 0xFB, 0xFD, 0xFC, 0x7E, 0xBF, 0xDF,
+				   0xEF, 0xF7, 0xFB, 0xFD, 0x7E};
+	
+    switch (value) {
+	case 0x01:
+	    /* Test_J */
+	    MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_J;
+	    break;
+	case 0x02:
+	    /* Test_K */
+	    MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_K;
+	    break;
+	case 0x03:
+	    /* Test_SE0_NAK */
+	    MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_SE0_NAK;
+	    break;
+	case 0x04:
+	    /* Test_Packet */
+	    /* Load EP 0 with data provided by section 11.4 of musbhsfc_pg.pdf */
+	    /* sizeof() considered safe, since we use uint8_t explicitly */
+	    load_fifo(get_fifo_ptr(0), (uint8_t*)test_packet, sizeof(test_packet));
+	    MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
+	    MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_PKT;
+	    break;
+	default:
+	    /* Unsupported */
+	    return -1;
+    }
+
+    return 0;
 }

@@ -478,6 +478,7 @@ typedef enum {
 /******************************************************************************/
 /*                                                                        DMA */
 #define MXC_DMA_CHANNELS                (16)
+#define MXC_DMA_INSTANCES               (1)
 
 #define MXC_BASE_DMA                    ((uint32_t)0x40028000UL)
 #define MXC_DMA                         ((mxc_dma_regs_t*)MXC_BASE_DMA)

@@ -577,7 +577,7 @@ void MXC_I2C_SetTimeout (mxc_i2c_regs_t* i2c, unsigned int timeout);
  *
  * @return  The current timeout in uS
  */
-int MXC_I2C_GetTimeout (mxc_i2c_regs_t* i2c);
+unsigned int MXC_I2C_GetTimeout (mxc_i2c_regs_t* i2c);
 
 /**
  * @brief   Attempts to recover the I2C bus, ensuring the I2C lines are idle.

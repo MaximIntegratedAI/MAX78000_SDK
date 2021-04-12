@@ -63,7 +63,7 @@ Load firmware image using Openocd.
 
 ### MAX78000 EVKIT operations
 
-*   If using camera and TFT LCD, place OVM7692 camera module on 'J4 Camera' header. Place TFT display on the display header.
+*   If using camera and TFT LCD, connect OVM7692 camera board directly (without 90 degree adapter) to 'J4 Camera' header facing out and place TFT display on the display header.
 *   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 *   Place jumper P0\_0 and P0\_1 on UART\_0\_EN header JH1.
 *   Open a serial port application on the PC and connect to Ev-Kit's console UART at 115200, 8-N-1 configuration.
@@ -140,7 +140,7 @@ Terminal output
 The Console UART of the device will output these messages:
 
 ![](/terminal.png)
-  
+
 ### References
 
 https://github.com/MaximIntegratedAI/MaximAI_Documentation

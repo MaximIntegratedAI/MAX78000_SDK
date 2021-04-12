@@ -526,7 +526,7 @@ __STATIC_INLINE void NVIC_SystemReset(void)
 __STATIC_INLINE uint32_t CSR_GetPCMR(void)
 {
   uint32_t reg;
-  asm volatile ("csrr %0, 0x7A1": "=r" (reg));
+  __asm volatile ("csrr %0, 0x7A1": "=r" (reg));
   return reg;
 }
 
@@ -535,7 +535,7 @@ __STATIC_INLINE uint32_t CSR_GetPCMR(void)
  */
 __STATIC_INLINE void CSR_SetPCMR(uint32_t reg)
 {
-  asm volatile("csrw 0x7A1, %0" : /* no output */ : "r" (reg));
+  __asm volatile("csrw 0x7A1, %0" : /* no output */ : "r" (reg));
 }
 
 /**
@@ -544,7 +544,7 @@ __STATIC_INLINE void CSR_SetPCMR(uint32_t reg)
 __STATIC_INLINE uint32_t CSR_GetPCER(void)
 {
   uint32_t reg;
-  asm volatile ("csrr %0, 0x7A0": "=r" (reg));
+  __asm volatile ("csrr %0, 0x7A0": "=r" (reg));
   return reg;
 }
 
@@ -553,7 +553,7 @@ __STATIC_INLINE uint32_t CSR_GetPCER(void)
  */
 __STATIC_INLINE void CSR_SetPCER(uint32_t reg)
 {
-  asm volatile("csrw 0x7A0, %0" : /* no output */ : "r" (reg));
+  __asm volatile("csrw 0x7A0, %0" : /* no output */ : "r" (reg));
 }
 
 /**
@@ -562,7 +562,7 @@ __STATIC_INLINE void CSR_SetPCER(uint32_t reg)
 __STATIC_INLINE uint32_t CSR_GetPCCR(void)
 {
   uint32_t reg;
-  asm volatile ("csrr %0, 0x780": "=r" (reg));
+  __asm volatile ("csrr %0, 0x780": "=r" (reg));
   return reg;
 }
 
@@ -571,7 +571,7 @@ __STATIC_INLINE uint32_t CSR_GetPCCR(void)
  */
 __STATIC_INLINE void CSR_SetPCCR(uint32_t reg)
 {
-  asm volatile("csrw 0x780, %0" : /* no output */ : "r" (reg));
+  __asm volatile("csrw 0x780, %0" : /* no output */ : "r" (reg));
 }
 
 /*@} end of CMSIS_Core_NVICFunctions */

@@ -71,8 +71,15 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
     
     mxc_gpio_cfg_t gpio_cfg_spi;
     gpio_cfg_spi.pad = MXC_GPIO_PAD_NONE;
-    gpio_cfg_spi.vssel = MXC_GPIO_VSSEL_VDDIO;
     gpio_cfg_spi.port = MXC_GPIO0;
+
+    // Set VDDIO level
+    if(pins.vddioh) {
+        gpio_cfg_spi.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    } else {
+        gpio_cfg_spi.vssel = MXC_GPIO_VSSEL_VDDIO;
+    }
+
     
     // Configure GPIO for spi
     if (spi == MXC_SPI1) {
@@ -259,6 +266,16 @@ mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t* spi)
 {
     return MXC_SPI_RevA_GetWidth((mxc_spi_reva_regs_t*) spi);
     
+}
+
+int MXC_SPI_SetMode (mxc_spi_regs_t* spi, mxc_spi_mode_t spiMode)
+{
+    return MXC_SPI_RevA_SetMode ((mxc_spi_reva_regs_t*) spi, spiMode);
+}
+
+mxc_spi_mode_t MXC_SPI_GetMode (mxc_spi_regs_t* spi)
+{
+    return MXC_SPI_RevA_GetMode((mxc_spi_reva_regs_t*) spi);
 }
 
 int MXC_SPI_StartTransmission(mxc_spi_regs_t* spi)

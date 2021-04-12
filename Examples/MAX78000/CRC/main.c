@@ -33,13 +33,12 @@
 
 /**
  * @file        main.c
- * @brief       Example showing how to use the CRC module. Covers 16 and 32-bit CRC.
+ * @brief       Example showing how to use the CRC module. Covers 32-bit CRC.
  */
 
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "board.h"
@@ -57,7 +56,7 @@
 
 /***** Globals *****/
 volatile int wait;
-volatile int fail = 0;
+int fail = 0;
 
 /***** Functions *****/
 void DMA0_IRQHandler(void)
@@ -89,10 +88,11 @@ void Test_CRC(int asynchronous)
         array[i] = i;
     }
     
+    // define the CRC parameters
     mxc_crc_req_t crc_req = {
-        array,
-        DATA_LENGTH,
-        0
+        array,              // pointer to data
+        DATA_LENGTH,        // length of data
+        0                   // initial crc result
     };
     
     MXC_CRC_Init();
@@ -109,7 +109,7 @@ void Test_CRC(int asynchronous)
         MXC_CRC_Compute(&crc_req);
     }
     
-    printf("\nCRC Poly Result: %x", crc_req.resultCRC);
+    printf("\nComputed CRC: %x", crc_req.resultCRC);
     
     array[DATA_LENGTH] = ~crc_req.resultCRC;
     
@@ -158,5 +158,5 @@ int main(void)
     
     printf("\n\n");
     
-    while (1) {}
+    while (1);
 }

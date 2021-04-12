@@ -258,8 +258,8 @@ typedef struct {
  #define MXC_F_PWRSEQ_LPPWEN_I2S_POS                    24 /**< LPPWEN_I2S Position */
  #define MXC_F_PWRSEQ_LPPWEN_I2S                        ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWEN_I2S_POS)) /**< LPPWEN_I2S Mask */
 
- #define MXC_F_PWRSEQ_LPPWEN_SPI0_POS                   25 /**< LPPWEN_SPI0 Position */
- #define MXC_F_PWRSEQ_LPPWEN_SPI0                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWEN_SPI0_POS)) /**< LPPWEN_SPI0 Mask */
+ #define MXC_F_PWRSEQ_LPPWEN_SPI1_POS                   25 /**< LPPWEN_SPI1 Position */
+ #define MXC_F_PWRSEQ_LPPWEN_SPI1                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWEN_SPI1_POS)) /**< LPPWEN_SPI1 Mask */
 
  #define MXC_F_PWRSEQ_LPPWEN_LPCMP_POS                  26 /**< LPPWEN_LPCMP Position */
  #define MXC_F_PWRSEQ_LPPWEN_LPCMP                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWEN_LPCMP_POS)) /**< LPPWEN_LPCMP Mask */

@@ -109,7 +109,7 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 PROJ_CFLAGS+=-DARM_MATH_CM4
 
 # Enable all warnings
-PROJ_CFLAGS+=-Wall
+PROJ_CFLAGS+=-Wall -Wcast-align
 
 ifeq "$(BOARD)" "EvKit_V1"
 PROJ_CFLAGS += -DENABLE_TFT

@@ -79,14 +79,14 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
         return E_BAD_STATE;
     }
     
-    #ifndef __riscv
+#ifndef __riscv
         /* Initialize mutex */
         MXC_FreeLock(&dma_lock);
         
         if (MXC_GetLock(&dma_lock, 1) != E_NO_ERROR) {
             return E_BUSY;
         }
-    #endif
+#endif
     
     /* Ensure all channels are disabled at start, clear flags, init handles */
     dma->inten = 0;
@@ -103,9 +103,9 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
     }
     
     dma_initialized++;
-    #ifndef __riscv
+#ifndef __riscv
         MXC_FreeLock(&dma_lock);
-    #endif
+#endif
     
     return E_NO_ERROR;
 }
@@ -119,11 +119,12 @@ int MXC_DMA_RevA_AcquireChannel(void)
         return E_BAD_STATE;
     }
     
+#ifndef __riscv
     /* If DMA is locked return busy */
     if(MXC_GetLock(&dma_lock, 1) != E_NO_ERROR) {
         return E_BUSY;
     }
-    
+#endif
     /* Default is no channel available */
     channel = E_NONE_AVAIL;
     
@@ -139,9 +140,10 @@ int MXC_DMA_RevA_AcquireChannel(void)
             }
         }
     }
-    
+#ifndef __riscv
     MXC_FreeLock(&dma_lock);
-    
+#endif
+
     return channel;
 }
 

@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-10-17 15:36:13 -0500 (Tue, 17 Oct 2017) $ 
- * $Revision: 31422 $
- *
  ******************************************************************************/
 
 #include "usb.h"
@@ -161,11 +158,11 @@ int msc_init(const MXC_USB_interface_descriptor_t *if_desc, const msc_idstrings_
     {
         enum_query_callback(ENUM_CLASS_REQ, &chained_func, &chained_cbdata); 
     
+        /* Handle class-specific SETUP requests */
+        err = enum_register_callback(ENUM_CLASS_REQ, msc_classReq, (void *)(&if_num[interface]));
+
         /* Store interface number */
         if_num[interface] = interface;
-    
-        /* Handle class-specific SETUP requests */
-        enum_register_callback(ENUM_CLASS_REQ, msc_classReq, (void *)(&if_num[interface]));
     }    
     /* Return zero for success or non-zero for error. */
     return err;
@@ -230,7 +227,7 @@ static int msc_classReq(MXC_USB_SetupPkt *sud, void *cbdata)
     {
         switch (sud->bRequest) {
             case MSC_GET_MAX_LUN:
-                if (sud->bmRequestType == (RT_DEV_TO_HOST | RT_TYPE_CLASS | RT_RECIP_IFACE)) {
+                if (sud->bmRequestType & RT_DEV_TO_HOST) {
                     /* Get Max LUN */
                     req_data[interface][0] = 0;
                     msc_write(EP_CONTROL, 1, (void *)msc_waitForCBW, interface);
@@ -239,11 +236,15 @@ static int msc_classReq(MXC_USB_SetupPkt *sud, void *cbdata)
                 break;
             case MSC_MASS_STORAGE_RESET:
                 /* Reset the control endpoint */
-                MXC_USB_ResetEp(EP_CONTROL);
+                /* Abort any in-progress USB request */
+                MXC_USB_RemoveRequest(&req[interface]);
+                /* Prepare for new CBW */
+                msc_waitForCBW(interface);
+                /* Success, no data stage */
+                result = 0;
                 break;
             default:
-                /* Unexpected message received */
-                MXC_USB_Stall(EP_CONTROL);
+                /* Unexpected message received -- stall */
                 break;
         }
     }
@@ -284,15 +285,20 @@ static void msc_writeComplete(void* cbdata)
     void* cb = ((msc_callback_req_t*)(cbdata))->cbFunc;
         
     /* A write to the host has completed.  Check if the correct number of bytes were transferred. */
-    if(req[interface].reqlen == req[interface].actlen) {
-        MXC_USB_Ackstat(req[interface].ep);
+    if ((!req[interface].error_code) && (req[interface].reqlen == req[interface].actlen)) {
+        if(!req[interface].ep) {
+            /* ACK the status stage, only for Control EP */
+            MXC_USB_Ackstat(req[interface].ep);
+        }
         /* Call the requested function (if any) */
         if(cbdata) {
             ((callbackFunc*)cb)(interface);
         }
     } else {
-        /* Wrote an unexpected number of bytes. */
-        MXC_USB_Stall(req[interface].ep);
+        if(!req[interface].ep) {
+            /* Wrote an unexpected number of bytes. */
+            MXC_USB_Stall(req[interface].ep);
+        }
     }
 }
 
@@ -328,7 +334,8 @@ static void msc_cbwReceived(void* cbdata)
     uint8_t interface = *((uint8_t *)(cbdata));
 
     /* Verify this is a valid CBW */
-    if((req[interface].actlen == CBW_LEN) && (strncmp((const char *)((&req_data[interface][0]) + CBW_SIGNATURE_IDX), "USBC", 4) == 0)) 
+    if((!req[interface].error_code) && (req[interface].actlen == CBW_LEN) && 
+        (strncmp((const char *)((&req_data[interface][0]) + CBW_SIGNATURE_IDX), "USBC", 4) == 0)) 
     {
         /* Construct the response CSW */
         memset(csw_data, 0, CSW_LEN);
@@ -421,7 +428,7 @@ static void msc_cbwReceived(void* cbdata)
     } 
     else 
     {
-        /* Packet received with bad length - stall endpoint */
+        /* Something not right about this CBW */
         MXC_USB_Stall(req[interface].ep);
     }
 }

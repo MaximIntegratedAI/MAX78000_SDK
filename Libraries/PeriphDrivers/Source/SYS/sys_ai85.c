@@ -146,13 +146,11 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IBRO_EN;
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_IBRO_RDY);
         break;
-#ifdef MXC_SYS_CLOCK_ISO // AI85 only    TODO: seperate ai85 and me17 files
         
     case MXC_SYS_CLOCK_ISO:
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ISO_EN;
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ISO_RDY);
         break;
-#endif
         
     case MXC_SYS_CLOCK_EXTCLK:
         // MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;

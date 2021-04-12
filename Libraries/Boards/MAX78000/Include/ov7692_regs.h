@@ -66,6 +66,10 @@
 #define REGDA   (0xda)
 #define REGDB   (0xdb)
 
+#define REG_LUM2   (0x6d)
+#define REG_LUM1   (0x6e)
+#define REG_LUM0   (0x6f)
+
 // Register value definitions.
 #define REG12_RESET (0x80)
 
