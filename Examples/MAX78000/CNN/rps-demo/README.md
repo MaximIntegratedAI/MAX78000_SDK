@@ -112,7 +112,7 @@ Classification results:
 User choose: Rock 
 Computer choose: Scissor 
 
-COMPUTER WINS!!!
+USER WINS!!!
 ```
 
 ### References

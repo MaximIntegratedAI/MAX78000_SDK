@@ -85,10 +85,12 @@ void fail(void)
   while (1);
 }
 
+#ifdef USE_SAMPLEDATA
 // Data input: CHW 3x64x64 (12288 bytes total / 4096 bytes per channel):
 static const uint32_t input_0[] = SAMPLE_INPUT_0;
 static const uint32_t input_1[] = SAMPLE_INPUT_1;
 static const uint32_t input_2[] = SAMPLE_INPUT_2;
+#endif
 void load_input(void)
 {
   // This function loads the sample data input -- replace with actual data
@@ -276,37 +278,38 @@ int gen_random_no(int randNo) {
 }
 
 /* **************************************************************************** */
+// 1-> Paper; 2-> Rock; 3-> Scissor
 int check_winner(uint8_t comp, uint8_t user) {
   if(user == 1) {
     if(comp == 1) {
       return DRAW;
     }
     if(comp == 2) {
-      return COMP_WINS;
+      return USER_WINS;
     }
     if(comp == 3) {
-      return USER_WINS;
+      return COMP_WINS;
     }
   }
 
   if(user == 2) {
     if(comp == 1) {
-      return USER_WINS;
+      return COMP_WINS;
     }
     if(comp == 2) {
       return DRAW;
     }
     if(comp == 3) {
-      return COMP_WINS;
+      return USER_WINS;
     }
   }
 
   if(user == 3) {
     if(comp == 1) {
-      return COMP_WINS;
+      return USER_WINS;
     }
     if(comp == 2) {
-      return USER_WINS;
+      return COMP_WINS;
     }
     if(comp == 3) {
       return DRAW;
@@ -357,6 +360,10 @@ int main(void)
   printf("Init LCD.\n");
   mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
   MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
+
+  // Rotate screen 180 degree
+  MXC_TFT_SetRotation(SCREEN_FLIP);
+
   MXC_TFT_ClearScreen();
   MXC_TFT_ShowImage(0, 0, img_1_bmp);
 
@@ -489,19 +496,19 @@ int main(void)
     memcpy32(input_2_camera, 0, 1024);
 
     if(comp_choice == 1) {
-      sprintf(buff, "Rock                                 ");
-      TFT_Print(buff, 205, 55, urw_gothic_12_white_bg_grey);
-      memcpy32(input_0_camera, INPUT_ROCK_0, 1024);
-      memcpy32(input_1_camera, INPUT_ROCK_1, 1024);
-      memcpy32(input_2_camera, INPUT_ROCK_2, 1024);
-
-    }
-    if(comp_choice == 2) {
       sprintf(buff, "Paper                                 ");
       TFT_Print(buff, 205, 55, urw_gothic_12_white_bg_grey);
       memcpy32(input_0_camera, INPUT_PAPER_0, 1024);
       memcpy32(input_1_camera, INPUT_PAPER_1, 1024);
       memcpy32(input_2_camera, INPUT_PAPER_2, 1024);
+
+    }
+    if(comp_choice == 2) {
+      sprintf(buff, "Rock                                 ");
+      TFT_Print(buff, 205, 55, urw_gothic_12_white_bg_grey);
+      memcpy32(input_0_camera, INPUT_ROCK_0, 1024);
+      memcpy32(input_1_camera, INPUT_ROCK_1, 1024);
+      memcpy32(input_2_camera, INPUT_ROCK_2, 1024);
 
     }
     if(comp_choice == 3) {
