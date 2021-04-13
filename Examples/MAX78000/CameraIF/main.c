@@ -87,9 +87,9 @@ int main(void)
     // Initialize DMA for camera interface
     MXC_DMA_Init();
     dma_channel = MXC_DMA_AcquireChannel();
-    
+
     // Initialize the camera driver.
-    camera_init(CAMERA_FREQ, MXC_TMR1);
+    camera_init(CAMERA_FREQ);
     printf("\n\nCameraIF Example\n");
     
     // Obtain the I2C slave address of the camera.

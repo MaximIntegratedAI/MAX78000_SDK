@@ -1,8 +1,5 @@
 #include "utils_faceid.h"
 
-uint8_t rxBuffer[DATA_SIZE_IN];
-
-
 int uart_write(uint8_t* data, unsigned int len)
 {
   unsigned int bytes_tx_total = 0;
