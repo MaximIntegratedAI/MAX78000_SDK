@@ -10,7 +10,7 @@
 
 // Data input: HWC (little data): 3x160x120
 static const uint32_t input_0[] = INPUT_0;
-uint8_t rxBuffer[DATA_SIZE_IN];
+extern uint8_t rxBuffer[DATA_SIZE_IN];
 
 int uart_write(uint8_t* data, unsigned int len);
 
