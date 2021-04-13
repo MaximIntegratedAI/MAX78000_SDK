@@ -278,37 +278,38 @@ int gen_random_no(int randNo) {
 }
 
 /* **************************************************************************** */
+// 1-> Paper; 2-> Rock; 3-> Scissor
 int check_winner(uint8_t comp, uint8_t user) {
   if(user == 1) {
     if(comp == 1) {
       return DRAW;
     }
     if(comp == 2) {
-      return COMP_WINS;
+      return USER_WINS;
     }
     if(comp == 3) {
-      return USER_WINS;
+      return COMP_WINS;
     }
   }
 
   if(user == 2) {
     if(comp == 1) {
-      return USER_WINS;
+      return COMP_WINS;
     }
     if(comp == 2) {
       return DRAW;
     }
     if(comp == 3) {
-      return COMP_WINS;
+      return USER_WINS;
     }
   }
 
   if(user == 3) {
     if(comp == 1) {
-      return COMP_WINS;
+      return USER_WINS;
     }
     if(comp == 2) {
-      return USER_WINS;
+      return COMP_WINS;
     }
     if(comp == 3) {
       return DRAW;
@@ -495,19 +496,19 @@ int main(void)
     memcpy32(input_2_camera, 0, 1024);
 
     if(comp_choice == 1) {
-      sprintf(buff, "Rock                                 ");
-      TFT_Print(buff, 205, 55, urw_gothic_12_white_bg_grey);
-      memcpy32(input_0_camera, INPUT_ROCK_0, 1024);
-      memcpy32(input_1_camera, INPUT_ROCK_1, 1024);
-      memcpy32(input_2_camera, INPUT_ROCK_2, 1024);
-
-    }
-    if(comp_choice == 2) {
       sprintf(buff, "Paper                                 ");
       TFT_Print(buff, 205, 55, urw_gothic_12_white_bg_grey);
       memcpy32(input_0_camera, INPUT_PAPER_0, 1024);
       memcpy32(input_1_camera, INPUT_PAPER_1, 1024);
       memcpy32(input_2_camera, INPUT_PAPER_2, 1024);
+
+    }
+    if(comp_choice == 2) {
+      sprintf(buff, "Rock                                 ");
+      TFT_Print(buff, 205, 55, urw_gothic_12_white_bg_grey);
+      memcpy32(input_0_camera, INPUT_ROCK_0, 1024);
+      memcpy32(input_1_camera, INPUT_ROCK_1, 1024);
+      memcpy32(input_2_camera, INPUT_ROCK_2, 1024);
 
     }
     if(comp_choice == 3) {
