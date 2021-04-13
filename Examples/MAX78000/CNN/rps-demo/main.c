@@ -85,10 +85,12 @@ void fail(void)
   while (1);
 }
 
+#ifdef USE_SAMPLEDATA
 // Data input: CHW 3x64x64 (12288 bytes total / 4096 bytes per channel):
 static const uint32_t input_0[] = SAMPLE_INPUT_0;
 static const uint32_t input_1[] = SAMPLE_INPUT_1;
 static const uint32_t input_2[] = SAMPLE_INPUT_2;
+#endif
 void load_input(void)
 {
   // This function loads the sample data input -- replace with actual data
@@ -357,6 +359,10 @@ int main(void)
   printf("Init LCD.\n");
   mxc_gpio_cfg_t tft_reset_pin = {MXC_GPIO0, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
   MXC_TFT_Init(MXC_SPI0, 1, &tft_reset_pin, NULL);
+
+  // Rotate screen 180 degree
+  MXC_TFT_SetRotation(SCREEN_FLIP);
+
   MXC_TFT_ClearScreen();
   MXC_TFT_ShowImage(0, 0, img_1_bmp);
 
