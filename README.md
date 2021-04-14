@@ -4,7 +4,18 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
-January 24, 2020
+April 14, 2021
+* Added low power support to facid_evkit and kws20_demo examples.
+* Updated low power APIs to use low power names provided in the Users Guide.
+* Added luminance support to OV7692 camera driver.
+* Added support for SPI mode selection in SPI API.
+* Added support for VDDIO/VDDIOH selection in SPI API.
+* Fixed alignment issue in Flash API.
+* Added additional configuration functions to I2C API.
+* Added faceid_evkit-risv, kws20_demo-risv, rps, and rps-demo examples.
+* Added board support files for the MAXREFDES178.
+
+January 24, 2021
 * Modified Camera driver to accept a DMA channel to use.
 * Added support for the MAX78000 feather board's optional add-on display.
 * Changed some examples to extract the CNN functionality into its own source file.
