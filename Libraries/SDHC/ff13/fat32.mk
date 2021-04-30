@@ -65,6 +65,7 @@ export TARGET_MAKEFILE
 export PROJ_CFLAGS
 export PROJ_LDFLAGS
 export MXC_OPTIMIZE_CFLAGS
+export USE_NATIVE_SDHC
 
 # Add to library list
 LIBS += ${FAT32_DRIVER_BUILD_DIR}/FAT32.a

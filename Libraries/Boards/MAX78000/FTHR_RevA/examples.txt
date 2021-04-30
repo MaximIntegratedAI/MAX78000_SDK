@@ -26,6 +26,7 @@ ICC
 LP
 Pulse_Train
 RTC
+SDCard_FTHR
 SPI
 TFT_Demo
 TMR

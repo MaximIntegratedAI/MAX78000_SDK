@@ -61,6 +61,10 @@ ifeq "$(CMSIS_ROOT)" ""
 $(error CMSIS_ROOT must be specified)
 endif
 
+ifeq "$(BOARD_DIR)" ""
+$(error BOARD_DIR must be specified)
+endif
+
 ifeq "$(SDHC_DRIVER_DIR)" ""
 SDHC_DRIVER_DIR=../
 endif
@@ -71,6 +75,10 @@ SRCS += ff.c
 SRCS += ffsystem.c
 SRCS += ffunicode.c
 
+ifdef USE_NATIVE_SDHC
+PROJ_CFLAGS += -DNATIVE_SDHC
+endif
+
 # Where to find source files for this project
 VPATH  = Source
 
@@ -80,7 +88,7 @@ IPATH += $(SDHC_DRIVER_DIR)/Include
 IPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET)/Include
 IPATH += $(CMSIS_ROOT)/Include
 IPATH += $(PERIPH_DRIVER_DIR)/Include/$(TARGET_UC)
-
+IPATH += $(BOARD_DIR)/Include
 
 # Include the rules for building for this target
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk

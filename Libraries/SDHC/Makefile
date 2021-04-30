@@ -61,8 +61,10 @@ ifeq "$(CMSIS_ROOT)" ""
 CMSIS_ROOT=../CMSIS
 endif
 
+ifdef USE_NATIVE_SDHC
 # Source files for this test (add path to VPATH below)
 SRCS += sdhc_lib.c
+endif
 
 # Where to find source files for this project
 VPATH  = Source

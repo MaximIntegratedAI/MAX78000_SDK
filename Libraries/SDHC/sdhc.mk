@@ -65,6 +65,8 @@ export TARGET_MAKEFILE
 export PROJ_CFLAGS
 export PROJ_LDFLAGS
 export MXC_OPTIMIZE_CFLAGS
+export BOARD_DIR
+export USE_NATIVE_SDHC
 
 # Add to library list
 LIBS += ${SDHC_DRIVER_BUILD_DIR}/sdhc.a

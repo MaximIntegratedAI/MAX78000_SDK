@@ -96,6 +96,14 @@ int max20303_mic_power(int on);
  */
 int max20303_camera_power(int on);
 
+/**
+ * @brief      Set power state of SD card.
+ * @param      on    1 for ON, 0 for OFF.
+ * @retval     #E_NO_ERROR   If successful.
+ * @retval     "Error Code"  @ref MXC_Error_Codes "Error Code" if unsuccessful.
+ */
+int max20303_sd_power(int on);
+
 #ifdef __cplusplus
 }
 #endif
