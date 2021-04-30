@@ -4,6 +4,9 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+April 30, 2021
+* Added SD card over SPI support for the MAX78000FTHR board.
+
 April 14, 2021
 * Added low power support to facid_evkit and kws20_demo examples.
 * Updated low power APIs to use low power names provided in the Users Guide.
