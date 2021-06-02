@@ -67,11 +67,13 @@ Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
 
 Connect PICO adapter to JH5 SWD header. 
 
-Load firmware image using Openocd. **Make sure to remove PICO adapter once firmware is loaded.**
+Load firmware image using OpenOCD in MinGW shell: 
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+openocd -s C:/MaximSDK/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
 ```
+
+**Make sure to remove PICO adapter once firmware is loaded.**
 
 ### MAX78000 EVKIT jumper setting
 
@@ -111,10 +113,10 @@ The microphone (U15) is located between JH4 and JH5 headers on EVKIT, (MK1) betw
 
 Connect USB cable to CN1 USB connector.
 
-Load firmware image using Openocd.
+Load firmware image using OpenOCD in MinGW shell: 
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+openocd -s C:/MaximSDK/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
 ```
 
 ### MAX78000 Feather operations
