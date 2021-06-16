@@ -906,7 +906,7 @@ int MXC_I2C_RevA_MasterTransactionDMA (mxc_i2c_reva_req_t* req)
 
             MXC_I2C_Start ((mxc_i2c_regs_t*) i2c); // Start or Restart as needed
             
-            //while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART);
+            while (i2c->mstctrl & MXC_F_I2C_REVA_MSTCTRL_RESTART);
             
             i2c->fifo = ((req->addr) << 1) | 0x1;    // Load the slave address with write bit set
 

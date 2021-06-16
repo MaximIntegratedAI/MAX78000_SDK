@@ -43,6 +43,7 @@
 #include <stddef.h>
 #include "mxc_sys.h"
 #include "lpgcr_regs.h"
+#include "mcr_regs.h"
 
 /* **** Definitions **** */
 
@@ -96,7 +97,71 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
     mxc_gpio_regs_t *gpio = cfg->port;
 
     port = MXC_GPIO_GET_IDX(cfg->port);
+    
+    if (cfg->port == MXC_GPIO3) {
+        if (cfg->mask & MXC_GPIO_PIN_0) {
+            switch (cfg->func) {
+            case MXC_GPIO_FUNC_IN:
+                MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P30_OE);
+                break;
+                
+            case MXC_GPIO_FUNC_OUT:
+                MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P30_OE;
+                break;
+                
+            default:
+                return E_NOT_SUPPORTED;
+            }
+            
+            switch (cfg->pad) {
+            case MXC_GPIO_PAD_NONE:
+                MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P30_PE);
+                break;
+                
+            case MXC_GPIO_PAD_PULL_UP:
+                MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P30_PE;
+                break;
+                
+            default:
+                return E_NOT_SUPPORTED;
+            }
+            
+        }
+        
+        if (cfg->mask & MXC_GPIO_PIN_1) {
+            switch (cfg->func) {
+            case MXC_GPIO_FUNC_IN:
+                MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P31_OE);
+                break;
+                
+            case MXC_GPIO_FUNC_OUT:
+                MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P31_OE;
+                break;
+                
+            default:
+                return E_NOT_SUPPORTED;
+            }
+            
+            switch (cfg->pad) {
+            case MXC_GPIO_PAD_NONE:
+                MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P31_PE);
+                break;
+                
+            case MXC_GPIO_PAD_PULL_UP:
+                MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P31_PE;
+                break;
+                
+            default:
+                return E_NOT_SUPPORTED;
+            }
+            
+        }
+        
+        return E_NO_ERROR;
+    }
+    else {
     MXC_GPIO_Init(1 << port);
+    }
 
     // Configure alternate function
     error = MXC_GPIO_RevA_SetAF ((mxc_gpio_reva_regs_t*)gpio, cfg->func, cfg->mask);
@@ -147,24 +212,88 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t* cfg)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t* port, uint32_t mask)
 {
+    uint32_t results;
+    
+    if (port == MXC_GPIO3) {
+        if ( (mask & MXC_GPIO_PIN_0) && (mask & MXC_GPIO_PIN_1)) {
+            results = 0;
+            results |= (!!(MXC_MCR->gpio3_ctrl & MXC_F_MCR_GPIO3_CTRL_P30_IN) << 0);
+            results |= (!!(MXC_MCR->gpio3_ctrl & MXC_F_MCR_GPIO3_CTRL_P31_IN) << 1);
+            
+            return results;
+        }
+        
+        if (mask & MXC_GPIO_PIN_0) {
+            return MXC_MCR->gpio3_ctrl & MXC_F_MCR_GPIO3_CTRL_P30_IN;
+        }
+        
+        if (mask & MXC_GPIO_PIN_1) {
+            return MXC_MCR->gpio3_ctrl & MXC_F_MCR_GPIO3_CTRL_P31_IN;
+        }
+    }
+    
     return MXC_GPIO_RevA_InGet((mxc_gpio_reva_regs_t*) port, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_OutSet(mxc_gpio_regs_t* port, uint32_t mask)
 {
+    if (port == MXC_GPIO3) {
+        if (mask & MXC_GPIO_PIN_0) {
+            MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P30_DO;
+        }
+        
+        if (mask & MXC_GPIO_PIN_1) {
+            MXC_MCR->gpio3_ctrl |= MXC_F_MCR_GPIO3_CTRL_P31_DO;
+        }
+        
+        return;
+    }
+    
     MXC_GPIO_RevA_OutSet((mxc_gpio_reva_regs_t*) port, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_OutClr(mxc_gpio_regs_t* port, uint32_t mask)
 {
+    if (port == MXC_GPIO3) {
+        if (mask & MXC_GPIO_PIN_0) {
+            MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P30_DO);
+        }
+        
+        if (mask & MXC_GPIO_PIN_1) {
+            MXC_MCR->gpio3_ctrl &= ~(MXC_F_MCR_GPIO3_CTRL_P31_DO);
+        }
+        
+        return;
+    }
+    
     MXC_GPIO_RevA_OutClr((mxc_gpio_reva_regs_t*) port, mask);
 }
 
 /* ************************************************************************** */
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t* port, uint32_t mask)
 {
+    uint32_t results;
+    
+    if (port == MXC_GPIO3) {
+        if (mask & (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1)) {
+            results = 0;
+            results |= (!!(MXC_MCR->gpio3_ctrl & MXC_F_MCR_GPIO3_CTRL_P30_DO) << 0);
+            results |= (!!(MXC_MCR->gpio3_ctrl & MXC_F_MCR_GPIO3_CTRL_P31_DO) << 1);
+            
+            return results;
+        }
+        
+        if (mask & MXC_GPIO_PIN_0) {
+            return MXC_MCR->gpio3_ctrl & MXC_F_MCR_GPIO3_CTRL_P30_DO;
+        }
+        
+        if (mask & MXC_GPIO_PIN_1) {
+            return MXC_MCR->gpio3_ctrl & MXC_F_MCR_GPIO3_CTRL_P31_DO;
+        }
+    }
+    
     return MXC_GPIO_RevA_OutGet((mxc_gpio_reva_regs_t*) port, mask);
 }
 

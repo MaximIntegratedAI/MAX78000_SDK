@@ -38,7 +38,6 @@
 #include "mxc_errors.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
-#include "mcr_regs.h"
 #include <stdio.h>
 
 void MXC_PT_RevA_Init (mxc_ptg_reva_regs_t* ptg, mxc_clk_scale_t clk_scale);

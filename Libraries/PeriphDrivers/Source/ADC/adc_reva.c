@@ -131,7 +131,7 @@ void MXC_ADC_RevA_EnableInt (mxc_adc_reva_regs_t* adc, uint32_t flags)
 
 void MXC_ADC_RevA_DisableInt (mxc_adc_reva_regs_t* adc, uint32_t flags)
 {
-    adc->intr &= ~ (flags & ADC_IE_MASK);
+    adc->intr &= ~((flags & ADC_IE_MASK) | ADC_IF_MASK);
 }
 
 int MXC_ADC_RevA_GetFlags (mxc_adc_reva_regs_t* adc)
@@ -142,7 +142,7 @@ int MXC_ADC_RevA_GetFlags (mxc_adc_reva_regs_t* adc)
 void MXC_ADC_RevA_ClearFlags (mxc_adc_reva_regs_t* adc, uint32_t flags)
 {
     // Write 1 to clear flags
-    adc->intr |= (flags & ADC_IF_MASK);
+    adc->intr = (adc->intr & ADC_IE_MASK) | (flags & ADC_IF_MASK);
 }
 
 int MXC_ADC_RevA_SetConversionSpeed (mxc_adc_reva_regs_t* adc, uint32_t hz)
@@ -351,7 +351,7 @@ int MXC_ADC_RevA_StartConversionAsync (mxc_adc_reva_regs_t* adc, mxc_adc_chsel_t
     return  E_NO_ERROR;
 }
 
-int MXC_ADC_RevA_StartConversionDMA (mxc_adc_reva_regs_t* adc, mxc_adc_chsel_t channel, uint16_t *data, void (*callback) (int, int))
+int MXC_ADC_RevA_StartConversionDMA (mxc_adc_reva_regs_t* adc, mxc_adc_chsel_t channel, mxc_dma_regs_t* dma, uint16_t *data, void (*callback) (int, int))
 {
     uint8_t channelDMA;
     mxc_dma_config_t config;
@@ -392,16 +392,15 @@ int MXC_ADC_RevA_StartConversionDMA (mxc_adc_reva_regs_t* adc, mxc_adc_chsel_t c
     srcdst.len       = 2;
     
     MXC_DMA_ConfigChannel (config, srcdst);
-    
     MXC_DMA_SetCallback (channelDMA, callback);
     
     MXC_DMA_EnableInt (channelDMA);
-    ((mxc_dma_reva_regs_t*)MXC_DMA)->ch[channelDMA].ctrl |= 2<<MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS;
+    ((mxc_dma_reva_regs_t*) dma)->ch[channelDMA].ctrl |= 2<<MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS;
     
     //set start bit
     adc->ctrl |= MXC_F_ADC_REVA_CTRL_START;
     MXC_DMA_Start (channelDMA);
-    ((mxc_dma_reva_regs_t*)MXC_DMA)->ch[channelDMA].ctrl |= MXC_F_DMA_REVA_CTRL_CTZ_IE;
+    ((mxc_dma_reva_regs_t*) dma)->ch[channelDMA].ctrl |= MXC_F_DMA_REVA_CTRL_CTZ_IE;
     
     return E_NO_ERROR;
 }
@@ -464,7 +463,7 @@ int  MXC_ADC_RevA_Convert (mxc_adc_reva_regs_t* adc, mxc_adc_conversion_req_t* r
     //set selction its to next channel to convert
     adc->ctrl |= (req->channel << MXC_F_ADC_REVA_CTRL_CH_SEL_POS) & MXC_F_ADC_REVA_CTRL_CH_SEL;
     
-    if (req->channel <= MXC_ADC_CH_7) {
+    if (req->channel <= AIN7) {
         MXC_ADC_RevA_SetExtScale (adc, req->scale);
     }
     
@@ -497,7 +496,7 @@ int MXC_ADC_RevA_ConvertAsync (mxc_adc_reva_regs_t* adc, mxc_adc_conversion_req_
     //set selction its to next channel to convert
     adc->ctrl |= (req.channel << MXC_F_ADC_REVA_CTRL_CH_SEL_POS) & MXC_F_ADC_REVA_CTRL_CH_SEL;
     
-    if (req.channel <= MXC_ADC_CH_7) {
+    if (req.channel <= AIN7) {
         MXC_ADC_RevA_SetExtScale (adc, req.scale);
     }
     
@@ -529,7 +528,7 @@ void MXC_ADC_RevA_Monitor (mxc_adc_reva_regs_t* adc, mxc_adc_monitor_req_t req)
     MXC_ADC_RevA_SetMonitorHighThreshold (adc, req.monitor, req.highThreshold);
     MXC_ADC_RevA_SetMonitorLowThreshold (adc, req.monitor, req.lowThreshold);
     
-    if (req.channel <= MXC_ADC_CH_7) {
+    if (req.channel <= AIN7) {
         MXC_ADC_RevA_SetExtScale (adc, req.scale);
     }
     
@@ -558,7 +557,7 @@ void MXC_ADC_RevA_MonitorAsync (mxc_adc_reva_regs_t* adc, mxc_adc_monitor_req_t 
     MXC_ADC_RevA_SetMonitorHighThreshold (adc, req.monitor, req.highThreshold);
     MXC_ADC_RevA_SetMonitorLowThreshold (adc, req.monitor, req.lowThreshold);
     
-    if (req.channel <= MXC_ADC_CH_7) {
+    if (req.channel <= AIN7) {
         MXC_ADC_RevA_SetExtScale (adc, req.scale);
     }
     

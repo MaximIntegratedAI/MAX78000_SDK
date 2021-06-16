@@ -50,7 +50,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
     
     switch (cfg->clock) {
     case MXC_TMR_60M_CLK:
-        if (tmr_id > 3) {               // UARTs 4-5 do not support this clock source
+        if (tmr_id > 3) {               // Timers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
         }
         
@@ -59,10 +59,13 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         break;
         
     case MXC_TMR_8M_CLK:
-        if (tmr_id < 4) {               // UARTs 4-5 do not support this clock source
-            clockSource = MXC_TMR_CLK2;;
-        }
 
+        if(tmr_id > 3) {
+            clockSource = MXC_TMR_CLK0;
+        }
+        else {
+            clockSource = MXC_TMR_CLK2;
+        }
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
         break;
         
@@ -73,7 +76,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         else if (tmr_id < 4) {
             clockSource = MXC_TMR_CLK3;
         }
-        else {                          // UART 5 do not support this clock source
+        else {                          // Timer 5 does not support this clock source
             return E_NOT_SUPPORTED;
         }
         
@@ -81,7 +84,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         break;
         
     case MXC_TMR_8K_CLK:
-        if (tmr_id < 4) {               // UARTs 0-3 do not support this clock source
+        if (tmr_id < 4) {               // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
         
@@ -126,7 +129,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         break;
         
     case 2:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR3);
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR2);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR2);
         
         if (init_pins) {
@@ -169,7 +172,6 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
     }
     
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t*)tmr, cfg, clockSource);
-    //return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t*)tmr, cfg);
 }
 
 void MXC_TMR_Shutdown(mxc_tmr_regs_t* tmr)

@@ -116,7 +116,7 @@ int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t *spimss, const mxc_i2s_config_t *co
         dma_config.ch = dma_channel;
 
         dma_config.srcwd = MXC_DMA_WIDTH_HALFWORD;
-        dma_config.dstwd = MXC_DMA_WIDTH_HALFWORD;
+        dma_config.dstwd = MXC_DMA_WIDTH_WORD;
         
         dma_config.srcinc_en = 1;
         dma_config.dstinc_en = 0;
@@ -127,6 +127,9 @@ int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t *spimss, const mxc_i2s_config_t *co
 
         MXC_DMA_ConfigChannel(dma_config, srcdst);
         MXC_DMA_SetChannelInterruptEn(dma_channel, 0, 1);
+
+        MXC_DMA->ch[dma_channel].cfg &= ~MXC_F_DMA_CFG_BRST;
+        MXC_DMA->ch[dma_channel].cfg |= (0x1f << MXC_F_DMA_CFG_BRST_POS);
 
         if(ctz_en) {
             MXC_DMA_SetCallback(dma_channel, dma_ctz_cb);
@@ -149,7 +152,7 @@ int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t *spimss, const mxc_i2s_config_t *co
 
         dma_config.ch = dma_channel;
         
-        dma_config.srcwd = MXC_DMA_WIDTH_HALFWORD;
+        dma_config.srcwd = MXC_DMA_WIDTH_WORD;
         dma_config.dstwd = MXC_DMA_WIDTH_HALFWORD;
 
         dma_config.srcinc_en = 0;
@@ -161,6 +164,9 @@ int MXC_I2S_RevA_Init(mxc_spimss_reva_regs_t *spimss, const mxc_i2s_config_t *co
 
         MXC_DMA_ConfigChannel(dma_config, srcdst);
         MXC_DMA_SetChannelInterruptEn(dma_channel, 0, 1);
+
+        MXC_DMA->ch[dma_channel].cfg &= ~MXC_F_DMA_CFG_BRST;
+        MXC_DMA->ch[dma_channel].cfg |= (0x1f << MXC_F_DMA_CFG_BRST_POS);
 
         if(ctz_en) {
             MXC_DMA_SetCallback(dma_channel, dma_ctz_cb);

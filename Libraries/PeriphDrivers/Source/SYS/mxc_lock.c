@@ -66,4 +66,17 @@ void MXC_FreeLock(uint32_t* lock)
     __DMB();
     *lock = 0;
 }
-#endif // __riscv
+#else // __riscv
+/* ************************************************************************** */
+int MXC_GetLock(uint32_t* lock, uint32_t value)
+{   
+    #warning "Unimplemented for RISCV"
+    return E_NO_ERROR;
+}
+
+/* ************************************************************************** */
+void MXC_FreeLock(uint32_t* lock)
+{
+    #warning "Unimplemented for RISCV"
+}
+#endif

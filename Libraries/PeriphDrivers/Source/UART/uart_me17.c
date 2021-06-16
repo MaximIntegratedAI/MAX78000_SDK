@@ -42,7 +42,7 @@
 
 void MXC_UART_DMACallback (int ch, int error)
 {
-    return MXC_UART_RevB_DMACallback (ch, error);
+    MXC_UART_RevB_DMACallback (ch, error);
 }
 
 int MXC_UART_AsyncCallback(mxc_uart_regs_t* uart, int retVal)
@@ -157,16 +157,12 @@ int MXC_UART_SetFrequency(mxc_uart_regs_t* uart, unsigned int baud, mxc_uart_clo
         uart->osr = 5;
         
         switch (clock) {
-            case MXC_UART_APB_CLK:
+            case MXC_UART_IBRO_CLK:
                 uart->clkdiv = ((IBRO_FREQ) / baud);
                 break;
 
-            case MXC_UART_EXT_CLK:
-                uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
-                break;
-
             case MXC_UART_ERTCO_CLK:
-                uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_CLK2;
+                uart->ctrl |= MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK;
                 uart->ctrl |= MXC_F_UART_CTRL_FDM;
                 if(baud == 9600) {
                     uart->clkdiv = 7;
@@ -199,19 +195,14 @@ int MXC_UART_GetFrequency(mxc_uart_regs_t* uart)
         return E_BAD_PARAM;
     }
 
-    // check if UARt is LP UART
+    // check if UART is LP UART
     if(uart == MXC_UART3) {
+        // Clock source 1 is ERTCO
         if ((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_EXTERNAL_CLOCK) {
-            return E_NOT_SUPPORTED;
+            periphClock = 32768 * 2;
         }
         else if((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_PERIPHERAL_CLOCK) {
             periphClock = 7372800;
-        }
-        else if((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK2) {
-            periphClock = 32768 * 2;
-        }
-        else if((uart->ctrl & MXC_F_UART_CTRL_BCLKSRC) == MXC_S_UART_CTRL_BCLKSRC_CLK3) {
-            periphClock = 80000 * 2;
         }
         else {
             return E_BAD_PARAM;

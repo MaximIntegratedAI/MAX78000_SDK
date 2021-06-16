@@ -68,6 +68,7 @@ typedef enum {
 typedef enum {
     NO_DMA = 0,
     USE_DMA,
+    STREAMING_DMA
 } dmamode_t;
 
 typedef enum {
@@ -105,6 +106,11 @@ typedef struct _camera {
     int (*set_negateimage)(int enable);
     int (*get_luminance)(int* lum);
 } camera_t;
+
+typedef struct _stream_stat {
+    uint32_t dma_transfer_count;
+    uint32_t overflow_count;
+} stream_stat_t;
 
 /******************************** Public Functions ***************************/
 // Initialize the sensor hardware and probe the image sensor.
@@ -179,5 +185,14 @@ void camera_get_image(uint8_t** img, uint32_t* imgLen, uint32_t* w, uint32_t* h)
 
 // Get luminance level from camera.
 int camera_get_luminance_level(int* lum);
+
+// Get camera streaming buffer.
+uint8_t* get_camera_stream_buffer(void);
+
+// Release camera streaming buffer.
+void release_camera_stream_buffer(void);
+
+// Get statistics of DMA streaming mode.
+stream_stat_t* get_camera_stream_statistic(void);
 
 #endif // __CAMERA_H__

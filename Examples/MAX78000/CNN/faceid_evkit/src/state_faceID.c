@@ -153,18 +153,23 @@ static int init(void)
         /* Check for received image */
         if (camera_is_image_rcv()) {
 
+
 #if (PRINT_TIME==1)
             process_time = utils_get_time_ms();
+#endif
+#ifdef TS_ENABLE
+            /* Disable TouchScreen to avoid collision with TFT */
+            MXC_TS_Stop();
 #endif
             process_img();
 
 #ifdef  IMAGE_TO_UART
             break;
 #endif
+
             MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CNN); // Enable CNN clock
 
 #ifdef LP_MODE_ENABLE
-
             /* Reinit CNN and reload weigths after UPM or Standby because CNN is powered off */
             if (LP_MODE > 2) {
                 cnn_init(); // Bring state machine into consistent state
@@ -172,9 +177,7 @@ static int init(void)
                 cnn_load_bias(); // Reload CNN bias
                 cnn_configure(); // Configure state machine
             }
-
 #endif
-
             /* Run CNN three times on original and shifted images */
             run_cnn(0, 0);
 
@@ -187,6 +190,10 @@ static int init(void)
                 run_cnn(10, -10);
             }
 
+#ifdef TS_ENABLE
+            /* Enable TouchScreen */
+            MXC_TS_Start();
+#endif
             run_count++;
 
 #if (PRINT_TIME==1)
@@ -428,8 +435,11 @@ static void run_cnn(int x_offset, int y_offset)
 
     pass_time = utils_get_time_ms();
 
+    // Disable Deep Sleep mode
+    SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
+    // CNN interrupt wakes up CPU from sleep mode
     while (cnn_time == 0) {
-        __WFI();    // Wait for CNN done
+        asm volatile("wfi"); // Sleep and wait for CNN interrupt
     }
 
     PR_INFO("CNN wait time : %d", utils_get_time_ms() - pass_time);

@@ -62,7 +62,7 @@ typedef struct {
 } mxc_dma_channel_t;
 
 /******* Globals *******/
-static unsigned int dma_initialized = 0;
+static unsigned int dma_initialized[MXC_DMA_INSTANCES] = {0};
 static mxc_dma_channel_t dma_resource[MXC_DMA_CHANNELS];
 static mxc_dma_highlevel_t memcpy_resource[MXC_DMA_CHANNELS];
 static uint32_t dma_lock;
@@ -73,9 +73,11 @@ static void transfer_callback(int ch, int error);
 
 int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
 {
-    int i;
-    
-    if(dma_initialized) {
+    int i, numCh, offset;
+    numCh = MXC_DMA_CHANNELS;
+    offset = 0;
+
+    if(dma_initialized[MXC_DMA_GET_IDX((mxc_dma_regs_t*) dma)]) {
         return E_BAD_STATE;
     }
     
@@ -91,18 +93,18 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
     /* Ensure all channels are disabled at start, clear flags, init handles */
     dma->inten = 0;
     
-    for(i = 0; i < MXC_DMA_CHANNELS; i++) {
+    for(i = offset; i < (offset + numCh); i++) {
         dma_resource[i].valid = 0;
         dma_resource[i].instance = 0;
         dma_resource[i].id = i;
-        dma_resource[i].regs = (mxc_dma_reva_ch_regs_t*) &(dma->ch[i]);
+        dma_resource[i].regs = (mxc_dma_reva_ch_regs_t*) &(dma->ch[(i % numCh)]);
         dma_resource[i].regs->ctrl = 0;
         dma_resource[i].regs->status = dma_resource[i].regs->status;
         
         dma_resource[i].cb = NULL;
     }
     
-    dma_initialized++;
+    dma_initialized[MXC_DMA_GET_IDX((mxc_dma_regs_t*) dma)]++;
 #ifndef __riscv
         MXC_FreeLock(&dma_lock);
 #endif
@@ -110,15 +112,17 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
     return E_NO_ERROR;
 }
 
-int MXC_DMA_RevA_AcquireChannel(void)
+int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t* dma)
 {
-    int i, channel;
+    int i, channel, numCh, offset;
     
     /* Check for initialization */
-    if(!dma_initialized) {
+    if(!dma_initialized[MXC_DMA_GET_IDX((mxc_dma_regs_t*) dma)]) {
         return E_BAD_STATE;
     }
     
+    numCh = MXC_DMA_CHANNELS;
+    offset = 0;
 #ifndef __riscv
     /* If DMA is locked return busy */
     if(MXC_GetLock(&dma_lock, 1) != E_NO_ERROR) {
@@ -128,8 +132,7 @@ int MXC_DMA_RevA_AcquireChannel(void)
     /* Default is no channel available */
     channel = E_NONE_AVAIL;
     
-    if(dma_initialized) {
-        for(i = 0; i < MXC_DMA_CHANNELS; i++) {
+    for(i = offset; i < (offset + numCh); i++) {
             if(!dma_resource[i].valid) {
                 /* Found one */
                 channel = i;
@@ -139,7 +142,6 @@ int MXC_DMA_RevA_AcquireChannel(void)
                 break;
             }
         }
-    }
 #ifndef __riscv
     MXC_FreeLock(&dma_lock);
 #endif
@@ -422,10 +424,12 @@ mxc_dma_ch_regs_t* MXC_DMA_RevA_GetCHRegs(int ch)
 
 void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t *dma)
 {
+    int numCh = MXC_DMA_CHANNELS / MXC_DMA_INSTANCES;
+    int offset = numCh * MXC_DMA_GET_IDX((mxc_dma_regs_t*) dma);
     /* Do callback, if enabled */
-    for(int i = 0; i < MXC_DMA_CHANNELS; i++) {
+    for(int i = offset; i < (offset + numCh); i++) {
         if(CHECK_HANDLE(i)) {
-            if(dma->intfl &(0x1 << i)) {
+            if(dma->intfl &(0x1 << (i % numCh))) {
                 if(dma_resource[i].cb != NULL) {
                     dma_resource[i].cb(i, E_NO_ERROR);
                 }
@@ -452,7 +456,7 @@ void memcpy_callback(int ch, int error)
     MXC_DMA_ReleaseChannel(ch);
 }
 
-int MXC_DMA_RevA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callback)
+int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t* dma, void* dest, void* src, int len, mxc_dma_complete_cb_t callback)
 {
     int retval;
     mxc_dma_config_t config;
@@ -513,7 +517,7 @@ void transfer_callback(int ch, int error)
     while(1);
 }
 
-int MXC_DMA_RevA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback)
+int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t* dma, mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback)
 {
     int retval;
     int channel = MXC_DMA_AcquireChannel();

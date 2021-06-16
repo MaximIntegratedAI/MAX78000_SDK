@@ -393,8 +393,9 @@ void MXC_TMR_RevB_TO_Start(mxc_tmr_revb_regs_t *tmr, unsigned long us)
     
     // Initialize the timer in one-shot mode
     cfg.pres = prescale;
-    cfg.clock = MXC_TMR_APB_CLK;
     cfg.mode = TMR_MODE_ONESHOT;
+    cfg.bitMode = TMR_BIT_MODE_32;
+    cfg.clock = MXC_TMR_APB_CLK;
     cfg.cmp_cnt = ticks;
     cfg.pol = 0;
     

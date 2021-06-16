@@ -1,25 +1,21 @@
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/cameraif.h:55: warning: missing title after \defgroup cameraif
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/i2s.h:240: warning: end of file while inside a group
-
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/CMSIS/Device/Maxim/MAX78000/Include/pcif_regs.h:79: warning: group cameraif_registers: ignoring title "PCIF_Registers" that does not match old title "CAMERAIF_Registers"
-
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/aes.h:94: warning: unable to resolve reference to `mxc_aes_enc_type_t' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/gpio.h:303: warning: explicit link request to 'callback_fn' could not be resolved
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/gpio.h:304: warning: explicit link request to 'callback_fn' could not be resolved
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/pt.h:201: warning: unable to resolve reference to `MXC_PT_INTFL_Register' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/pt.h:193: warning: unable to resolve reference to `MXC_PT_INTFL_Register' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:172: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:156: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:148: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:120: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:101: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:93: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:127: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:133: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:107: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:112: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:140: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:372: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:246: warning: unable to resolve reference to `UART' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:236: warning: unable to resolve reference to `UART' for \ref command
-/home/lparm/JenkinsTest/workspace/MnS/MSDK/Devices/AI85/MAX78000/Libraries/PeriphDrivers/Include/MAX78000/uart.h:406: warning: unable to resolve reference to `MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/cameraif.h:55: warning: missing title after \defgroup cameraif
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/i2s.h:240: warning: end of file while inside a group
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/gpio.h:300: warning: explicit link request to 'callback_fn' could not be resolved
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/gpio.h:301: warning: explicit link request to 'callback_fn' could not be resolved
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/pt.h:202: warning: unable to resolve reference to 'MXC_PT_INTFL_Register' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/pt.h:194: warning: unable to resolve reference to 'MXC_PT_INTFL_Register' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:171: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:155: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:147: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:119: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:100: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:92: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:126: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:132: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:106: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:111: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/rtc.h:139: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/uart.h:374: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/uart.h:248: warning: unable to resolve reference to 'UART' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/uart.h:238: warning: unable to resolve reference to 'UART' for \ref command
+C:/Users/Jacob.Scheiffler/Documents/MasterBranch/msdk/Libraries/PeriphDrivers/Include/MAX78000/uart.h:408: warning: unable to resolve reference to 'MXC_ERROR_CODES' for \ref command

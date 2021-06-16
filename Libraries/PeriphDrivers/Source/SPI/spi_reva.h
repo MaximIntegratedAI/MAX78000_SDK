@@ -42,6 +42,7 @@
 #include "spi_regs.h"
 #include "spi_reva_regs.h"
 #include "spi.h"
+#include "dma.h"
 
 typedef enum {
     SPI_REVA_WIDTH_3WIRE,
@@ -107,10 +108,10 @@ void MXC_SPI_RevA_EnableInt (mxc_spi_reva_regs_t* spi, unsigned int mask);
 void MXC_SPI_RevA_DisableInt (mxc_spi_reva_regs_t* spi, unsigned int mask);
 int MXC_SPI_RevA_MasterTransaction (mxc_spi_reva_req_t* req);
 int MXC_SPI_RevA_MasterTransactionAsync (mxc_spi_reva_req_t* req);
-int MXC_SPI_RevA_MasterTransactionDMA (mxc_spi_reva_req_t* req, int reqselTx, int reqselRx);
+int MXC_SPI_RevA_MasterTransactionDMA (mxc_spi_reva_req_t* req, int reqselTx, int reqselRx, mxc_dma_regs_t* dma);
 int MXC_SPI_RevA_SlaveTransaction (mxc_spi_reva_req_t* req);
 int MXC_SPI_RevA_SlaveTransactionAsync (mxc_spi_reva_req_t* req);
-int MXC_SPI_RevA_SlaveTransactionDMA (mxc_spi_reva_req_t* req, int reqselTx, int reqselRx);
+int MXC_SPI_RevA_SlaveTransactionDMA (mxc_spi_reva_req_t* req, int reqselTx, int reqselRx, mxc_dma_regs_t* dma);
 void MXC_SPI_RevA_DMACallback (int ch, int error);
 int MXC_SPI_RevA_SetDefaultTXData (mxc_spi_reva_regs_t* spi, unsigned int defaultTXData);
 void MXC_SPI_RevA_AbortAsync (mxc_spi_reva_regs_t* spi);

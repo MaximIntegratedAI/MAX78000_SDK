@@ -243,7 +243,7 @@ int MXC_ADC_StartConversionDMA(mxc_adc_chsel_t channel, uint16_t* data, void (*c
 {
     initGPIOForChannel(channel);
     
-    return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t*) MXC_ADC, channel, data, callback);
+    return MXC_ADC_RevA_StartConversionDMA((mxc_adc_reva_regs_t*) MXC_ADC, channel, MXC_DMA, data, callback);
 }
 
 int MXC_ADC_Handler(void)

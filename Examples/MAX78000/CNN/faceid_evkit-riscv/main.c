@@ -225,6 +225,11 @@ static int init(void)
             // Clear mailbox
             riscv_mail_box[0] = 0;
 
+#ifdef TS_ENABLE
+            /* Disable TouchScreen to avoid collision with TFT */
+            MXC_TS_Stop();
+#endif
+
 #ifdef TFT_ENABLE   // Display captured image
 #ifdef BOARD_EVKIT_V1
             MXC_TFT_ShowImageCameraRGB565(X_IMAGE_START, Y_IMAGE_START, raw, h, w);
@@ -233,6 +238,12 @@ static int init(void)
             MXC_TFT_ShowImageCameraRGB565(X_IMAGE_START, Y_IMAGE_START, raw, w, h);
 #endif
 #endif // #ifdef TFT_ENABLE
+
+#ifdef TS_ENABLE
+            /* Enable TouchScreen */
+            MXC_TS_Start();
+#endif
+
         } //Get FaceID result
         else if (riscv_mail_box[0] == RESULT_READY) {
             text_t cnnTime, cnnResult;
@@ -244,6 +255,12 @@ static int init(void)
 
             // Clear mailbox
             riscv_mail_box[0] = 0;
+
+#ifdef TS_ENABLE
+            /* Disable TouchScreen to avoid collision with TFT */
+            MXC_TS_Stop();
+#endif
+
 #ifdef TFT_ENABLE
             // Display CNN result
             MXC_TFT_ClearArea(&area1, 4);
@@ -251,6 +268,12 @@ static int init(void)
             MXC_TFT_ClearArea(&area2, 4);
             MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &cnnResult,  NULL);
 #endif // #ifdef TFT_ENABLE
+
+#ifdef TS_ENABLE
+            /* Enable TouchScreen */
+            MXC_TS_Start();
+#endif
+
             //Enable WUT
             MXC_WUT_Enable();
             LED_On(0);

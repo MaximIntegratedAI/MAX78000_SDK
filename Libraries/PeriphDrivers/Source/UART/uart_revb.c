@@ -115,6 +115,7 @@ int MXC_UART_RevB_ReadyForSleep (mxc_uart_revb_regs_t* uart)
 
 int MXC_UART_RevB_SetFrequency (mxc_uart_revb_regs_t* uart, unsigned int baud, mxc_uart_revb_clock_t clock)
 {  
+    int clkDiv = 0, mod = 0;
     if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
@@ -124,7 +125,8 @@ int MXC_UART_RevB_SetFrequency (mxc_uart_revb_regs_t* uart, unsigned int baud, m
 
     switch (clock) {
         case MXC_UART_REVB_APB_CLK:
-        uart->clkdiv = (PeripheralClock / baud);
+        clkDiv = (PeripheralClock / baud);
+        mod = (PeripheralClock % baud);
         break;
 
         case MXC_UART_REVB_EXT_CLK:
@@ -133,20 +135,26 @@ int MXC_UART_RevB_SetFrequency (mxc_uart_revb_regs_t* uart, unsigned int baud, m
 
         //case MXC_UART_IBRO_CLK:
         case MXC_UART_REVB_CLK2:
-        uart->clkdiv = (7372800 / baud);
+        clkDiv = (7372800 / baud);
+        mod = (7372800 % baud);
         uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK2;
         break;
 
         //case MXC_UART_ERFO:
         case MXC_UART_REVB_CLK3:
-        uart->clkdiv = (16000000 / baud);
+        clkDiv = (16000000 / baud);
+        mod = (16000000 % baud);
         uart->ctrl |= MXC_S_UART_REVB_CTRL_BCLKSRC_CLK3;
         break;
 
         default:
         return E_BAD_PARAM;
     }
-        
+    
+    if(!clkDiv || mod > (baud / 2)) {
+        clkDiv++;
+    }
+    uart->clkdiv = clkDiv;
     return MXC_UART_GetFrequency ((mxc_uart_regs_t*) uart);
 }
 

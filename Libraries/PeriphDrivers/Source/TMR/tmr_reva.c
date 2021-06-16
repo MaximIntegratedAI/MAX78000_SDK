@@ -232,8 +232,6 @@ void MXC_TMR_RevA_TO_Start(mxc_tmr_reva_regs_t *tmr, unsigned long us)
     cfg.mode = TMR_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
     cfg.pol = 0;
-    //cfg.clock = MXC_TMR_HFIO_CLK;
-    //cfg.bitMode = TMR_BIT_MODE_32;
     
     MXC_TMR_Stop((mxc_tmr_regs_t*) tmr);
     MXC_TMR_Init((mxc_tmr_regs_t*) tmr, &cfg);

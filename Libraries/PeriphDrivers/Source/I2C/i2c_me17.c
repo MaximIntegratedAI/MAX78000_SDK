@@ -223,7 +223,7 @@ int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned in
         break;
     }
     
-    return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t*) i2c, bytes, len, (mxc_i2c_reva_dma_complete_cb_t) callback, config);
+    return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t*) i2c, bytes, len, (mxc_i2c_reva_dma_complete_cb_t) callback, config, MXC_DMA);
 }
 
 int MXC_I2C_GetRXFIFOAvailable(mxc_i2c_regs_t* i2c)
@@ -253,7 +253,7 @@ int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t* i2c, unsigned char* bytes, unsigned i
         break;
     }
     
-    return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t*) i2c, bytes, len, (mxc_i2c_reva_dma_complete_cb_t) callback, config);
+    return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t*) i2c, bytes, len, (mxc_i2c_reva_dma_complete_cb_t) callback, config, MXC_DMA);
 }
 
 int MXC_I2C_GetTXFIFOAvailable(mxc_i2c_regs_t* i2c)
@@ -342,7 +342,7 @@ int MXC_I2C_MasterTransactionAsync(mxc_i2c_req_t* req)
 
 int MXC_I2C_MasterTransactionDMA(mxc_i2c_req_t* req)
 {
-    return MXC_I2C_RevA_MasterTransactionDMA((mxc_i2c_reva_req_t*) req);
+    return MXC_I2C_RevA_MasterTransactionDMA((mxc_i2c_reva_req_t*) req, MXC_DMA);
 }
 
 int MXC_I2C_SlaveTransaction(mxc_i2c_regs_t* i2c, mxc_i2c_slave_handler_t callback)

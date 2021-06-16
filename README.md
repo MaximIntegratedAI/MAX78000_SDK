@@ -4,6 +4,15 @@ Refer to [Getting Started with the MAX78000 Evaluation Kit](https://github.com/M
 
 ## Release Notes
 
+June 15, 2021
+* Added touchscreen support to faceid_evkit and faceid_evkit-riscv demos.
+* Added DMA streaming mode to camera driver.
+* Fixed support for P3.0 and P3.1 GPIO pins.
+* Changed internal handling of DMA instances.
+* Improved I2S support for various word sizes when using DMA.
+* Fixed timer code to select the proper source clock.
+* Modified UART baud rate selection code.
+
 April 30, 2021
 * Added SD card over SPI support for the MAX78000FTHR board.
 

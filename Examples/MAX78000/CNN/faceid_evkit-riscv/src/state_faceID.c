@@ -338,9 +338,9 @@ static void run_cnn(int x_offset, int y_offset)
 
     pass_time = utils_get_time_ms();
 
-    /* Sleep and wait for CNN interrupt */
+    // CNN interrupt wakes up CPU from sleep mode    
     while (cnn_time == 0) {
-        asm volatile("wfi");
+        asm volatile("wfi"); // Sleep and wait for CNN interrupt
     }
 
     PR_INFO("CNN wait time : %d", utils_get_time_ms() - pass_time);

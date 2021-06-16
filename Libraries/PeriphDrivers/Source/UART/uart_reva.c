@@ -49,7 +49,6 @@
 
 /* **** Variable Declaration **** */
 static void* AsyncRequests[MXC_UART_INSTANCES];
-static int baudRate;
 
 // Structure to save DMA state
 typedef struct {
@@ -200,6 +199,7 @@ int MXC_UART_RevA_GetFrequency (mxc_uart_reva_regs_t* uart)
 {
     int periphClock = 0;
     float uartDiv = 0;
+    float decimalDiv = 0;
     
     if (uart->ctrl & MXC_F_UART_REVA_CTRL_CLKSEL) {
 #ifdef IBRO_FREQ
@@ -213,7 +213,19 @@ int MXC_UART_RevA_GetFrequency (mxc_uart_reva_regs_t* uart)
     }
     
     uartDiv += uart->baud0 & MXC_F_UART_REVA_BAUD0_IBAUD;
-    uartDiv += (uart->baud1 & MXC_F_UART_REVA_BAUD1_DBAUD) / 20.0;
+    decimalDiv = uart->baud1 & MXC_F_UART_REVA_BAUD1_DBAUD;
+
+    // Based on work around for Jira Bug: ME10-650
+    // No way to tell if the SetFrequency function added or 
+    //      subtracted 3 in this range
+    if(decimalDiv > 3 && decimalDiv <= 6) {
+    	decimalDiv -= 3;
+    }
+    else {
+    	decimalDiv += 3;
+    }
+
+    uartDiv += decimalDiv / 128.0;
     uartDiv *= (1 << (7- (uart->baud0 & MXC_F_UART_REVA_BAUD0_FACTOR)));
 
     return (int) ( (float) periphClock/uartDiv);
@@ -368,10 +380,17 @@ int MXC_UART_RevA_SetFlowCtrl (mxc_uart_reva_regs_t* uart, mxc_uart_flow_t flowC
 
 int MXC_UART_RevA_SetClockSource (mxc_uart_reva_regs_t* uart, int usePCLK)
 {
+	int baudRate;
+
     if (MXC_UART_GET_IDX ((mxc_uart_regs_t*) uart) < 0) {
         return E_BAD_PARAM;
     }
     
+    baudRate = MXC_UART_GetFrequency ((mxc_uart_regs_t*) uart);
+    if(baudRate < 0) {	// return error code
+    	return baudRate;
+    }
+
     if (usePCLK) {
         MXC_SETFIELD (uart->ctrl, MXC_F_UART_REVA_CTRL_CLKSEL, 0 << MXC_F_UART_REVA_CTRL_CLKSEL_POS);
     }
@@ -508,7 +527,7 @@ unsigned int MXC_UART_RevA_ReadRXFIFO (mxc_uart_reva_regs_t* uart, unsigned char
     return read;
 }
 
-int MXC_UART_RevA_ReadRXFIFODMA (mxc_uart_reva_regs_t* uart, unsigned char* bytes, unsigned int len,
+int MXC_UART_RevA_ReadRXFIFODMA (mxc_uart_reva_regs_t* uart, mxc_dma_regs_t* dma, unsigned char* bytes, unsigned int len,
                                     mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
 {
     uint8_t channel;
@@ -571,7 +590,7 @@ unsigned int MXC_UART_RevA_WriteTXFIFO (mxc_uart_reva_regs_t* uart, unsigned cha
     return written;
 }
 
-unsigned int MXC_UART_RevA_WriteTXFIFODMA (mxc_uart_reva_regs_t* uart, unsigned char* bytes, unsigned int len,
+unsigned int MXC_UART_RevA_WriteTXFIFODMA (mxc_uart_reva_regs_t* uart, mxc_dma_regs_t* dma, unsigned char* bytes, unsigned int len,
                                     mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
 {
     uint8_t channel;
@@ -858,7 +877,7 @@ int MXC_UART_RevA_TransactionAsync (mxc_uart_reva_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_UART_RevA_TransactionDMA (mxc_uart_reva_req_t* req)
+int MXC_UART_RevA_TransactionDMA (mxc_uart_reva_req_t* req, mxc_dma_regs_t* dma)
 {
     int uart_num = MXC_UART_GET_IDX ((mxc_uart_regs_t*)(req->uart));
     

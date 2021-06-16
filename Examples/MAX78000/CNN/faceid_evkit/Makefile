@@ -69,7 +69,7 @@ ifeq "$(BOARD)" "EvKit_V1"
 SRCS += TFT/evkit/resources/all_imgs.c
 endif
 ifeq "$(BOARD)" "FTHR_RevA"
-SRCS += TFT/fthr/logo_rg565.c
+SRCS += TFT/fthr/logo_rgb565.c
 SRCS += TFT/fthr/SansSerif16x16.c
 SRCS += TFT/fthr/SansSerif19x19.c
 endif

@@ -70,12 +70,12 @@ int MXC_UART_RevA_Read (mxc_uart_reva_regs_t* uart, uint8_t* buffer, int* len);
 int MXC_UART_RevA_Write (mxc_uart_reva_regs_t* uart, uint8_t* byte, int* len);
 unsigned int MXC_UART_RevA_ReadRXFIFO (mxc_uart_reva_regs_t* uart, unsigned char* bytes,
                                        unsigned int len);
-int MXC_UART_RevA_ReadRXFIFODMA (mxc_uart_reva_regs_t* uart, unsigned char* bytes,
+int MXC_UART_RevA_ReadRXFIFODMA (mxc_uart_reva_regs_t* uart, mxc_dma_regs_t* dma, unsigned char* bytes,
         unsigned int len, mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevA_GetRXFIFOAvailable (mxc_uart_reva_regs_t* uart);
 unsigned int MXC_UART_RevA_WriteTXFIFO (mxc_uart_reva_regs_t* uart, unsigned char* bytes,
                                         unsigned int len);
-unsigned int MXC_UART_RevA_WriteTXFIFODMA (mxc_uart_reva_regs_t* uart, unsigned char* bytes,
+unsigned int MXC_UART_RevA_WriteTXFIFODMA (mxc_uart_reva_regs_t* uart, mxc_dma_regs_t* dma, unsigned char* bytes,
         unsigned int len, mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config);
 unsigned int MXC_UART_RevA_GetTXFIFOAvailable (mxc_uart_reva_regs_t* uart);
 int MXC_UART_RevA_ClearRXFIFO (mxc_uart_reva_regs_t* uart);
@@ -92,7 +92,7 @@ unsigned int MXC_UART_RevA_GetStatus (mxc_uart_reva_regs_t* uart);
 int MXC_UART_RevA_Busy(mxc_uart_reva_regs_t* uart);
 int MXC_UART_RevA_Transaction (mxc_uart_reva_req_t* req);
 int MXC_UART_RevA_TransactionAsync (mxc_uart_reva_req_t* req);
-int MXC_UART_RevA_TransactionDMA (mxc_uart_reva_req_t* req);
+int MXC_UART_RevA_TransactionDMA (mxc_uart_reva_req_t* req, mxc_dma_regs_t* dma);
 int MXC_UART_RevA_AbortAsync (mxc_uart_reva_regs_t* uart);
 int MXC_UART_RevA_AsyncHandler (mxc_uart_reva_regs_t* uart);
 int MXC_UART_RevA_AsyncStop (mxc_uart_reva_regs_t* uart);

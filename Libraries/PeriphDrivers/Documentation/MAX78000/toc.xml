@@ -171,6 +171,20 @@
       <topic label="MXC_ADC_StartConversionAsync" href="group__adc.html#gab17e55d5a71179bc77460bf84e8c8d95"/>
     </topic>
     <topic label="AES" href="group__aes.html">
+      <topic label="AES_KEY_Registers" href="group__aes__key__registers.html">
+        <topic label="Register Offsets" href="group___a_e_s___k_e_y___register___offsets.html">
+          <topic label="MXC_R_AES_KEY_AES_KEY0" href="group___a_e_s___k_e_y___register___offsets.html#ga0d7fa57923365ea371b69bc6e6a5382f"/>
+          <topic label="MXC_R_AES_KEY_AES_KEY1" href="group___a_e_s___k_e_y___register___offsets.html#ga15aceee7881a4b83c2af86c7e3d35268"/>
+          <topic label="MXC_R_AES_KEY_AES_KEY2" href="group___a_e_s___k_e_y___register___offsets.html#ga801a1169c4ac5ba97460657e2378d4a7"/>
+          <topic label="MXC_R_AES_KEY_AES_KEY3" href="group___a_e_s___k_e_y___register___offsets.html#gabb2a7b8a6cdb056e19c03c5df42430c8"/>
+        </topic>
+        <topic label="mxc_aes_key_regs_t" href="group__aes__key__registers.html#structmxc__aes__key__regs__t">
+          <topic label="aes_key0" href="group__aes__key__registers.html#a494fff63e6ba25c4514f1560d7b35051"/>
+          <topic label="aes_key1" href="group__aes__key__registers.html#a14ab668b4c71d0ce196125aba0c3ed30"/>
+          <topic label="aes_key2" href="group__aes__key__registers.html#a798cc7a9a8b7addbd574237505bfa9fa"/>
+          <topic label="aes_key3" href="group__aes__key__registers.html#aceacd09301eb4c669ec57824c306d519"/>
+        </topic>
+      </topic>
       <topic label="AES_Registers" href="group__aes__registers.html">
         <topic label="Register Offsets" href="group___a_e_s___register___offsets.html">
           <topic label="MXC_R_AES_CTRL" href="group___a_e_s___register___offsets.html#ga768f82b4c908525f481c32b6f61da44f"/>
@@ -247,6 +261,47 @@
           <topic label="status" href="group__aes__registers.html#af65ae05bcce5786d892c6a2bd1141292"/>
         </topic>
       </topic>
+      <topic label="mxc_aes_req_t" href="group__aes.html#structmxc__aes__req__t">
+        <topic label="callback" href="group__aes.html#a9c5600304926bf00d373c6fc04bd5212"/>
+        <topic label="encryption" href="group__aes.html#a08cb937b151057241c7343cc0f11a4d7"/>
+        <topic label="inputData" href="group__aes.html#ad3f82b31501cd82f51e2657cd1d9d3d4"/>
+        <topic label="keySize" href="group__aes.html#acd3280be19b3415b561b62aaea8a6e5b"/>
+        <topic label="length" href="group__aes.html#aebb70c2aab3407a9f05334c47131a43b"/>
+        <topic label="resultData" href="group__aes.html#a9b0ce351b04c0481ffe81cd5338e8f6c"/>
+      </topic>
+      <topic label="mxc_aes_enc_type_t" href="group__aes.html#ga1a06edd42c09e3fada211638f4297205">
+        <topic label="MXC_AES_ENCRYPT_EXT_KEY" href="group__aes.html#gga1a06edd42c09e3fada211638f4297205a6b086f1740997be1d0f48e6acec335b7"/>
+        <topic label="MXC_AES_DECRYPT_EXT_KEY" href="group__aes.html#gga1a06edd42c09e3fada211638f4297205aa5c154510e1ec80fc3a43e826ac9217a"/>
+        <topic label="MXC_AES_DECRYPT_INT_KEY" href="group__aes.html#gga1a06edd42c09e3fada211638f4297205ab0f09f5e3ef00d8d8c3926e56db36ad0"/>
+      </topic>
+      <topic label="mxc_aes_keys_t" href="group__aes.html#ga7ae14b6ee44f485c303b025277668514">
+        <topic label="MXC_AES_128BITS" href="group__aes.html#gga7ae14b6ee44f485c303b025277668514af228e2c158bc72bc436d19600ded0394"/>
+        <topic label="MXC_AES_192BITS" href="group__aes.html#gga7ae14b6ee44f485c303b025277668514a4d119e4a0b010cb7565f03e34115e1b6"/>
+        <topic label="MXC_AES_256BITS" href="group__aes.html#gga7ae14b6ee44f485c303b025277668514aee84a9c3ded1228aca568cb7cc74c588"/>
+      </topic>
+      <topic label="MXC_AES_ClearFlags" href="group__aes.html#gaee1f689b75092fa165007741a415c8cf"/>
+      <topic label="MXC_AES_Decrypt" href="group__aes.html#ga6ce4b1b555a19c9d4058aa1c90976ee1"/>
+      <topic label="MXC_AES_DecryptAsync" href="group__aes.html#gadf553ec6fb6972e2b8ee34b837c2207d"/>
+      <topic label="MXC_AES_DisableInt" href="group__aes.html#ga23b745bcd64c2f861b5bf260471f8a5c"/>
+      <topic label="MXC_AES_DMACallback" href="group__aes.html#ga2b91ab4a7de4ef9754696269af928f70"/>
+      <topic label="MXC_AES_EnableInt" href="group__aes.html#ga356c9f7a606bae620ca6ce02e5784593"/>
+      <topic label="MXC_AES_Encrypt" href="group__aes.html#ga5b986f41d52bea17198b1377f73eff46"/>
+      <topic label="MXC_AES_EncryptAsync" href="group__aes.html#ga95095680126e4aa9c91c31d3e63ef061"/>
+      <topic label="MXC_AES_FlushInputFIFO" href="group__aes.html#ga2b1513cffd85931287a2ebb57d7be332"/>
+      <topic label="MXC_AES_FlushOutputFIFO" href="group__aes.html#gaa96724dc6fb7f29101320320bfdc0261"/>
+      <topic label="MXC_AES_GenerateKey" href="group__aes.html#gac7046e45bc11b5ab2af3d98569f326c1"/>
+      <topic label="MXC_AES_Generic" href="group__aes.html#gada08e3baa57bfa08b20bcaaa1d54b59a"/>
+      <topic label="MXC_AES_GenericAsync" href="group__aes.html#gab92f95d0f85f64c41143efdb3f93383e"/>
+      <topic label="MXC_AES_GetFlags" href="group__aes.html#ga235792b773b90b35b7392136323b4bf3"/>
+      <topic label="MXC_AES_GetKeySize" href="group__aes.html#ga121e533166f83392e2f6be3dbdd30d9b"/>
+      <topic label="MXC_AES_Init" href="group__aes.html#ga6fd4f68e1c1501a3d662e534b53cb722"/>
+      <topic label="MXC_AES_IsBusy" href="group__aes.html#ga6fd9217368589c79669e2cf838c2d307"/>
+      <topic label="MXC_AES_RXDMAConfig" href="group__aes.html#gac7aa2ebf3db2341380bc50063b4361e5"/>
+      <topic label="MXC_AES_SetExtKey" href="group__aes.html#gaf198239b34e236a10ea3d1f6b615f1af"/>
+      <topic label="MXC_AES_SetKeySize" href="group__aes.html#ga02d10537bb686c13271418fff8dfea11"/>
+      <topic label="MXC_AES_Shutdown" href="group__aes.html#gaaae30b8c0318bd32283508872ad5b76f"/>
+      <topic label="MXC_AES_Start" href="group__aes.html#gab1efac8d53816c242aec7201dfe47bce"/>
+      <topic label="MXC_AES_TXDMAConfig" href="group__aes.html#ga82527e25c18652851ba6c63f36ba171b"/>
     </topic>
     <topic label="Cameraif" href="group__cameraif.html">
       <topic label="CAMERAIF_Registers" href="group__cameraif__registers.html">
@@ -326,87 +381,8 @@
           <topic label="MXC_F_CAMERAIF_DS_TIMING_CODES_SAV_POS" href="group___c_a_m_e_r_a_i_f___d_s___t_i_m_i_n_g___c_o_d_e_s.html#ga1fa54077f7639cca046772ff1e0a23ae"/>
         </topic>
         <topic label="CAMERAIF_FIFO_DATA" href="group___c_a_m_e_r_a_i_f___f_i_f_o___d_a_t_a.html">
-          <topic label="MXC_F_CAMERAIF_FIFO_DATA_DATA" href="group___c_a_m_e_r_a_i_f___f_i_f_o___d_a_t_a.html#gaaf06057783e040dd2d439c01b401b6c0"/>
-          <topic label="MXC_F_CAMERAIF_FIFO_DATA_DATA_POS" href="group___c_a_m_e_r_a_i_f___f_i_f_o___d_a_t_a.html#gad3d4796b19944fa7565d4a87405cf41c"/>
-        </topic>
-        <topic label="Register Offsets" href="group___p_c_i_f___register___offsets.html">
-          <topic label="MXC_R_PCIF_CTRL" href="group___p_c_i_f___register___offsets.html#ga91068e78170ac127affba6dadb338830"/>
-          <topic label="MXC_R_PCIF_DS_TIMING_CODES" href="group___p_c_i_f___register___offsets.html#ga769b0ea00029ca0cb363275eb37cc4f8"/>
-          <topic label="MXC_R_PCIF_FIFO_DATA" href="group___p_c_i_f___register___offsets.html#ga2f5d44391f51d31e4f358b421d9e04a9"/>
-          <topic label="MXC_R_PCIF_FIFO_SIZE" href="group___p_c_i_f___register___offsets.html#gace3c9ec89757e9c4c2b20e2e065b2e75"/>
-          <topic label="MXC_R_PCIF_INT_EN" href="group___p_c_i_f___register___offsets.html#gae3e5b2e6208197f48592d4e7bc461a54"/>
-          <topic label="MXC_R_PCIF_INT_FL" href="group___p_c_i_f___register___offsets.html#gacb8549c3180bc2efd306b9f610e68ce3"/>
-          <topic label="MXC_R_PCIF_VER" href="group___p_c_i_f___register___offsets.html#ga06aca9cc3043a5b00141d92d720aacf6"/>
-        </topic>
-        <topic label="PCIF_VER" href="group___p_c_i_f___v_e_r.html">
-          <topic label="MXC_F_PCIF_VER_MAJOR" href="group___p_c_i_f___v_e_r.html#ga6ce41ec21f0aa95089e99a11e2b26cf9"/>
-          <topic label="MXC_F_PCIF_VER_MAJOR_POS" href="group___p_c_i_f___v_e_r.html#gaf7e1f3fdec62c3926a31c85617640c6c"/>
-          <topic label="MXC_F_PCIF_VER_MINOR" href="group___p_c_i_f___v_e_r.html#ga7399b0c4ea4ee3080cc885ab520e091e"/>
-          <topic label="MXC_F_PCIF_VER_MINOR_POS" href="group___p_c_i_f___v_e_r.html#ga4481a5c8645540bd52870395a579e39c"/>
-        </topic>
-        <topic label="PCIF_FIFO_SIZE" href="group___p_c_i_f___f_i_f_o___s_i_z_e.html">
-          <topic label="MXC_F_PCIF_FIFO_SIZE_FIFO_SIZE" href="group___p_c_i_f___f_i_f_o___s_i_z_e.html#ga2e1db0e25fec3b64e8d5be2e084a7f6b"/>
-          <topic label="MXC_F_PCIF_FIFO_SIZE_FIFO_SIZE_POS" href="group___p_c_i_f___f_i_f_o___s_i_z_e.html#ga5c842a14518065b36ad361e5981a1165"/>
-        </topic>
-        <topic label="PCIF_CTRL" href="group___p_c_i_f___c_t_r_l.html">
-          <topic label="MXC_F_PCIF_CTRL_DATA_WIDTH" href="group___p_c_i_f___c_t_r_l.html#ga799bd884261a661eb2f2746b1b814909"/>
-          <topic label="MXC_F_PCIF_CTRL_DATA_WIDTH_POS" href="group___p_c_i_f___c_t_r_l.html#ga7bcd1cb748fdd81d2c586f70497a48a6"/>
-          <topic label="MXC_F_PCIF_CTRL_DS_TIMING_EN" href="group___p_c_i_f___c_t_r_l.html#gab07e739c097754773db30c9a9118fbf1"/>
-          <topic label="MXC_F_PCIF_CTRL_DS_TIMING_EN_POS" href="group___p_c_i_f___c_t_r_l.html#ga938ed830f475ed0a62f12734bfcc8a17"/>
-          <topic label="MXC_F_PCIF_CTRL_FIFO_THRSH" href="group___p_c_i_f___c_t_r_l.html#ga9881c13ff54a40d0c2460458408d5e60"/>
-          <topic label="MXC_F_PCIF_CTRL_FIFO_THRSH_POS" href="group___p_c_i_f___c_t_r_l.html#gae864f3722e039a07ad077a112b185f72"/>
-          <topic label="MXC_F_PCIF_CTRL_PCIF_SYS" href="group___p_c_i_f___c_t_r_l.html#ga53e75bbcb0543d56d9dc1006682e1c43"/>
-          <topic label="MXC_F_PCIF_CTRL_PCIF_SYS_POS" href="group___p_c_i_f___c_t_r_l.html#ga0630c16cc2a3c446090d91a4d90de900"/>
-          <topic label="MXC_F_PCIF_CTRL_READ_MODE" href="group___p_c_i_f___c_t_r_l.html#ga5f257fe36f1387c15ddff6806aa6f5e4"/>
-          <topic label="MXC_F_PCIF_CTRL_READ_MODE_POS" href="group___p_c_i_f___c_t_r_l.html#ga7f658892afd6039c7ee29e2ab1d39370"/>
-          <topic label="MXC_F_PCIF_CTRL_RX_DMA" href="group___p_c_i_f___c_t_r_l.html#ga4b031d9ee0dcf2a5243b8d83251f48e2"/>
-          <topic label="MXC_F_PCIF_CTRL_RX_DMA_POS" href="group___p_c_i_f___c_t_r_l.html#ga5be6d2750d627c02209b84e1ba0a499e"/>
-          <topic label="MXC_F_PCIF_CTRL_RX_DMA_THRSH" href="group___p_c_i_f___c_t_r_l.html#gafa5c11e89b6367cb9299c8a9f159e6b5"/>
-          <topic label="MXC_F_PCIF_CTRL_RX_DMA_THRSH_POS" href="group___p_c_i_f___c_t_r_l.html#ga468b610b260fda7d14c4ea07bbf70e1b"/>
-          <topic label="MXC_F_PCIF_CTRL_THREE_CH_EN" href="group___p_c_i_f___c_t_r_l.html#gac34823810010a496896e1b347d4af4c1"/>
-          <topic label="MXC_F_PCIF_CTRL_THREE_CH_EN_POS" href="group___p_c_i_f___c_t_r_l.html#ga15b4dc62494245229a5a9b57d4602fc1"/>
-          <topic label="MXC_S_PCIF_CTRL_DATA_WIDTH_10BIT" href="group___p_c_i_f___c_t_r_l.html#ga7e9b496af42fc916d92fe594d004b98b"/>
-          <topic label="MXC_S_PCIF_CTRL_DATA_WIDTH_12BIT" href="group___p_c_i_f___c_t_r_l.html#gaae29897cfbcce5ba072fa3242e971e3b"/>
-          <topic label="MXC_S_PCIF_CTRL_DATA_WIDTH_8BIT" href="group___p_c_i_f___c_t_r_l.html#gad90dfc0cd37d07d9f8be89d3dd330e5e"/>
-          <topic label="MXC_S_PCIF_CTRL_READ_MODE_CONTINUOUS" href="group___p_c_i_f___c_t_r_l.html#gaabd09db26f2f722bc6baaae4f931deca"/>
-          <topic label="MXC_S_PCIF_CTRL_READ_MODE_DIS" href="group___p_c_i_f___c_t_r_l.html#gab801c1c2608903476553096c5d085f8b"/>
-          <topic label="MXC_S_PCIF_CTRL_READ_MODE_SINGLE_IMG" href="group___p_c_i_f___c_t_r_l.html#ga68ab2b9c90c2506dd2fddd9462136b8a"/>
-          <topic label="MXC_V_PCIF_CTRL_DATA_WIDTH_10BIT" href="group___p_c_i_f___c_t_r_l.html#ga056df0bd03e4b902f07a53b57a777b2e"/>
-          <topic label="MXC_V_PCIF_CTRL_DATA_WIDTH_12BIT" href="group___p_c_i_f___c_t_r_l.html#ga7c38280d0e53b5d04c9b88e021d22cc2"/>
-          <topic label="MXC_V_PCIF_CTRL_DATA_WIDTH_8BIT" href="group___p_c_i_f___c_t_r_l.html#ga7b598ab7e8c9bbfb2ca55e343b73c5f0"/>
-          <topic label="MXC_V_PCIF_CTRL_READ_MODE_CONTINUOUS" href="group___p_c_i_f___c_t_r_l.html#gacc418aacbeeaa84a6669bc057bb9cf82"/>
-          <topic label="MXC_V_PCIF_CTRL_READ_MODE_DIS" href="group___p_c_i_f___c_t_r_l.html#gad945868ce1f57f2620059a05c9293747"/>
-          <topic label="MXC_V_PCIF_CTRL_READ_MODE_SINGLE_IMG" href="group___p_c_i_f___c_t_r_l.html#gadadd447ea9aa8bbc9024df7caee31722"/>
-        </topic>
-        <topic label="PCIF_INT_EN" href="group___p_c_i_f___i_n_t___e_n.html">
-          <topic label="MXC_F_PCIF_INT_EN_FIFO_FULL" href="group___p_c_i_f___i_n_t___e_n.html#gaf8b22a544e03b7bc09be2a90049f6d2c"/>
-          <topic label="MXC_F_PCIF_INT_EN_FIFO_FULL_POS" href="group___p_c_i_f___i_n_t___e_n.html#ga779340856cf4abad474847302a927c42"/>
-          <topic label="MXC_F_PCIF_INT_EN_FIFO_NOT_EMPTY" href="group___p_c_i_f___i_n_t___e_n.html#ga7588540eaf16985de9b3a63da8a6c069"/>
-          <topic label="MXC_F_PCIF_INT_EN_FIFO_NOT_EMPTY_POS" href="group___p_c_i_f___i_n_t___e_n.html#ga3bba32eb6aa0c777b20f21e9eaf6f58c"/>
-          <topic label="MXC_F_PCIF_INT_EN_FIFO_THRESH" href="group___p_c_i_f___i_n_t___e_n.html#gad90e80671b2ccbef1229a59d3edb3ea8"/>
-          <topic label="MXC_F_PCIF_INT_EN_FIFO_THRESH_POS" href="group___p_c_i_f___i_n_t___e_n.html#ga27840fe4af9fe67911eff3a3cd7affe4"/>
-          <topic label="MXC_F_PCIF_INT_EN_IMG_DONE" href="group___p_c_i_f___i_n_t___e_n.html#ga117c00a2c0e8dd7a9279935ed0295fc1"/>
-          <topic label="MXC_F_PCIF_INT_EN_IMG_DONE_POS" href="group___p_c_i_f___i_n_t___e_n.html#gaa9c8e66720b39fe4eed250bd6e17b2e2"/>
-        </topic>
-        <topic label="PCIF_INT_FL" href="group___p_c_i_f___i_n_t___f_l.html">
-          <topic label="MXC_F_PCIF_INT_FL_FIFO_FULL" href="group___p_c_i_f___i_n_t___f_l.html#ga933efad2e49d39cd8e5d48527ac9dd61"/>
-          <topic label="MXC_F_PCIF_INT_FL_FIFO_FULL_POS" href="group___p_c_i_f___i_n_t___f_l.html#ga8912af1b76551ff07fdd78eac1aae351"/>
-          <topic label="MXC_F_PCIF_INT_FL_FIFO_NOT_EMPTY" href="group___p_c_i_f___i_n_t___f_l.html#ga278bb87488cb23391702c5a132bfe43f"/>
-          <topic label="MXC_F_PCIF_INT_FL_FIFO_NOT_EMPTY_POS" href="group___p_c_i_f___i_n_t___f_l.html#gaab52ac3f3729639cbc95da2a5b84f414"/>
-          <topic label="MXC_F_PCIF_INT_FL_FIFO_THRESH" href="group___p_c_i_f___i_n_t___f_l.html#gadee00f7754931ccf065401c23d59adb4"/>
-          <topic label="MXC_F_PCIF_INT_FL_FIFO_THRESH_POS" href="group___p_c_i_f___i_n_t___f_l.html#gae7839cb237a81befb38327c340f6e3e4"/>
-          <topic label="MXC_F_PCIF_INT_FL_IMG_DONE" href="group___p_c_i_f___i_n_t___f_l.html#gaa49fecb81255d9d19302b506d0521e43"/>
-          <topic label="MXC_F_PCIF_INT_FL_IMG_DONE_POS" href="group___p_c_i_f___i_n_t___f_l.html#ga63434f520b06aba899ee5c5dca5c2f02"/>
-        </topic>
-        <topic label="PCIF_DS_TIMING_CODES" href="group___p_c_i_f___d_s___t_i_m_i_n_g___c_o_d_e_s.html">
-          <topic label="MXC_F_PCIF_DS_TIMING_CODES_EAV" href="group___p_c_i_f___d_s___t_i_m_i_n_g___c_o_d_e_s.html#ga88526d33cf670d6e4c853897ff70d8fa"/>
-          <topic label="MXC_F_PCIF_DS_TIMING_CODES_EAV_POS" href="group___p_c_i_f___d_s___t_i_m_i_n_g___c_o_d_e_s.html#ga2a49e82211a5a8d4429b1fa151ce7c37"/>
-          <topic label="MXC_F_PCIF_DS_TIMING_CODES_SAV" href="group___p_c_i_f___d_s___t_i_m_i_n_g___c_o_d_e_s.html#gac65ce51fb21530438fe92460829f3d16"/>
-          <topic label="MXC_F_PCIF_DS_TIMING_CODES_SAV_POS" href="group___p_c_i_f___d_s___t_i_m_i_n_g___c_o_d_e_s.html#ga30affcecf9ad6048becc8440b79a7d38"/>
-        </topic>
-        <topic label="PCIF_FIFO_DATA" href="group___p_c_i_f___f_i_f_o___d_a_t_a.html">
-          <topic label="MXC_F_PCIF_FIFO_DATA_FIFO_DATA" href="group___p_c_i_f___f_i_f_o___d_a_t_a.html#ga70c923a7748602b93cb975169d700d5a"/>
-          <topic label="MXC_F_PCIF_FIFO_DATA_FIFO_DATA_POS" href="group___p_c_i_f___f_i_f_o___d_a_t_a.html#ga5cdc0b654198d4b538f58322bf5bfe8c"/>
+          <topic label="MXC_F_CAMERAIF_FIFO_DATA_FIFO_DATA" href="group___c_a_m_e_r_a_i_f___f_i_f_o___d_a_t_a.html#ga40cc8e6dee1cdb01b738a383bc3abd44"/>
+          <topic label="MXC_F_CAMERAIF_FIFO_DATA_FIFO_DATA_POS" href="group___c_a_m_e_r_a_i_f___f_i_f_o___d_a_t_a.html#ga2973e63385fabcb7d91c8d3c09b0b1c9"/>
         </topic>
         <topic label="mxc_cameraif_regs_t" href="group__cameraif__registers.html#structmxc__cameraif__regs__t">
           <topic label="ctrl" href="group__cameraif__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>
@@ -1316,8 +1292,6 @@
         <topic label="MXC_GPIO_PAD_NONE" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfa07ae78bcceb4384d088867ba5858b7ac"/>
         <topic label="MXC_GPIO_PAD_PULL_UP" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfa768189022725c5c8584403b78c828af6"/>
         <topic label="MXC_GPIO_PAD_PULL_DOWN" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfacb557da7b4c0b0c00debd10385565719"/>
-        <topic label="MXC_GPIO_PAD_WEAK_PULL_UP" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfac7544f29392b5a2dc8f07abbfccd37e3"/>
-        <topic label="MXC_GPIO_PAD_WEAK_PULL_DOWN" href="group__gpio.html#gga7547d2cdf42ac3ed10586c8d3d44cdcfab87a23f56994d4d35ffd710fcb081f05"/>
       </topic>
       <topic label="mxc_gpio_vssel_t" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">
         <topic label="MXC_GPIO_VSSEL_VDDIO" href="group__gpio.html#gga03b13c78f2f773dabd26b93943a4b201a4e42e5c053549b9c688e5150ccd48259"/>
@@ -1655,7 +1629,7 @@
       <topic label="MXC_I2C_GetFrequency" href="group__i2c.html#gab0b7dced5e6c9a0cb98c9f4996bd221e"/>
       <topic label="MXC_I2C_GetRXFIFOAvailable" href="group__i2c.html#ga102491bfd8c3c184104b72f9818049d3"/>
       <topic label="MXC_I2C_GetRXThreshold" href="group__i2c.html#gaaf888560e606dd4cb1fe3bab90c06756"/>
-      <topic label="MXC_I2C_GetTimeout" href="group__i2c.html#ga2be643c85c4916d9a8c2d3275ff38a30"/>
+      <topic label="MXC_I2C_GetTimeout" href="group__i2c.html#ga3ec39a6845cf520980745eb73f0805a1"/>
       <topic label="MXC_I2C_GetTXFIFOAvailable" href="group__i2c.html#ga2ae59db133ca586c021568cb92a0b1bc"/>
       <topic label="MXC_I2C_GetTXThreshold" href="group__i2c.html#gae3f521e2c112fee74366b5be8af48662"/>
       <topic label="MXC_I2C_Init" href="group__i2c.html#gaffa36a7ab08e0f222bb7a9c305d2eca6"/>
@@ -1673,7 +1647,6 @@
       <topic label="MXC_I2C_SetClockStretching" href="group__i2c.html#ga35511bf2fd8213685ba6202b8b81929b"/>
       <topic label="MXC_I2C_SetFrequency" href="group__i2c.html#ga77c6eb650f273bdd2ecd472d214a4457"/>
       <topic label="MXC_I2C_SetRXThreshold" href="group__i2c.html#ga0f96f30ffcaf5f775773e36faac3b1e3"/>
-      <topic label="MXC_I2C_SetSlaveAddr" href="group__i2c.html#ga4c032adb3aca741cb77d4c5e14d65e60"/>
       <topic label="MXC_I2C_SetTimeout" href="group__i2c.html#gaae88d5d2cf476809b522728a0c0d119f"/>
       <topic label="MXC_I2C_SetTXThreshold" href="group__i2c.html#gacbb55e2af2b42c66e9da1d12c71f8d2c"/>
       <topic label="MXC_I2C_Shutdown" href="group__i2c.html#ga98e85aeb2f25b27b1049b8519dad9276"/>
@@ -1950,8 +1923,8 @@
           <topic label="MXC_F_PWRSEQ_LPPWEN_I2S_POS" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#ga0afc9501cce80ea359938b2d98bc6c11"/>
           <topic label="MXC_F_PWRSEQ_LPPWEN_LPCMP" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#ga3034419751b5c12006e262ab0432551f"/>
           <topic label="MXC_F_PWRSEQ_LPPWEN_LPCMP_POS" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#ga7d5a66d2931a7b8ebf0122ef333816eb"/>
-          <topic label="MXC_F_PWRSEQ_LPPWEN_SPI1" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#gab2b3fedeaf6efb1992b5282518abcf91"/>
-          <topic label="MXC_F_PWRSEQ_LPPWEN_SPI1_POS" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#ga4cfc367d89a77085d40f525d20b0a7ac"/>
+          <topic label="MXC_F_PWRSEQ_LPPWEN_SPI0" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#gaba341148af3461c192bca89eb3439369"/>
+          <topic label="MXC_F_PWRSEQ_LPPWEN_SPI0_POS" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#gaec176d857cfc67cdcdb93a135a879f7f"/>
           <topic label="MXC_F_PWRSEQ_LPPWEN_TMR0" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#ga83cff04b24a59771e482da35cc138dfb"/>
           <topic label="MXC_F_PWRSEQ_LPPWEN_TMR0_POS" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#ga9e54ab5d53d1d2ef8936fb43943cebb9"/>
           <topic label="MXC_F_PWRSEQ_LPPWEN_TMR1" href="group___p_w_r_s_e_q___l_p_p_w_e_n.html#ga5446ef0bf6290cdec7f19d407a81e053"/>
@@ -2011,9 +1984,8 @@
       <topic label="MXC_LP_EnableTimerWakeup" href="group__pwrseq.html#gabb6c99f86c25abe408c3a4fe27d80f28"/>
       <topic label="MXC_LP_EnableWUTAlarmWakeup" href="group__pwrseq.html#ga1c19b59ba9c4d21f27276e61b333af17"/>
       <topic label="MXC_LP_EnterBackupMode" href="group__pwrseq.html#ga7114f139cf0400c690ad23f16320e65c"/>
-      <topic label="MXC_LP_EnterLowPowerMode" href="group__pwrseq.html#gaf6999c3a6df541f73423a06fc26a71ed"/>
-      <topic label="MXC_LP_EnterMicroPowerMode" href="group__pwrseq.html#ga641b6f0e28da541f3ce168ebf59fcb5f"/>
-      <topic label="MXC_LP_EnterPowerDownMode" href="group__pwrseq.html#gacb2506005ae70c62dbf484ad733723dc"/>
+      <topic label="MXC_LP_EnterDeepSleepMode" href="group__pwrseq.html#ga95c80fbcb83070408fac907302718dcc"/>
+      <topic label="MXC_LP_EnterShutDownMode" href="group__pwrseq.html#gab0c960dba59216e44b2adbfdb5434789"/>
       <topic label="MXC_LP_EnterSleepMode" href="group__pwrseq.html#gade48c6aae021a798a082c9e3ff143e50"/>
       <topic label="MXC_LP_EnterStandbyMode" href="group__pwrseq.html#ga6ac0edd342a999a54a4370a55ea13867"/>
       <topic label="MXC_LP_SetOVR" href="group__pwrseq.html#ga7b8a93fe1df6a0798d2b25b797cf4365"/>
@@ -2859,7 +2831,6 @@
         <topic label="ss0" href="group__spi.html#a0e86807e6243d99edd55956830b13f44"/>
         <topic label="ss1" href="group__spi.html#afb2c08203a0e7e5d91cd3c0cbfbc2a97"/>
         <topic label="ss2" href="group__spi.html#ae8afa47a3641b1bc2fe6f9501607d1af"/>
-        <topic label="vddioh" href="group__spi.html#a11b42b7b00d84d3a18f4a51a2a5ebe0f"/>
       </topic>
       <topic label="mxc_spi_req_t" href="group__spi.html#struct__mxc__spi__req__t">
         <topic label="completeCB" href="group__spi.html#a9dbc802d61ebc798f973339cc603ded7"/>
@@ -2874,12 +2845,6 @@
         <topic label="txLen" href="group__spi.html#abaa4e72af025cc3c53b626f14cb40c1d"/>
       </topic>
       <topic label="spi_complete_cb_t" href="group__spi.html#gaf0559c6b177fe18d021f00ceca2b0f5b"/>
-      <topic label="mxc_spi_mode_t" href="group__spi.html#ga60b8dae244994cc57471750e249bc09c">
-        <topic label="SPI_MODE_0" href="group__spi.html#gga60b8dae244994cc57471750e249bc09ca152359b11fb4b43ed0c5485eb0ab0673"/>
-        <topic label="SPI_MODE_1" href="group__spi.html#gga60b8dae244994cc57471750e249bc09ca7c1990cc15e9d69621be8e0e757e634c"/>
-        <topic label="SPI_MODE_2" href="group__spi.html#gga60b8dae244994cc57471750e249bc09ca4d350945d895a4acdc45ae96b0b82fc3"/>
-        <topic label="SPI_MODE_3" href="group__spi.html#gga60b8dae244994cc57471750e249bc09caf06ec36087996d6f328df39866ff5de6"/>
-      </topic>
       <topic label="mxc_spi_width_t" href="group__spi.html#ga7a218a6e76f22dccdd5680b1eca14409">
         <topic label="SPI_WIDTH_3WIRE" href="group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409af81d265e20049a145b1b62a36bee2928"/>
         <topic label="SPI_WIDTH_STANDARD" href="group__spi.html#gga7a218a6e76f22dccdd5680b1eca14409af55a2ccb187d2d7b4ba3015ca0a34271"/>
@@ -2898,7 +2863,6 @@
       <topic label="MXC_SPI_GetDataSize" href="group__spi.html#ga3f463c4883d810768f1c37654907c449"/>
       <topic label="MXC_SPI_GetFlags" href="group__spi.html#ga0975fa702566dae897a0a77417129808"/>
       <topic label="MXC_SPI_GetFrequency" href="group__spi.html#ga66094aea21801b4d038717eee7151dcc"/>
-      <topic label="MXC_SPI_GetMode" href="group__spi.html#ga569449f07cb8baffe915265c6161ec3c"/>
       <topic label="MXC_SPI_GetRXFIFOAvailable" href="group__spi.html#ga575ba2180995296e0a7f5c3bf8b52748"/>
       <topic label="MXC_SPI_GetRXThreshold" href="group__spi.html#gadbc0c35461519d71e09e2dfdc4849423"/>
       <topic label="MXC_SPI_GetSlave" href="group__spi.html#ga0c0e27e72171a55780d097ff2c2ffada"/>
@@ -2914,7 +2878,6 @@
       <topic label="MXC_SPI_SetDataSize" href="group__spi.html#ga41b1f107be5f014fef097ae5706a65b8"/>
       <topic label="MXC_SPI_SetDefaultTXData" href="group__spi.html#gac14dbfc876d9d2342d1158b910a65b78"/>
       <topic label="MXC_SPI_SetFrequency" href="group__spi.html#ga040221eafa059cdc505e50e3a64c9b13"/>
-      <topic label="MXC_SPI_SetMode" href="group__spi.html#ga9a92d8991186982b927fee7dbb5e8cab"/>
       <topic label="MXC_SPI_SetRXThreshold" href="group__spi.html#ga38048f4a4e31ceda3c3220a004b0d877"/>
       <topic label="MXC_SPI_SetSlave" href="group__spi.html#ga3d9f3a2760a4caa850ffcae7edd99d8b"/>
       <topic label="MXC_SPI_SetTXThreshold" href="group__spi.html#ga7fd5b76f6fb558d0556927afaf263cc8"/>
@@ -3501,7 +3464,6 @@
       <topic label="MXC_UART_ClearRXFIFO" href="group__uart.html#ga1275a45a60c1cfd4cb4acbd6737a1c50"/>
       <topic label="MXC_UART_ClearTXFIFO" href="group__uart.html#ga9e5c4dde28738388e6ed8126eb0bf4e3"/>
       <topic label="MXC_UART_DisableInt" href="group__uart.html#ga5fd085debd53242cec896a06880bcea3"/>
-      <topic label="MXC_UART_DMACallback" href="group__uart.html#ga256350715ed900f67d05e7a29f8632fc"/>
       <topic label="MXC_UART_EnableInt" href="group__uart.html#ga3258382626c1fe0e71771d53eb09fcca"/>
       <topic label="MXC_UART_GetActive" href="group__uart.html#ga724bb717925ccf2f4c4643a9d9949315"/>
       <topic label="MXC_UART_GetFlags" href="group__uart.html#ga59d00ccf6ed8d09e32a11768d711b2cb"/>
@@ -3778,16 +3740,25 @@
           <topic label="MXC_R_WUT_CMP" href="group___w_u_t___register___offsets.html#ga1eeebdd723eac94357af709190c46061"/>
           <topic label="MXC_R_WUT_CNT" href="group___w_u_t___register___offsets.html#ga540c0f3a5f00c2f96437ddd20f0f9263"/>
           <topic label="MXC_R_WUT_CTRL" href="group___w_u_t___register___offsets.html#ga78c039d650d1067144051937c5f0957c"/>
-          <topic label="MXC_R_WUT_INTR" href="group___w_u_t___register___offsets.html#ga3d199cc213760ebcc613d6a93cdada8f"/>
+          <topic label="MXC_R_WUT_INTFL" href="group___w_u_t___register___offsets.html#ga87de1575bccc5eb722dfa200f75bf7cb"/>
           <topic label="MXC_R_WUT_NOLCMP" href="group___w_u_t___register___offsets.html#gae75cce4d1b23e4b22ae8c6a32e3a01ea"/>
-          <topic label="MXC_R_WUT_PRESET" href="group___w_u_t___register___offsets.html#ga38b1495e596810b834707b1a58c89536"/>
           <topic label="MXC_R_WUT_PWM" href="group___w_u_t___register___offsets.html#ga6b2a10786fc4f8b4f27f991fcdc4f18f"/>
-          <topic label="MXC_R_WUT_RELOAD" href="group___w_u_t___register___offsets.html#ga16fef9f6b2a025797f41f3485a5636ab"/>
-          <topic label="MXC_R_WUT_SNAPSHOT" href="group___w_u_t___register___offsets.html#ga8277392ad64e48952e5f41380c7780a5"/>
         </topic>
-        <topic label="WUT_INTR" href="group___w_u_t___i_n_t_r.html">
-          <topic label="MXC_F_WUT_INTR_IRQ_CLR" href="group___w_u_t___i_n_t_r.html#gacb7c688d01c38510115a59bf1954cad7"/>
-          <topic label="MXC_F_WUT_INTR_IRQ_CLR_POS" href="group___w_u_t___i_n_t_r.html#gaf3a8554b3173a16ba3a7d95efa28a16b"/>
+        <topic label="WUT_CNT" href="group___w_u_t___c_n_t.html">
+          <topic label="MXC_F_WUT_CNT_COUNT" href="group___w_u_t___c_n_t.html#ga36f9c1fe8ecedcbb824551aa6846b4eb"/>
+          <topic label="MXC_F_WUT_CNT_COUNT_POS" href="group___w_u_t___c_n_t.html#gaf45b77c6ad1b1590be610b6f20df8aa0"/>
+        </topic>
+        <topic label="WUT_CMP" href="group___w_u_t___c_m_p.html">
+          <topic label="MXC_F_WUT_CMP_COMPARE" href="group___w_u_t___c_m_p.html#ga516d56aa1dd6ecc93966d19b93d11529"/>
+          <topic label="MXC_F_WUT_CMP_COMPARE_POS" href="group___w_u_t___c_m_p.html#ga90e1bd9ad7ff7c56e541b2f12de61c25"/>
+        </topic>
+        <topic label="WUT_PWM" href="group___w_u_t___p_w_m.html">
+          <topic label="MXC_F_WUT_PWM_PWM" href="group___w_u_t___p_w_m.html#ga9a08339974c97254ebfe849f0c89f0ee"/>
+          <topic label="MXC_F_WUT_PWM_PWM_POS" href="group___w_u_t___p_w_m.html#ga458a64cfffc04ad7110349f428acb6c3"/>
+        </topic>
+        <topic label="WUT_INTFL" href="group___w_u_t___i_n_t_f_l.html">
+          <topic label="MXC_F_WUT_INTFL_IRQ_CLR" href="group___w_u_t___i_n_t_f_l.html#ga8a621583405d79177c3c1785f3744e50"/>
+          <topic label="MXC_F_WUT_INTFL_IRQ_CLR_POS" href="group___w_u_t___i_n_t_f_l.html#ga9cd246d4b6b1177841448f5f37378ced"/>
         </topic>
         <topic label="WUT_CTRL" href="group___w_u_t___c_t_r_l.html">
           <topic label="MXC_F_WUT_CTRL_NOLHPOL" href="group___w_u_t___c_t_r_l.html#gaa5333de7f0c200903eda5b9ae8c8026e"/>
@@ -3809,37 +3780,35 @@
           <topic label="MXC_F_WUT_CTRL_TPOL" href="group___w_u_t___c_t_r_l.html#ga61b36e0f702179592860efa9d58580e4"/>
           <topic label="MXC_F_WUT_CTRL_TPOL_POS" href="group___w_u_t___c_t_r_l.html#ga62636076e0b133df5f4d6ca9b808d516"/>
           <topic label="MXC_S_WUT_CTRL_PRES_DIV1" href="group___w_u_t___c_t_r_l.html#ga7451038ba0107b91230a9e704ae93f8d"/>
+          <topic label="MXC_S_WUT_CTRL_PRES_DIV1024" href="group___w_u_t___c_t_r_l.html#ga6b4b80eb7502f327f2d3a5e0d9ad7a36"/>
           <topic label="MXC_S_WUT_CTRL_PRES_DIV128" href="group___w_u_t___c_t_r_l.html#gae9e44c913cd4ecc968d91bfebc025db4"/>
           <topic label="MXC_S_WUT_CTRL_PRES_DIV16" href="group___w_u_t___c_t_r_l.html#gafa4af867f4685d5f335cf60643602f7a"/>
           <topic label="MXC_S_WUT_CTRL_PRES_DIV2" href="group___w_u_t___c_t_r_l.html#ga3a41269a05aeeb61b05d3170ced794c0"/>
+          <topic label="MXC_S_WUT_CTRL_PRES_DIV2048" href="group___w_u_t___c_t_r_l.html#ga88f4724e3ce5ab734b9cb4d5661ac090"/>
+          <topic label="MXC_S_WUT_CTRL_PRES_DIV256" href="group___w_u_t___c_t_r_l.html#gab497e7a0d3e2e9a3fc52586443de610d"/>
           <topic label="MXC_S_WUT_CTRL_PRES_DIV32" href="group___w_u_t___c_t_r_l.html#ga43bf35d1affca76a8775392242bd46c4"/>
           <topic label="MXC_S_WUT_CTRL_PRES_DIV4" href="group___w_u_t___c_t_r_l.html#ga5e2dc78f080e520fc188af0ec932141e"/>
+          <topic label="MXC_S_WUT_CTRL_PRES_DIV4096" href="group___w_u_t___c_t_r_l.html#ga73069e7a27c6ffe149400405921810f6"/>
+          <topic label="MXC_S_WUT_CTRL_PRES_DIV512" href="group___w_u_t___c_t_r_l.html#gaee35452c2652aaa795da166da2ba228d"/>
           <topic label="MXC_S_WUT_CTRL_PRES_DIV64" href="group___w_u_t___c_t_r_l.html#gab03bc491d27f021e8d66e2d6cb45d252"/>
           <topic label="MXC_S_WUT_CTRL_PRES_DIV8" href="group___w_u_t___c_t_r_l.html#ga2f864a79e09e52aca145496c2a702f65"/>
-          <topic label="MXC_S_WUT_CTRL_TMODE_CAPTURE" href="group___w_u_t___c_t_r_l.html#ga969b70097411e7b4bc98c10715c21b9e"/>
-          <topic label="MXC_S_WUT_CTRL_TMODE_CAPTURECOMPARE" href="group___w_u_t___c_t_r_l.html#ga8f2e7266153402c401ee65d786f245a9"/>
-          <topic label="MXC_S_WUT_CTRL_TMODE_COMPARE" href="group___w_u_t___c_t_r_l.html#ga64d3ab07b11aaad7a8b101d2e22a09af"/>
           <topic label="MXC_S_WUT_CTRL_TMODE_CONTINUOUS" href="group___w_u_t___c_t_r_l.html#ga01641bd167f6f43ea533bdb685a76984"/>
-          <topic label="MXC_S_WUT_CTRL_TMODE_COUNTER" href="group___w_u_t___c_t_r_l.html#ga0f84de98d63199773850acbda7a5defe"/>
-          <topic label="MXC_S_WUT_CTRL_TMODE_GATED" href="group___w_u_t___c_t_r_l.html#ga62815ab1bebcca24bceb643913da8746"/>
           <topic label="MXC_S_WUT_CTRL_TMODE_ONESHOT" href="group___w_u_t___c_t_r_l.html#ga6b18f414b3d0b49b12e73cf18c61ecb7"/>
-          <topic label="MXC_S_WUT_CTRL_TMODE_PWM" href="group___w_u_t___c_t_r_l.html#ga7d2c21511dcea6b815b6aa21ae8b9c93"/>
           <topic label="MXC_V_WUT_CTRL_PRES_DIV1" href="group___w_u_t___c_t_r_l.html#gabf01163114635b3ccc715e4fff697788"/>
+          <topic label="MXC_V_WUT_CTRL_PRES_DIV1024" href="group___w_u_t___c_t_r_l.html#ga9ef3bca7947d978b71aebf220a57d423"/>
           <topic label="MXC_V_WUT_CTRL_PRES_DIV128" href="group___w_u_t___c_t_r_l.html#ga379d3b55ec1df87f1c1e04be72228b51"/>
           <topic label="MXC_V_WUT_CTRL_PRES_DIV16" href="group___w_u_t___c_t_r_l.html#gafd4e60c4ea2c05119f9651d28556a5bf"/>
           <topic label="MXC_V_WUT_CTRL_PRES_DIV2" href="group___w_u_t___c_t_r_l.html#gac807d84293407370d4b3c242d56d47bb"/>
+          <topic label="MXC_V_WUT_CTRL_PRES_DIV2048" href="group___w_u_t___c_t_r_l.html#gaf17401789632f7df2d6ab806ea3ae849"/>
+          <topic label="MXC_V_WUT_CTRL_PRES_DIV256" href="group___w_u_t___c_t_r_l.html#gabf448d8653cae053b866edc62186f080"/>
           <topic label="MXC_V_WUT_CTRL_PRES_DIV32" href="group___w_u_t___c_t_r_l.html#ga700e790f569e5fb2a6c0d1456ee5d329"/>
           <topic label="MXC_V_WUT_CTRL_PRES_DIV4" href="group___w_u_t___c_t_r_l.html#ga0b5017c331c52ee6fb2a3f734797149a"/>
+          <topic label="MXC_V_WUT_CTRL_PRES_DIV4096" href="group___w_u_t___c_t_r_l.html#gafac9c99add7c2de8ef46c8c2ff9163bd"/>
+          <topic label="MXC_V_WUT_CTRL_PRES_DIV512" href="group___w_u_t___c_t_r_l.html#gae36e1d1c110ce3ab616b0a9f8ff97fdb"/>
           <topic label="MXC_V_WUT_CTRL_PRES_DIV64" href="group___w_u_t___c_t_r_l.html#ga95365eadec80cbbe1442c31c5f6ccd05"/>
           <topic label="MXC_V_WUT_CTRL_PRES_DIV8" href="group___w_u_t___c_t_r_l.html#ga7dd19e8db526844faad9b7dbe66f3311"/>
-          <topic label="MXC_V_WUT_CTRL_TMODE_CAPTURE" href="group___w_u_t___c_t_r_l.html#gac987d4186967a717b5986c817bf18707"/>
-          <topic label="MXC_V_WUT_CTRL_TMODE_CAPTURECOMPARE" href="group___w_u_t___c_t_r_l.html#ga9cec5d4227bfee2a14d75c523d641a83"/>
-          <topic label="MXC_V_WUT_CTRL_TMODE_COMPARE" href="group___w_u_t___c_t_r_l.html#ga7c3b3bf1b69404cd45b25a6bf29a620c"/>
           <topic label="MXC_V_WUT_CTRL_TMODE_CONTINUOUS" href="group___w_u_t___c_t_r_l.html#ga77a1aa118260110d017780794d9b80e9"/>
-          <topic label="MXC_V_WUT_CTRL_TMODE_COUNTER" href="group___w_u_t___c_t_r_l.html#gabfc40ee8357fc9dfca555967947bb9b9"/>
-          <topic label="MXC_V_WUT_CTRL_TMODE_GATED" href="group___w_u_t___c_t_r_l.html#ga7dbdbeffc2df840c564b94131f423fb7"/>
           <topic label="MXC_V_WUT_CTRL_TMODE_ONESHOT" href="group___w_u_t___c_t_r_l.html#ga76dc4d6d903e8e27fe15047402646d92"/>
-          <topic label="MXC_V_WUT_CTRL_TMODE_PWM" href="group___w_u_t___c_t_r_l.html#ga44292e173c425ebaa9784f9d9c0e1ca0"/>
         </topic>
         <topic label="WUT_NOLCMP" href="group___w_u_t___n_o_l_c_m_p.html">
           <topic label="MXC_F_WUT_NOLCMP_NOLHCMP" href="group___w_u_t___n_o_l_c_m_p.html#ga87042465c379433c1c25e582d54e8ae8"/>
@@ -3851,12 +3820,9 @@
           <topic label="cmp" href="group__wut__registers.html#aaef723fce280474468bb54f8caaf9782"/>
           <topic label="cnt" href="group__wut__registers.html#a79669bb18d8e3f917f9a9ed84c0828fb"/>
           <topic label="ctrl" href="group__wut__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>
-          <topic label="intr" href="group__wut__registers.html#ac84aece9db287b79a24918c9a667f2d4"/>
+          <topic label="intfl" href="group__wut__registers.html#a4043deaf58b8c69a3d760825df5d9074"/>
           <topic label="nolcmp" href="group__wut__registers.html#a79022a0bcd2d28e1ce44db00b05edd11"/>
-          <topic label="preset" href="group__wut__registers.html#a7685bb716d1f212d33a78a78fd778665"/>
           <topic label="pwm" href="group__wut__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd"/>
-          <topic label="reload" href="group__wut__registers.html#ae7b291bdf41c8f597fdc59f9ef87c4a0"/>
-          <topic label="snapshot" href="group__wut__registers.html#ae991811ce95dc2ea8be1f59848562bcd"/>
         </topic>
       </topic>
       <topic label="mxc_wut_cfg_t" href="group__wut.html#structmxc__wut__cfg__t">
@@ -3910,28 +3876,6 @@
       <topic label="MXC_WUT_SetCount" href="group__wut.html#ga6578da14965d186e5961e70d6e7d4c33"/>
       <topic label="MXC_WUT_Shutdown" href="group__wut.html#gac8449729bb9e80327f9611f4559fb45d"/>
       <topic label="MXC_WUT_Store" href="group__wut.html#ga939cd8397efd56b5fda130d9dd132137"/>
-    </topic>
-    <topic label="AES_KEY_Registers" href="group__aes__key__registers.html">
-      <topic label="Register Offsets" href="group___a_e_s___k_e_y___register___offsets.html">
-        <topic label="MXC_R_AES_KEY_AES_KEY0" href="group___a_e_s___k_e_y___register___offsets.html#ga0d7fa57923365ea371b69bc6e6a5382f"/>
-        <topic label="MXC_R_AES_KEY_AES_KEY1" href="group___a_e_s___k_e_y___register___offsets.html#ga15aceee7881a4b83c2af86c7e3d35268"/>
-        <topic label="MXC_R_AES_KEY_AES_KEY2" href="group___a_e_s___k_e_y___register___offsets.html#ga801a1169c4ac5ba97460657e2378d4a7"/>
-        <topic label="MXC_R_AES_KEY_AES_KEY3" href="group___a_e_s___k_e_y___register___offsets.html#gabb2a7b8a6cdb056e19c03c5df42430c8"/>
-        <topic label="MXC_R_AES_KEY_AES_KEY4" href="group___a_e_s___k_e_y___register___offsets.html#ga5fed6d17d75deaa7263aa1d77097479e"/>
-        <topic label="MXC_R_AES_KEY_AES_KEY5" href="group___a_e_s___k_e_y___register___offsets.html#gaba70302e88fe2028170d021949f99cfe"/>
-        <topic label="MXC_R_AES_KEY_AES_KEY6" href="group___a_e_s___k_e_y___register___offsets.html#ga5216c34311a1811770105a48753aca35"/>
-        <topic label="MXC_R_AES_KEY_AES_KEY7" href="group___a_e_s___k_e_y___register___offsets.html#ga56a03be4e963946dde8cd06657ee6f93"/>
-      </topic>
-      <topic label="mxc_aes_key_regs_t" href="group__aes__key__registers.html#structmxc__aes__key__regs__t">
-        <topic label="aes_key0" href="group__aes__key__registers.html#a494fff63e6ba25c4514f1560d7b35051"/>
-        <topic label="aes_key1" href="group__aes__key__registers.html#a14ab668b4c71d0ce196125aba0c3ed30"/>
-        <topic label="aes_key2" href="group__aes__key__registers.html#a798cc7a9a8b7addbd574237505bfa9fa"/>
-        <topic label="aes_key3" href="group__aes__key__registers.html#aceacd09301eb4c669ec57824c306d519"/>
-        <topic label="aes_key4" href="group__aes__key__registers.html#a28723995617ae11417c615739aaa22fa"/>
-        <topic label="aes_key5" href="group__aes__key__registers.html#a1374166a15a6a34999ff6cb0f1a51dc9"/>
-        <topic label="aes_key6" href="group__aes__key__registers.html#ab3f6a33bcc07dc92a35e06b854a2a0e0"/>
-        <topic label="aes_key7" href="group__aes__key__registers.html#ad09528c1fb348e3a4f397fa9dd08ef0f"/>
-      </topic>
     </topic>
     <topic label="DVS_Registers" href="group__dvs__registers.html">
       <topic label="Register Offsets" href="group___d_v_s___register___offsets.html">
@@ -4372,16 +4316,16 @@
         <topic label="MXC_F_GCR_PM_WUT_WE_POS" href="group___g_c_r___p_m.html#ga5c5310c551051afbe24b8388f6947df7"/>
         <topic label="MXC_S_GCR_PM_MODE_ACTIVE" href="group___g_c_r___p_m.html#ga7a84921faef304e5f54e029f7eae5c5f"/>
         <topic label="MXC_S_GCR_PM_MODE_BACKUP" href="group___g_c_r___p_m.html#gad27fc9b7d4545830f04a38146523b32d"/>
+        <topic label="MXC_S_GCR_PM_MODE_CM4" href="group___g_c_r___p_m.html#ga60fcac4d3c70d47d5fe75e8ceba68b52"/>
         <topic label="MXC_S_GCR_PM_MODE_LPM" href="group___g_c_r___p_m.html#gaa966996db755ce5b81d0a5ccc120c197"/>
         <topic label="MXC_S_GCR_PM_MODE_POWERDOWN" href="group___g_c_r___p_m.html#ga71b567afa76ecfb6a9723791e93eb2b3"/>
-        <topic label="MXC_S_GCR_PM_MODE_SLEEP" href="group___g_c_r___p_m.html#ga65523aa2eef7560c8fd9cb246f66d131"/>
         <topic label="MXC_S_GCR_PM_MODE_STANDBY" href="group___g_c_r___p_m.html#ga483cbde8aacedb224930b5aef419745f"/>
         <topic label="MXC_S_GCR_PM_MODE_UPM" href="group___g_c_r___p_m.html#ga88662da7465dd03e6226c5d2c49c2281"/>
         <topic label="MXC_V_GCR_PM_MODE_ACTIVE" href="group___g_c_r___p_m.html#ga715cb4a9757575187f56aba8441cbdea"/>
         <topic label="MXC_V_GCR_PM_MODE_BACKUP" href="group___g_c_r___p_m.html#gafff5eb5f29ffa4aa3f8c1c80bfa73f77"/>
+        <topic label="MXC_V_GCR_PM_MODE_CM4" href="group___g_c_r___p_m.html#ga27e5eb7c29470ca1ca325f006a50d4ef"/>
         <topic label="MXC_V_GCR_PM_MODE_LPM" href="group___g_c_r___p_m.html#gab0a0c469c29cff497b1c37ed01d7c487"/>
         <topic label="MXC_V_GCR_PM_MODE_POWERDOWN" href="group___g_c_r___p_m.html#gafd0620561b0589be2ef6e074dd1543e1"/>
-        <topic label="MXC_V_GCR_PM_MODE_SLEEP" href="group___g_c_r___p_m.html#gadc21d5f5771becee38606c8a7f1f63b9"/>
         <topic label="MXC_V_GCR_PM_MODE_STANDBY" href="group___g_c_r___p_m.html#gad52619e177b592660ff0c88d7bfedfa9"/>
         <topic label="MXC_V_GCR_PM_MODE_UPM" href="group___g_c_r___p_m.html#ga4167971aa7e6c28f1667305ed6a120a8"/>
       </topic>
@@ -4957,10 +4901,6 @@
         <topic label="aes_key1" href="group__aes__key__registers.html#a14ab668b4c71d0ce196125aba0c3ed30"/>
         <topic label="aes_key2" href="group__aes__key__registers.html#a798cc7a9a8b7addbd574237505bfa9fa"/>
         <topic label="aes_key3" href="group__aes__key__registers.html#aceacd09301eb4c669ec57824c306d519"/>
-        <topic label="aes_key4" href="group__aes__key__registers.html#a28723995617ae11417c615739aaa22fa"/>
-        <topic label="aes_key5" href="group__aes__key__registers.html#a1374166a15a6a34999ff6cb0f1a51dc9"/>
-        <topic label="aes_key6" href="group__aes__key__registers.html#ab3f6a33bcc07dc92a35e06b854a2a0e0"/>
-        <topic label="aes_key7" href="group__aes__key__registers.html#ad09528c1fb348e3a4f397fa9dd08ef0f"/>
       </topic>
       <topic label="mxc_aes_regs_t" href="group__aes__registers.html#structmxc__aes__regs__t">
         <topic label="ctrl" href="group__aes__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>
@@ -4969,13 +4909,13 @@
         <topic label="intfl" href="group__aes__registers.html#a4043deaf58b8c69a3d760825df5d9074"/>
         <topic label="status" href="group__aes__registers.html#af65ae05bcce5786d892c6a2bd1141292"/>
       </topic>
-      <topic label="mxc_aes_req_t" href="structmxc__aes__req__t.html">
-        <topic label="callback" href="structmxc__aes__req__t.html#a9c5600304926bf00d373c6fc04bd5212"/>
-        <topic label="encryption" href="structmxc__aes__req__t.html#a08cb937b151057241c7343cc0f11a4d7"/>
-        <topic label="inputData" href="structmxc__aes__req__t.html#ad3f82b31501cd82f51e2657cd1d9d3d4"/>
-        <topic label="keySize" href="structmxc__aes__req__t.html#acd3280be19b3415b561b62aaea8a6e5b"/>
-        <topic label="length" href="structmxc__aes__req__t.html#aebb70c2aab3407a9f05334c47131a43b"/>
-        <topic label="resultData" href="structmxc__aes__req__t.html#a9b0ce351b04c0481ffe81cd5338e8f6c"/>
+      <topic label="mxc_aes_req_t" href="group__aes.html#structmxc__aes__req__t">
+        <topic label="callback" href="group__aes.html#a9c5600304926bf00d373c6fc04bd5212"/>
+        <topic label="encryption" href="group__aes.html#a08cb937b151057241c7343cc0f11a4d7"/>
+        <topic label="inputData" href="group__aes.html#ad3f82b31501cd82f51e2657cd1d9d3d4"/>
+        <topic label="keySize" href="group__aes.html#acd3280be19b3415b561b62aaea8a6e5b"/>
+        <topic label="length" href="group__aes.html#aebb70c2aab3407a9f05334c47131a43b"/>
+        <topic label="resultData" href="group__aes.html#a9b0ce351b04c0481ffe81cd5338e8f6c"/>
       </topic>
       <topic label="mxc_cameraif_regs_t" href="group__cameraif__registers.html#structmxc__cameraif__regs__t">
         <topic label="ctrl" href="group__cameraif__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>
@@ -5306,7 +5246,6 @@
         <topic label="ss0" href="group__spi.html#a0e86807e6243d99edd55956830b13f44"/>
         <topic label="ss1" href="group__spi.html#afb2c08203a0e7e5d91cd3c0cbfbc2a97"/>
         <topic label="ss2" href="group__spi.html#ae8afa47a3641b1bc2fe6f9501607d1af"/>
-        <topic label="vddioh" href="group__spi.html#a11b42b7b00d84d3a18f4a51a2a5ebe0f"/>
       </topic>
       <topic label="mxc_spi_regs_t" href="group__spi__registers.html#structmxc__spi__regs__t">
         <topic label="clkctrl" href="group__spi__registers.html#a5614e3d3d61a7b8e1e1c753d4442f209"/>
@@ -5410,12 +5349,9 @@
         <topic label="cmp" href="group__wut__registers.html#aaef723fce280474468bb54f8caaf9782"/>
         <topic label="cnt" href="group__wut__registers.html#a79669bb18d8e3f917f9a9ed84c0828fb"/>
         <topic label="ctrl" href="group__wut__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>
-        <topic label="intr" href="group__wut__registers.html#ac84aece9db287b79a24918c9a667f2d4"/>
+        <topic label="intfl" href="group__wut__registers.html#a4043deaf58b8c69a3d760825df5d9074"/>
         <topic label="nolcmp" href="group__wut__registers.html#a79022a0bcd2d28e1ce44db00b05edd11"/>
-        <topic label="preset" href="group__wut__registers.html#a7685bb716d1f212d33a78a78fd778665"/>
         <topic label="pwm" href="group__wut__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd"/>
-        <topic label="reload" href="group__wut__registers.html#ae7b291bdf41c8f597fdc59f9ef87c4a0"/>
-        <topic label="snapshot" href="group__wut__registers.html#ae991811ce95dc2ea8be1f59848562bcd"/>
       </topic>
     </topic>
     <topic label="Data Structure Index" href="classes.html"/>

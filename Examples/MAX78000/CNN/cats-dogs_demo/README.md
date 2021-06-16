@@ -53,12 +53,12 @@ endif
 
 Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
 
-Connect PICO adapter to JH5 SWD header. 
+Connect PICO adapter to JH5 SWD header.
 
-Load firmware image using Openocd.
+Load the firmware image using OpenOCD. If you are using Windows, perform this step in a MinGW shell.
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
 ```
 
 ### MAX78000 EVKIT operations
@@ -76,10 +76,10 @@ In either mode, pushbutton trigger PB1(SW2) is used to capture and load an image
 
 Connect USB cable to CN1 USB connector.
 
-Load firmware image using Openocd.
+Load the firmware image using OpenOCD. If you are using Windows, perform this step in a MinGW shell.
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
 ```
 
 ### MAX78000 Feather operations

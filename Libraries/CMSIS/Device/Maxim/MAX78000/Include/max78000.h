@@ -483,6 +483,8 @@ typedef enum {
 #define MXC_BASE_DMA                    ((uint32_t)0x40028000UL)
 #define MXC_DMA                         ((mxc_dma_regs_t*)MXC_BASE_DMA)
 
+#define MXC_DMA_GET_IDX(p)              ((p) == MXC_DMA ? 0 : -1)
+
 /******************************************************************************/
 /*                                                                        FLC */
 #define MXC_FLC_INSTANCES               (1)

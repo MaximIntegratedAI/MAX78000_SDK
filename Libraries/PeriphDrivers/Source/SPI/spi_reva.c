@@ -48,7 +48,6 @@
 #include "mxc_delay.h"
 #include "spi.h"
 #include "spi_reva.h"
-#include "dma.h"
 #include "dma_reva.h"
 
 /* **** Definitions **** */
@@ -305,9 +304,10 @@ int MXC_SPI_RevA_SetSlave (mxc_spi_reva_regs_t* spi, int ssIdx)
     MXC_ASSERT (spi_num >= 0);
     (void)spi_num;
     
+    spi->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_ACTIVE;
+    
     // Setup the slave select
-    //MXC_SETFIELD (spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, ((1 <<ssIdx) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
-    spi->ctrl0 |= (((1 << ssIdx) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+    MXC_SETFIELD (spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, ((1 << ssIdx) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
 
     return E_NO_ERROR;
 }
@@ -905,7 +905,7 @@ int MXC_SPI_RevA_MasterTransactionAsync (mxc_spi_reva_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_SPI_RevA_MasterTransactionDMA (mxc_spi_reva_req_t* req, int reqselTx, int reqselRx)
+int MXC_SPI_RevA_MasterTransactionDMA (mxc_spi_reva_req_t* req, int reqselTx, int reqselRx, mxc_dma_regs_t* dma)
 {
     int spi_num;
     uint8_t channel,error,bits;
@@ -1080,7 +1080,7 @@ int MXC_SPI_RevA_SlaveTransactionAsync (mxc_spi_reva_req_t* req)
     return E_NO_ERROR;
 }
 
-int MXC_SPI_RevA_SlaveTransactionDMA (mxc_spi_reva_req_t* req, int reqselTx, int reqselRx)
+int MXC_SPI_RevA_SlaveTransactionDMA (mxc_spi_reva_req_t* req, int reqselTx, int reqselRx, mxc_dma_regs_t* dma)
 {
     int spi_num;
     uint8_t channel, error, bits;

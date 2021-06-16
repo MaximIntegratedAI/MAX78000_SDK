@@ -50,7 +50,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
     
     switch (cfg->clock) {
     case MXC_TMR_32M_CLK:
-        if (tmr_id > 3) {               // UARTs 4-5 do not support this clock source
+        if (tmr_id > 3) {               // Timers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
         }
         
@@ -59,7 +59,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         break;
         
     case MXC_TMR_8M_CLK:
-        if (tmr_id > 3) {               // UARTs 4-5 do not support this clock source
+        if (tmr_id > 3) {               // Timers 4-5 do not support this clock source
             return E_NOT_SUPPORTED;
         }
         
@@ -74,7 +74,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         else if (tmr_id < 4) {
             clockSource = MXC_TMR_CLK3;
         }
-        else {                          // UART 5 do not support this clock source
+        else {                          // Timers 5 do not support this clock source
             return E_NOT_SUPPORTED;
         }
         
@@ -82,7 +82,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t* tmr, mxc_tmr_cfg_t* cfg, bool init_pins)
         break;
         
     case MXC_TMR_8K_CLK:
-        if (tmr_id < 4) {               // UARTs 0-3 do not support this clock source
+        if (tmr_id < 4) {               // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
         
@@ -361,7 +361,7 @@ unsigned int MXC_TMR_TO_Remaining(mxc_tmr_regs_t* tmr)
 
 void MXC_TMR_SW_Start(mxc_tmr_regs_t* tmr)
 {
-    return MXC_TMR_Common_SW_Start(tmr);
+    MXC_TMR_Common_SW_Start(tmr);
 }
 
 unsigned int MXC_TMR_SW_Stop(mxc_tmr_regs_t* tmr)

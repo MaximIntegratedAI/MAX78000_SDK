@@ -37,6 +37,13 @@
 #include "mcr_regs.h"
 #include "lp.h"
 
+#ifdef __riscv
+void MXC_LP_EnterSleepMode(void)
+{
+    __asm volatile("wfi");
+}
+#else
+
 void MXC_LP_EnterSleepMode(void)
 {
     MXC_LP_ClearWakeStatus();
@@ -217,3 +224,5 @@ int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
     MXC_GCR->pm |= mask;
     return E_NO_ERROR;
 }
+
+#endif

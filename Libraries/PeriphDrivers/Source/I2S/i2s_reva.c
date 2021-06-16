@@ -50,6 +50,9 @@
 #define DATALENGTH_TWENTYFOUR   (24 - 1)
 #define DATALENGTH_THIRTYTWO    (32 - 1)
 
+/* ****** Globals ****** */
+static mxc_i2s_req_t* request;
+
 /* ****** Functions ****** */
 int MXC_I2S_RevA_Init(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t* req)
 {
@@ -60,6 +63,8 @@ int MXC_I2S_RevA_Init(mxc_i2s_reva_regs_t *i2s, mxc_i2s_req_t* req)
     if (req->length == 0) {
         return E_BAD_PARAM;
     }
+
+    request = req;
     
     if (req->stereoMode) {
         i2s->ctrl0ch0 |= (req->stereoMode << MXC_F_I2S_REVA_CTRL0CH0_STEREO_POS);
@@ -325,6 +330,7 @@ void MXC_I2S_RevA_TXDMAConfig(mxc_i2s_reva_regs_t *i2s, void* src_addr, int len)
 {
     uint8_t channel;
     mxc_dma_config_t config;
+    mxc_dma_adv_config_t advConfig;
     mxc_dma_srcdst_t srcdst;
     
     MXC_DMA_Init();
@@ -337,17 +343,47 @@ void MXC_I2S_RevA_TXDMAConfig(mxc_i2s_reva_regs_t *i2s, void* src_addr, int len)
     
     config.ch = channel;
     
-    config.srcwd = MXC_DMA_WIDTH_WORD;
-    config.dstwd = MXC_DMA_WIDTH_WORD;
+    switch(request->wordSize) {
+    case MXC_I2S_DATASIZE_WORD:
+        config.srcwd = MXC_DMA_WIDTH_WORD;
+        config.dstwd = MXC_DMA_WIDTH_WORD;
+        advConfig.burst_size = 4;
+        break;
+
+    case MXC_I2S_DATASIZE_HALFWORD:
+        config.srcwd = MXC_DMA_WIDTH_HALFWORD;
+        config.dstwd = MXC_DMA_WIDTH_HALFWORD;
+        advConfig.burst_size = 2;
+        break;
+
+    case MXC_I2S_DATASIZE_BYTE:
+        config.srcwd = MXC_DMA_WIDTH_BYTE;
+        config.dstwd = MXC_DMA_WIDTH_BYTE;
+        advConfig.burst_size = 1;
+        break;
+
+    default:
+        config.srcwd = MXC_DMA_WIDTH_BYTE;
+        config.dstwd = MXC_DMA_WIDTH_BYTE;
+        advConfig.burst_size = 1;
+        break;
+    }
     
     config.srcinc_en = 1;
     config.dstinc_en = 0;
     
+    advConfig.ch = channel;
+    advConfig.prio = 0;
+    advConfig.reqwait_en = 0;
+    advConfig.tosel = 0;
+    advConfig.pssel = 0;
+
     srcdst.ch = channel;
     srcdst.source = src_addr;
     srcdst.len = len;
     
     MXC_DMA_ConfigChannel(config, srcdst);
+    MXC_DMA_AdvConfigChannel(advConfig);
     MXC_DMA_SetCallback(channel, NULL);
     
     MXC_I2S_TXEnable();                                 //Enable I2S TX
@@ -362,6 +398,7 @@ void MXC_I2S_RevA_RXDMAConfig(mxc_i2s_reva_regs_t *i2s, void* dest_addr, int len
 {
     uint8_t channel;
     mxc_dma_config_t config;
+    mxc_dma_adv_config_t advConfig;
     mxc_dma_srcdst_t srcdst;
     
     MXC_DMA_Init();
@@ -374,17 +411,47 @@ void MXC_I2S_RevA_RXDMAConfig(mxc_i2s_reva_regs_t *i2s, void* dest_addr, int len
     
     config.ch = channel;
     
-    config.srcwd = MXC_DMA_WIDTH_WORD;
-    config.dstwd = MXC_DMA_WIDTH_WORD;
+    switch(request->wordSize) {
+    case MXC_I2S_DATASIZE_WORD:
+        config.srcwd = MXC_DMA_WIDTH_WORD;
+        config.dstwd = MXC_DMA_WIDTH_WORD;
+        advConfig.burst_size = 4;
+        break;
+
+    case MXC_I2S_DATASIZE_HALFWORD:
+        config.srcwd = MXC_DMA_WIDTH_HALFWORD;
+        config.dstwd = MXC_DMA_WIDTH_HALFWORD;
+        advConfig.burst_size = 2;
+        break;
+
+    case MXC_I2S_DATASIZE_BYTE:
+        config.srcwd = MXC_DMA_WIDTH_BYTE;
+        config.dstwd = MXC_DMA_WIDTH_BYTE;
+        advConfig.burst_size = 1;
+        break;
+
+    default:
+        config.srcwd = MXC_DMA_WIDTH_BYTE;
+        config.dstwd = MXC_DMA_WIDTH_BYTE;
+        advConfig.burst_size = 1;
+        break;
+    }
     
     config.srcinc_en = 0;
     config.dstinc_en = 1;
+
+    advConfig.ch = channel;
+    advConfig.prio = 0;
+    advConfig.reqwait_en = 0;
+    advConfig.tosel = 0;
+    advConfig.pssel = 0;
     
     srcdst.ch = channel;
     srcdst.dest = dest_addr;
     srcdst.len = len;
     
     MXC_DMA_ConfigChannel(config, srcdst);
+    MXC_DMA_AdvConfigChannel(advConfig);
     MXC_DMA_SetCallback(channel, NULL);
     
     MXC_I2S_RXEnable();                                 //Enable I2S RX

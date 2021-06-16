@@ -62,7 +62,7 @@ int MXC_DMA_Init(void)
 
 int MXC_DMA_AcquireChannel(void)
 {
-    return MXC_DMA_RevA_AcquireChannel();
+    return MXC_DMA_RevA_AcquireChannel((mxc_dma_reva_regs_t*) MXC_DMA);
 }
 
 int MXC_DMA_ReleaseChannel(int ch)
@@ -157,15 +157,15 @@ mxc_dma_ch_regs_t* MXC_DMA_GetCHRegs(int ch)
 
 void MXC_DMA_Handler(void)
 {
-    return MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t*) MXC_DMA);
+    MXC_DMA_RevA_Handler((mxc_dma_reva_regs_t*) MXC_DMA);
 }
 
 int MXC_DMA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callback)
 {
-    return MXC_DMA_RevA_MemCpy(dest, src, len, callback);
+    return MXC_DMA_RevA_MemCpy((mxc_dma_reva_regs_t*) MXC_DMA, dest, src, len, callback);
 }
 
 int MXC_DMA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback)
 {
-    return MXC_DMA_RevA_DoTransfer(config, firstSrcDst, callback);
+    return MXC_DMA_RevA_DoTransfer((mxc_dma_reva_regs_t*) MXC_DMA, config, firstSrcDst, callback);
 }

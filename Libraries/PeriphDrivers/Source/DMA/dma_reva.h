@@ -41,7 +41,7 @@
 
 /****** Functions ******/
 int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma);
-int MXC_DMA_RevA_AcquireChannel(void);
+int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t* dma);
 int MXC_DMA_RevA_ReleaseChannel(int ch);
 int MXC_DMA_RevA_ConfigChannel(mxc_dma_config_t config, mxc_dma_srcdst_t srcdst);
 int MXC_DMA_RevA_AdvConfigChannel(mxc_dma_adv_config_t advConfig);
@@ -61,5 +61,5 @@ int MXC_DMA_RevA_Start(int ch);
 int MXC_DMA_RevA_Stop(int ch);
 mxc_dma_ch_regs_t* MXC_DMA_RevA_GetCHRegs(int ch);
 void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t *dma);
-int MXC_DMA_RevA_MemCpy(void* dest, void* src, int len, mxc_dma_complete_cb_t callback);
-int MXC_DMA_RevA_DoTransfer(mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback);
+int MXC_DMA_RevA_MemCpy(mxc_dma_reva_regs_t* dma, void* dest, void* src, int len, mxc_dma_complete_cb_t callback);
+int MXC_DMA_RevA_DoTransfer(mxc_dma_reva_regs_t* dma, mxc_dma_config_t config, mxc_dma_srcdst_t firstSrcDst, mxc_dma_trans_chain_t callback);

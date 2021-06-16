@@ -86,7 +86,7 @@ int MXC_SPI_Init(mxc_spi_regs_t* spi, int masterMode, int quadModeUsed, int numS
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
         
-#if (TARGET != MAX78000)
+#if (TARGET != MAX78000 || TARGET_NUM == 32655)
         
         //Define pins
         if (pins.ss1) {
@@ -416,7 +416,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t* req)
     }
     
     
-    return MXC_SPI_RevA_MasterTransactionDMA((mxc_spi_reva_req_t*) req, reqselTx, reqselRx);
+    return MXC_SPI_RevA_MasterTransactionDMA((mxc_spi_reva_req_t*) req, reqselTx, reqselRx, MXC_DMA);
 }
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t* req)
@@ -471,7 +471,7 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t* req)
         }
     }
     
-    return MXC_SPI_RevA_SlaveTransactionDMA((mxc_spi_reva_req_t*) req, reqselTx, reqselRx);
+    return MXC_SPI_RevA_SlaveTransactionDMA((mxc_spi_reva_req_t*) req, reqselTx, reqselRx, MXC_DMA);
 }
 
 int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t* spi, unsigned int defaultTXData)

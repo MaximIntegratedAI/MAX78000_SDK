@@ -74,6 +74,7 @@ int MXC_ICC_RevA_ID(mxc_icc_reva_regs_t* icc, mxc_icc_info_t cid)
 void MXC_ICC_RevA_Enable(mxc_icc_reva_regs_t *icc)
 {
     // Invalidate cache and wait until ready
+    icc->ctrl &= ~MXC_F_ICC_REVA_CTRL_EN;
     icc->invalidate = 1;
     
     while(!(MXC_ICC_Ready(icc)));
