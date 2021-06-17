@@ -304,11 +304,11 @@ int MXC_SPI_RevA_SetSlave (mxc_spi_reva_regs_t* spi, int ssIdx)
     MXC_ASSERT (spi_num >= 0);
     (void)spi_num;
     
-    spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_ACTIVE;
-    
     // Setup the slave select
-    MXC_SETFIELD (spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, ((1 << ssIdx) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
-
+    // Activate chosen SS pin
+    spi->ctrl0 |= (1 << ssIdx) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS;   
+    // Deactivate all unchosen pins
+    spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_ACTIVE | ((1 << ssIdx) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
     return E_NO_ERROR;
 }
 
